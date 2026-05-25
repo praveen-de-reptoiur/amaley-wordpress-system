@@ -1,406 +1,142 @@
-# AMALEY FRESH WORDPRESS MIGRATION PLAN
+# NEXT CHAT PROMPT — Amaley WordPress System
 
-This document defines the safe migration direction for Amaley.
+Use this prompt when starting a new ChatGPT chat for Amaley.
 
-The goal is not to randomly rebuild the website.  
-The goal is to move Amaley toward a cleaner, faster, scalable, and more controlled WordPress system.
+---
 
-## Migration Objective
+I am working on the Amaley WordPress system.
 
-Move Amaley from the current theme/plugin-heavy setup toward a cleaner WordPress architecture.
+Please continue from the existing project structure and do not guess.
 
-The future setup should be:
+Important references:
 
-- Lightweight
-- WooCommerce-first
-- Elementor-compatible
-- Mobile-first
-- Design-system consistent
-- Conflict-safe
-- Debuggable
-- Easier to maintain
-- Easier for future developers to understand
+- GitHub repository: `praveen-de-reptoiur/amaley-wordpress-system`
+- Google Drive folder: `Amaley Project`
+- Main README: `README.md`
+- Read first: `docs/READ_FIRST_AMALEY.md`
+- Design system: `docs/AMALEY_DESIGN_SYSTEM_LOCKED.md`
+- Changelog: `docs/CHANGELOG.md`
+- Migration plan: `docs/AMALEY_FRESH_WORDPRESS_MIGRATION_PLAN.md`
+- QA checklist: `docs/QA_CHECKLIST.md`
+- Project manifest: `docs/PROJECT_MANIFEST.md`
+- Drive folder map: `docs/DRIVE_FOLDER_MAP.md`
+- Plugin architecture: `plugins/README.md`
 
-## Current Risk
+Current project rule:
 
-The current site may depend on:
+- GitHub is for source code, documentation, changelog, migration planning, QA notes, and developer handoff.
+- Google Drive is for backups, plugin ZIPs, media, screenshots, videos, exports, and handoff packages.
+- Heavy files must not be uploaded to GitHub.
+- WooCommerce remains the commerce engine.
+- Custom Amaley plugins must support WooCommerce, not replace it.
+- Do not create fake Cluster / SHG / Producer data.
+- Do not remove existing live dependencies blindly.
+- Every serious change must be versioned, documented, tested, and reversible.
 
-- Freshen theme
-- Apus theme components
-- WooCommerce
-- Elementor Pro
-- ACF
-- CPT UI
-- JetEngine
-- Smart Filters
-- Other utility plugins
-- Theme-specific templates
-- Imported demo structures
+Target architecture:
 
-These must not be removed blindly.
-
-Blind removal can break:
-
-- Product pages
-- Shop page
-- Filters
-- Product origin sections
-- Cluster / SHG / Member layouts
-- Elementor templates
-- WooCommerce cart or checkout
-- Mobile responsiveness
-- Admin editing workflows
-- Existing content relationships
-
-## Target Long-Term Stack
-
-Preferred future setup:
-
-- Lightweight base theme
-- WooCommerce
-- Elementor Pro
-- Fluent Forms
 - Amaley Core
 - Amaley Discovery Engine
 - Amaley Templates
 - Amaley Project Guard
 - Amaley Debug Toolkit
-- LiteSpeed Cache only after layout is stable
 
-## Dependency Direction
+Dependency direction:
 
-The future Amaley system should not depend permanently on ACF, CPT UI, JetEngine, Smart Filters, or random utility plugins.
+The future Amaley system should not depend permanently on:
 
-These plugins may exist in the current or old WordPress setup, but they are not part of the target architecture.
+- ACF
+- CPT UI
+- JetEngine
+- Smart Filters
+- Random utility plugins
 
-Target direction:
+These may exist in old/current WordPress setups, but they are not part of the target architecture.
 
-- Amaley Core will manage custom post types and fields.
-- Amaley Discovery Engine will manage discovery, filters, listings, pagination, and mobile filter behaviour.
-- Amaley Templates will manage Elementor-native visual sections and templates.
-- Amaley Project Guard will manage safety checks, version visibility, dependency warnings, and risky plugin detection.
-- Amaley Debug Toolkit will manage admin-only debug visibility, health reports, and developer diagnostics.
+Amaley Core should eventually manage:
 
-Do not remove ACF, CPT UI, JetEngine, Smart Filters, or existing dependencies blindly from the current live site.
-
-Removal must happen only after Amaley Core and Amaley Discovery Engine fully replace the required functionality and QA is complete.
-
-## Plugin Roles
-
-### WooCommerce
-
-WooCommerce remains the commerce engine.
-
-WooCommerce handles:
-
-- Products
-- Prices
-- Stock
-- Variations
-- Cart
-- Checkout
-- Orders
-- Reviews
-
-Custom Amaley plugins must support WooCommerce, not replace it.
-
-### Amaley Templates
-
-Purpose:
-
-- Elementor-native template widgets
-- Single product sections
-- Shop page sections
-- Product hero
-- Product info tabs
-- Trust strips
-- Origin / traceability display
-- Future quick view or popup modules
-
-Rule:
-
-Amaley Templates must not replace WooCommerce.
-
-### Amaley Discovery Engine
-
-Purpose:
-
-- Product discovery
-- Filters
-- Listings
-- Pagination
-- Cluster / SHG / Member discovery layouts
-- Mobile filter behaviour
-- Safe empty-state handling
-
-Rule:
-
-Discovery Engine must remain separate from Amaley Templates.
-
-### Amaley Core
-
-Future purpose:
-
-- Replace ACF dependency
-- Replace CPT UI dependency
-- Register Amaley CPTs safely
-- Manage product origin fields
-- Manage Cluster, SHG Group, and SHG Member data
-- Manage producer / maker profiles
-- Manage traceability fields
-- Add system-level health checks
-- Reduce dependency on third-party plugins
-
-### Amaley Project Guard
-
-Future purpose:
-
-- Show active Amaley plugin versions
-- Detect missing WooCommerce
-- Detect missing Elementor
-- Detect risky duplicate plugins
-- Detect old or broken Amaley plugin versions
-- Detect required CPT/field availability
-- Warn before unsafe activation
-- Provide admin-only project health dashboard
-
-This plugin exists to prevent silent breakage.
-
-### Amaley Debug Toolkit
-
-Future purpose:
-
-- Record plugin health status
-- Show Elementor widget registration status
-- Show WooCommerce template dependency status
-- Show product/origin data issues
-- Show cache-related warnings
-- Provide exportable debug reports for developers
-
-Debug tools must be:
-
-- Admin-only
-- Permission-protected
-- Safe for production
-- Easy to disable
-- Not visible to public users
-
-## Migration Rule
-
-Do not migrate everything in one step.
-
-Migration must happen in controlled phases.
-
-## Phase 1 — Documentation and Backup
-
-Status: In progress
-
-Tasks:
-
-- Create Google Drive project structure
-- Store latest `.wpress` backup
-- Store active plugin ZIPs
-- Create GitHub repository
-- Add README
-- Add READ_FIRST file
-- Add design system file
-- Add changelog
-- Add migration plan
-- Add Drive folder map
-- Add QA checklist
-- Add project manifest
-- Add plugins architecture guide
-
-## Phase 2 — Source Code Organization
-
-Tasks:
-
-- Extract latest Amaley Templates plugin source
-- Extract latest Amaley Discovery Engine plugin source
-- Add source folders to GitHub
-- Add plugin-level README files
-- Add version notes
-- Keep plugin ZIPs in Google Drive only
-- Keep GitHub clean from backup ZIPs
-
-Planned GitHub source structure:
-
-```text
-plugins/
-  README.md
-  amaley-templates/
-  amaley-discovery-engine/
-  amaley-core/
-  amaley-project-guard/
-  amaley-debug-toolkit/
-```
-
-## Phase 3 — WordPress Audit
-
-Tasks:
-
-- List all active plugins
-- Identify which plugins are essential
-- Identify which plugins are temporary
-- Identify which plugins are risky
-- Document theme dependency
-- Document Elementor templates
-- Export WooCommerce products
-- Export ACF fields if currently used
-- Export CPT structures if currently used
-- Export Elementor templates
-- Export product origin mappings
-- Identify filters currently dependent on JetEngine or Smart Filters
-
-## Phase 4 — Staging Setup
-
-Tasks:
-
-- Create staging or fresh WordPress setup
-- Install lightweight base theme
-- Install WooCommerce
-- Install Elementor Pro
-- Install Fluent Forms
-- Install Amaley Discovery Engine
-- Install Amaley Templates
-- Import limited test products
-- Test product page
-- Test shop page
-- Test mobile layout
-- Test filters
-- Test cart
-- Test checkout
-
-## Phase 5 — Dependency Replacement
-
-Do not remove ACF, CPT UI, JetEngine, Smart Filters, or theme dependency until replacements are tested.
-
-Replacement order:
-
-1. Product page structure
-2. Shop page structure
-3. Product filters
-4. Origin fields
-5. Cluster data
-6. SHG Group data
-7. SHG Member data
-8. Producer / maker profiles
-9. Product origin mapping
-10. Forms
-11. Header and footer
-12. Cart and checkout styling
-13. Theme-dependent layouts
-
-## Phase 6 — Amaley Core Build
-
-Amaley Core should eventually handle:
-
-- Cluster CPT
-- SHG Group CPT
-- SHG Member CPT
-- Product origin fields
-- Producer / maker data
-- Source village data
-- Region / source belt data
+- Clusters
+- SHG Groups
+- SHG Members
+- Product origin mapping
+- Producer / maker profiles
+- Source village / region data
 - Traceability fields
 - Product usage fields
 - Storage instruction fields
-- Admin health checks
+- System health checks
 
-This must be built carefully and tested on staging before replacing ACF or CPT UI.
+Amaley Discovery Engine should eventually manage:
 
-## Phase 7 — Discovery Engine Replacement
-
-Amaley Discovery Engine should eventually replace JetEngine / Smart Filters dependency.
-
-Discovery Engine should support:
-
-- Product search
-- Product category filtering
-- Product origin filtering
-- Cluster filtering
-- SHG filtering
-- Producer filtering
+- Product filters
+- Category filters
+- Origin filters
+- Cluster filters
+- SHG filters
+- Producer filters
+- Search
 - Sorting
 - Pagination
-- Active filter chips
 - Mobile filter drawer
-- Empty-state handling
-- Elementor widget controls
+- Safe empty-state handling
 
-## Phase 8 — Project Guard and Debug Toolkit
+Amaley Templates should manage:
 
-Amaley Project Guard should provide:
+- Elementor-native visual sections
+- Product hero
+- Product info tabs
+- Trust strip
+- Origin / traceability display
+- Shop hero
+- Shop discovery layout
+- Future quick view / popup modules
 
-- Active plugin version status
+Amaley Project Guard should manage:
+
+- Active Amaley plugin version checks
 - Required dependency checks
-- Old plugin warning
-- Duplicate plugin warning
-- Missing CPT warning
-- Missing field warning
-- Admin-only status screen
+- Old or broken plugin warnings
+- Duplicate plugin risk warnings
+- Missing CPT warnings
+- Missing field warnings
+- Admin-only project health dashboard
 
-Amaley Debug Toolkit should provide:
+Amaley Debug Toolkit should manage:
 
-- Elementor widget status
-- WooCommerce flow status
-- Origin data issue report
-- Cache warning notes
-- Exportable debug report
+- Elementor widget registration status
+- WooCommerce template dependency status
+- Product and origin data issue reports
+- Cache-related warnings
+- Exportable debug reports for developers
 
-These tools should not slow down the frontend.
+Current active plugin ZIPs are stored in Google Drive:
 
-## Phase 9 — QA
+- `amaley-templates-v1.2.7.zip`
+- `amaley-discovery-engine-v1.3.5-no-cpt.zip`
 
-Test before approval:
+Before making changes:
 
-- Homepage
-- Shop page
-- Single product page
-- Product variations
-- Cart
-- Checkout
-- Mobile menu
-- Filters
-- Product origin display
-- Cluster pages
-- SHG group pages
-- SHG member pages
-- Forms
-- Speed
-- Cache behavior
-- Elementor CSS regeneration
+1. Check the root `README.md`.
+2. Check `docs/READ_FIRST_AMALEY.md`.
+3. Check `docs/AMALEY_DESIGN_SYSTEM_LOCKED.md`.
+4. Check `docs/CHANGELOG.md`.
+5. Check `docs/AMALEY_FRESH_WORDPRESS_MIGRATION_PLAN.md`.
+6. Check `docs/QA_CHECKLIST.md`.
+7. Check `docs/PROJECT_MANIFEST.md`.
+8. Check `plugins/README.md`.
+9. Ask what exact step we are continuing from.
 
-## Rollback Rule
+Work style:
 
-Before every migration step:
+- Continue professionally.
+- Work step by step.
+- Do not give vague suggestions.
+- Do not create fake data.
+- Do not upload backup files to GitHub.
+- Do not give patch-only updates when full replacement is safer.
+- Keep naming clean and developer-grade.
+- Keep the project future-proof, debuggable, and rollback-safe.
 
-1. Take a backup.
-2. Record current versions.
-3. Make one controlled change.
-4. Test.
-5. Document result.
-6. Keep rollback file ready.
-
-No undocumented migration work is allowed.
-
-## Non-Negotiable Rule
-
-Migration is not redesign chaos.
-
-Migration must preserve:
-
-- Amaley brand identity
-- Product structure
-- WooCommerce reliability
-- Design consistency
-- Mobile-first behaviour
-- Origin and traceability storytelling
-- Future scalability
-- Debug visibility
-
-## Hard Rule
-
-If a dependency is removed before its replacement is tested, that is reckless.
+Hard rule:
 
 If a plugin cannot be tested, debugged, and rolled back, it is not production-ready.
