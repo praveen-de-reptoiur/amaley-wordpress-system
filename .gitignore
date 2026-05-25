@@ -1,0 +1,44 @@
+# OS system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Windows recycle / temporary files
+$RECYCLE.BIN/
+*.tmp
+*.temp
+
+# WordPress backup and migration files
+*.wpress
+*.sql
+*.sql.gz
+*.tar
+*.tar.gz
+*.zip
+*.rar
+*.7z
+
+# WordPress sensitive files
+wp-config.php
+.env
+.env.*
+*.log
+
+# WordPress heavy folders
+wp-content/uploads/
+wp-content/cache/
+wp-content/upgrade/
+wp-content/backup*/
+wp-content/ai1wm-backups/
+
+# Node / build files
+node_modules/
+dist/
+build/
+.cache/
+
+# IDE files
+.vscode/
+.idea/
+
+# Keep source code, docs, and clean plugin files in GitHub
