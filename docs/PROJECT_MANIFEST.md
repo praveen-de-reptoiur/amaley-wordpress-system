@@ -2,13 +2,11 @@
 
 This manifest is the project index for the Amaley WordPress system.
 
-It explains what each repository file is for, what belongs in GitHub, and what belongs in Google Drive.
+It explains what each repository file is for, what belongs in GitHub, what belongs in Google Drive, and what the target architecture is.
 
 ## Repository
 
-```text
-praveen-de-reptoiur/amaley-wordpress-system
-```
+    praveen-de-reptoiur/amaley-wordpress-system
 
 ## Repository Role
 
@@ -88,6 +86,7 @@ Purpose:
 - Record plugin versions
 - Record documentation updates
 - Record migration milestones
+- Record architecture decisions
 
 Every serious change must be documented here.
 
@@ -98,10 +97,12 @@ Fresh WordPress migration plan.
 Purpose:
 
 - Define safe migration direction
-- Prevent blind removal of dependencies
+- Prevent blind dependency removal
 - Define plugin roles
+- Define target architecture
 - Define migration phases
 - Define rollback rules
+- Define guard and debug direction
 
 ### docs/DRIVE_FOLDER_MAP.md
 
@@ -124,29 +125,96 @@ Purpose:
 - Test WooCommerce flows
 - Test responsive layout
 - Test design-system consistency
+- Test migration safety
 
 If it is not tested, it is not done.
 
-## Planned Repository Structure
+### docs/NEXT_CHAT_PROMPT.md
 
-Future structure:
+Continuation prompt for future ChatGPT chats.
 
-```text
-amaley-wordpress-system/
-  README.md
-  docs/
-    READ_FIRST_AMALEY.md
-    AMALEY_DESIGN_SYSTEM_LOCKED.md
-    CHANGELOG.md
-    AMALEY_FRESH_WORDPRESS_MIGRATION_PLAN.md
-    DRIVE_FOLDER_MAP.md
-    QA_CHECKLIST.md
-    PROJECT_MANIFEST.md
-  plugins/
-    amaley-templates/
-    amaley-discovery-engine/
-    amaley-core/
-```
+Purpose:
+
+- Help future chats continue without guessing
+- Point to the correct GitHub and Drive references
+- Lock project rules for the next assistant/developer
+
+### docs/PROJECT_MANIFEST.md
+
+This file.
+
+Purpose:
+
+- Act as the project index
+- Explain current and planned repository structure
+- Explain plugin architecture
+- Explain source vs backup rules
+
+### plugins/README.md
+
+Plugin architecture guide.
+
+Purpose:
+
+- Define plugin source structure
+- Define plugin roles
+- Lock dependency direction
+- Define debug and guard philosophy
+- Define CSS, PHP, and security rules
+
+## Target Repository Structure
+
+Planned repository structure:
+
+    amaley-wordpress-system/
+      README.md
+      docs/
+        READ_FIRST_AMALEY.md
+        AMALEY_DESIGN_SYSTEM_LOCKED.md
+        CHANGELOG.md
+        AMALEY_FRESH_WORDPRESS_MIGRATION_PLAN.md
+        DRIVE_FOLDER_MAP.md
+        QA_CHECKLIST.md
+        PROJECT_MANIFEST.md
+        NEXT_CHAT_PROMPT.md
+      plugins/
+        README.md
+        amaley-templates/
+        amaley-discovery-engine/
+        amaley-core/
+        amaley-project-guard/
+        amaley-debug-toolkit/
+
+## Current Active Plugin ZIPs in Google Drive
+
+Current active plugin ZIP backups:
+
+    amaley-templates-v1.2.7.zip
+    amaley-discovery-engine-v1.3.5-no-cpt.zip
+
+These ZIPs stay in Google Drive.
+
+Extracted source code can later be added to GitHub.
+
+## Architecture Decision
+
+The future Amaley system should not depend permanently on:
+
+- ACF
+- CPT UI
+- JetEngine
+- Smart Filters
+- Random utility plugins
+
+These may exist in old/current WordPress setups, but they are not part of the target architecture.
+
+Target architecture:
+
+- Amaley Core
+- Amaley Discovery Engine
+- Amaley Templates
+- Amaley Project Guard
+- Amaley Debug Toolkit
 
 ## Plugin Source Plan
 
@@ -159,9 +227,15 @@ Purpose:
 - Elementor-native template widgets
 - Product page sections
 - Shop page sections
-- Origin and traceability sections
+- Product hero
+- Product info tabs
 - Trust strips
-- Future quick view modules
+- Origin and traceability sections
+- Future quick view / popup modules
+
+Rule:
+
+Amaley Templates must not replace WooCommerce.
 
 ### plugins/amaley-discovery-engine
 
@@ -173,7 +247,15 @@ Purpose:
 - Filtering
 - Listings
 - Pagination
-- Cluster / SHG / Member discovery
+- Mobile filter behaviour
+- Cluster discovery
+- SHG group discovery
+- SHG member discovery
+- Safe empty-state handling
+
+Rule:
+
+Discovery Engine must remain separate from Amaley Templates.
 
 ### plugins/amaley-core
 
@@ -184,23 +266,132 @@ Purpose:
 - Replace ACF dependency
 - Replace CPT UI dependency
 - Register Amaley CPTs safely
-- Manage origin fields
-- Manage system health checks
+- Manage product origin fields
+- Manage Cluster data
+- Manage SHG Group data
+- Manage SHG Member data
+- Manage producer / maker profiles
+- Manage source village and region data
+- Manage traceability fields
+- Add system health checks
 
-## Current Active Plugin ZIPs in Google Drive
+Rule:
 
-```text
-amaley-templates-v1.2.7.zip
-amaley-discovery-engine-v1.3.5-no-cpt.zip
-```
+Amaley Core must become the controlled data layer for Amaley.
 
-These ZIPs stay in Google Drive.
+### plugins/amaley-project-guard
 
-Extracted source code can later be added to GitHub.
+Future source folder for Amaley Project Guard.
 
-## Hard Rules
+Purpose:
 
-Do not upload heavy files to GitHub.
+- Show active Amaley plugin versions
+- Detect missing WooCommerce
+- Detect missing Elementor
+- Detect old or broken Amaley plugin versions
+- Detect duplicate plugin risks
+- Detect missing CPTs
+- Detect missing fields
+- Provide admin-only project health dashboard
+- Warn before unsafe activation
+
+Rule:
+
+Project Guard exists to prevent silent breakage.
+
+### plugins/amaley-debug-toolkit
+
+Future source folder for Amaley Debug Toolkit.
+
+Purpose:
+
+- Show Elementor widget registration status
+- Show WooCommerce template dependency status
+- Show product and origin data issues
+- Show cache-related warnings
+- Provide exportable debug reports for developers
+- Support safer troubleshooting
+
+Debug tools must be:
+
+- Admin-only
+- Permission-protected
+- Safe for production
+- Easy to disable
+- Not visible to public users
+
+Rule:
+
+Debug visibility is part of production readiness.
+
+## Data System Direction
+
+Amaley should eventually manage its own data structures for:
+
+- Clusters
+- SHG Groups
+- SHG Members
+- Product origin mapping
+- Producer / maker profiles
+- Source village / region information
+- Traceability fields
+- Product usage fields
+- Storage instruction fields
+
+These should not remain permanently dependent on ACF or CPT UI.
+
+## Filtering System Direction
+
+Filtering should be handled by Amaley Discovery Engine.
+
+Discovery Engine should support:
+
+- Product filters
+- Category filters
+- Origin filters
+- Cluster filters
+- SHG filters
+- Producer filters
+- Search
+- Sorting
+- Pagination
+- Mobile filter drawer
+- Safe empty-state handling
+
+Amaley should not depend permanently on JetEngine or Smart Filters.
+
+## Google Drive Structure
+
+Google Drive structure:
+
+    Amaley Project/
+      00_Project_Control/
+      01_Backups/
+      02_Active_Plugins/
+      03_Code_Source/
+      04_Elementor_Templates/
+      05_Data_Exports/
+      06_Design_System/
+      07_Media_Reference/
+      08_Migration/
+      09_QA_Debug/
+      10_Archive_Do_Not_Use/
+      11_Handoff_Packages/
+
+## What Belongs in GitHub
+
+GitHub should contain:
+
+- Clean source code
+- README files
+- Documentation
+- Design-system rules
+- Migration plans
+- QA notes
+- Changelogs
+- Developer handoff notes
+
+## What Does Not Belong in GitHub
 
 Do not upload:
 
@@ -212,8 +403,12 @@ Do not upload:
 - API keys
 - License keys
 - `wp-config.php`
+- Large media folders
+- Random plugin ZIPs
 
-## Developer Standard
+Heavy files belong in Google Drive.
+
+## Development Standard
 
 Every file must answer:
 
@@ -223,6 +418,31 @@ Every file must answer:
 - Is it source, backup, archive, or documentation?
 - Can another developer understand it?
 - Can it be rolled back safely?
+
+## Migration Standard
+
+No dependency should be removed before its replacement is ready.
+
+Do not remove blindly:
+
+- ACF
+- CPT UI
+- JetEngine
+- Smart Filters
+- Freshen theme dependencies
+- Existing live utility plugins
+
+Replacement must be tested on staging or safe environment first.
+
+## Debug Standard
+
+A plugin is not production-ready unless it can be:
+
+- Tested
+- Debugged
+- Rolled back
+- Versioned
+- Documented
 
 ## Final Rule
 
