@@ -18,7 +18,7 @@ Every entry must clearly explain:
 ### Added
 
 - Created GitHub repository: `praveen-de-reptoiur/amaley-wordpress-system`
-- Updated root `README.md` with professional repository purpose and rules
+- Updated root `README.md` with professional repository purpose and target architecture
 - Added `docs/READ_FIRST_AMALEY.md`
 - Added `docs/AMALEY_DESIGN_SYSTEM_LOCKED.md`
 - Added `docs/CHANGELOG.md`
@@ -33,30 +33,26 @@ Every entry must clearly explain:
 
 Google Drive project folder structure created:
 
-```text
-Amaley Project/
-  00_Project_Control/
-  01_Backups/
-  02_Active_Plugins/
-  03_Code_Source/
-  04_Elementor_Templates/
-  05_Data_Exports/
-  06_Design_System/
-  07_Media_Reference/
-  08_Migration/
-  09_QA_Debug/
-  10_Archive_Do_Not_Use/
-  11_Handoff_Packages/
-```
+    Amaley Project/
+      00_Project_Control/
+      01_Backups/
+      02_Active_Plugins/
+      03_Code_Source/
+      04_Elementor_Templates/
+      05_Data_Exports/
+      06_Design_System/
+      07_Media_Reference/
+      08_Migration/
+      09_QA_Debug/
+      10_Archive_Do_Not_Use/
+      11_Handoff_Packages/
 
 ### Current Active Plugin Backups in Google Drive
 
 Current plugin ZIP backups stored in Google Drive:
 
-```text
-amaley-templates-v1.2.7.zip
-amaley-discovery-engine-v1.3.5-no-cpt.zip
-```
+    amaley-templates-v1.2.7.zip
+    amaley-discovery-engine-v1.3.5-no-cpt.zip
 
 These ZIPs must remain in Google Drive.
 
@@ -131,29 +127,56 @@ It should support:
 - Shop discovery layout
 - Future quick view / popup modules
 
-Amaley Templates must not replace WooCommerce.
+Amaley Templates must support WooCommerce, not replace it.
 
-### Project Guard / Debug Toolkit Direction
+### Project Guard Direction
 
-Future debug and guard system added to architecture.
+Future Amaley Project Guard will manage safety and dependency visibility.
 
-Purpose:
+It should support:
 
-- Detect broken dependencies
-- Show active plugin versions
-- Warn about old/broken plugins
-- Detect missing CPTs or fields
-- Show Elementor widget registration status
-- Show WooCommerce template dependency status
-- Provide admin-only debug reports
+- Active Amaley plugin version checks
+- Required dependency checks
+- Old or broken plugin warnings
+- Duplicate plugin risk warnings
+- Missing CPT warnings
+- Missing field warnings
+- Admin-only project health dashboard
 
-Debug tools must be admin-only, permission-protected, and must not slow down the frontend.
+Project Guard exists to prevent silent breakage.
 
-### Migration Plan Updated
+### Debug Toolkit Direction
+
+Future Amaley Debug Toolkit will support admin-only diagnostics.
+
+It should support:
+
+- Elementor widget registration status
+- WooCommerce template dependency status
+- Product and origin data issue reports
+- Cache-related warnings
+- Exportable debug reports for developers
+
+Debug tools must be:
+
+- Admin-only
+- Permission-protected
+- Safe for production
+- Easy to disable
+- Not visible to public users
+
+### Migration Plan Updated and Restored
 
 `docs/AMALEY_FRESH_WORDPRESS_MIGRATION_PLAN.md` was replaced with a full target architecture plan.
 
-The plan now includes:
+During the update process, the wrong NEXT_CHAT_PROMPT content was accidentally pasted into the migration plan file.
+
+The migration plan was restored from GitHub history using the correct previous commit:
+
+- Correct restored version: `Replace migration plan with full target architecture`
+- Restore commit purpose: bring back the full migration architecture plan
+
+The migration plan now includes:
 
 - Current risk
 - Target long-term stack
@@ -185,6 +208,68 @@ It now documents:
 - Security rules
 - Production rules
 
+### Root README Updated
+
+`README.md` was updated to reflect the latest target architecture.
+
+It now includes:
+
+- Amaley Core
+- Amaley Discovery Engine
+- Amaley Templates
+- Amaley Project Guard
+- Amaley Debug Toolkit
+- No permanent ACF / CPT UI / JetEngine / Smart Filters dependency
+- WooCommerce rule
+- Google Drive vs GitHub rule
+- Hard production rule
+
+### READ_FIRST Updated
+
+`docs/READ_FIRST_AMALEY.md` was updated to reflect the latest architecture.
+
+It now includes:
+
+- Target architecture
+- Data system direction
+- Filtering system direction
+- Project Guard direction
+- Debug Toolkit direction
+- Fresh WordPress direction
+- Hard production rule
+
+### Project Manifest Updated
+
+`docs/PROJECT_MANIFEST.md` was updated to reflect the latest architecture.
+
+It now includes:
+
+- Target repository structure
+- Plugin source plan
+- Data system direction
+- Filtering system direction
+- Migration standard
+- Debug standard
+- Final rule: confusion is technical debt
+
+### NEXT_CHAT_PROMPT Updated
+
+`docs/NEXT_CHAT_PROMPT.md` was updated to help future chats continue correctly.
+
+It now includes:
+
+- GitHub and Google Drive references
+- Current project rules
+- Target architecture
+- Dependency direction
+- Amaley Core direction
+- Discovery Engine direction
+- Templates direction
+- Project Guard direction
+- Debug Toolkit direction
+- Work style rules
+- Hard production rule
+
 ### Fixed
 
 - Removed wrongly nested `docs/docs/docs/READ_FIRST_AMALEY.md`
@@ -192,6 +277,8 @@ It now documents:
 - Fixed incomplete `docs/DRIVE_FOLDER_MAP.md`
 - Replaced weak plugin README with full architecture guide
 - Replaced patch-style migration notes with full replacement migration plan
+- Restored migration plan after wrong content was pasted into it
+- Updated README, READ_FIRST, PROJECT_MANIFEST, and NEXT_CHAT_PROMPT to match the final architecture direction
 
 ### Current Rule Lock
 
