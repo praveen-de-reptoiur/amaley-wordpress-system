@@ -61,6 +61,23 @@ Preferred future setup:
 - Amaley Templates
 - LiteSpeed Cache only after layout is stable
 
+## Dependency Direction
+
+The future Amaley system should not depend permanently on ACF, CPT UI, JetEngine, Smart Filters, or random utility plugins.
+
+These plugins may exist in the current or old WordPress setup, but they are not part of the target architecture.
+
+Target direction:
+
+- Amaley Core will manage custom post types and fields.
+- Amaley Discovery Engine will manage discovery, filters, listings, pagination, and mobile filter behaviour.
+- Amaley Templates will manage Elementor-native visual sections and templates.
+- Amaley Project Guard and Amaley Debug Toolkit will manage health checks, warnings, and debug visibility.
+
+Do not remove ACF, CPT UI, JetEngine, Smart Filters, or existing dependencies blindly from the current live site.
+
+Removal must happen only after Amaley Core and Amaley Discovery Engine fully replace the required functionality and QA is complete.
+
 ## Plugin Roles
 
 ### WooCommerce
