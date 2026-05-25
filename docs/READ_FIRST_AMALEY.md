@@ -2,7 +2,7 @@
 
 This repository is the controlled source-code and documentation space for the Amaley WordPress system.
 
-It is maintained for long-term development, plugin work, design consistency, migration planning, QA, and developer handoff.
+It is maintained for long-term development, plugin work, design consistency, migration planning, QA, debugging, and developer handoff.
 
 ## Project Owner
 
@@ -16,7 +16,9 @@ This repository is for:
 - Amaley WordPress plugin source code
 - Amaley Templates plugin source
 - Amaley Discovery Engine source
-- Future Amaley Core plugin source
+- Future Amaley Core source
+- Future Amaley Project Guard source
+- Future Amaley Debug Toolkit source
 - Design system documentation
 - Migration notes
 - Changelog records
@@ -49,6 +51,7 @@ Drive is used for:
 - Website backups
 - Plugin ZIP backups
 - Elementor exports
+- WooCommerce exports
 - Product images
 - Screenshots
 - Videos
@@ -69,7 +72,27 @@ GitHub is used for:
 - QA notes
 - Developer-readable project rules
 
-## Active Custom Plugins
+## Target Architecture
+
+The future Amaley system should not depend permanently on:
+
+- ACF
+- CPT UI
+- JetEngine
+- Smart Filters
+- Random utility plugins
+
+These may exist in old/current WordPress setups, but they are not part of the target architecture.
+
+Target custom system:
+
+- Amaley Core
+- Amaley Discovery Engine
+- Amaley Templates
+- Amaley Project Guard
+- Amaley Debug Toolkit
+
+## Active Custom Plugin Direction
 
 ### Amaley Templates
 
@@ -86,7 +109,7 @@ Purpose:
 
 Rule:
 
-Amaley Templates must not replace WooCommerce.
+Amaley Templates must support WooCommerce, not replace it.
 
 ### Amaley Discovery Engine
 
@@ -96,11 +119,79 @@ Purpose:
 - Filters
 - Listings
 - Pagination
-- Cluster, SHG, and member discovery layouts
+- Product grids
+- Cluster discovery
+- SHG group discovery
+- SHG member discovery
+- Mobile filter behaviour
+- Safe empty-state handling
 
 Rule:
 
 Discovery Engine must remain separate from Amaley Templates.
+
+### Amaley Core
+
+Future controlled data-layer plugin.
+
+Planned role:
+
+- Replace ACF dependency
+- Replace CPT UI dependency
+- Register Amaley CPTs safely
+- Manage Clusters
+- Manage SHG Groups
+- Manage SHG Members
+- Manage product origin mapping
+- Manage producer / maker profiles
+- Manage source village and region data
+- Manage traceability fields
+- Add system health checks
+
+Rule:
+
+Amaley Core must become the controlled data layer for Amaley.
+
+### Amaley Project Guard
+
+Future safety and health-check plugin.
+
+Planned role:
+
+- Show active Amaley plugin versions
+- Detect missing WooCommerce
+- Detect missing Elementor
+- Detect old or broken Amaley plugins
+- Detect duplicate plugin risks
+- Detect missing CPTs
+- Detect missing fields
+- Warn before unsafe activation
+- Provide admin-only project health dashboard
+
+Rule:
+
+Project Guard exists to prevent silent breakage.
+
+### Amaley Debug Toolkit
+
+Future admin-only diagnostic plugin.
+
+Planned role:
+
+- Show Elementor widget registration status
+- Show WooCommerce template dependency status
+- Show product and origin data issues
+- Show cache-related warnings
+- Provide exportable debug reports for developers
+- Support safer troubleshooting
+
+Debug tools must be:
+
+- Admin-only
+- Permission-protected
+- Safe for production
+- Easy to disable
+- Not visible to public users
 
 ## WooCommerce Rule
 
@@ -118,6 +209,42 @@ WooCommerce handles:
 - Reviews
 
 Custom Amaley plugins must support WooCommerce, not replace it.
+
+## Data System Direction
+
+Amaley should eventually manage its own data structures for:
+
+- Clusters
+- SHG Groups
+- SHG Members
+- Product origin mapping
+- Producer / maker profiles
+- Source village / region information
+- Traceability fields
+- Product usage fields
+- Storage instruction fields
+
+These should not remain permanently dependent on ACF or CPT UI.
+
+## Filtering System Direction
+
+Filtering should be handled by Amaley Discovery Engine.
+
+Amaley should not depend permanently on JetEngine or Smart Filters.
+
+Discovery Engine should support:
+
+- Product filters
+- Category filters
+- Origin filters
+- Cluster filters
+- SHG filters
+- Producer filters
+- Search
+- Sorting
+- Pagination
+- Mobile filter drawer
+- Safe empty-state handling
 
 ## Design Rule
 
@@ -148,8 +275,10 @@ The long-term direction is a cleaner WordPress setup using:
 - Amaley Core
 - Amaley Discovery Engine
 - Amaley Templates
+- Amaley Project Guard
+- Amaley Debug Toolkit
 
-Existing dependencies such as Freshen theme, ACF, CPT UI, JetEngine, or helper plugins must not be removed blindly.
+Existing dependencies such as Freshen theme, ACF, CPT UI, JetEngine, Smart Filters, or helper plugins must not be removed blindly.
 
 Removal must happen only after:
 
@@ -200,3 +329,7 @@ Every file must answer:
 - Is it latest or archived?
 - Can another developer understand it?
 - Can it be rolled back safely?
+
+## Hard Rule
+
+If a plugin cannot be tested, debugged, and rolled back, it is not production-ready.
