@@ -13,6 +13,19 @@ Every entry must clearly explain:
 
 ---
 
+## 2026-05-27
+
+### Added
+
+- Added `docs/AMALEY_PRIMARY_BUILD_RULES.md` to lock fresh/staging-only development, no-conflict development, mobile-first responsiveness, scoped CSS, WooCommerce/Elementor boundaries, non-coder controls, data integrity, and testing gates.
+- Added `docs/AMALEY_WIDGET_TEMPLATE_PERFORMANCE_FULL_CONTROL_RULE.md` to lock mandatory Hero-widget-style full controls for all future widgets, Template Studio modules, sections, popups, forms, single templates, archive/listing templates, card/grid/timeline components, with section-wise/tab-wise controls and lightweight low-network performance rules.
+
+### Rule Lock
+
+- Every future Amaley component must be conflict-safe, mobile-first, scoped, lightweight, non-coder manageable, documented, testable, and rollback-ready.
+- Every future widget/module/template must provide proper section-wise and tab-wise controls for content, style, layout, spacing, responsive behaviour, visibility, repeaters, and performance safety.
+- The fresh/staging build remains the development base. The existing live site remains reference/export source only.
+
 ## 2026-05-25
 
 ### Added
