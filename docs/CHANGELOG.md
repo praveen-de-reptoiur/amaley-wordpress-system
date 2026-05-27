@@ -81,6 +81,55 @@ show_origin → 1
 - Marked `amaley-core-v1.0.2.zip` as the current tested active Amaley Core plugin ZIP.
 - `amaley-core-v1.0.0.zip` should be treated as old archive candidate and moved later to `10_Archive_Do_Not_Use / old-plugin-versions /`.
 
+### Amaley Site Shell v1.0.1
+
+- Added `plugins/amaley-site-shell/` as the lightweight, scoped, mobile-first header/footer shell plugin for the Amaley WordPress system.
+- Amaley Site Shell is intended to manage header, footer, mobile header, mobile drawer, navigation, announcement strip, CTA controls, footer contact details, and footer links in the future fresh build.
+- Plugin source was uploaded to GitHub under `plugins/amaley-site-shell/`.
+- Saved `amaley-site-shell-v1.0.1.zip` in Google Drive under `02_Active_Plugins`.
+
+### Amaley Site Shell Testing Status
+
+Tested on temporary staging domain:
+
+```text
+https://lightsalmon-lemur-689499.hostingersite.com/
+```
+
+Passed checks:
+
+- Plugin installed and activated successfully on staging.
+- Amaley Site Shell dashboard loaded successfully.
+- Dashboard showed Header enabled, Footer enabled, Auto Header OFF, Auto Footer OFF, navigation item count, footer column count, and shortcode information.
+- Shortcode mode was tested using Elementor Shortcode widgets:
+
+```text
+[amaley_site_header]
+[amaley_site_footer]
+```
+
+- Header and footer output rendered correctly inside a test page.
+- HTML widget shortcode rendering issue was identified and corrected by using Elementor Shortcode widgets instead of Elementor HTML widget.
+
+### Amaley Site Shell Safety Decision
+
+- Auto Header Render and Auto Footer Render were intentionally kept OFF.
+- Existing clone header/footer source is not yet fully confirmed. It may be coming from theme options, Apus/Freshen header builder, Elementor templates, Megamenu plugin, or theme hooks.
+- Direct header/footer replacement is therefore deferred to the future fresh build or a controlled staging test after the current header/footer source is clearly identified.
+- `amaley-site-shell-v1.0.1.zip` is saved as an experimental/staging plugin backup, not as a production replacement baseline.
+- Current safe mode for Amaley Site Shell is shortcode/manual render only.
+
+Status:
+
+```text
+Version saved: v1.0.1
+Mode tested: Shortcode mode
+Auto render: OFF / HOLD
+Production use: Not yet
+Fresh build test: Required later
+```
+
+
 ### Rule Lock
 
 - Every future Amaley component must be conflict-safe, mobile-first, scoped, lightweight, non-coder manageable, documented, testable, and rollback-ready.
