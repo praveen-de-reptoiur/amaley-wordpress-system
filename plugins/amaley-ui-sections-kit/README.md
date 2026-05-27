@@ -1,163 +1,81 @@
 # Amaley UI Sections Kit
 
-**Module Name:** Amaley UI Sections Kit  
-**Slug:** `amaley-ui-sections-kit`  
-**Author:** Praveen  
-**Status:** Planning / architecture folder  
-**Build Status:** Not built yet. No ZIP should be created until structure is approved.
-
-Amaley UI Sections Kit is the future lightweight, WordPress-native, theme-like component system for the Amaley website.
-
-It will provide Amaley-controlled sections, buttons, cards, strips, product blocks, story blocks, CTA blocks, origin blocks, trust sections, and reusable UI components without depending on Elementor default widgets.
-
----
+Version: 0.1.2  
+Status: Phase 1 MVP skeleton — foundation components only.
 
 ## Purpose
 
-This module will support the future clean Amaley website with reusable custom UI sections.
+Amaley UI Sections Kit is a lightweight WordPress-native UI foundation for Amaley. It provides reusable, scoped shortcodes for headings, buttons, trust items, brand promise strips, CTA bands and safe empty states.
 
-It will include:
+This plugin is intentionally small. It must not become a product discovery engine, Elementor widget kit, WooCommerce replacement, header/footer system, origin database, SHG data manager, or cart/checkout replacement.
 
-- Custom buttons
-- Button groups
-- Section headings
-- Heading strips
-- Promise strips
+## Phase 1 MVP Includes
+
+- Design tokens
+- Section container renderer
+- Section heading shortcode
+- Button shortcode
+- Button group shortcode
+- Trust mini item shortcode
+- Brand promise strip shortcode
+- CTA band shortcode
+- Safe empty state shortcode
+
+## Phase 1 MVP Does Not Include
+
 - Product cards
 - Product grids
-- Story sections
-- Media + text sections
-- Trust strips
-- CTA bands
+- Collection cards
 - Origin blocks
-- Cluster cards
 - SHG / women collective cards
-- Contact blocks
-- Footer CTA sections
-
----
-
-## Locked Direction
-
-This module must follow the permanent performance and no-Elementor lock.
-
-Rules:
-
-- No Elementor default widget dependency.
-- No Elementor Heading widget.
-- No Elementor Button widget.
-- No Elementor Icon Box widget.
-- No Elementor Image Box widget.
-- No Elementor HTML widget for important sections.
-- No heavy page-builder dependency.
-- No CPT creation.
-- No WooCommerce replacement.
-- No header/footer replacement.
-- No discovery/filter engine replacement.
-- No heavy frontend scripts.
-- No unnecessary external libraries.
-- No global CSS dumps.
-- No duplicate CSS/JS.
-- Low-network-first performance.
-- Mobile-first layout.
-- Global design-token controlled.
-
----
-
-## Global Design Token Requirement
-
-When the final Amaley brand PDF is provided, this kit must inherit from a global design token system.
-
-Global tokens should control:
-
-- Brand colors
-- Background colors
-- Text colors
-- Heading font
-- Body font
-- Font sizes
-- Button styling
-- Border radius
-- Card styling
-- Shadows
-- Section spacing
-- Mobile spacing
-- Product card styling
-- Trust strip styling
-
-If global font, color, radius, spacing, or button style changes, connected UI components should update without editing every section manually.
-
----
-
-## Performance Requirement
-
-The Amaley website must remain extremely lightweight.
-
-This module must be built for:
-
-- Low-network areas
-- Mobile-first browsing
-- Fast product browsing
-- Clean HTML output
-- Limited frontend requests
-- Optimized images
-- Controlled queries
-- Reusable CSS
-- Small vanilla JavaScript only where required
-
-If a component looks premium but makes the site heavy, it is not approved.
-
----
-
-## Plugin Boundary
-
-This module must stay separate from other Amaley plugins.
-
-Amaley Core handles:
-
-- Clusters
-- SHGs
-- Members/producers
-- Product origin mapping
-- Data backbone
-
-Amaley Discovery Engine handles:
-
-- Product search
+- Producer / maker cards
 - Filters
+- Search
 - Sorting
 - Pagination
-- Discovery listings
-
-Amaley Site Shell handles:
-
+- Elementor widgets
 - Header
 - Footer
-- Mobile menu
-- Navigation shell
+- Mobile drawer
+- Cart / checkout replacement
+- CPT creation
+- ACF replacement
+- Database tables
 
-Amaley UI Sections Kit handles:
+## Shortcodes
 
-- Lightweight UI sections
-- Buttons
-- Cards
-- Strips
-- CTA sections
-- Product display components
-- Brand/story sections
+```text
+[amaley_section_heading label="Small-batch Himalayan foods" title="Food with identity and care" accent="care" description="Premium sections for Amaley pages."]
 
----
+[amaley_button text="Explore products" url="/shop/" variant="primary" align="left"]
 
-## Build Rule
+[amaley_button_group primary_text="Explore products" primary_url="/shop/" secondary_text="Partner with Amaley" secondary_url="/contact/"]
 
-Do not create plugin ZIP yet.
+[amaley_trust_item icon="leaf" title="Natural ingredients" text="Built around seasonal Himalayan produce and careful sourcing."]
 
-First required steps:
+[amaley_brand_promise label="Amaley Promise" title="Rooted in Himalayan ingredients and careful production." items="Small-batch|Community-rooted|Quality checked"]
 
-1. Approve this module direction.
-2. Approve section/component inventory.
-3. Approve global design-token structure after brand PDF is shared.
-4. Approve phase-wise build plan.
-5. Then build the plugin.
+[amaley_cta_band label="For partners" title="Bring Amaley to your customers." text="For retail, hospitality and institutional partnerships." primary_text="Enquire now" primary_url="/contact/" secondary_text="View products" secondary_url="/shop/"]
 
-No build should start without approval.
+[amaley_empty_state title="Products coming soon" text="This section is ready, but content has not been added yet."]
+```
+
+## Safety
+
+- Scoped CSS only: `.amaley-ui-*`
+- No global body/h/p/a/button styling
+- No Elementor dependency
+- No frontend JavaScript
+- No database writes
+- No WooCommerce writes
+- Deactivation removes all frontend rendering except shortcode text left in content
+
+## Installation for Testing
+
+1. Upload the plugin ZIP through WordPress Plugins > Add New > Upload Plugin.
+2. Activate on staging or local test site first.
+3. Create a private test page.
+4. Paste shortcodes from `docs/SHORTCODE_EXAMPLES.md`.
+5. Check mobile widths: 360, 390, 430, 768, 1024, 1366.
+
+Do not install directly on the live Amaley site without backup.
