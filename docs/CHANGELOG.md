@@ -20,6 +20,66 @@ Every entry must clearly explain:
 - Added `docs/AMALEY_PRIMARY_BUILD_RULES.md` to lock fresh/staging-only development, no-conflict development, mobile-first responsiveness, scoped CSS, WooCommerce/Elementor boundaries, non-coder controls, data integrity, and testing gates.
 - Added `docs/AMALEY_WIDGET_TEMPLATE_PERFORMANCE_FULL_CONTROL_RULE.md` to lock mandatory Hero-widget-style full controls for all future widgets, Template Studio modules, sections, popups, forms, single templates, archive/listing templates, card/grid/timeline components, with section-wise/tab-wise controls and lightweight low-network performance rules.
 - Updated `docs/DRIVE_FOLDER_MAP.md` with the permanent Amaley Google Drive folder link and expanded Drive folder usage notes.
+- Added Amaley Core v1.0.2 plugin source under `plugins/amaley-core/` as the tested Cluster, SHG Group, Member / Producer, Product Origin Mapping, and Import / Export backbone.
+
+### Fixed
+
+- Updated Amaley Core from v1.0.0 / v1.0.1 to v1.0.2 after staging testing.
+- Added WooCommerce HPOS / custom order tables compatibility declaration to remove WooCommerce incompatible-feature warning.
+- Added safe cluster import fallback so old blank-code Cluster records can be matched by exact title during first cluster code backfill imports.
+- Prevented duplicate Cluster creation during initial Cluster code backfill.
+
+### Tested on Staging Clone
+
+Tested on temporary staging domain:
+
+```text
+https://lightsalmon-lemur-689499.hostingersite.com/
+```
+
+Passed checks:
+
+- Amaley Core plugin activation completed successfully.
+- Amaley Core dashboard loaded successfully.
+- Schema Version displayed as `1`.
+- Existing 5 Cluster records were detected.
+- Cluster code backfill was completed and verified.
+- Final Cluster codes verified:
+
+```text
+LAD-NET-001  Himalayan Nettle Cluster
+LAD-APR-001  Ladakh Apricot Cluster
+LAD-SBT-001  Seabuckthorn Cluster
+LAD-BAR-001  Tsampa & Barley Cluster
+UTK-GHE-001  Uttarakhand Ghee Cluster
+```
+
+- SHG Groups export checked and confirmed empty / clean.
+- Members / Producers export checked and confirmed empty / clean.
+- WooCommerce Product Origin Mapping panel appeared on product edit screen.
+- One product origin mapping was saved successfully.
+- Dashboard count changed correctly:
+
+```text
+Products with Origin: 1
+Products Missing Origin: 19
+```
+
+- Product Origin Mapping CSV dry-run passed.
+- Product Origin Mapping actual import passed.
+- Final Product Origin export verified:
+
+```text
+AMY-SBT-PRE-200 → LAD-SBT-001
+show_origin → 1
+```
+
+### Drive / GitHub Status
+
+- Saved `amaley-core-v1.0.2.zip` in Google Drive under `02_Active_Plugins`.
+- Updated GitHub source under `plugins/amaley-core/` to v1.0.2.
+- Marked `amaley-core-v1.0.2.zip` as the current tested active Amaley Core plugin ZIP.
+- `amaley-core-v1.0.0.zip` should be treated as old archive candidate and moved later to `10_Archive_Do_Not_Use / old-plugin-versions /`.
 
 ### Rule Lock
 
@@ -27,6 +87,7 @@ Every entry must clearly explain:
 - Every future widget/module/template must provide proper section-wise and tab-wise controls for content, style, layout, spacing, responsive behaviour, visibility, repeaters, and performance safety.
 - The fresh/staging build remains the development base. The existing live site remains reference/export source only.
 - GitHub and Google Drive will be maintained together: GitHub for clean source code and documentation, Drive for backups, plugin ZIPs, exports, media references, screenshots, videos, and handoff packages.
+- Amaley Core v1.0.2 is the current tested data-backbone baseline for Cluster → SHG Group → Member / Producer → Product Origin Mapping.
 
 ## 2026-05-25
 
