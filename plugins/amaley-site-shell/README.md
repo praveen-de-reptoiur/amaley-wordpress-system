@@ -1,7 +1,7 @@
 # Amaley Site Shell
 
 **Plugin Name:** Amaley Site Shell  
-**Slug:** `amaley-site-shell`  
+**Slug:** `amaley-site-shell` 
 **Author:** Praveen  
 **Version:** 1.0.0
 
