@@ -1,0 +1,71 @@
+<?php
+/**
+ * Plugin Name: Amaley Core
+ * Description: Cluster, SHG Group, Member/Producer and Product Origin Mapping backbone for the Amaley fresh WordPress build.
+ * Version: 1.0.0
+ * Author: Praveen
+ * Text Domain: amaley-core
+ * Requires at least: 6.0
+ * Requires PHP: 7.4
+ * WC requires at least: 7.0
+ * WC tested up to: 10.0
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+define( 'AMALEY_CORE_VERSION', '1.0.0' );
+define( 'AMALEY_CORE_SCHEMA_VERSION', '1' );
+define( 'AMALEY_CORE_FILE', __FILE__ );
+define( 'AMALEY_CORE_PATH', plugin_dir_path( __FILE__ ) );
+define( 'AMALEY_CORE_URL', plugin_dir_url( __FILE__ ) );
+define( 'AMALEY_CORE_BASENAME', plugin_basename( __FILE__ ) );
+
+require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-fields.php';
+require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-cpts.php';
+require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-metaboxes.php';
+require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-product-origin.php';
+require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-import-export.php';
+require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-admin.php';
+require_once AMALEY_CORE_PATH . 'includes/class-amaley-core.php';
+
+/**
+ * Return the main plugin instance.
+ *
+ * @return Amaley_Core
+ */
+function amaley_core() {
+    static $instance = null;
+
+    if ( null === $instance ) {
+        $instance = new Amaley_Core();
+    }
+
+    return $instance;
+}
+
+add_action( 'plugins_loaded', 'amaley_core' );
+
+/**
+ * Activation routine.
+ */
+function amaley_core_activate() {
+    update_option( 'amaley_core_version', AMALEY_CORE_VERSION );
+    update_option( 'amaley_core_schema_version', AMALEY_CORE_SCHEMA_VERSION );
+
+    require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-cpts.php';
+    $cpts = new Amaley_Core_CPTs();
+    $cpts->register_post_types();
+
+    flush_rewrite_rules();
+}
+register_activation_hook( __FILE__, 'amaley_core_activate' );
+
+/**
+ * Deactivation routine.
+ */
+function amaley_core_deactivate() {
+    flush_rewrite_rules();
+}
+register_deactivation_hook( __FILE__, 'amaley_core_deactivate' );
