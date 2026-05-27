@@ -15,6 +15,62 @@ Every entry must clearly explain:
 
 ## 2026-05-27
 
+### Architecture / Documentation Update — UI Sections Kit and Performance Lock
+
+- Added `docs/AMALEY_PERFORMANCE_AND_NO_ELEMENTOR_LOCK.md` as the permanent performance and future UI direction lock.
+- Locked the future Amaley website direction as extremely lightweight, low-network-first, mobile-first, and globally design-token controlled.
+- Locked the rule that future clean Amaley UI sections must not depend on Elementor default widgets.
+- Clarified that Elementor may still exist temporarily in old/current migration contexts, but new future UI sections, buttons, cards, strips, CTAs, product blocks, origin blocks, and story sections must come from Amaley-controlled components.
+- Created `plugins/amaley-ui-sections-kit/README.md` as the planning folder for the future lightweight, WordPress-native, theme-like UI section/component system.
+- Removed the old `plugins/amaley-widgets-kit/` planning folder to avoid the outdated Elementor-only direction.
+- Updated `plugins/README.md` to reflect the new plugin/module structure, no-Elementor future UI rule, performance rule, global design-token direction, plugin boundaries, and step-by-step workflow rule.
+- Updated root `README.md` to reflect Amaley Site Shell, Amaley UI Sections Kit, no-Elementor future UI direction, low-network performance lock, global design-token direction, and step-by-step workflow rule.
+- Updated `docs/PROJECT_MANIFEST.md` to make it the current project index for the revised architecture.
+
+Affected files:
+
+```text
+README.md
+plugins/README.md
+plugins/amaley-ui-sections-kit/README.md
+docs/AMALEY_PERFORMANCE_AND_NO_ELEMENTOR_LOCK.md
+docs/PROJECT_MANIFEST.md
+```
+
+Current architecture direction:
+
+```text
+Amaley Core
+Amaley Discovery Engine
+Amaley Site Shell
+Amaley UI Sections Kit
+Amaley Templates
+Amaley Project Guard
+Amaley Debug Toolkit
+```
+
+Safety decision:
+
+```text
+No plugin build started.
+No ZIP created.
+No Drive upload done.
+No live-site change done.
+Documentation and architecture cleanup only.
+```
+
+Workflow rule locked:
+
+```text
+One task at a time.
+No parallel build/update/confusion.
+Ask before plugin build.
+Ask before ZIP creation.
+Ask before Drive upload.
+Ask before GitHub structural change.
+Complete current step, check it, then move to the next step.
+```
+
 ### Added
 
 - Added `docs/AMALEY_PRIMARY_BUILD_RULES.md` to lock fresh/staging-only development, no-conflict development, mobile-first responsiveness, scoped CSS, WooCommerce/Elementor boundaries, non-coder controls, data integrity, and testing gates.
@@ -335,7 +391,6 @@ Google Drive is for:
 - Do not create fake Cluster / SHG / Producer data.
 - Do not remove ACF, CPT UI, JetEngine, Smart Filters, or existing live dependencies blindly.
 - Every serious change must be versioned, documented, tested, and reversible.
-- If a plugin cannot be tested, debugged, and rolled back, it is not production-ready.
 
 ---
 
