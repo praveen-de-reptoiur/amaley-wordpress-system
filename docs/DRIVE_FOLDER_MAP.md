@@ -11,6 +11,19 @@ GitHub is used for source code and documentation.
 Google Drive (G:) / My Drive / Amaley Project
 ```
 
+Permanent Drive Folder Link:
+
+```text
+https://drive.google.com/drive/folders/1fYYtwPPxNGYDeSFwYqF1PZFseJ7VpAPN
+```
+
+Access note:
+
+- This is the active Amaley project Drive folder reference.
+- Keep sensitive files, backups, plugin ZIPs, exports, screenshots, videos, and handoff packages in Drive, not GitHub.
+- Do not store passwords, API keys, license keys, database credentials, or `wp-config.php` in GitHub or public notes.
+- If Drive permissions change, update this document with the current folder reference.
+
 ## Folder Structure
 
 ```text
@@ -64,6 +77,8 @@ amaley-templates-v1.2.7.zip
 amaley-discovery-engine-v1.3.5-no-cpt.zip
 ```
 
+Future active plugin ZIPs should also be stored here after testing.
+
 ## 03_Code_Source
 
 Extracted plugin source code.
@@ -74,9 +89,11 @@ Expected future folders:
 amaley-templates/
 amaley-discovery-engine/
 amaley-core/
+amaley-project-guard/
+amaley-debug-toolkit/
 ```
 
-This source can also be added to GitHub.
+This source can also be added to GitHub after review.
 
 ## 04_Elementor_Templates
 
@@ -90,6 +107,8 @@ Use for:
 - Shop/archive templates
 - Product card loop templates
 - Cluster / SHG / Member templates
+- Popup / form trigger templates
+- Reusable section templates
 
 ## 05_Data_Exports
 
@@ -101,6 +120,10 @@ Use for:
 - ACF fields
 - CPT structures
 - Product origin mapping
+- Cluster data exports
+- SHG Group data exports
+- SHG Member / Producer data exports
+- Amaley Core import/export CSVs
 - Variation import CSVs
 
 ## 06_Design_System
@@ -115,6 +138,9 @@ Use for:
 - Buttons
 - Cards
 - Mobile rules
+- Component control rules
+- Full-control widget/template rules
+- Lightweight performance rules
 
 ## 07_Media_Reference
 
@@ -128,6 +154,8 @@ Use for:
 - SHG member images
 - Screenshots
 - Videos
+- Product mockups
+- Website visual references
 
 Do not upload large media files to GitHub.
 
@@ -141,6 +169,8 @@ Use for:
 - Plugin install order
 - Dependency removal plan
 - Migration checklist
+- Live-to-fresh export notes
+- Staging test notes
 
 ## 09_QA_Debug
 
@@ -152,6 +182,10 @@ Use for:
 - Responsive test notes
 - Plugin health checks
 - Debug records
+- Project Guard reports
+- Debug Toolkit reports
+- WooCommerce product/cart/checkout test notes
+- Low-network performance notes
 
 ## 10_Archive_Do_Not_Use
 
@@ -163,6 +197,8 @@ Use for:
 - Old plugin versions
 - Deprecated snippets
 - Experimental files
+- Rejected templates
+- Unused Elementor exports
 
 Do not activate anything from this folder without review.
 
@@ -175,6 +211,8 @@ Use for:
 - Workspace starter ZIP
 - Master handoff ZIPs
 - Final transfer packages
+- Next-chat continuation files
+- Release notes packages
 
 ## Hard Rule
 
