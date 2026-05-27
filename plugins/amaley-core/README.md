@@ -1,6 +1,6 @@
 # Amaley Core
 
-Version: 1.0.0  
+Version: 1.0.1  
 Author: Praveen  
 Scope: Fresh WordPress / staging build only
 
@@ -78,3 +78,11 @@ Supports:
 ## Important
 
 Do not install directly on the old live site. Test only on the fresh/staging setup first.
+
+
+## Version Notes
+
+### 1.0.1
+
+- Declares WooCommerce High-Performance Order Storage compatibility.
+- No schema or data changes from v1.0.0.

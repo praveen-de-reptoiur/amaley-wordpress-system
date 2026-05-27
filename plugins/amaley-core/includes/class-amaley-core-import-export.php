@@ -385,6 +385,14 @@ class Amaley_Core_Import_Export {
      */
     private function upsert_cluster( $row, $mode, $dry_run ) {
         $existing_id = $this->find_post_by_meta( 'amaley_cluster', '_amaley_cluster_code', $row['cluster_code'] );
+
+        // Safety fallback for old imported clusters that existed before Amaley Core
+        // and therefore do not yet have a stable cluster_code saved.
+        // This prevents duplicate Cluster records during first code backfill imports.
+        if ( ! $existing_id && ! empty( $row['cluster_name'] ) ) {
+            $existing_id = $this->find_post_by_title( 'amaley_cluster', $row['cluster_name'] );
+        }
+
         $action = $existing_id ? 'updated' : 'created';
 
         if ( 'create_only' === $mode && $existing_id ) {
@@ -542,6 +550,54 @@ class Amaley_Core_Import_Export {
         );
 
         return ! empty( $posts ) ? absint( $posts[0] ) : 0;
+    }
+
+    /**
+     * Find an existing post by exact title.
+     *
+     * Used only as a safe fallback when old records do not yet have stable codes.
+     *
+     * @param string $post_type Post type.
+     * @param string $title     Post title from CSV.
+     * @return int
+     */
+    private function find_post_by_title( $post_type, $title ) {
+        $target_title = $this->normalize_title( $title );
+        if ( '' === $target_title ) {
+            return 0;
+        }
+
+        $posts = get_posts(
+            array(
+                'post_type'      => $post_type,
+                'post_status'    => array( 'publish', 'draft', 'pending', 'private' ),
+                'posts_per_page' => -1,
+                'fields'         => 'ids',
+            )
+        );
+
+        foreach ( $posts as $post_id ) {
+            if ( $this->normalize_title( get_the_title( $post_id ) ) === $target_title ) {
+                return absint( $post_id );
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * Normalize title values for safe exact matching.
+     *
+     * @param string $title Title.
+     * @return string
+     */
+    private function normalize_title( $title ) {
+        $charset = function_exists( 'get_bloginfo' ) ? get_bloginfo( 'charset' ) : 'UTF-8';
+        $title   = wp_specialchars_decode( (string) $title, ENT_QUOTES );
+        $title   = html_entity_decode( $title, ENT_QUOTES, $charset ? $charset : 'UTF-8' );
+        $title   = wp_strip_all_tags( $title );
+
+        return trim( preg_replace( '/\s+/', ' ', $title ) );
     }
 
     /**

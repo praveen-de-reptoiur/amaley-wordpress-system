@@ -1,5 +1,28 @@
 # Amaley Core Changelog
 
+## 1.0.2 - 2026-05-27
+
+### Fixed
+
+- Added safe cluster import fallback to match existing blank-code clusters by exact title during first code backfill imports.
+- Prevents duplicate Cluster creation when old cluster records existed before Amaley Core stable codes were saved.
+
+
+## 1.0.1 — 2026-05-27
+
+### Fixed
+
+- Declared WooCommerce High-Performance Order Storage compatibility using WooCommerce `FeaturesUtil`.
+- Removed WooCommerce incompatible-feature warning for stores with custom order tables enabled.
+
+### Notes
+
+- No data structure change.
+- No CPT change.
+- No field schema change.
+- No import/export change.
+- Safe patch over v1.0.0.
+
 ## 1.0.0 — 2026-05-27
 
 ### Added

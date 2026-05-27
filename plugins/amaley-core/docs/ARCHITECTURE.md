@@ -52,3 +52,8 @@ Future versions may add:
 - deeper data validation
 - Elementor widgets that read Amaley Core data
 - Project Guard compatibility checks
+
+
+## WooCommerce Compatibility
+
+Amaley Core does not manage WooCommerce orders. Version 1.0.1 declares compatibility with WooCommerce High-Performance Order Storage (custom order tables).
