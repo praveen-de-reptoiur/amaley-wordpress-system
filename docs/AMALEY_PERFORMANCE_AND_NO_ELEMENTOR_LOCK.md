@@ -132,8 +132,12 @@ Example token direction:
 --amaley-color-chocolate
 --amaley-color-gold
 --amaley-color-rust
-
-
+--amaley-font-heading
+--amaley-font-body
+--amaley-radius-card
+--amaley-shadow-card
+--amaley-section-padding-desktop
+--amaley-section-padding-mobile
 ```
 
 ---
@@ -198,6 +202,7 @@ Rules:
 Future plugin boundaries must remain clean.
 
 Amaley Core:
+
 - Data backbone
 - Clusters
 - SHGs
@@ -205,6 +210,7 @@ Amaley Core:
 - Product origin mapping
 
 Amaley Discovery Engine:
+
 - Search
 - Filters
 - Sorting
@@ -212,12 +218,14 @@ Amaley Discovery Engine:
 - Discovery listings
 
 Amaley Site Shell:
+
 - Header
 - Footer
 - Mobile menu
 - Navigation shell
 
 Amaley UI Sections / Widgets Kit:
+
 - Lightweight custom UI sections
 - Buttons
 - Cards
@@ -268,9 +276,3 @@ Before any future component is accepted, test:
 The future Amaley website must be clean, fast, light, globally controlled, and low-network ready.
 
 No future section, widget, plugin, or template is approved if it makes the site heavy, page-builder dependent, difficult to globally control, or risky for WooCommerce.
---amaley-font-heading
---amaley-font-body
---amaley-radius-card
---amaley-shadow-card
---amaley-section-padding-desktop
---amaley-section-padding-mobile
