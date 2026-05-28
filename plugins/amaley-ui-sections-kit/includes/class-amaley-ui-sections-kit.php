@@ -12,25 +12,13 @@ defined( 'ABSPATH' ) || exit;
  */
 final class Amaley_UI_Sections_Kit {
 
-	/**
-	 * Singleton instance.
-	 *
-	 * @var Amaley_UI_Sections_Kit|null
-	 */
+	/** @var Amaley_UI_Sections_Kit|null */
 	private static $instance = null;
 
-	/**
-	 * Shortcode manager.
-	 *
-	 * @var Amaley_UI_Shortcodes
-	 */
+	/** @var Amaley_UI_Shortcodes */
 	private $shortcodes;
 
-	/**
-	 * Elementor integration loader.
-	 *
-	 * @var Amaley_UI_Elementor_Loader|null
-	 */
+	/** @var Amaley_UI_Elementor_Loader|null */
 	private $elementor_loader;
 
 	/**
@@ -42,24 +30,17 @@ final class Amaley_UI_Sections_Kit {
 		if ( null === self::$instance ) {
 			self::$instance = new self();
 		}
-
 		return self::$instance;
 	}
 
-	/**
-	 * Private constructor for singleton.
-	 */
+	/** Private constructor for singleton. */
 	private function __construct() {
 		$this->shortcodes       = new Amaley_UI_Shortcodes();
 		$this->elementor_loader = class_exists( 'Amaley_UI_Elementor_Loader' ) ? new Amaley_UI_Elementor_Loader() : null;
 		$this->hooks();
 	}
 
-	/**
-	 * Registers WordPress hooks.
-	 *
-	 * @return void
-	 */
+	/** Registers WordPress hooks. */
 	private function hooks() {
 		add_action( 'init', array( $this->shortcodes, 'register' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frontend_assets' ) );
@@ -69,11 +50,7 @@ final class Amaley_UI_Sections_Kit {
 		}
 	}
 
-	/**
-	 * Enqueues scoped frontend CSS.
-	 *
-	 * @return void
-	 */
+	/** Enqueues scoped frontend CSS. */
 	public function enqueue_frontend_assets() {
 		if ( is_admin() ) {
 			return;
@@ -89,6 +66,13 @@ final class Amaley_UI_Sections_Kit {
 			'amaley-ui-sections-kit',
 			AMALEY_UI_SECTIONS_KIT_URL . 'assets/css/amaley-ui-sections-kit.css',
 			array(),
+			AMALEY_UI_SECTIONS_KIT_VERSION
+		);
+
+		wp_enqueue_style(
+			'amaley-ui-page-trust-strip',
+			AMALEY_UI_SECTIONS_KIT_URL . 'assets/css/amaley-ui-page-trust-strip.css',
+			array( 'amaley-ui-sections-kit' ),
 			AMALEY_UI_SECTIONS_KIT_VERSION
 		);
 	}
