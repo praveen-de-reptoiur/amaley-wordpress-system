@@ -8,7 +8,7 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Registers all Phase 1 MVP shortcodes.
+ * Registers all Amaley UI Sections Kit shortcodes.
  */
 final class Amaley_UI_Shortcodes {
 
@@ -25,5 +25,7 @@ final class Amaley_UI_Shortcodes {
 		add_shortcode( 'amaley_brand_promise', array( 'Amaley_UI_Brand_Promise', 'render' ) );
 		add_shortcode( 'amaley_cta_band', array( 'Amaley_UI_CTA_Band', 'render' ) );
 		add_shortcode( 'amaley_empty_state', array( 'Amaley_UI_Empty_State', 'render' ) );
+		add_shortcode( 'amaley_product_card', array( 'Amaley_UI_Product_Card', 'render' ) );
+		add_shortcode( 'amaley_product_grid', array( 'Amaley_UI_Product_Grid', 'render' ) );
 	}
 }
