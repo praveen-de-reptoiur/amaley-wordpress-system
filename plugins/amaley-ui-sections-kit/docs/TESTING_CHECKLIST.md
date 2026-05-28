@@ -1,4 +1,4 @@
-# Testing Checklist — Amaley UI Sections Kit v0.1.2
+# Testing Checklist — Amaley UI Sections Kit v0.1.3
 
 ## Activation
 

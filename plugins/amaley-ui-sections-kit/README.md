@@ -1,6 +1,6 @@
 # Amaley UI Sections Kit
 
-Version: 0.1.2  
+Version: 0.1.3  
 Status: Phase 1 MVP skeleton — foundation components only.
 
 ## Purpose

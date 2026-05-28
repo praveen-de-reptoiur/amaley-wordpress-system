@@ -3,8 +3,8 @@
  * Plugin Name: Amaley UI Sections Kit
  * Plugin URI:  https://amaleycollective.com/
  * Description: Lightweight, scoped UI foundation components for Amaley. Phase 1 MVP includes design tokens, headings, buttons, trust items, promise strip, CTA band and empty state shortcodes only.
- * Version: 0.1.2
- * Author:      Gram Connect Impact Technologies & Consulting LLP
+ * Version: 0.1.3
+ * Author:      Praveen
  * Text Domain: amaley-ui-sections-kit
  * Requires at least: 6.0
  * Requires PHP: 7.4
@@ -15,7 +15,7 @@
 defined( 'ABSPATH' ) || exit;
 
 if ( ! defined( 'AMALEY_UI_SECTIONS_KIT_VERSION' ) ) {
-	define( 'AMALEY_UI_SECTIONS_KIT_VERSION', '0.1.2' );
+	define( 'AMALEY_UI_SECTIONS_KIT_VERSION', '0.1.3' );
 }
 
 if ( ! defined( 'AMALEY_UI_SECTIONS_KIT_FILE' ) ) {

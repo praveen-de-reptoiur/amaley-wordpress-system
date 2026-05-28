@@ -1,4 +1,4 @@
-# Rollback Notes — Amaley UI Sections Kit v0.1.2
+# Rollback Notes — Amaley UI Sections Kit v0.1.3
 
 ## Simple Rollback
 
