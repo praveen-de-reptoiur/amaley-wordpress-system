@@ -1,64 +1,40 @@
-# Shortcode Examples — Amaley UI Sections Kit v0.2.5
+# Shortcode Examples — Amaley UI Sections Kit v0.3.7
 
-## Foundation Test
+## Page Trust Strip — Final Locked Usage
 
-```text
-[amaley_section_heading label="Amaley Promise" title="Food with identity and care" accent="care" description="Premium Himalayan products rooted in natural ingredients, small-batch production and community-rooted sourcing."]
+Use this below page/home hero sections:
+
+[amaley_page_trust_strip tone="cream" style="cards" columns="4" mobile="stack" motion="glow" width="contained"]
+
+## Page Trust Strip — Custom Copy
+
+[amaley_page_trust_strip title="Rooted in taste, trust and traceability." items="Never bulk|Small batch|Himalayan sourced|Cluster linked" texts="Made with care, not pressure.|Produced in careful small lots.|Built around mountain ingredients.|Connected to real producer clusters." icons="shield|batch|mountain|cluster" tone="cream" style="cards" columns="4" mobile="stack" motion="glow" width="contained"]
+
+## Foundation Shortcodes
+
+[amaley_section_heading label="Small-batch Himalayan foods" title="Food with identity and care" accent="care" description="Premium sections for Amaley pages." align="center"]
+
+[amaley_button text="Explore products" url="/shop/" variant="primary" align="left"]
 
 [amaley_button_group primary_text="Explore products" primary_url="/shop/" secondary_text="Partner with Amaley" secondary_url="/contact/"]
 
-[amaley_trust_item icon="leaf" title="Natural Himalayan ingredients" text="Made around seasonal produce, careful sourcing and clean product thinking."]
+[amaley_trust_item icon="leaf" title="Natural ingredients" text="Built around seasonal Himalayan produce and careful sourcing."]
 
-[amaley_brand_promise label="Amaley Promise" title="Rooted in Himalayan ingredients and careful production." items="Small-batch|Community-rooted|Quality checked|Natural ingredients"]
+[amaley_brand_promise label="Amaley Promise" title="Rooted in Himalayan ingredients and careful production." items="Small-batch|Community-rooted|Quality checked"]
 
-[amaley_cta_band label="For partners" title="Bring Amaley to your customers." text="For retail, hospitality, gifting and institutional partnerships." primary_text="Enquire now" primary_url="/contact/" secondary_text="View products" secondary_url="/shop/"]
+[amaley_cta_band label="For partners" title="Bring Amaley to your customers." text="For retail, hospitality and institutional partnerships." primary_text="Enquire now" primary_url="/contact/" secondary_text="View products" secondary_url="/shop/"]
 
-[amaley_empty_state title="Products coming soon" text="This section is ready, but verified Amaley content has not been added yet."]
-```
+[amaley_empty_state title="Products coming soon" text="This section is ready, but content has not been added yet."]
 
-## Product Card Test
+## Product Display Shortcodes
 
-Replace `123` with a real WooCommerce product ID.
+[amaley_product_card id="8361"]
 
-```text
-[amaley_product_card id="123"]
-```
+[amaley_product_grid ids="8361,8362,8359,8363" columns="4" limit="4"]
 
-With optional excerpt and cart button:
+## Notes
 
-```text
-[amaley_product_card id="123" show_excerpt="yes" show_cart="yes" badge="Small-batch"]
-```
-
-Using SKU:
-
-```text
-[amaley_product_card sku="AMALEY-001"]
-```
-
-## Product Grid Test
-
-Replace IDs with real WooCommerce product IDs.
-
-```text
-[amaley_product_grid ids="123,124,125,126" columns="4" limit="4"]
-```
-
-Using SKUs:
-
-```text
-[amaley_product_grid skus="AMALEY-001,AMALEY-002,AMALEY-003" columns="3" limit="3"]
-```
-
-Using category slug:
-
-```text
-[amaley_product_grid category="cookies" columns="4" limit="4"]
-```
-
-## Product Display Notes
-
-- `limit` is capped at 8.
-- No filters, search, sorting or pagination are included.
-- Product data comes only from WooCommerce.
-- Do not add fake origin, SHG, cluster or producer details.
+- Use [amaley_page_trust_strip] for page hero-below trust strip.
+- [amaley_trust_strip] remains only as a backward-compatible alias.
+- Phone layout should use mobile="stack".
+- Do not use this plugin for product discovery filters; use Amaley Discovery Engine for that.
