@@ -8,7 +8,7 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Coordinates frontend assets and shortcode registration.
+ * Coordinates frontend assets, shortcode registration and Elementor integration.
  */
 final class Amaley_UI_Sections_Kit {
 
@@ -27,6 +27,13 @@ final class Amaley_UI_Sections_Kit {
 	private $shortcodes;
 
 	/**
+	 * Elementor integration loader.
+	 *
+	 * @var Amaley_UI_Elementor_Loader|null
+	 */
+	private $elementor_loader;
+
+	/**
 	 * Returns the singleton instance.
 	 *
 	 * @return Amaley_UI_Sections_Kit
@@ -43,7 +50,8 @@ final class Amaley_UI_Sections_Kit {
 	 * Private constructor for singleton.
 	 */
 	private function __construct() {
-		$this->shortcodes = new Amaley_UI_Shortcodes();
+		$this->shortcodes       = new Amaley_UI_Shortcodes();
+		$this->elementor_loader = class_exists( 'Amaley_UI_Elementor_Loader' ) ? new Amaley_UI_Elementor_Loader() : null;
 		$this->hooks();
 	}
 
@@ -55,15 +63,14 @@ final class Amaley_UI_Sections_Kit {
 	private function hooks() {
 		add_action( 'init', array( $this->shortcodes, 'register' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frontend_assets' ) );
+
+		if ( $this->elementor_loader ) {
+			$this->elementor_loader->hooks();
+		}
 	}
 
 	/**
-	 * Enqueues the tiny scoped frontend CSS.
-	 *
-	 * Phase 1 intentionally avoids JavaScript and heavy libraries. CSS is scoped
-	 * with the .amaley-ui-* prefix and is safe to load on the frontend. Developers
-	 * can disable this globally and enqueue manually if a later performance audit
-	 * requires per-page loading.
+	 * Enqueues scoped frontend CSS.
 	 *
 	 * @return void
 	 */
