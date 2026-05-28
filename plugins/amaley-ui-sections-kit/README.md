@@ -1,13 +1,13 @@
 # Amaley UI Sections Kit
 
-Version: 0.2.5  
-Status: Phase 1 foundation + Phase 2 product display MVP.
+Version: 0.3.7  
+Status: Page Trust Strip final lock + existing UI/product display foundation.
 
 ## Purpose
 
-Amaley UI Sections Kit is a lightweight WordPress-native UI foundation for Amaley. It provides reusable, scoped shortcodes for headings, buttons, trust items, brand promise strips, CTA bands, safe empty states, product cards and curated product grids.
+Amaley UI Sections Kit is a lightweight WordPress-native UI foundation for Amaley. It provides reusable, scoped shortcodes for headings, buttons, trust items, brand promise strips, CTA bands, safe empty states, product cards, curated product grids, and the page-level hero-below trust strip.
 
-This plugin is intentionally small. It must not become a product discovery engine, Elementor widget kit, WooCommerce replacement, header/footer system, origin database, SHG data manager, or cart/checkout replacement.
+This plugin is intentionally small. It must not become a product discovery engine, WooCommerce replacement, header/footer system, origin database, SHG data manager, or cart/checkout replacement.
 
 ## Includes
 
@@ -17,6 +17,7 @@ This plugin is intentionally small. It must not become a product discovery engin
 - Button shortcode
 - Button group shortcode
 - Trust mini item shortcode
+- Page Trust Strip shortcode and Elementor widget
 - Brand promise strip shortcode
 - CTA band shortcode
 - Safe empty state shortcode
@@ -25,55 +26,59 @@ This plugin is intentionally small. It must not become a product discovery engin
 
 ## Does Not Include
 
-- Product filters
-- Product search
-- Sorting UI
-- Pagination
-- Origin blocks
-- SHG / women collective cards
-- Producer / maker cards
-- Elementor widgets
-- Header
-- Footer
-- Mobile drawer
-- Cart / checkout replacement
+- Product filters/search/sort/pagination
+- Header/footer/mobile drawer
+- Cart/checkout replacement
+- WooCommerce template overrides
 - CPT creation
 - ACF replacement
 - Database tables
+- Origin/SHG/member data management
 
-## Shortcodes
+## Primary Page Trust Strip Usage
 
 ```text
-[amaley_section_heading label="Small-batch Himalayan foods" title="Food with identity and care" accent="care" description="Premium sections for Amaley pages."]
+[amaley_page_trust_strip tone="cream" style="cards" columns="4" mobile="stack" motion="glow" width="contained"]
+```
 
-[amaley_button text="Explore products" url="/shop/" variant="primary" align="left"]
+Backward-compatible alias:
 
-[amaley_button_group primary_text="Explore products" primary_url="/shop/" secondary_text="Partner with Amaley" secondary_url="/contact/"]
+```text
+[amaley_trust_strip]
+```
 
-[amaley_trust_item icon="leaf" title="Natural ingredients" text="Built around seasonal Himalayan produce and careful sourcing."]
+Elementor widget:
 
-[amaley_brand_promise label="Amaley Promise" title="Rooted in Himalayan ingredients and careful production." items="Small-batch|Community-rooted|Quality checked"]
+```text
+Amaley UI > Amaley Page Trust Strip
+```
 
-[amaley_cta_band label="For partners" title="Bring Amaley to your customers." text="For retail, hospitality and institutional partnerships." primary_text="Enquire now" primary_url="/contact/" secondary_text="View products" secondary_url="/shop/"]
+## Product Display Shortcodes
 
-[amaley_empty_state title="Products coming soon" text="This section is ready, but content has not been added yet."]
+```text
+[amaley_product_card id="8361"]
+[amaley_product_grid ids="8361,8362,8359,8363" columns="4" limit="4"]
+```
 
-[amaley_product_card id="123"]
+## Existing Shortcodes
 
-[amaley_product_card sku="AMALEY-001" show_excerpt="yes" show_cart="no"]
-
-[amaley_product_grid ids="123,124,125,126" columns="4" limit="4"]
-
-[amaley_product_grid skus="AMALEY-001,AMALEY-002,AMALEY-003" columns="3" limit="3"]
-
-[amaley_product_grid category="cookies" columns="4" limit="4"]
+```text
+[amaley_section_heading]
+[amaley_button]
+[amaley_button_group]
+[amaley_trust_item]
+[amaley_page_trust_strip]
+[amaley_brand_promise]
+[amaley_cta_band]
+[amaley_empty_state]
+[amaley_product_card]
+[amaley_product_grid]
 ```
 
 ## Product Display Safety
 
-- WooCommerce must remain the commerce engine.
-- Product grid has a maximum limit of 8 products.
-- Product grid does not run unlimited product queries.
+- WooCommerce remains the commerce engine.
+- Product grid has a maximum limit guard.
 - Product grid does not add filters, sorting, search or pagination.
 - Product card uses published WooCommerce product data only.
 - No fake origin, SHG, cluster or producer data is displayed.
@@ -83,27 +88,18 @@ This plugin is intentionally small. It must not become a product discovery engin
 
 - Scoped CSS only: `.amaley-ui-*`
 - No global body/h/p/a/button styling
-- No Elementor dependency
-- No frontend JavaScript
+- No WooCommerce/Freshen/Apus overrides
+- No frontend JavaScript for Page Trust Strip
 - No database writes
 - No WooCommerce writes
-- Deactivation removes all frontend rendering except shortcode text left in content
+- No ZIP files committed to GitHub
 
-## Installation for Testing
+## Testing
 
-1. Upload the plugin ZIP through WordPress Plugins > Add New > Upload Plugin.
-2. Activate on staging or local test site first.
-3. Create a private test page.
-4. Paste shortcodes from `docs/SHORTCODE_EXAMPLES.md`.
-5. Check mobile widths: 360, 390, 430, 768, 1024, 1366.
+Test Page Trust Strip on:
 
-Do not install directly on the live Amaley site without backup.
+- Desktop: 1366+
+- Tablet: 768 / 1024
+- Phone: 360 / 390 / 430
 
-## Product Display Shortcodes
-
-```text
-[amaley_product_card id="8361"]
-[amaley_product_grid ids="8361,8362,8359,8363" columns="4" limit="4"]
-```
-
-Product cards are WooCommerce display components only. They do not replace cart, checkout, search, filters, sorting, origin mapping or product data.
+Phone must stack cards. Do not use horizontal slider for the hero-below trust strip.
