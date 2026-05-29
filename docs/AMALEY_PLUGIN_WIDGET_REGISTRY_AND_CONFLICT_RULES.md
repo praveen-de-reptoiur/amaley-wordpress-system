@@ -37,7 +37,7 @@ Do not provide plugin ZIP/code alone for visual widgets. Preview is mandatory.
 
 ## Locked decisions
 
-### 1. CPT-related widgets belong in Amaley Core
+### CPT-related widgets belong in Amaley Core
 
 All cards, sections, listings and display elements connected to these data types must be built inside Amaley Core:
 
@@ -54,31 +54,23 @@ All cards, sections, listings and display elements connected to these data types
 
 Reason: these elements depend on the same CPT and ACF/data backbone. Keeping them in Amaley Core prevents confusion and avoids duplicate logic across plugins.
 
-### 2. Discovery Engine must not be touched casually
+### Discovery Engine must not be touched casually
 
 Amaley Discovery Engine already owns important filter/listing sections. Do not edit or replace it during normal UI section work.
 
-Only touch Discovery Engine when the task is specifically about:
-
-- Filters
-- Search
-- Sort
-- Pagination
-- Result rendering
-- Discovery layout
-- Discovery Engine bug fix
+Only touch Discovery Engine when the task is specifically about filters, search, sort, pagination, result rendering, discovery layout or a Discovery Engine bug fix.
 
 Before touching it, check for conflict with UI Sections Kit, Templates and Core.
 
-### 3. UI Sections Kit stays generic
+### UI Sections Kit stays generic
 
 UI Sections Kit should only contain generic, reusable visual page sections that do not depend on CPT data.
 
 Allowed examples:
 
 - Page Trust Strip
+- Home Hero V6
 - Split Editorial Section
-- Editorial Hero Section
 - Gifting CTA
 - Newsletter CTA
 - General testimonial strip
@@ -96,13 +88,11 @@ Not allowed in UI Sections Kit:
 - Product template overrides
 - Cart/checkout changes
 
-### 4. Templates plugin stays product/shop-template focused
+### Templates plugin stays product/shop-template focused
 
-Amaley Templates owns product and shop page template modules only. It already has product-page modules such as product hero, origin panel, info tabs, product trust strip, shop hero and shop discovery wrappers.
+Amaley Templates owns product and shop page template modules only. Do not use Templates plugin for generic homepage/page sections.
 
-Do not use Templates plugin for generic homepage/page sections.
-
-### 5. Site Shell owns header/footer only
+### Site Shell owns header/footer only
 
 No other plugin should create Amaley header/footer/mobile drawer widgets or shortcodes.
 
@@ -110,15 +100,19 @@ No other plugin should create Amaley header/footer/mobile drawer widgets or shor
 
 ### Amaley UI Sections Kit
 
-Current locked source version: 0.3.7 for Page Trust Strip. Editorial Hero is under review and not locked.
+Current accepted plugin build: v0.5.4 for Home Hero V6 no-gap final + Page Trust Strip v0.3.7 final.
 
-Shortcodes:
+Accepted/locked shortcodes:
+
+- [amaley_page_trust_strip]
+- [amaley_home_hero_v6]
+
+Existing foundation shortcodes:
 
 - [amaley_section_heading]
 - [amaley_button]
 - [amaley_button_group]
 - [amaley_trust_item]
-- [amaley_page_trust_strip]
 - [amaley_trust_strip] legacy alias only
 - [amaley_brand_promise]
 - [amaley_cta_band]
@@ -126,13 +120,28 @@ Shortcodes:
 - [amaley_product_card]
 - [amaley_product_grid]
 
-Elementor widgets:
+Accepted Elementor widgets:
 
 - Amaley UI > Amaley Page Trust Strip
+- Amaley UI > Amaley Home Hero V6
 
-Locked final shortcode:
+Locked Page Trust Strip shortcode:
 
 [amaley_page_trust_strip tone="cream" style="cards" columns="4" mobile="stack" motion="glow" width="contained"]
+
+Locked Home Hero V6 shortcode:
+
+[amaley_home_hero_v6]
+
+Home Hero V6 notes:
+
+- Based on the live HTML hero structure supplied by Praveen.
+- Final accepted version is v0.5.4.
+- Right image mosaic is no-gap absolute layout.
+- Default image behaviour is cover + center center.
+- Image fit/focus controls must stay available in Style tab.
+- Counter, medallion, buttons and image hover animation are scoped to the hero only.
+- Do not patch this hero casually. Any future edit requires preview first.
 
 ### Amaley Discovery Engine
 
@@ -216,12 +225,13 @@ Future widgets to build in Amaley Core:
 ### Build in Amaley UI Sections Kit
 
 1. Split Editorial Section
-2. Editorial Hero Section, currently under review
-3. Gifting CTA Section
-4. Newsletter CTA Section
-5. General Journal Cards Section if not CPT-driven
-6. General Testimonials Section
-7. General Brand Promise layout variants
+2. Gifting CTA Section
+3. Newsletter CTA Section
+4. General Journal Cards Section if not CPT-driven
+5. General Testimonials Section
+6. General Brand Promise layout variants
+
+Home Hero V6 and Page Trust Strip are already accepted/locked.
 
 ### Keep in Amaley Discovery Engine
 
@@ -264,7 +274,7 @@ Future widgets to build in Amaley Core:
 - Discovery Engine: `.amaley-discovery-engine-v1*` or `.amaley-de-*`
 - Templates: `.amaley-tpl-*`
 - Site Shell: `.amaley-shell-*`
-- UI Sections Kit: `.amaley-ui-*`
+- UI Sections Kit: `.amaley-ui-*` and accepted legacy live hero scope `.amaley-home-hero-v6-*`
 
 Do not use generic selectors like `.card`, `.button`, `.product`, `.grid`, `.section`, `body`, `h1`, `p`, `.woocommerce`, `.elementor-widget`, or theme classes unless explicitly scoped inside the plugin wrapper.
 
@@ -272,7 +282,7 @@ Do not use generic selectors like `.card`, `.button`, `.product`, `.grid`, `.sec
 
 Widget machine names must include the plugin namespace:
 
-- UI Sections Kit example: `amaley_ui_page_trust_strip`
+- UI Sections Kit example: `amaley_ui_page_trust_strip`, `amaley_ui_home_hero_v6`
 - Templates example: `amaley_tpl_trust_strip`
 - Discovery Engine example: `amaley_de_product_discovery`
 - Core future example: `amaley_core_cluster_card`
@@ -283,7 +293,7 @@ Never reuse an existing widget machine name.
 
 Use clear ownership:
 
-- UI Sections Kit: `[amaley_page_trust_strip]`, `[amaley_product_grid]`
+- UI Sections Kit: `[amaley_page_trust_strip]`, `[amaley_home_hero_v6]`, `[amaley_product_grid]`
 - Core future: `[amaley_core_cluster_card]`, `[amaley_core_shg_card]`, `[amaley_core_member_card]`
 - Discovery Engine: `[amaley_discovery]`
 - Site Shell: `[amaley_site_header]`, `[amaley_site_footer]`
@@ -308,6 +318,8 @@ Before building any new widget or section:
 
 ## Do not touch unless explicitly requested
 
+- Accepted Home Hero V6 v0.5.4
+- Accepted Page Trust Strip v0.3.7
 - Discovery Engine filter logic
 - WooCommerce cart and checkout
 - WooCommerce product template overrides
