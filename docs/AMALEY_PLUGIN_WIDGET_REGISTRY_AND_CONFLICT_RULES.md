@@ -2,7 +2,7 @@
 
 Status: Active architecture lock  
 Owner: Praveen  
-Last updated: 2026-05-28
+Last updated: 2026-05-29
 
 This document is the source of truth for where Amaley widgets, sections, shortcodes, CSS and PHP classes should live. Do not add new widgets randomly without checking this registry first.
 
@@ -11,6 +11,19 @@ This document is the source of truth for where Amaley widgets, sections, shortco
 Each plugin must own one clear responsibility. Do not duplicate widgets, shortcodes, CSS prefixes, Elementor widget names or PHP classes across plugins.
 
 GitHub must stay clean source only. Do not commit ZIP files, backups, media dumps, videos, screenshots, passwords, wp-config files or All-in-One Migration archives.
+
+## Preview requirement lock
+
+Every new Amaley widget, section, Elementor element, shortcode layout, plugin module or visual component must be delivered with a visual preview/mockup before the user is asked to install or test it.
+
+Required for every new visual build:
+
+1. A preview image/mockup showing the expected desktop layout.
+2. A preview image/mockup or clear responsive preview showing phone behaviour.
+3. A short note explaining what the preview represents.
+4. The plugin ZIP/source deliverable only after the preview direction is clear.
+
+Do not provide plugin ZIP/code alone for visual widgets. Preview is mandatory.
 
 ## Plugin ownership map
 
@@ -97,7 +110,7 @@ No other plugin should create Amaley header/footer/mobile drawer widgets or shor
 
 ### Amaley UI Sections Kit
 
-Current locked source version: 0.3.7
+Current locked source version: 0.3.7 for Page Trust Strip. Editorial Hero is under review and not locked.
 
 Shortcodes:
 
@@ -203,7 +216,7 @@ Future widgets to build in Amaley Core:
 ### Build in Amaley UI Sections Kit
 
 1. Split Editorial Section
-2. Editorial Hero Section
+2. Editorial Hero Section, currently under review
 3. Gifting CTA Section
 4. Newsletter CTA Section
 5. General Journal Cards Section if not CPT-driven
@@ -290,7 +303,8 @@ Before building any new widget or section:
 7. Confirm no WooCommerce cart/checkout/template override is being added.
 8. Confirm Discovery Engine is untouched unless the task explicitly requires it.
 9. Confirm no ZIP/media/backups are committed to GitHub.
-10. Update this registry if a new widget is added.
+10. Create or provide visual preview/mockup before plugin ZIP/code delivery.
+11. Update this registry if a new widget is added.
 
 ## Do not touch unless explicitly requested
 
