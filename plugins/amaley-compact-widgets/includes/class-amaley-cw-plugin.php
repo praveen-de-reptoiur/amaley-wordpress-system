@@ -36,9 +36,13 @@ final class Amaley_CW_Plugin {
 	}
 
 	public function maybe_enqueue_for_shortcodes() {
-		if ( is_admin() || ! is_singular() ) { return; }
+		if ( is_admin() || ! is_singular() ) {
+			return;
+		}
 		global $post;
-		if ( ! $post || empty( $post->post_content ) ) { return; }
+		if ( ! $post || empty( $post->post_content ) ) {
+			return;
+		}
 		foreach ( Amaley_CW_Shortcodes::shortcode_map() as $shortcode => $method ) {
 			if ( has_shortcode( $post->post_content, $shortcode ) ) {
 				$this->enqueue_assets();
@@ -59,11 +63,18 @@ final class Amaley_CW_Plugin {
 	}
 
 	public function register_elementor_widgets( $widgets_manager ) {
-		if ( ! class_exists( '\\Elementor\\Widget_Base' ) || ! is_object( $widgets_manager ) ) { return; }
+		if ( ! class_exists( '\Elementor\Widget_Base' ) || ! is_object( $widgets_manager ) ) {
+			return;
+		}
+
 		require_once AMALEY_CW_PATH . 'includes/widgets/class-amaley-cw-base-widget.php';
-		foreach ( Amaley_CW_Renderer::widget_definitions() as $key => $definition ) {
+
+		$widgets = Amaley_CW_Renderer::widget_definitions();
+		foreach ( $widgets as $key => $definition ) {
 			$class_file = AMALEY_CW_PATH . 'includes/widgets/class-amaley-cw-' . str_replace( '_', '-', $key ) . '-widget.php';
-			if ( file_exists( $class_file ) ) { require_once $class_file; }
+			if ( file_exists( $class_file ) ) {
+				require_once $class_file;
+			}
 			$class = 'Amaley_CW_' . str_replace( ' ', '_', ucwords( str_replace( '_', ' ', $key ) ) ) . '_Widget';
 			if ( class_exists( $class ) && method_exists( $widgets_manager, 'register' ) ) {
 				$widgets_manager->register( new $class() );
