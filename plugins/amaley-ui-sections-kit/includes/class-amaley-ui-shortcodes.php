@@ -23,6 +23,9 @@ final class Amaley_UI_Shortcodes {
 		add_shortcode( 'amaley_button_group', array( 'Amaley_UI_Button_Group', 'render' ) );
 		add_shortcode( 'amaley_trust_item', array( 'Amaley_UI_Trust_Item', 'render' ) );
 		add_shortcode( 'amaley_page_trust_strip', array( 'Amaley_UI_Trust_Strip', 'render' ) );
+		add_shortcode( 'amaley_home_hero_v6', array( 'Amaley_UI_Home_Hero_V6', 'render' ) );
+		add_shortcode( 'amaley_pages_hero_other', array( 'Amaley_UI_Pages_Hero_Other', 'render' ) );
+		// Backward-compatible alias for v0.3.0-v0.3.2 tests. Prefer [amaley_page_trust_strip] going forward.
 		add_shortcode( 'amaley_trust_strip', array( 'Amaley_UI_Trust_Strip', 'render' ) );
 		add_shortcode( 'amaley_brand_promise', array( 'Amaley_UI_Brand_Promise', 'render' ) );
 		add_shortcode( 'amaley_cta_band', array( 'Amaley_UI_CTA_Band', 'render' ) );

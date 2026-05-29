@@ -1,0 +1,213 @@
+/* Amaley UI Sections Kit — Pages Hero Other v0.6.0
+ * Scope: .amaley-pages-hero-other only.
+ * No global selectors. No Discovery/Core/Templates/Site Shell/WooCommerce overrides.
+ */
+.amaley-pages-hero-other{
+  --apho-bg:#2E1203;
+  --apho-cream:#FBF5E6;
+  --apho-ivory:#FFF8ED;
+  --apho-gold:#C2880A;
+  --apho-rust:#B5502A;
+  --apho-border:rgba(194,136,10,.32);
+  --apho-muted:rgba(255,248,237,.78);
+  --apho-max:1280px;
+  --apho-pad-y:96px;
+  --apho-pad-x:72px;
+  --apho-title-size:54px;
+  --apho-title-line:.98;
+  --apho-media-height:420px;
+  --apho-img-fit:cover;
+  --apho-img-x:50%;
+  --apho-img-y:50%;
+  --apho-media-radius:0px;
+  --apho-media-border-width:1px;
+  --apho-media-border-color:rgba(194,136,10,.20);
+  width:100%;overflow:hidden;position:relative;background:var(--apho-bg);color:var(--apho-cream);font-family:Lato,Arial,sans-serif;
+}
+.amaley-pages-hero-other,.amaley-pages-hero-other *{box-sizing:border-box;}
+.amaley-pages-hero-other--tone-cream{background:var(--apho-ivory);color:#2E1203;--apho-muted:#6F543D;}
+.amaley-pages-hero-other__inner{width:100%;max-width:var(--apho-max);margin:0 auto;padding:var(--apho-pad-y) var(--apho-pad-x);position:relative;}
+.amaley-pages-hero-other--width-full .amaley-pages-hero-other__inner{max-width:none;}
+.amaley-pages-hero-other__kicker{display:block;margin:0 0 24px;color:var(--apho-gold);font-size:10px;letter-spacing:.34em;text-transform:uppercase;font-weight:900;line-height:1.4;}
+.amaley-pages-hero-other__title{margin:0;color:inherit;font-family:"Playfair Display",Georgia,serif;font-size:var(--apho-title-size);line-height:var(--apho-title-line);font-weight:500;letter-spacing:.01em;max-width:920px;}
+.amaley-pages-hero-other__title em{font-style:italic;color:var(--apho-rust);font-weight:400;}
+.amaley-pages-hero-other__description{margin:22px 0 0;max-width:720px;color:var(--apho-muted);font-size:16px;line-height:1.78;font-weight:400;}
+.amaley-pages-hero-other__actions{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-top:34px;}
+.amaley-pages-hero-other__btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 26px;border-radius:999px;text-decoration:none;text-transform:uppercase;letter-spacing:.18em;font-size:10px;font-weight:900;line-height:1;transition:transform .2s ease,background .2s ease,color .2s ease,border-color .2s ease;}
+.amaley-pages-hero-other__btn:hover{transform:translateY(-2px);}
+.amaley-pages-hero-other__btn--primary{background:var(--apho-gold);border:1px solid var(--apho-gold);color:#2E1203;}
+.amaley-pages-hero-other__btn--secondary{background:transparent;border:1px solid var(--apho-gold);color:var(--apho-cream);}
+.amaley-pages-hero-other--tone-cream .amaley-pages-hero-other__btn--secondary{color:#2E1203;border-color:rgba(46,18,3,.35);}
+
+/* Style 1 and 5 — clean text split */
+.amaley-pages-hero-other__text-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(320px,.95fr);gap:72px;align-items:center;min-height:360px;}
+.amaley-pages-hero-other__side-text{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:280px;border:1px solid rgba(194,136,10,.18);padding:44px;background:rgba(255,248,237,.025);}
+.amaley-pages-hero-other__side-text h2{margin:0;font-family:"Playfair Display",Georgia,serif;font-size:34px;line-height:1.08;color:#E7C76D;font-weight:500;}
+.amaley-pages-hero-other__side-text p{margin:24px 0 0;color:var(--apho-muted);font-size:14px;line-height:1.6;}
+.amaley-pages-hero-other--style-5 .amaley-pages-hero-other__inner{min-height:440px;display:flex;align-items:center;}
+.amaley-pages-hero-other--style-5 .amaley-pages-hero-other__text-grid{display:block;min-height:0;width:100%;}
+
+/* Stats */
+.amaley-pages-hero-other__stats{display:flex;gap:52px;align-items:flex-start;flex-wrap:wrap;margin-top:46px;}
+.amaley-pages-hero-other__stat strong{display:block;color:var(--apho-gold);font-family:"Playfair Display",Georgia,serif;font-size:28px;line-height:1;font-weight:700;}
+.amaley-pages-hero-other__stat span{display:block;margin-top:8px;color:var(--apho-muted);font-size:10px;letter-spacing:.16em;text-transform:uppercase;line-height:1.25;font-weight:800;}
+
+/* Style 2 — cluster hero without bottom strip */
+.amaley-pages-hero-other__cluster-wrap{min-height:400px;display:flex;align-items:center;}
+.amaley-pages-hero-other--style-2 .amaley-pages-hero-other__title{max-width:980px;}
+.amaley-pages-hero-other--style-2 .amaley-pages-hero-other__stats{margin-top:52px;}
+
+/* Style 3 — collections intent card */
+.amaley-pages-hero-other__collections-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,.68fr);gap:80px;align-items:center;min-height:420px;}
+.amaley-pages-hero-other__intent-card{border:1px solid var(--apho-border);padding:44px 48px;min-height:330px;background:rgba(255,248,237,.035);}
+.amaley-pages-hero-other__intent-card h2{margin:0;color:var(--apho-cream);font-family:"Playfair Display",Georgia,serif;font-size:34px;line-height:1.08;font-weight:500;}
+.amaley-pages-hero-other__intent-card p{margin:26px 0 0;color:var(--apho-muted);font-size:15px;line-height:1.75;}
+.amaley-pages-hero-other__intent-card .amaley-pages-hero-other__stats{gap:52px;margin-top:46px;}
+
+/* Image split style 6 */
+.amaley-pages-hero-other__image-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(420px,1.1fr);gap:72px;align-items:center;min-height:430px;}
+.amaley-pages-hero-other--image-left .amaley-pages-hero-other__image-grid{grid-template-columns:minmax(420px,1.1fr) minmax(0,.9fr);}
+
+/* Shared media */
+.amaley-pages-hero-other__media{margin:0;width:100%;height:var(--apho-media-height);overflow:hidden;background:rgba(255,248,237,.08);border:var(--apho-media-border-width) solid var(--apho-media-border-color);border-radius:var(--apho-media-radius);}
+.amaley-pages-hero-other__media img{display:block;width:100%;height:100%;object-fit:var(--apho-img-fit);object-position:var(--apho-img-x) var(--apho-img-y);transition:transform .9s ease,filter .9s ease;}
+.amaley-pages-hero-other__media:hover img{transform:scale(1.045);filter:saturate(1.04) contrast(1.03);}
+.amaley-pages-hero-other__media--empty{background:linear-gradient(135deg,rgba(251,245,230,.10),rgba(194,136,10,.08));}
+
+/* Styles 7/9/10/11 — editorial image family */
+.amaley-pages-hero-other--style-7,.amaley-pages-hero-other--style-9,.amaley-pages-hero-other--style-10,.amaley-pages-hero-other--style-11{--apho-bg:#FBF5E6;--apho-muted:#6F543D;color:#2E1203;background:var(--apho-bg);}
+.amaley-pages-hero-other__editorial-grid{display:grid;grid-template-columns:minmax(0,.92fr) minmax(430px,1.08fr);gap:70px;align-items:center;min-height:470px;}
+.amaley-pages-hero-other__editorial-copy .amaley-pages-hero-other__title{max-width:760px;}
+.amaley-pages-hero-other__editorial-copy .amaley-pages-hero-other__description{max-width:620px;}
+.amaley-pages-hero-other__editorial-media-wrap{position:relative;min-height:430px;}
+.amaley-pages-hero-other__editorial-media-wrap .amaley-pages-hero-other__media{height:430px;border-color:rgba(194,136,10,.35);box-shadow:0 24px 70px rgba(46,18,3,.14);}
+.amaley-pages-hero-other__editorial-media-wrap::before{content:"";position:absolute;inset:28px -28px -28px 28px;border:1px solid rgba(194,136,10,.24);pointer-events:none;}
+.amaley-pages-hero-other__editorial-note{position:absolute;left:-34px;bottom:34px;max-width:230px;padding:22px 24px;background:#2E1203;color:#FFF8ED;border:1px solid rgba(194,136,10,.5);box-shadow:0 18px 48px rgba(46,18,3,.20);}
+.amaley-pages-hero-other__editorial-note span{display:block;margin:0 0 9px;color:#C2880A;font-size:9px;letter-spacing:.2em;text-transform:uppercase;font-weight:900;}
+.amaley-pages-hero-other__editorial-note strong{display:block;font-family:"Playfair Display",Georgia,serif;font-size:24px;line-height:1.05;font-weight:500;}
+.amaley-pages-hero-other__editorial-note p{margin:10px 0 0;color:rgba(255,248,237,.75);font-size:12px;line-height:1.55;}
+.amaley-pages-hero-other__editorial-copy .amaley-pages-hero-other__stats{gap:30px;margin-top:34px;}
+.amaley-pages-hero-other__editorial-copy .amaley-pages-hero-other__stat{padding:0 18px 0 0;border-right:1px solid rgba(194,136,10,.28);}
+.amaley-pages-hero-other__editorial-copy .amaley-pages-hero-other__stat:last-child{border-right:0;}
+
+/* editorial variations */
+.amaley-pages-hero-other--style-9 .amaley-pages-hero-other__editorial-grid{grid-template-columns:minmax(420px,1.02fr) minmax(0,.98fr);}
+.amaley-pages-hero-other--style-9 .amaley-pages-hero-other__editorial-copy{order:2;}
+.amaley-pages-hero-other--style-9 .amaley-pages-hero-other__editorial-media-wrap{order:1;}
+.amaley-pages-hero-other--style-9 .amaley-pages-hero-other__editorial-note{left:auto;right:-28px;bottom:28px;background:#FFF8ED;color:#2E1203;}
+.amaley-pages-hero-other--style-9 .amaley-pages-hero-other__editorial-note p{color:#6F543D;}
+.amaley-pages-hero-other--style-10 .amaley-pages-hero-other__editorial-grid{gap:48px;}
+.amaley-pages-hero-other--style-10 .amaley-pages-hero-other__editorial-media-wrap .amaley-pages-hero-other__media{height:360px;border-radius:24px;}
+.amaley-pages-hero-other--style-10 .amaley-pages-hero-other__editorial-media-wrap::before{inset:auto -18px -18px 40px;height:70%;}
+.amaley-pages-hero-other--style-10 .amaley-pages-hero-other__editorial-note{position:relative;left:auto;bottom:auto;margin-top:16px;max-width:none;background:#FFF8ED;color:#2E1203;border-color:rgba(194,136,10,.32);}
+.amaley-pages-hero-other--style-10 .amaley-pages-hero-other__editorial-note p{color:#6F543D;}
+.amaley-pages-hero-other--style-11{background:#2E1203;color:#FFF8ED;--apho-muted:rgba(255,248,237,.78);}
+.amaley-pages-hero-other--style-11 .amaley-pages-hero-other__editorial-grid{grid-template-columns:minmax(0,1fr) minmax(460px,1fr);}
+.amaley-pages-hero-other--style-11 .amaley-pages-hero-other__editorial-media-wrap .amaley-pages-hero-other__media{height:340px;border-radius:0;box-shadow:none;}
+.amaley-pages-hero-other--style-11 .amaley-pages-hero-other__editorial-note{right:28px;left:auto;bottom:-28px;background:#C2880A;color:#2E1203;border-color:#C2880A;}
+.amaley-pages-hero-other--style-11 .amaley-pages-hero-other__editorial-note span,.amaley-pages-hero-other--style-11 .amaley-pages-hero-other__editorial-note p{color:#2E1203;}
+
+/* Styles 8/12/13 — centered statement family */
+.amaley-pages-hero-other--style-8,.amaley-pages-hero-other--style-12,.amaley-pages-hero-other--style-13{background:#2E1203;color:#FFF8ED;}
+.amaley-pages-hero-other--style-8::before,.amaley-pages-hero-other--style-12::before,.amaley-pages-hero-other--style-13::before{content:"";position:absolute;inset:18px;border:1px solid rgba(194,136,10,.20);pointer-events:none;}
+.amaley-pages-hero-other__statement-wrap{min-height:460px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;}
+.amaley-pages-hero-other__statement-content{max-width:900px;margin:0 auto;}
+.amaley-pages-hero-other__statement-content .amaley-pages-hero-other__title{max-width:900px;margin-inline:auto;font-size:64px;}
+.amaley-pages-hero-other__statement-content .amaley-pages-hero-other__description{max-width:680px;margin-inline:auto;}
+.amaley-pages-hero-other__statement-content .amaley-pages-hero-other__actions{justify-content:center;}
+.amaley-pages-hero-other__statement-pills{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;width:100%;max-width:960px;margin:56px auto 0;border:1px solid rgba(194,136,10,.28);}
+.amaley-pages-hero-other__statement-pill{padding:24px 28px;border-right:1px solid rgba(194,136,10,.20);text-align:left;background:rgba(255,248,237,.035);}
+.amaley-pages-hero-other__statement-pill:last-child{border-right:0;}
+.amaley-pages-hero-other__statement-pill strong{display:block;color:#C2880A;font-size:12px;letter-spacing:.18em;text-transform:uppercase;line-height:1.25;font-weight:900;}
+.amaley-pages-hero-other__statement-pill span{display:block;margin-top:9px;color:rgba(255,248,237,.74);font-size:13px;line-height:1.5;}
+.amaley-pages-hero-other--style-12 .amaley-pages-hero-other__statement-pills{border-radius:20px;overflow:hidden;background:rgba(255,248,237,.04);}
+.amaley-pages-hero-other--style-12 .amaley-pages-hero-other__statement-pill{text-align:center;}
+.amaley-pages-hero-other--style-13 .amaley-pages-hero-other__statement-wrap{text-align:left;align-items:flex-start;max-width:900px;margin:auto;}
+.amaley-pages-hero-other--style-13::before{inset:34px;}
+.amaley-pages-hero-other--style-13 .amaley-pages-hero-other__statement-content{margin:0;}
+.amaley-pages-hero-other--style-13 .amaley-pages-hero-other__statement-content .amaley-pages-hero-other__title{margin:0;max-width:760px;font-size:58px;}
+.amaley-pages-hero-other--style-13 .amaley-pages-hero-other__statement-content .amaley-pages-hero-other__description{margin-left:0;margin-right:0;}
+.amaley-pages-hero-other--style-13 .amaley-pages-hero-other__statement-content .amaley-pages-hero-other__actions{justify-content:flex-start;}
+.amaley-pages-hero-other--style-13 .amaley-pages-hero-other__statement-pills{max-width:820px;margin-left:0;border:0;gap:12px;}
+.amaley-pages-hero-other--style-13 .amaley-pages-hero-other__statement-pill{border:1px solid rgba(194,136,10,.20);}
+
+@media(max-width:1024px){.amaley-pages-hero-other{--apho-pad-y:76px;--apho-pad-x:42px;--apho-title-size:44px;}.amaley-pages-hero-other__text-grid,.amaley-pages-hero-other__collections-grid,.amaley-pages-hero-other__image-grid,.amaley-pages-hero-other__editorial-grid{gap:42px;}.amaley-pages-hero-other__statement-content .amaley-pages-hero-other__title{font-size:52px;}}
+@media(max-width:767px){.amaley-pages-hero-other{--apho-pad-y:58px;--apho-pad-x:24px;--apho-title-size:38px;}.amaley-pages-hero-other__inner{padding:var(--apho-pad-y) var(--apho-pad-x);}.amaley-pages-hero-other__text-grid,.amaley-pages-hero-other__collections-grid,.amaley-pages-hero-other__image-grid,.amaley-pages-hero-other--image-left .amaley-pages-hero-other__image-grid,.amaley-pages-hero-other__editorial-grid,.amaley-pages-hero-other--style-9 .amaley-pages-hero-other__editorial-grid,.amaley-pages-hero-other--style-11 .amaley-pages-hero-other__editorial-grid{display:grid;grid-template-columns:1fr;gap:34px;min-height:0;}.amaley-pages-hero-other--style-9 .amaley-pages-hero-other__editorial-copy,.amaley-pages-hero-other--style-9 .amaley-pages-hero-other__editorial-media-wrap{order:initial;}.amaley-pages-hero-other__description{font-size:14px;line-height:1.7;}.amaley-pages-hero-other__btn{width:100%;}.amaley-pages-hero-other__side-text{text-align:left;align-items:flex-start;min-height:0;}.amaley-pages-hero-other__side-text h2,.amaley-pages-hero-other__intent-card h2{font-size:28px;}.amaley-pages-hero-other__stats{gap:28px;margin-top:32px;}.amaley-pages-hero-other__stat strong{font-size:24px;}.amaley-pages-hero-other__intent-card{padding:30px 24px;min-height:0;}.amaley-pages-hero-other__media,.amaley-pages-hero-other__editorial-media-wrap .amaley-pages-hero-other__media{height:var(--apho-media-height,280px);}.amaley-pages-hero-other__editorial-media-wrap{min-height:0;}.amaley-pages-hero-other__editorial-media-wrap::before{display:none;}.amaley-pages-hero-other__editorial-note,.amaley-pages-hero-other--style-9 .amaley-pages-hero-other__editorial-note,.amaley-pages-hero-other--style-11 .amaley-pages-hero-other__editorial-note{position:relative;left:auto;right:auto;bottom:auto;margin-top:14px;max-width:none;}.amaley-pages-hero-other__statement-wrap,.amaley-pages-hero-other--style-13 .amaley-pages-hero-other__statement-wrap{min-height:390px;text-align:left;align-items:flex-start;}.amaley-pages-hero-other__statement-content .amaley-pages-hero-other__title,.amaley-pages-hero-other--style-13 .amaley-pages-hero-other__statement-content .amaley-pages-hero-other__title{font-size:38px;}.amaley-pages-hero-other__statement-content .amaley-pages-hero-other__description{margin-inline:0;}.amaley-pages-hero-other__statement-content .amaley-pages-hero-other__actions{justify-content:flex-start;}.amaley-pages-hero-other__statement-pills,.amaley-pages-hero-other--style-13 .amaley-pages-hero-other__statement-pills{grid-template-columns:1fr;margin-top:36px;}.amaley-pages-hero-other__statement-pill{border-right:0;border-bottom:1px solid rgba(194,136,10,.18);}.amaley-pages-hero-other__statement-pill:last-child{border-bottom:0;}.amaley-pages-hero-other--style-5 .amaley-pages-hero-other__inner{min-height:390px;}}
+@media(max-width:420px){.amaley-pages-hero-other{--apho-title-size:33px;}.amaley-pages-hero-other__kicker{font-size:9px;letter-spacing:.24em;}.amaley-pages-hero-other__stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;}.amaley-pages-hero-other__statement-content .amaley-pages-hero-other__title{font-size:34px;}}
+
+
+/* =========================================================
+   v0.6.0 FINAL FIXES — style selector clarity + media no-gap
+   ========================================================= */
+
+/* Image/media side swap support for all image-based styles */
+.amaley-pages-hero-other--image-left .amaley-pages-hero-other__editorial-grid{
+  grid-template-columns:minmax(430px,1.08fr) minmax(0,.92fr);
+}
+.amaley-pages-hero-other--image-left .amaley-pages-hero-other__editorial-media-wrap{order:1;}
+.amaley-pages-hero-other--image-left .amaley-pages-hero-other__editorial-copy{order:2;}
+.amaley-pages-hero-other--image-right .amaley-pages-hero-other__editorial-copy{order:1;}
+.amaley-pages-hero-other--image-right .amaley-pages-hero-other__editorial-media-wrap{order:2;}
+
+/* Override old forced style-9 order so dropdown side control always wins */
+.amaley-pages-hero-other--style-9.amaley-pages-hero-other--image-left .amaley-pages-hero-other__editorial-copy{order:2;}
+.amaley-pages-hero-other--style-9.amaley-pages-hero-other--image-left .amaley-pages-hero-other__editorial-media-wrap{order:1;}
+.amaley-pages-hero-other--style-9.amaley-pages-hero-other--image-right .amaley-pages-hero-other__editorial-copy{order:1;}
+.amaley-pages-hero-other--style-9.amaley-pages-hero-other--image-right .amaley-pages-hero-other__editorial-media-wrap{order:2;}
+
+/* No-gap media: fixes zoom in/out image gaps caused by inline image/grid height behaviour */
+.amaley-pages-hero-other__media{
+  position:relative !important;
+  display:block !important;
+  line-height:0 !important;
+  font-size:0 !important;
+  isolation:isolate;
+  overflow:hidden !important;
+}
+.amaley-pages-hero-other__media img{
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  min-width:100% !important;
+  min-height:100% !important;
+  object-fit:var(--apho-img-fit, cover) !important;
+  object-position:var(--apho-img-x, 50%) var(--apho-img-y, 50%) !important;
+  display:block !important;
+  vertical-align:top !important;
+  backface-visibility:hidden;
+}
+
+/* Clean image blocks at odd browser zoom levels */
+.amaley-pages-hero-other__editorial-media-wrap,
+.amaley-pages-hero-other__image-grid{
+  overflow:visible;
+}
+
+/* Better editor/live stability for media-based styles */
+.amaley-pages-hero-other__editorial-media-wrap .amaley-pages-hero-other__media{
+  width:100%;
+  max-width:100%;
+}
+.amaley-pages-hero-other--style-10 .amaley-pages-hero-other__editorial-note{
+  line-height:1.4;
+}
+
+/* Mobile: side swap should not create awkward order; text first, image second */
+@media(max-width:767px){
+  .amaley-pages-hero-other--image-left .amaley-pages-hero-other__editorial-copy,
+  .amaley-pages-hero-other--image-right .amaley-pages-hero-other__editorial-copy,
+  .amaley-pages-hero-other--style-9.amaley-pages-hero-other--image-left .amaley-pages-hero-other__editorial-copy,
+  .amaley-pages-hero-other--style-9.amaley-pages-hero-other--image-right .amaley-pages-hero-other__editorial-copy{
+    order:1;
+  }
+  .amaley-pages-hero-other--image-left .amaley-pages-hero-other__editorial-media-wrap,
+  .amaley-pages-hero-other--image-right .amaley-pages-hero-other__editorial-media-wrap,
+  .amaley-pages-hero-other--style-9.amaley-pages-hero-other--image-left .amaley-pages-hero-other__editorial-media-wrap,
+  .amaley-pages-hero-other--style-9.amaley-pages-hero-other--image-right .amaley-pages-hero-other__editorial-media-wrap{
+    order:2;
+  }
+  .amaley-pages-hero-other__media img{
+    position:absolute !important;
+  }
+}

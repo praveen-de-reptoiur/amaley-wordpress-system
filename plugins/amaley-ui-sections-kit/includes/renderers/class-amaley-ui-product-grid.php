@@ -12,7 +12,9 @@ defined( 'ABSPATH' ) || exit;
  */
 final class Amaley_UI_Product_Grid {
 
-	/** Maximum products allowed in one grid. */
+	/**
+	 * Maximum products allowed in one grid.
+	 */
 	const MAX_LIMIT = 8;
 
 	/**
@@ -83,6 +85,9 @@ final class Amaley_UI_Product_Grid {
 			'amaley_product_grid'
 		);
 
+		$limit   = max( 1, min( self::MAX_LIMIT, absint( $atts['limit'] ) ) );
+		$columns = max( 1, min( 4, absint( $atts['columns'] ) ) );
+
 		$card_atts = Amaley_UI_Product_Card::normalize_atts(
 			array(
 				'show_price'   => $atts['show_price'],
@@ -98,8 +103,8 @@ final class Amaley_UI_Product_Grid {
 			'ids'          => self::id_list( $atts['ids'] ),
 			'skus'         => self::sku_list( $atts['skus'] ),
 			'category'     => sanitize_title( $atts['category'] ),
-			'limit'        => max( 1, min( self::MAX_LIMIT, absint( $atts['limit'] ) ) ),
-			'columns'      => max( 1, min( 4, absint( $atts['columns'] ) ) ),
+			'limit'        => $limit,
+			'columns'      => $columns,
 			'show_price'   => $card_atts['show_price'],
 			'show_excerpt' => $card_atts['show_excerpt'],
 			'show_button'  => $card_atts['show_button'],
@@ -111,7 +116,7 @@ final class Amaley_UI_Product_Grid {
 	}
 
 	/**
-	 * Gets products using IDs, SKUs, or one category slug.
+	 * Gets products using ids, skus, or category.
 	 *
 	 * @param array $atts Normalized attributes.
 	 * @return array<int,WC_Product>
@@ -128,18 +133,38 @@ final class Amaley_UI_Product_Grid {
 					$product_ids[] = $product_id;
 				}
 			}
-		} elseif ( '' !== $atts['category'] && function_exists( 'wc_get_products' ) ) {
-			$product_ids = wc_get_products(
-				array(
-					'limit'    => $atts['limit'],
-					'status'   => 'publish',
-					'category' => array( $atts['category'] ),
-					'return'   => 'ids',
-				)
-			);
 		}
 
-		$product_ids = array_slice( array_unique( array_map( 'absint', $product_ids ) ), 0, $atts['limit'] );
+		if ( ! empty( $product_ids ) ) {
+			$product_ids = array_slice( array_unique( array_map( 'absint', $product_ids ) ), 0, $atts['limit'] );
+			return self::products_from_ids( $product_ids );
+		}
+
+		if ( '' === $atts['category'] ) {
+			return array();
+		}
+
+		$query = new WP_Query(
+			array(
+				'post_type'              => 'product',
+				'post_status'            => 'publish',
+				'posts_per_page'         => $atts['limit'],
+				'no_found_rows'          => true,
+				'ignore_sticky_posts'    => true,
+				'update_post_meta_cache' => true,
+				'update_post_term_cache' => false,
+				'tax_query'              => array(
+					array(
+						'taxonomy' => 'product_cat',
+						'field'    => 'slug',
+						'terms'    => $atts['category'],
+					),
+				),
+			)
+		);
+
+		$product_ids = wp_list_pluck( $query->posts, 'ID' );
+		wp_reset_postdata();
 
 		return self::products_from_ids( $product_ids );
 	}
@@ -163,20 +188,36 @@ final class Amaley_UI_Product_Grid {
 		return $products;
 	}
 
-	/** Parses comma-separated IDs. */
+	/**
+	 * Parses comma-separated IDs.
+	 *
+	 * @param string $value Raw IDs.
+	 * @return array<int,int>
+	 */
 	private static function id_list( $value ) {
 		$ids = array_map( 'absint', explode( ',', (string) $value ) );
-		return array_values( array_unique( array_filter( $ids ) ) );
+		$ids = array_filter( $ids );
+		return array_values( array_unique( $ids ) );
 	}
 
-	/** Parses comma-separated SKUs. */
+	/**
+	 * Parses comma-separated SKUs.
+	 *
+	 * @param string $value Raw SKUs.
+	 * @return array<int,string>
+	 */
 	private static function sku_list( $value ) {
 		$skus = array_map( 'trim', explode( ',', (string) $value ) );
 		$skus = array_filter( array_map( 'sanitize_text_field', $skus ) );
 		return array_values( array_unique( $skus ) );
 	}
 
-	/** Returns a safe notice block. */
+	/**
+	 * Returns a safe notice block.
+	 *
+	 * @param string $message Notice text.
+	 * @return string
+	 */
 	private static function notice( $message ) {
 		return '<div class="amaley-ui-product-notice">' . esc_html( $message ) . '</div>';
 	}

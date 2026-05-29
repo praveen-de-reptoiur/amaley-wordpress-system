@@ -1,48 +1,25 @@
-# Testing Checklist — Amaley UI Sections Kit v0.3.7
+# Testing Checklist — Amaley UI Sections Kit v0.5.1
 
 ## Activation
 
 - Upload ZIP on staging/local first.
 - Activate without PHP fatal error.
-- Confirm plugin version shows 0.3.7.
-- Confirm existing product grid shortcode still renders.
+- Confirm plugin version shows 0.5.1.
 
-## Page Trust Strip
+## Home Hero V6
 
-Shortcode:
-
-[amaley_page_trust_strip tone="cream" style="cards" columns="4" mobile="stack" motion="glow" width="contained"]
-
-Check:
-
-- Desktop strip appears below hero/header area.
-- Desktop left dark copy block is readable.
-- Desktop 4 trust cards align cleanly.
-- Desktop has no horizontal overflow.
-- Phone 360/390/430 cards stack vertically.
-- Phone has no horizontal slider or scrollbar.
-- Phone icon, title and text remain readable.
-- Tablet layout does not break.
-
-## Elementor Widget
-
-- Search Elementor widgets for Page Trust Strip.
-- Confirm widget title: Amaley Page Trust Strip.
-- Confirm category: Amaley UI.
-- Confirm controls: Tone, Style, Width, Columns, Mobile Behaviour, Transformation.
-- Confirm default mobile behaviour is Responsive Stacked Cards.
+- Confirm shortcode `[amaley_home_hero_v6]` renders.
+- Confirm Elementor widget `Amaley Home Hero V6` appears under `Amaley UI`.
+- Confirm desktop layout is 2-column with left content and right 3-image mosaic.
+- Confirm live counter animates from zero.
+- Confirm right images use cover fit with no empty gaps.
+- Confirm mobile stacks left content then image mosaic.
+- Confirm no styling leak outside `.amaley-home-hero-v6`.
 
 ## Conflict Safety
 
 - Discovery Engine filters still work.
-- Amaley Templates product trust strip stays separate.
-- Site Shell header and footer remain unchanged.
+- Amaley Core CPTs remain unchanged.
+- Amaley Templates widgets remain unchanged.
+- Site Shell header/footer remains unchanged.
 - WooCommerce product pages, cart and checkout remain unchanged.
-- No global styling leak into theme buttons, cards or forms.
-
-## Final Lock
-
-- Desktop screenshot saved.
-- Mobile screenshot saved.
-- Drive archive uploaded.
-- GitHub source synced without ZIP files.

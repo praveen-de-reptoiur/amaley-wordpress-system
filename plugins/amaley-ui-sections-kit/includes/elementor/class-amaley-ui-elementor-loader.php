@@ -12,18 +12,14 @@ defined( 'ABSPATH' ) || exit;
  */
 final class Amaley_UI_Elementor_Loader {
 
-	/**
-	 * Registers Elementor hooks.
-	 *
-	 * @return void
-	 */
+	/** Registers Elementor hooks. */
 	public function hooks() {
 		add_action( 'elementor/elements/categories_registered', array( $this, 'register_category' ) );
 		add_action( 'elementor/widgets/register', array( $this, 'register_widgets' ) );
 	}
 
 	/**
-	 * Registers Amaley UI widget category.
+	 * Registers Amaley widget category.
 	 *
 	 * @param object $elements_manager Elementor elements manager.
 	 * @return void
@@ -49,18 +45,32 @@ final class Amaley_UI_Elementor_Loader {
 	 * @return void
 	 */
 	public function register_widgets( $widgets_manager ) {
-		if ( ! class_exists( '\\Elementor\\Widget_Base' ) || ! is_object( $widgets_manager ) ) {
+		if ( ! class_exists( '\Elementor\Widget_Base' ) || ! is_object( $widgets_manager ) ) {
 			return;
 		}
 
-		$widget_file = AMALEY_UI_SECTIONS_KIT_PATH . 'includes/elementor/widgets/class-amaley-elementor-page-trust-strip-widget.php';
+		$widget_files = array(
+			AMALEY_UI_SECTIONS_KIT_PATH . 'includes/elementor/widgets/class-amaley-elementor-page-trust-strip-widget.php',
+			AMALEY_UI_SECTIONS_KIT_PATH . 'includes/elementor/widgets/class-amaley-elementor-home-hero-v6-widget.php',
+			AMALEY_UI_SECTIONS_KIT_PATH . 'includes/elementor/widgets/class-amaley-elementor-pages-hero-other-widget.php',
+		);
 
-		if ( file_exists( $widget_file ) ) {
-			require_once $widget_file;
+		foreach ( $widget_files as $widget_file ) {
+			if ( file_exists( $widget_file ) ) {
+				require_once $widget_file;
+			}
 		}
 
 		if ( class_exists( 'Amaley_Elementor_Page_Trust_Strip_Widget' ) && method_exists( $widgets_manager, 'register' ) ) {
 			$widgets_manager->register( new Amaley_Elementor_Page_Trust_Strip_Widget() );
+		}
+
+		if ( class_exists( 'Amaley_Elementor_Home_Hero_V6_Widget' ) && method_exists( $widgets_manager, 'register' ) ) {
+			$widgets_manager->register( new Amaley_Elementor_Home_Hero_V6_Widget() );
+		}
+
+		if ( class_exists( 'Amaley_Elementor_Pages_Hero_Other_Widget' ) && method_exists( $widgets_manager, 'register' ) ) {
+			$widgets_manager->register( new Amaley_Elementor_Pages_Hero_Other_Widget() );
 		}
 	}
 }

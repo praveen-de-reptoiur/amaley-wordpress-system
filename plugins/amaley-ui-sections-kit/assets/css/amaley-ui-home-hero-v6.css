@@ -1,0 +1,111 @@
+/* =========================================================
+AMALEY HOME HERO V6 — Plugin Source CSS v0.5.4 — No-Gap Absolute Mosaic Lock
+Scope: .amaley-home-hero-v6 only
+No Elementor/Freshen/Apus/WooCommerce overrides
+========================================================= */
+.amaley-home-hero-v6{
+  --ahh6-ivory:#FBF5E6;
+  --ahh6-parchment:#EAD9B8;
+  --ahh6-choco:#2E1203;
+  --ahh6-choco-light:#7A4520;
+  --ahh6-gold:#C2880A;
+  --ahh6-gold-light:#DBA83A;
+  --ahh6-rust:#B5502A;
+  --ahh6-border:rgba(194,136,10,0.30);
+  --ahh6-border-soft:rgba(194,136,10,0.20);
+  --ahh6-shadow:0 18px 48px rgba(46,18,3,0.14);
+  --ahh6-max:1280px;
+  --ahh6-hero-height:680px;
+  --ahh6-left-col:49%;
+  --ahh6-right-col:51%;
+  --ahh6-left-pad-top:70px;
+  --ahh6-left-pad-right:54px;
+  --ahh6-left-pad-bottom:70px;
+  --ahh6-left-pad-left:68px;
+  --ahh6-mosaic-gap:3px;
+  --ahh6-mosaic-left:1.05fr;
+  --ahh6-mosaic-right:1fr;
+  --ahh6-main-image-width:51%;
+  --ahh6-img1-fit:cover;
+  --ahh6-img2-fit:cover;
+  --ahh6-img3-fit:cover;
+  --ahh6-img1-x:50%;
+  --ahh6-img1-y:50%;
+  --ahh6-img2-x:50%;
+  --ahh6-img2-y:50%;
+  --ahh6-img3-x:50%;
+  --ahh6-img3-y:50%;
+  --ahh6-img-hover-scale:1.075;
+  --ahh6-badge-x:50%;
+  --ahh6-badge-y:50%;
+  --ahh6-badge-size:130px;
+
+  width:100%;
+  background:var(--ahh6-ivory);
+  color:var(--ahh6-choco);
+  font-family:"Lato", Arial, sans-serif;
+  overflow:hidden;
+  position:relative;
+}
+.amaley-home-hero-v6,
+.amaley-home-hero-v6 *{box-sizing:border-box;}
+@keyframes ahh6FadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+@keyframes ahh6ImageReveal{from{opacity:0;transform:scale(1.025);}to{opacity:1;transform:scale(1);}}
+@keyframes ahh6Float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+@keyframes ahh6CounterGlow{0%{text-shadow:0 0 0 rgba(194,136,10,0);}50%{text-shadow:0 0 12px rgba(194,136,10,0.32);}100%{text-shadow:0 0 0 rgba(194,136,10,0);}}
+.amaley-home-hero-v6-inner{width:100%;max-width:var(--ahh6-max);margin:0 auto;}
+.amaley-home-hero-v6-grid{width:100%;display:grid;grid-template-columns:var(--ahh6-left-col) var(--ahh6-right-col);align-items:stretch;min-height:var(--ahh6-hero-height);}
+.amaley-home-hero-v6-left{position:relative;background:var(--ahh6-ivory);display:flex;align-items:center;justify-content:center;padding:var(--ahh6-left-pad-top) var(--ahh6-left-pad-right) var(--ahh6-left-pad-bottom) var(--ahh6-left-pad-left);min-width:0;min-height:var(--ahh6-hero-height);}
+.amaley-home-hero-v6-left::before{content:"";position:absolute;top:32px;left:32px;right:24px;bottom:32px;border:1px solid var(--ahh6-border-soft);pointer-events:none;z-index:0;}
+.amaley-home-hero-v6-left::after{content:"✦";position:absolute;top:24px;left:24px;font-size:12px;color:var(--ahh6-gold);z-index:1;}
+.amaley-home-hero-v6-content{position:relative;z-index:2;width:100%;max-width:590px;animation:ahh6FadeUp .75s ease both;}
+.amaley-home-hero-v6-tag{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--ahh6-border);padding:8px 16px;margin-bottom:22px;background:rgba(251,245,230,0.72);max-width:100%;}
+.amaley-home-hero-v6-tag::before,.amaley-home-hero-v6-tag::after{content:"❧";font-size:10px;color:var(--ahh6-gold-light);flex:0 0 auto;}
+.amaley-home-hero-v6-tag-text{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--ahh6-gold);font-weight:700;line-height:1.3;}
+.amaley-home-hero-v6-title{font-family:"Playfair Display", Georgia, serif;font-size:64px;line-height:.98;font-weight:400;color:var(--ahh6-choco);margin:0 0 24px;}
+.amaley-home-hero-v6-title-em{font-style:italic;color:var(--ahh6-rust);}
+.amaley-home-hero-v6-subtitle{max-width:430px;font-size:15px;line-height:1.75;color:var(--ahh6-choco-light);font-weight:300;margin:0 0 36px;opacity:.92;}
+.amaley-home-hero-v6-buttons{display:flex;align-items:center;gap:14px;margin-bottom:48px;flex-wrap:wrap;}
+.amaley-home-hero-v6-btn-primary,.amaley-home-hero-v6-btn-outline{display:inline-flex;align-items:center;justify-content:center;font-family:"Lato", Arial, sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;transition:background .22s ease, color .22s ease, border-color .22s ease, transform .22s ease;line-height:1;}
+.amaley-home-hero-v6-btn-primary{padding:15px 34px;background:var(--ahh6-choco);color:var(--ahh6-ivory);border:1px solid var(--ahh6-choco);}
+.amaley-home-hero-v6-btn-primary:hover{background:var(--ahh6-rust);border-color:var(--ahh6-rust);transform:translateY(-2px);}
+.amaley-home-hero-v6-btn-outline{padding:14px 22px;background:transparent;color:var(--ahh6-choco);border:1.5px solid rgba(122,69,32,.5);gap:7px;}
+.amaley-home-hero-v6-btn-outline:hover{background:var(--ahh6-choco);color:var(--ahh6-ivory);border-color:var(--ahh6-choco);}
+.amaley-home-hero-v6-stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--ahh6-border);}
+.amaley-home-hero-v6-stat{text-align:center;padding:18px 10px;border-right:1px solid var(--ahh6-border);min-width:0;}
+.amaley-home-hero-v6-stat:last-child{border-right:none;}
+.amaley-home-hero-v6-stat-number{display:block;font-family:"Playfair Display", Georgia, serif;font-size:32px;font-weight:400;color:var(--ahh6-choco);line-height:1;}
+.amaley-home-hero-v6-stat-number.ahh6-counting{animation:ahh6CounterGlow .9s ease both;}
+.amaley-home-hero-v6-stat-label{display:block;margin-top:5px;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ahh6-choco-light);opacity:.65;}
+.amaley-home-hero-v6-right{position:relative;background:var(--ahh6-parchment);overflow:hidden;min-width:0;min-height:var(--ahh6-hero-height);height:var(--ahh6-hero-height);display:block;}
+/* v0.5.4: Absolute mosaic lock. This removes the beige gaps caused by grid/image height disagreements. */
+.amaley-home-hero-v6-mosaic{position:absolute;inset:0;width:100%;height:100%;min-height:0;display:block;background:var(--ahh6-parchment);overflow:hidden;}
+.amaley-home-hero-v6-image-card{position:absolute;overflow:hidden;background:var(--ahh6-parchment);min-width:0;min-height:0;opacity:0;animation:ahh6ImageReveal .85s ease both;}
+.amaley-home-hero-v6-image-card:nth-child(1){animation-delay:.08s;}.amaley-home-hero-v6-image-card:nth-child(2){animation-delay:.18s;}.amaley-home-hero-v6-image-card:nth-child(3){animation-delay:.28s;}
+.amaley-home-hero-v6-image-card-main{left:0;top:0;bottom:0;width:calc(var(--ahh6-main-image-width, 51%) - (var(--ahh6-mosaic-gap) / 2));}
+.amaley-home-hero-v6-image-card-2{top:0;right:0;width:calc(100% - var(--ahh6-main-image-width, 51%) - (var(--ahh6-mosaic-gap) / 2));height:calc(50% - (var(--ahh6-mosaic-gap) / 2));}
+.amaley-home-hero-v6-image-card-3{right:0;bottom:0;width:calc(100% - var(--ahh6-main-image-width, 51%) - (var(--ahh6-mosaic-gap) / 2));height:calc(50% - (var(--ahh6-mosaic-gap) / 2));}
+.amaley-home-hero-v6-image-card img{position:absolute !important;inset:0 !important;width:100% !important;height:100% !important;max-width:none !important;max-height:none !important;min-width:100% !important;min-height:100% !important;object-fit:cover !important;object-position:center center !important;display:block !important;transform:scale(1);transition:transform 1.2s ease, filter 1.2s ease;}
+.amaley-home-hero-v6-image-card-1 img{object-fit:var(--ahh6-img1-fit, cover) !important;object-position:var(--ahh6-img1-x, 50%) var(--ahh6-img1-y, 50%) !important;}
+.amaley-home-hero-v6-image-card-2 img{object-fit:var(--ahh6-img2-fit, cover) !important;object-position:var(--ahh6-img2-x, 50%) var(--ahh6-img2-y, 50%) !important;}
+.amaley-home-hero-v6-image-card-3 img{object-fit:var(--ahh6-img3-fit, cover) !important;object-position:var(--ahh6-img3-x, 50%) var(--ahh6-img3-y, 50%) !important;} 
+.amaley-home-hero-v6-image-card--crop-center img{object-position:center center;}
+.amaley-home-hero-v6-image-card--crop-top img{object-position:center top;}
+.amaley-home-hero-v6-image-card--crop-bottom img{object-position:center bottom;}
+.amaley-home-hero-v6-image-card--crop-left img{object-position:left center;}
+.amaley-home-hero-v6-image-card--crop-right img{object-position:right center;}
+.amaley-home-hero-v6-image-card:hover img{transform:scale(var(--ahh6-img-hover-scale));filter:saturate(1.08) contrast(1.04);}
+.amaley-home-hero-v6-image-card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(46,18,3,0.03) 0%,rgba(46,18,3,0.14) 100%);pointer-events:none;transition:background .8s ease;}
+.amaley-home-hero-v6-image-card:hover::after{background:linear-gradient(180deg,rgba(46,18,3,0.00) 0%,rgba(46,18,3,0.10) 100%);}
+.amaley-home-hero-v6-medallion{position:absolute;top:var(--ahh6-badge-y);left:var(--ahh6-badge-x);z-index:5;transform:translate(-50%,-50%);pointer-events:auto;}
+.amaley-home-hero-v6-medallion-inner{animation:ahh6Float 5s ease-in-out infinite;}
+.amaley-home-hero-v6-medallion-circle{position:relative;width:var(--ahh6-badge-size);height:var(--ahh6-badge-size);border-radius:50%;background:rgba(251,245,230,.95);border:2px solid var(--ahh6-gold);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px;text-align:center;box-shadow:0 8px 40px rgba(46,18,3,.22);transition:transform .45s ease, box-shadow .45s ease, background .45s ease;cursor:default;}
+.amaley-home-hero-v6-medallion:hover .amaley-home-hero-v6-medallion-circle{transform:scale(1.08) rotate(-2deg);background:rgba(255,249,239,.98);box-shadow:0 16px 54px rgba(46,18,3,.30), 0 0 0 7px rgba(194,136,10,.14);}
+.amaley-home-hero-v6-medallion-circle::before{content:"";position:absolute;width:calc(var(--ahh6-badge-size) - 12px);height:calc(var(--ahh6-badge-size) - 12px);border-radius:50%;border:1px solid rgba(194,136,10,.3);transition:transform .45s ease;}
+.amaley-home-hero-v6-medallion:hover .amaley-home-hero-v6-medallion-circle::before{transform:scale(.94);}
+.amaley-home-hero-v6-medallion-kicker{position:relative;z-index:1;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--ahh6-gold);font-weight:700;line-height:1.5;margin:0;}
+.amaley-home-hero-v6-medallion-text{position:relative;z-index:1;font-family:"Playfair Display", Georgia, serif;font-size:14px;color:var(--ahh6-choco);display:block;margin-top:5px;line-height:1.3;font-style:italic;font-weight:400;}
+@media(max-width:1024px){.amaley-home-hero-v6{--ahh6-hero-height:640px;}.amaley-home-hero-v6-left{padding:58px 38px 58px 48px;}.amaley-home-hero-v6-title{font-size:54px;}.amaley-home-hero-v6-subtitle{font-size:14px;line-height:1.68;}.amaley-home-hero-v6-buttons{margin-bottom:38px;}.amaley-home-hero-v6-stat-number{font-size:28px;}.amaley-home-hero-v6-stat-label{font-size:8px;}}
+@media(max-width:767px){.amaley-home-hero-v6{--ahh6-hero-height:auto;}.amaley-home-hero-v6-grid{grid-template-columns:1fr;min-height:auto;}.amaley-home-hero-v6-left{min-height:auto;padding:64px 24px 46px;}.amaley-home-hero-v6-left::before{left:18px;right:18px;top:18px;bottom:18px;}.amaley-home-hero-v6-left::after{top:11px;left:16px;}.amaley-home-hero-v6-content{max-width:100%;}.amaley-home-hero-v6-title{font-size:42px;}.amaley-home-hero-v6-subtitle{font-size:14px;line-height:1.7;}.amaley-home-hero-v6-buttons{flex-direction:column;align-items:flex-start;margin-bottom:36px;}.amaley-home-hero-v6-btn-primary,.amaley-home-hero-v6-btn-outline{width:100%;justify-content:center;}.amaley-home-hero-v6-stats{grid-template-columns:repeat(2,1fr);}.amaley-home-hero-v6-stat:nth-child(2){border-right:none;}.amaley-home-hero-v6-stat:nth-child(1),.amaley-home-hero-v6-stat:nth-child(2){border-bottom:1px solid var(--ahh6-border);}.amaley-home-hero-v6-right,.amaley-home-hero-v6-mosaic{min-height:540px;height:540px;}.amaley-home-hero-v6-image-card-main{left:0;top:0;width:100%;height:42%;bottom:auto;}.amaley-home-hero-v6-image-card-2{left:0;right:auto;top:calc(42% + var(--ahh6-mosaic-gap));width:100%;height:calc(29% - var(--ahh6-mosaic-gap));}.amaley-home-hero-v6-image-card-3{left:0;right:auto;top:calc(71% + var(--ahh6-mosaic-gap));bottom:auto;width:100%;height:calc(29% - var(--ahh6-mosaic-gap));}.amaley-home-hero-v6-medallion-circle{width:112px;height:112px;}.amaley-home-hero-v6-medallion-circle::before{width:100px;height:100px;}.amaley-home-hero-v6-medallion-text{font-size:12px;}}
+@media(max-width:420px){.amaley-home-hero-v6-title{font-size:36px;}.amaley-home-hero-v6-tag{padding:7px 12px;}.amaley-home-hero-v6-tag-text{font-size:8px;letter-spacing:.16em;}.amaley-home-hero-v6-stat{padding:16px 8px;}}
+@media (prefers-reduced-motion: reduce){.amaley-home-hero-v6-content,.amaley-home-hero-v6-image-card,.amaley-home-hero-v6-image-card img,.amaley-home-hero-v6-medallion-inner,.amaley-home-hero-v6-medallion-circle,.amaley-home-hero-v6-stat-number{animation:none !important;transition:none !important;transform:none !important;opacity:1 !important;}}
