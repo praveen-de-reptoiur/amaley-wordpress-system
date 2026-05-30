@@ -13,6 +13,7 @@ final class Amaley_CW_Shortcodes {
 			'amaley_cw_info_cards'          => 'info_cards',
 			'amaley_cw_split_editorial'     => 'split_editorial',
 			'amaley_cw_traceability'        => 'traceability',
+			'amaley_cw_origin_map'          => 'origin_map',
 			'amaley_cw_gifting_band'        => 'gifting_band',
 			'amaley_cw_value_strip'         => 'value_strip',
 			'amaley_cw_process_steps'       => 'process_steps',
@@ -42,6 +43,16 @@ final class Amaley_CW_Shortcodes {
 			Amaley_CW_Plugin::instance()->enqueue_assets();
 		}
 		return call_user_func( array( 'Amaley_CW_Renderer', $method ), is_array( $atts ) ? $atts : array() );
+	}
+
+	public function origin_map( $atts ) {
+		if ( class_exists( 'Amaley_CW_Plugin' ) ) {
+			Amaley_CW_Plugin::instance()->enqueue_assets();
+		}
+		if ( ! class_exists( 'Amaley_CW_Origin_Map' ) ) {
+			return '';
+		}
+		return Amaley_CW_Origin_Map::render( is_array( $atts ) ? $atts : array() );
 	}
 
 	public function info_cards( $atts ) { return $this->render( 'info_cards', $atts ); }
