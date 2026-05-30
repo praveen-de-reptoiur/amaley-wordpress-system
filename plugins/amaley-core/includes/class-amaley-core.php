@@ -28,6 +28,9 @@ class Amaley_Core {
         new Amaley_Core_Product_Origin( $this->fields );
         new Amaley_Core_Admin( $this->fields );
         new Amaley_Core_Import_Export( $this->fields );
+        new Amaley_Core_Cluster_Cards();
+        new Amaley_Core_SHG_Cards();
+        new Amaley_Core_Member_Cards();
 
         add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_assets' ) );
         add_action( 'admin_notices', array( $this, 'admin_dependency_notice' ) );

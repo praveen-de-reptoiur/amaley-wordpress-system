@@ -2,6 +2,8 @@
 /**
  * CSV import/export utilities.
  *
+ * Restored in v1.0.6 after the temporary safe-stub test build.
+ *
  * @package Amaley_Core
  */
 
@@ -32,7 +34,7 @@ class Amaley_Core_Import_Export {
     }
 
     /**
-     * Register page.
+     * Register import/export page.
      *
      * @return void
      */
@@ -48,7 +50,7 @@ class Amaley_Core_Import_Export {
     }
 
     /**
-     * Render import/export page.
+     * Render page with full import form.
      *
      * @return void
      */
@@ -61,7 +63,7 @@ class Amaley_Core_Import_Export {
 
         echo '<div class="wrap amaley-core-wrap">';
         echo '<h1>Amaley Core Import / Export</h1>';
-        echo '<p class="amaley-core-lead">Use CSV templates to bulk manage Clusters, SHG Groups, Members and Product Origin Mapping. Import defaults to dry-run preview for safety.</p>';
+        echo '<p class="amaley-core-lead">Use CSV templates to bulk manage Clusters, SHG Groups, Members and Product Origin Mapping. Always run dry-run first.</p>';
 
         echo '<div class="amaley-core-panel">';
         echo '<h2>Download CSV Templates</h2>';
@@ -104,7 +106,7 @@ class Amaley_Core_Import_Export {
 
         echo '<div class="amaley-core-panel amaley-core-warning-panel">';
         echo '<h2>Safety Rules</h2>';
-        echo '<ul><li>Export existing data before import.</li><li>Use stable codes, not names, for relations.</li><li>SHG rows must include cluster_code.</li><li>Member rows must include shg_code.</li><li>Product Origin rows must include product_sku.</li></ul>';
+        echo '<ul><li>Import order: Clusters → SHG Groups → Members / Producers → Product Origin Mapping.</li><li>Run dry-run preview first.</li><li>Use stable codes, not names, for relations.</li><li>Origins require exact WooCommerce product SKU.</li><li>Export existing data before bulk import.</li></ul>';
         echo '</div>';
         echo '</div>';
     }
@@ -124,7 +126,7 @@ class Amaley_Core_Import_Export {
     }
 
     /**
-     * Download a template CSV.
+     * Download template CSV.
      *
      * @return void
      */
@@ -162,11 +164,9 @@ class Amaley_Core_Import_Export {
         $this->send_csv_headers( 'amaley-' . $type . '-export-' . gmdate( 'Y-m-d' ) . '.csv' );
         $out = fopen( 'php://output', 'w' );
         fputcsv( $out, $columns );
-
         foreach ( $this->get_export_rows( $type ) as $row ) {
             fputcsv( $out, $row );
         }
-
         fclose( $out );
         exit;
     }
@@ -193,15 +193,14 @@ class Amaley_Core_Import_Export {
             wp_die( 'No CSV file uploaded.' );
         }
 
-        $rows = $this->read_csv_file( $_FILES['import_file']['tmp_name'] );
+        $rows   = $this->read_csv_file( $_FILES['import_file']['tmp_name'] );
         $report = $this->process_rows( $type, $rows, $mode, $dry_run );
-
         $this->render_import_report( $type, $mode, $dry_run, $report );
         exit;
     }
 
     /**
-     * Verify download/export request.
+     * Verify request.
      *
      * @param string $action Nonce action.
      * @return void
@@ -210,7 +209,6 @@ class Amaley_Core_Import_Export {
         if ( ! current_user_can( 'manage_options' ) ) {
             wp_die( 'Permission denied.' );
         }
-
         if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), $action ) ) {
             wp_die( 'Security check failed.' );
         }
@@ -229,32 +227,30 @@ class Amaley_Core_Import_Export {
     }
 
     /**
-     * Sample row by type.
+     * Sample rows.
      *
      * @param string $type Type.
      * @return array
      */
     private function sample_row( $type ) {
         $samples = array(
-            'clusters' => array( 'NUB-APR-001', 'Nubra Apricot Cluster', 'Ladakh', 'Leh', 'Nubra', 'Diskit, Turtuk', 'Small-batch apricot value chain.', 'Apricot jam, dried apricot', 'Coordinator Name', '+91 XXXXX XXXXX', 'active' ),
-            'shgs'     => array( 'DISKIT-SHG-001', 'Diskit Women Collective', 'NUB-APR-001', 'Diskit', 'Leh', '12', 'Apricot, bakery', 'Coordinator Name', '+91 XXXXX XXXXX', 'active' ),
-            'members'  => array( 'MEM-001', 'Tsering Dolma', 'DISKIT-SHG-001', 'Producer', 'Processing, packaging', 'Apricot jam', 'Diskit', 'active' ),
-            'origins'  => array( 'APR-JAM-250', 'NUB-APR-001', 'DISKIT-SHG-001', 'MEM-001', 'Nubra', 'Small-batch apricot jam prepared by producer families.', '1' ),
+            'clusters' => array( 'LAD-APR-001', 'Ladakh Apricot Cluster', 'Ladakh', 'Leh', 'Sham / Nubra Belt', 'Diskit, Turtuk', 'Mountain apricot value chain.', 'Apricot jam, dried apricot', 'Coordinator Name', '', 'active' ),
+            'shgs'     => array( 'DISKIT-APR-SHG-001', 'Diskit Apricot Women Collective', 'LAD-APR-001', 'Diskit', 'Leh', '12', 'Apricot products, preserve', 'SHG Coordinator', '', 'active' ),
+            'members'  => array( 'MEM-APR-001', 'Producer Member 01', 'DISKIT-APR-SHG-001', 'Producer', 'Sorting, drying, processing', 'Apricot preserve', 'Diskit', 'active' ),
+            'origins'  => array( 'ACTUAL-PRODUCT-SKU', 'LAD-APR-001', 'DISKIT-APR-SHG-001', 'MEM-APR-001', 'Diskit', 'Small-batch apricot product linked to SHG value chain.', '1' ),
         );
-
         return isset( $samples[ $type ] ) ? $samples[ $type ] : array();
     }
 
     /**
-     * Read CSV into associative rows.
+     * Read CSV rows.
      *
      * @param string $file File path.
      * @return array
      */
     private function read_csv_file( $file ) {
-        $rows = array();
+        $rows   = array();
         $handle = fopen( $file, 'r' );
-
         if ( ! $handle ) {
             return $rows;
         }
@@ -265,13 +261,18 @@ class Amaley_Core_Import_Export {
             return $rows;
         }
 
-        $headers = array_map( 'sanitize_key', $headers );
+        $headers = array_map(
+            function ( $header ) {
+                $header = preg_replace( '/^\xEF\xBB\xBF/', '', (string) $header );
+                return sanitize_key( $header );
+            },
+            $headers
+        );
 
         while ( ( $data = fgetcsv( $handle ) ) !== false ) {
             if ( count( array_filter( $data ) ) === 0 ) {
                 continue;
             }
-
             $row = array();
             foreach ( $headers as $index => $header ) {
                 $row[ $header ] = isset( $data[ $index ] ) ? sanitize_text_field( $data[ $index ] ) : '';
@@ -284,7 +285,7 @@ class Amaley_Core_Import_Export {
     }
 
     /**
-     * Process import rows.
+     * Process rows.
      *
      * @param string $type Type.
      * @param array  $rows Rows.
@@ -302,12 +303,16 @@ class Amaley_Core_Import_Export {
             'details' => array(),
         );
 
-        $required = $this->required_columns( $type );
+        if ( ! isset( $this->types()[ $type ] ) ) {
+            $report['errors'][] = 'Invalid import type.';
+            return $report;
+        }
+
         foreach ( $rows as $index => $row ) {
             $line = $index + 2;
-            foreach ( $required as $column ) {
+            foreach ( $this->required_columns( $type ) as $column ) {
                 if ( empty( $row[ $column ] ) ) {
-                    $report['errors'][] = 'Line ' . $line . ': Missing required column value: ' . $column;
+                    $report['errors'][] = 'Line ' . $line . ': Missing required value: ' . $column;
                     $report['skipped']++;
                     continue 2;
                 }
@@ -327,10 +332,8 @@ class Amaley_Core_Import_Export {
             } else {
                 $report['skipped']++;
             }
-
             $report['details'][] = 'Line ' . $line . ': ' . $result['message'];
         }
-
         return $report;
     }
 
@@ -347,12 +350,11 @@ class Amaley_Core_Import_Export {
             'members'  => array( 'member_code', 'member_name', 'shg_code' ),
             'origins'  => array( 'product_sku', 'cluster_code' ),
         );
-
         return isset( $required[ $type ] ) ? $required[ $type ] : array();
     }
 
     /**
-     * Process one row.
+     * Process single row.
      *
      * @param string $type Type.
      * @param array  $row Row.
@@ -361,282 +363,243 @@ class Amaley_Core_Import_Export {
      * @return array
      */
     private function process_single_row( $type, $row, $mode, $dry_run ) {
-        switch ( $type ) {
-            case 'clusters':
-                return $this->upsert_cluster( $row, $mode, $dry_run );
-            case 'shgs':
-                return $this->upsert_shg( $row, $mode, $dry_run );
-            case 'members':
-                return $this->upsert_member( $row, $mode, $dry_run );
-            case 'origins':
-                return $this->upsert_origin( $row, $mode, $dry_run );
+        if ( 'clusters' === $type ) {
+            return $this->import_cluster( $row, $mode, $dry_run );
         }
-
-        return array( 'error' => 'Invalid import type.' );
+        if ( 'shgs' === $type ) {
+            return $this->import_shg( $row, $mode, $dry_run );
+        }
+        if ( 'members' === $type ) {
+            return $this->import_member( $row, $mode, $dry_run );
+        }
+        if ( 'origins' === $type ) {
+            return $this->import_origin( $row, $mode, $dry_run );
+        }
+        return array( 'action' => 'skipped', 'message' => 'Unsupported row type.' );
     }
 
-    /**
-     * Upsert cluster.
-     *
-     * @param array  $row Row.
-     * @param string $mode Mode.
-     * @param bool   $dry_run Dry run.
-     * @return array
-     */
-    private function upsert_cluster( $row, $mode, $dry_run ) {
-        $existing_id = $this->find_post_by_meta( 'amaley_cluster', '_amaley_cluster_code', $row['cluster_code'] );
+    /** Import cluster row. */
+    private function import_cluster( $row, $mode, $dry_run ) {
+        $code    = $row['cluster_code'];
+        $title   = $row['cluster_name'];
+        $post_id = $this->find_post_by_meta( 'amaley_cluster', '_amaley_cluster_code', $code );
+        $action  = $post_id ? 'updated' : 'created';
 
-        // Safety fallback for old imported clusters that existed before Amaley Core
-        // and therefore do not yet have a stable cluster_code saved.
-        // This prevents duplicate Cluster records during first code backfill imports.
-        if ( ! $existing_id && ! empty( $row['cluster_name'] ) ) {
-            $existing_id = $this->find_post_by_title( 'amaley_cluster', $row['cluster_name'] );
+        if ( $post_id && 'create_only' === $mode ) {
+            return array( 'action' => 'skipped', 'message' => 'Cluster already exists: ' . $code );
         }
-
-        $action = $existing_id ? 'updated' : 'created';
-
-        if ( 'create_only' === $mode && $existing_id ) {
-            return array( 'action' => 'skipped', 'message' => 'Cluster exists, skipped: ' . $row['cluster_code'] );
+        if ( ! $post_id && 'update_only' === $mode ) {
+            return array( 'action' => 'skipped', 'message' => 'Cluster not found for update: ' . $code );
         }
-        if ( 'update_only' === $mode && ! $existing_id ) {
-            return array( 'action' => 'skipped', 'message' => 'Cluster does not exist, skipped: ' . $row['cluster_code'] );
+        if ( $dry_run ) {
+            return array( 'action' => $action, 'message' => 'DRY-RUN ' . $action . ' cluster: ' . $title );
         }
-
-        if ( ! $dry_run ) {
-            $post_id = $this->insert_or_update_post( $existing_id, 'amaley_cluster', $row['cluster_name'] );
-            update_post_meta( $post_id, '_amaley_cluster_code', $row['cluster_code'] );
-            update_post_meta( $post_id, '_amaley_region', $row['region'] ?? '' );
-            update_post_meta( $post_id, '_amaley_district', $row['district'] ?? '' );
-            update_post_meta( $post_id, '_amaley_block_area', $row['block_area'] ?? '' );
-            update_post_meta( $post_id, '_amaley_villages', $row['villages'] ?? '' );
-            update_post_meta( $post_id, '_amaley_short_intro', $row['short_intro'] ?? '' );
-            update_post_meta( $post_id, '_amaley_main_products', $row['main_products'] ?? '' );
-            update_post_meta( $post_id, '_amaley_contact_person', $row['contact_person'] ?? '' );
-            update_post_meta( $post_id, '_amaley_phone', $row['phone'] ?? '' );
-            update_post_meta( $post_id, '_amaley_status', $row['status'] ?? 'active' );
-            update_post_meta( $post_id, '_amaley_show_on_website', '1' );
-        }
-
-        return array( 'action' => $action, 'message' => ucfirst( $action ) . ' cluster: ' . $row['cluster_code'] );
-    }
-
-    /**
-     * Upsert SHG.
-     */
-    private function upsert_shg( $row, $mode, $dry_run ) {
-        $cluster_id = $this->find_post_by_meta( 'amaley_cluster', '_amaley_cluster_code', $row['cluster_code'] );
-        if ( ! $cluster_id ) {
-            return array( 'error' => 'Cluster not found for cluster_code: ' . $row['cluster_code'] );
-        }
-
-        $existing_id = $this->find_post_by_meta( 'amaley_shg_group', '_amaley_shg_code', $row['shg_code'] );
-        $action = $existing_id ? 'updated' : 'created';
-
-        if ( 'create_only' === $mode && $existing_id ) {
-            return array( 'action' => 'skipped', 'message' => 'SHG exists, skipped: ' . $row['shg_code'] );
-        }
-        if ( 'update_only' === $mode && ! $existing_id ) {
-            return array( 'action' => 'skipped', 'message' => 'SHG does not exist, skipped: ' . $row['shg_code'] );
-        }
-
-        if ( ! $dry_run ) {
-            $post_id = $this->insert_or_update_post( $existing_id, 'amaley_shg_group', $row['shg_name'] );
-            update_post_meta( $post_id, '_amaley_shg_code', $row['shg_code'] );
-            update_post_meta( $post_id, '_amaley_shg_cluster_id', $cluster_id );
-            update_post_meta( $post_id, '_amaley_shg_cluster_code', $row['cluster_code'] );
-            update_post_meta( $post_id, '_amaley_village', $row['village'] ?? '' );
-            update_post_meta( $post_id, '_amaley_district', $row['district'] ?? '' );
-            update_post_meta( $post_id, '_amaley_member_count', $row['member_count'] ?? '' );
-            update_post_meta( $post_id, '_amaley_product_categories', $row['product_categories'] ?? '' );
-            update_post_meta( $post_id, '_amaley_contact_person', $row['contact_person'] ?? '' );
-            update_post_meta( $post_id, '_amaley_phone', $row['phone'] ?? '' );
-            update_post_meta( $post_id, '_amaley_status', $row['status'] ?? 'active' );
-            update_post_meta( $post_id, '_amaley_show_on_website', '1' );
-        }
-
-        return array( 'action' => $action, 'message' => ucfirst( $action ) . ' SHG: ' . $row['shg_code'] );
-    }
-
-    /**
-     * Upsert member.
-     */
-    private function upsert_member( $row, $mode, $dry_run ) {
-        $shg_id = $this->find_post_by_meta( 'amaley_shg_group', '_amaley_shg_code', $row['shg_code'] );
-        if ( ! $shg_id ) {
-            return array( 'error' => 'SHG not found for shg_code: ' . $row['shg_code'] );
-        }
-
-        $existing_id = $this->find_post_by_meta( 'amaley_member', '_amaley_member_code', $row['member_code'] );
-        $action = $existing_id ? 'updated' : 'created';
-
-        if ( 'create_only' === $mode && $existing_id ) {
-            return array( 'action' => 'skipped', 'message' => 'Member exists, skipped: ' . $row['member_code'] );
-        }
-        if ( 'update_only' === $mode && ! $existing_id ) {
-            return array( 'action' => 'skipped', 'message' => 'Member does not exist, skipped: ' . $row['member_code'] );
-        }
-
-        if ( ! $dry_run ) {
-            $post_id = $this->insert_or_update_post( $existing_id, 'amaley_member', $row['member_name'] );
-            update_post_meta( $post_id, '_amaley_member_code', $row['member_code'] );
-            update_post_meta( $post_id, '_amaley_member_shg_id', $shg_id );
-            update_post_meta( $post_id, '_amaley_member_shg_code', $row['shg_code'] );
-            update_post_meta( $post_id, '_amaley_role', $row['role'] ?? '' );
-            update_post_meta( $post_id, '_amaley_skills', $row['skills'] ?? '' );
-            update_post_meta( $post_id, '_amaley_products_handled', $row['products_handled'] ?? '' );
-            update_post_meta( $post_id, '_amaley_village', $row['village'] ?? '' );
-            update_post_meta( $post_id, '_amaley_status', $row['status'] ?? 'active' );
-            update_post_meta( $post_id, '_amaley_show_on_website', '1' );
-        }
-
-        return array( 'action' => $action, 'message' => ucfirst( $action ) . ' member: ' . $row['member_code'] );
-    }
-
-    /**
-     * Upsert product origin.
-     */
-    private function upsert_origin( $row, $mode, $dry_run ) {
-        if ( ! function_exists( 'wc_get_product_id_by_sku' ) ) {
-            return array( 'error' => 'WooCommerce function wc_get_product_id_by_sku not available.' );
-        }
-
-        $product_id = wc_get_product_id_by_sku( $row['product_sku'] );
-        if ( ! $product_id ) {
-            return array( 'error' => 'Product not found for SKU: ' . $row['product_sku'] );
-        }
-
-        $cluster_id = $this->find_post_by_meta( 'amaley_cluster', '_amaley_cluster_code', $row['cluster_code'] );
-        if ( ! $cluster_id ) {
-            return array( 'error' => 'Cluster not found for cluster_code: ' . $row['cluster_code'] );
-        }
-
-        $shg_ids = $this->ids_from_codes( 'amaley_shg_group', '_amaley_shg_code', $row['shg_codes'] ?? '' );
-        $member_ids = $this->ids_from_codes( 'amaley_member', '_amaley_member_code', $row['member_codes'] ?? '' );
-        $has_existing = absint( get_post_meta( $product_id, '_amaley_origin_cluster_id', true ) );
-        $action = $has_existing ? 'updated' : 'created';
-
-        if ( 'create_only' === $mode && $has_existing ) {
-            return array( 'action' => 'skipped', 'message' => 'Origin mapping exists, skipped SKU: ' . $row['product_sku'] );
-        }
-        if ( 'update_only' === $mode && ! $has_existing ) {
-            return array( 'action' => 'skipped', 'message' => 'Origin mapping does not exist, skipped SKU: ' . $row['product_sku'] );
-        }
-
-        if ( ! $dry_run ) {
-            update_post_meta( $product_id, '_amaley_origin_cluster_id', $cluster_id );
-            update_post_meta( $product_id, '_amaley_origin_shg_ids', $shg_ids );
-            update_post_meta( $product_id, '_amaley_origin_member_ids', $member_ids );
-            update_post_meta( $product_id, '_amaley_origin_source_village', $row['source_village'] ?? '' );
-            update_post_meta( $product_id, '_amaley_origin_note', $row['origin_note'] ?? '' );
-            update_post_meta( $product_id, '_amaley_origin_show_origin', ! empty( $row['show_origin'] ) ? '1' : '0' );
-        }
-
-        return array( 'action' => $action, 'message' => ucfirst( $action ) . ' origin mapping for SKU: ' . $row['product_sku'] );
-    }
-
-    /**
-     * Find post by meta value.
-     */
-    private function find_post_by_meta( $post_type, $meta_key, $meta_value ) {
-        $posts = get_posts(
-            array(
-                'post_type'      => $post_type,
-                'post_status'    => array( 'publish', 'draft', 'pending', 'private' ),
-                'posts_per_page' => 1,
-                'fields'         => 'ids',
-                'meta_key'       => $meta_key,
-                'meta_value'     => $meta_value,
-            )
-        );
-
-        return ! empty( $posts ) ? absint( $posts[0] ) : 0;
-    }
-
-    /**
-     * Find an existing post by exact title.
-     *
-     * Used only as a safe fallback when old records do not yet have stable codes.
-     *
-     * @param string $post_type Post type.
-     * @param string $title     Post title from CSV.
-     * @return int
-     */
-    private function find_post_by_title( $post_type, $title ) {
-        $target_title = $this->normalize_title( $title );
-        if ( '' === $target_title ) {
-            return 0;
-        }
-
-        $posts = get_posts(
-            array(
-                'post_type'      => $post_type,
-                'post_status'    => array( 'publish', 'draft', 'pending', 'private' ),
-                'posts_per_page' => -1,
-                'fields'         => 'ids',
-            )
-        );
-
-        foreach ( $posts as $post_id ) {
-            if ( $this->normalize_title( get_the_title( $post_id ) ) === $target_title ) {
-                return absint( $post_id );
-            }
-        }
-
-        return 0;
-    }
-
-    /**
-     * Normalize title values for safe exact matching.
-     *
-     * @param string $title Title.
-     * @return string
-     */
-    private function normalize_title( $title ) {
-        $charset = function_exists( 'get_bloginfo' ) ? get_bloginfo( 'charset' ) : 'UTF-8';
-        $title   = wp_specialchars_decode( (string) $title, ENT_QUOTES );
-        $title   = html_entity_decode( $title, ENT_QUOTES, $charset ? $charset : 'UTF-8' );
-        $title   = wp_strip_all_tags( $title );
-
-        return trim( preg_replace( '/\s+/', ' ', $title ) );
-    }
-
-    /**
-     * Insert or update post.
-     */
-    private function insert_or_update_post( $post_id, $post_type, $title ) {
-        $data = array(
-            'post_title'  => $title,
-            'post_type'   => $post_type,
-            'post_status' => 'publish',
-        );
 
         if ( $post_id ) {
-            $data['ID'] = $post_id;
-            wp_update_post( $data );
-            return $post_id;
+            wp_update_post( array( 'ID' => $post_id, 'post_title' => $title, 'post_status' => 'publish' ) );
+        } else {
+            $post_id = wp_insert_post( array( 'post_type' => 'amaley_cluster', 'post_title' => $title, 'post_status' => 'publish' ) );
+        }
+        if ( is_wp_error( $post_id ) || ! $post_id ) {
+            return array( 'error' => 'Could not save cluster.' );
         }
 
-        return wp_insert_post( $data );
+        $this->update_meta_set( $post_id, array(
+            '_amaley_cluster_code'    => $code,
+            '_amaley_region'          => isset( $row['region'] ) ? $row['region'] : '',
+            '_amaley_district'        => isset( $row['district'] ) ? $row['district'] : '',
+            '_amaley_block_area'      => isset( $row['block_area'] ) ? $row['block_area'] : '',
+            '_amaley_villages'        => isset( $row['villages'] ) ? $row['villages'] : '',
+            '_amaley_short_intro'     => isset( $row['short_intro'] ) ? $row['short_intro'] : '',
+            '_amaley_main_products'   => isset( $row['main_products'] ) ? $row['main_products'] : '',
+            '_amaley_contact_person'  => isset( $row['contact_person'] ) ? $row['contact_person'] : '',
+            '_amaley_phone'           => isset( $row['phone'] ) ? $row['phone'] : '',
+            '_amaley_status'          => isset( $row['status'] ) ? $row['status'] : 'active',
+            '_amaley_show_on_website' => '1',
+        ) );
+        return array( 'action' => $action, 'message' => ucfirst( $action ) . ' cluster: ' . $title );
     }
 
-    /**
-     * Get IDs from comma-separated codes.
-     */
-    private function ids_from_codes( $post_type, $meta_key, $codes_string ) {
-        $codes = array_filter( array_map( 'trim', explode( ',', (string) $codes_string ) ) );
+    /** Import SHG row. */
+    private function import_shg( $row, $mode, $dry_run ) {
+        $code       = $row['shg_code'];
+        $title      = $row['shg_name'];
+        $cluster_id = $this->find_post_by_meta( 'amaley_cluster', '_amaley_cluster_code', $row['cluster_code'] );
+        if ( ! $cluster_id ) {
+            return array( 'error' => 'Linked cluster not found: ' . $row['cluster_code'] );
+        }
+
+        $post_id = $this->find_post_by_meta( 'amaley_shg_group', '_amaley_shg_code', $code );
+        $action  = $post_id ? 'updated' : 'created';
+        if ( $post_id && 'create_only' === $mode ) {
+            return array( 'action' => 'skipped', 'message' => 'SHG already exists: ' . $code );
+        }
+        if ( ! $post_id && 'update_only' === $mode ) {
+            return array( 'action' => 'skipped', 'message' => 'SHG not found for update: ' . $code );
+        }
+        if ( $dry_run ) {
+            return array( 'action' => $action, 'message' => 'DRY-RUN ' . $action . ' SHG: ' . $title );
+        }
+
+        if ( $post_id ) {
+            wp_update_post( array( 'ID' => $post_id, 'post_title' => $title, 'post_status' => 'publish' ) );
+        } else {
+            $post_id = wp_insert_post( array( 'post_type' => 'amaley_shg_group', 'post_title' => $title, 'post_status' => 'publish' ) );
+        }
+        if ( is_wp_error( $post_id ) || ! $post_id ) {
+            return array( 'error' => 'Could not save SHG.' );
+        }
+
+        $this->update_meta_set( $post_id, array(
+            '_amaley_shg_code'         => $code,
+            '_amaley_shg_cluster_id'   => $cluster_id,
+            '_amaley_shg_cluster_code' => $row['cluster_code'],
+            '_amaley_village'          => isset( $row['village'] ) ? $row['village'] : '',
+            '_amaley_district'         => isset( $row['district'] ) ? $row['district'] : '',
+            '_amaley_member_count'     => isset( $row['member_count'] ) ? absint( $row['member_count'] ) : 0,
+            '_amaley_product_categories' => isset( $row['product_categories'] ) ? $row['product_categories'] : '',
+            '_amaley_contact_person'   => isset( $row['contact_person'] ) ? $row['contact_person'] : '',
+            '_amaley_phone'            => isset( $row['phone'] ) ? $row['phone'] : '',
+            '_amaley_status'           => isset( $row['status'] ) ? $row['status'] : 'active',
+            '_amaley_show_on_website'  => '1',
+        ) );
+        return array( 'action' => $action, 'message' => ucfirst( $action ) . ' SHG: ' . $title );
+    }
+
+    /** Import member row. */
+    private function import_member( $row, $mode, $dry_run ) {
+        $code   = $row['member_code'];
+        $title  = $row['member_name'];
+        $shg_id = $this->find_post_by_meta( 'amaley_shg_group', '_amaley_shg_code', $row['shg_code'] );
+        if ( ! $shg_id ) {
+            return array( 'error' => 'Linked SHG not found: ' . $row['shg_code'] );
+        }
+
+        $post_id = $this->find_post_by_meta( 'amaley_member', '_amaley_member_code', $code );
+        $action  = $post_id ? 'updated' : 'created';
+        if ( $post_id && 'create_only' === $mode ) {
+            return array( 'action' => 'skipped', 'message' => 'Member already exists: ' . $code );
+        }
+        if ( ! $post_id && 'update_only' === $mode ) {
+            return array( 'action' => 'skipped', 'message' => 'Member not found for update: ' . $code );
+        }
+        if ( $dry_run ) {
+            return array( 'action' => $action, 'message' => 'DRY-RUN ' . $action . ' member: ' . $title );
+        }
+
+        if ( $post_id ) {
+            wp_update_post( array( 'ID' => $post_id, 'post_title' => $title, 'post_status' => 'publish' ) );
+        } else {
+            $post_id = wp_insert_post( array( 'post_type' => 'amaley_member', 'post_title' => $title, 'post_status' => 'publish' ) );
+        }
+        if ( is_wp_error( $post_id ) || ! $post_id ) {
+            return array( 'error' => 'Could not save member.' );
+        }
+
+        $this->update_meta_set( $post_id, array(
+            '_amaley_member_code'      => $code,
+            '_amaley_member_shg_id'    => $shg_id,
+            '_amaley_member_shg_code'  => $row['shg_code'],
+            '_amaley_role'             => isset( $row['role'] ) ? $row['role'] : '',
+            '_amaley_skills'           => isset( $row['skills'] ) ? $row['skills'] : '',
+            '_amaley_products_handled' => isset( $row['products_handled'] ) ? $row['products_handled'] : '',
+            '_amaley_village'          => isset( $row['village'] ) ? $row['village'] : '',
+            '_amaley_status'           => isset( $row['status'] ) ? $row['status'] : 'active',
+            '_amaley_show_on_website'  => '1',
+        ) );
+        return array( 'action' => $action, 'message' => ucfirst( $action ) . ' member: ' . $title );
+    }
+
+    /** Import product origin row. */
+    private function import_origin( $row, $mode, $dry_run ) {
+        $product_id = $this->find_product_by_sku( $row['product_sku'] );
+        if ( ! $product_id ) {
+            return array( 'error' => 'Product SKU not found: ' . $row['product_sku'] );
+        }
+        $cluster_id = $this->find_post_by_meta( 'amaley_cluster', '_amaley_cluster_code', $row['cluster_code'] );
+        if ( ! $cluster_id ) {
+            return array( 'error' => 'Cluster code not found: ' . $row['cluster_code'] );
+        }
+
+        $shg_ids    = $this->codes_to_ids( isset( $row['shg_codes'] ) ? $row['shg_codes'] : '', 'amaley_shg_group', '_amaley_shg_code' );
+        $member_ids = $this->codes_to_ids( isset( $row['member_codes'] ) ? $row['member_codes'] : '', 'amaley_member', '_amaley_member_code' );
+
+        if ( $dry_run ) {
+            return array( 'action' => 'updated', 'message' => 'DRY-RUN update origin for SKU: ' . $row['product_sku'] );
+        }
+
+        update_post_meta( $product_id, '_amaley_origin_cluster_id', $cluster_id );
+        update_post_meta( $product_id, '_amaley_origin_shg_ids', $shg_ids );
+        update_post_meta( $product_id, '_amaley_origin_member_ids', $member_ids );
+        update_post_meta( $product_id, '_amaley_origin_source_village', isset( $row['source_village'] ) ? $row['source_village'] : '' );
+        update_post_meta( $product_id, '_amaley_origin_note', isset( $row['origin_note'] ) ? $row['origin_note'] : '' );
+        update_post_meta( $product_id, '_amaley_origin_traceability_note', isset( $row['origin_note'] ) ? $row['origin_note'] : '' );
+        update_post_meta( $product_id, '_amaley_origin_show_origin', isset( $row['show_origin'] ) ? ( '1' === (string) $row['show_origin'] ? '1' : '0' ) : '1' );
+        update_post_meta( $product_id, '_amaley_origin_show_producer', '1' );
+
+        return array( 'action' => 'updated', 'message' => 'Updated origin mapping for SKU: ' . $row['product_sku'] );
+    }
+
+    /** Update meta values. */
+    private function update_meta_set( $post_id, $values ) {
+        foreach ( $values as $key => $value ) {
+            update_post_meta( $post_id, $key, $value );
+        }
+    }
+
+    /** Find post by meta. */
+    private function find_post_by_meta( $post_type, $meta_key, $meta_value ) {
+        $posts = get_posts( array(
+            'post_type'      => $post_type,
+            'post_status'    => array( 'publish', 'draft', 'pending', 'private' ),
+            'posts_per_page' => 1,
+            'fields'         => 'ids',
+            'meta_key'       => $meta_key,
+            'meta_value'     => $meta_value,
+        ) );
+        return empty( $posts ) ? 0 : absint( $posts[0] );
+    }
+
+    /** Find Woo product by SKU. */
+    private function find_product_by_sku( $sku ) {
+        $sku = trim( (string) $sku );
+        if ( '' === $sku ) {
+            return 0;
+        }
+        if ( function_exists( 'wc_get_product_id_by_sku' ) ) {
+            $product_id = wc_get_product_id_by_sku( $sku );
+            if ( $product_id ) {
+                return absint( $product_id );
+            }
+        }
+        return $this->find_post_by_meta( 'product', '_sku', $sku );
+    }
+
+    /** Convert comma codes to post IDs. */
+    private function codes_to_ids( $raw, $post_type, $meta_key ) {
         $ids = array();
-        foreach ( $codes as $code ) {
+        foreach ( array_filter( array_map( 'trim', explode( ',', (string) $raw ) ) ) as $code ) {
             $id = $this->find_post_by_meta( $post_type, $meta_key, $code );
             if ( $id ) {
                 $ids[] = $id;
             }
         }
-        return $ids;
+        return array_values( array_unique( array_map( 'absint', $ids ) ) );
     }
 
-    /**
-     * Export rows.
-     */
+    /** Convert IDs to codes. */
+    private function ids_to_codes( $ids, $meta_key ) {
+        $codes = array();
+        foreach ( array_filter( array_map( 'absint', (array) $ids ) ) as $id ) {
+            $code = get_post_meta( $id, $meta_key, true );
+            if ( $code ) {
+                $codes[] = $code;
+            }
+        }
+        return implode( ',', $codes );
+    }
+
+    /** Export rows by type. */
     private function get_export_rows( $type ) {
         if ( 'clusters' === $type ) {
             return $this->export_posts( 'amaley_cluster', array( '_amaley_cluster_code', 'post_title', '_amaley_region', '_amaley_district', '_amaley_block_area', '_amaley_villages', '_amaley_short_intro', '_amaley_main_products', '_amaley_contact_person', '_amaley_phone', '_amaley_status' ) );
@@ -650,24 +613,13 @@ class Amaley_Core_Import_Export {
         if ( 'origins' === $type ) {
             return $this->export_origins();
         }
-
         return array();
     }
 
-    /**
-     * Export CPT posts.
-     */
+    /** Export CPT rows. */
     private function export_posts( $post_type, $keys ) {
-        $posts = get_posts(
-            array(
-                'post_type'      => $post_type,
-                'post_status'    => array( 'publish', 'draft', 'pending', 'private' ),
-                'posts_per_page' => -1,
-                'orderby'        => 'title',
-                'order'          => 'ASC',
-            )
-        );
-        $rows = array();
+        $posts = get_posts( array( 'post_type' => $post_type, 'post_status' => array( 'publish', 'draft', 'pending', 'private' ), 'posts_per_page' => -1, 'orderby' => 'title', 'order' => 'ASC' ) );
+        $rows  = array();
         foreach ( $posts as $post ) {
             $row = array();
             foreach ( $keys as $key ) {
@@ -678,97 +630,69 @@ class Amaley_Core_Import_Export {
         return $rows;
     }
 
-    /**
-     * Export product origin mapping.
-     */
+    /** Export product origins. */
     private function export_origins() {
         if ( ! post_type_exists( 'product' ) ) {
             return array();
         }
-
-        $products = get_posts(
-            array(
-                'post_type'      => 'product',
-                'post_status'    => array( 'publish', 'draft', 'pending', 'private' ),
-                'posts_per_page' => -1,
-            )
-        );
-
-        $rows = array();
+        $products = get_posts( array( 'post_type' => 'product', 'post_status' => array( 'publish', 'draft', 'pending', 'private' ), 'posts_per_page' => -1, 'orderby' => 'title', 'order' => 'ASC' ) );
+        $rows     = array();
         foreach ( $products as $product ) {
             $cluster_id = absint( get_post_meta( $product->ID, '_amaley_origin_cluster_id', true ) );
             if ( ! $cluster_id ) {
                 continue;
             }
-            $product_obj = function_exists( 'wc_get_product' ) ? wc_get_product( $product->ID ) : null;
+            $sku = '';
+            if ( function_exists( 'wc_get_product' ) ) {
+                $wc_product = wc_get_product( $product->ID );
+                $sku        = $wc_product ? $wc_product->get_sku() : '';
+            } else {
+                $sku = get_post_meta( $product->ID, '_sku', true );
+            }
             $rows[] = array(
-                $product_obj ? $product_obj->get_sku() : '',
+                $sku,
                 get_post_meta( $cluster_id, '_amaley_cluster_code', true ),
-                $this->codes_from_ids( (array) get_post_meta( $product->ID, '_amaley_origin_shg_ids', true ), '_amaley_shg_code' ),
-                $this->codes_from_ids( (array) get_post_meta( $product->ID, '_amaley_origin_member_ids', true ), '_amaley_member_code' ),
+                $this->ids_to_codes( get_post_meta( $product->ID, '_amaley_origin_shg_ids', true ), '_amaley_shg_code' ),
+                $this->ids_to_codes( get_post_meta( $product->ID, '_amaley_origin_member_ids', true ), '_amaley_member_code' ),
                 get_post_meta( $product->ID, '_amaley_origin_source_village', true ),
                 get_post_meta( $product->ID, '_amaley_origin_note', true ),
                 get_post_meta( $product->ID, '_amaley_origin_show_origin', true ),
             );
         }
-
         return $rows;
     }
 
-    /**
-     * Get CSV codes from IDs.
-     */
-    private function codes_from_ids( $ids, $meta_key ) {
-        $codes = array();
-        foreach ( array_filter( array_map( 'absint', $ids ) ) as $id ) {
-            $code = get_post_meta( $id, $meta_key, true );
-            if ( $code ) {
-                $codes[] = $code;
-            }
-        }
-        return implode( ',', $codes );
-    }
-
-    /**
-     * Render import report and stop.
-     */
+    /** Render import report. */
     private function render_import_report( $type, $mode, $dry_run, $report ) {
         echo '<div class="wrap amaley-core-wrap">';
         echo '<h1>Amaley Core Import Report</h1>';
-        echo '<p><a href="' . esc_url( admin_url( 'admin.php?page=amaley-core-import-export' ) ) . '">← Back to Import / Export</a></p>';
-        echo '<div class="amaley-core-panel">';
-        echo '<h2>' . esc_html( $dry_run ? 'Dry-run Preview' : 'Import Completed' ) . '</h2>';
-        echo '<p><strong>Type:</strong> ' . esc_html( $type ) . '</p>';
-        echo '<p><strong>Mode:</strong> ' . esc_html( $mode ) . '</p>';
-        echo '<ul>';
-        echo '<li>Total rows: ' . esc_html( $report['total'] ) . '</li>';
-        echo '<li>New records: ' . esc_html( $report['created'] ) . '</li>';
-        echo '<li>Records to update: ' . esc_html( $report['updated'] ) . '</li>';
-        echo '<li>Skipped: ' . esc_html( $report['skipped'] ) . '</li>';
-        echo '<li>Errors: ' . esc_html( count( $report['errors'] ) ) . '</li>';
-        echo '</ul>';
+        echo '<p><strong>Type:</strong> ' . esc_html( $type ) . ' &nbsp; <strong>Mode:</strong> ' . esc_html( $mode ) . ' &nbsp; <strong>Dry-run:</strong> ' . esc_html( $dry_run ? 'Yes' : 'No' ) . '</p>';
+        echo '<div class="amaley-core-cards">';
+        $this->report_card( 'Total Rows', $report['total'] );
+        $this->report_card( 'Created', $report['created'] );
+        $this->report_card( 'Updated', $report['updated'] );
+        $this->report_card( 'Skipped', $report['skipped'] );
         echo '</div>';
-
         if ( ! empty( $report['errors'] ) ) {
-            echo '<div class="amaley-core-panel amaley-core-error-panel"><h2>Errors</h2><ul>';
+            echo '<div class="notice notice-error"><p><strong>Errors:</strong></p><ul>';
             foreach ( $report['errors'] as $error ) {
                 echo '<li>' . esc_html( $error ) . '</li>';
             }
             echo '</ul></div>';
         }
-
         if ( ! empty( $report['details'] ) ) {
-            echo '<div class="amaley-core-panel"><h2>Details</h2><ul>';
+            echo '<div class="amaley-core-panel"><h2>Details</h2><ol>';
             foreach ( $report['details'] as $detail ) {
                 echo '<li>' . esc_html( $detail ) . '</li>';
             }
-            echo '</ul></div>';
+            echo '</ol></div>';
         }
-
-        if ( $dry_run ) {
-            echo '<div class="amaley-core-panel amaley-core-warning-panel"><p>This was a dry-run. No data was written. Run again with Dry-run unchecked only after reviewing the report and exporting current data.</p></div>';
-        }
-
+        echo '<p><a class="button button-primary" href="' . esc_url( admin_url( 'admin.php?page=amaley-core-import-export' ) ) . '">Back to Import / Export</a></p>';
         echo '</div>';
+    }
+
+    /** Report stat card. */
+    private function report_card( $label, $value ) {
+        echo '<div class="amaley-core-card"><span>' . esc_html( $label ) . '</span><strong>' . esc_html( $value ) . '</strong></div>';
     }
 }
