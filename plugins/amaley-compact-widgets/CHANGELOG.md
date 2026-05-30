@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.3
+- Added Amaley Origin Map Path widget for the homepage.
+- Added `[amaley_cw_origin_map]` shortcode.
+- Added static CSS map board with route markers, label cards, route caption, right-side journey list and CTA.
+- Kept the widget manual/static inside Compact Widgets; no CPT, ACF, Discovery Engine, WooCommerce template, header/footer or frontend JavaScript changes.
+
 ## 0.4.2
 - Final professional polish after v0.4.1 visual approval.
 - Added Elementor alignment controls for header, card/item text and button row.
