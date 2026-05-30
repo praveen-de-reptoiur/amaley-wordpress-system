@@ -1,8 +1,8 @@
 # Amaley WordPress System
 
-Private source-code and documentation repository for the Amaley WordPress ecosystem.
+Controlled source-code and documentation repository for the Amaley WordPress ecosystem.
 
-This repository is maintained for clean plugin development, design-system control, migration planning, QA, debugging, and future developer handoff.
+This repository is maintained for clean plugin development, source history, design-system control, migration planning, QA, debugging, and future developer handoff.
 
 ---
 
@@ -11,40 +11,62 @@ This repository is maintained for clean plugin development, design-system contro
 This repository stores:
 
 - Custom Amaley plugin source code
-- WordPress development documentation
-- Design-system rules
-- Migration plans
-- Changelog records
-- QA and debug notes
-- Developer handoff files
+- Documentation and changelog records
+- Architecture and plugin-boundary rules
+- QA and dry-test notes
+- Migration and handoff planning
+
+GitHub is not a backup dump.
 
 ---
 
-## Important Rule
+## GitHub vs Google Drive Rule
 
-This repository must not be used as a backup dump.
+GitHub is for:
 
-Do not upload:
+- Source code
+- Documentation
+- Version history
+- Migration planning
+- QA notes
+- Developer handoff notes
 
-- `.wpress` files
-- Full website backup ZIPs
-- Large media folders
-- Product image dumps
+Google Drive is for:
+
+- `.wpress` backups
+- Plugin ZIP backups
+- Elementor exports
+- WooCommerce exports
+- Product images
+- Screenshots
 - Videos
-- Passwords
-- API keys
-- License keys
-- `wp-config.php`
+- Handoff ZIP packages
 
-Heavy files belong in Google Drive.
+Do not upload ZIPs, videos, screenshots, product image dumps, passwords, API keys, license keys, or `wp-config.php` to GitHub.
 
 ---
 
-## Current Documentation
+## Current Locked Plugin Source Status
+
+| Plugin / Module | Current source status | Role |
+| --- | --- | --- |
+| Amaley Core | v1.0.2 | Data backbone: Cluster, SHG Group, Member / Producer, Product Origin Mapping |
+| Amaley Discovery Engine | v1.3.5 | Discovery, filtering, search, sort, pagination, listing logic |
+| Amaley Site Shell | v1.0.1 | Header/footer shell, mobile drawer, shortcode/manual mode; auto-render on hold |
+| Amaley UI Sections Kit | v0.6.1 | Generic page/home visual sections: Home Hero V6, Page Trust Strip, Pages Hero Other, UI foundation |
+| Amaley Compact Widgets | v0.4.2 | Manual/static compact visual card and section widgets |
+| Amaley Templates | v1.2.7 | WooCommerce/page template support modules |
+
+Current source code belongs in GitHub. Plugin ZIP backups stay in Google Drive.
+
+---
+
+## Active Documentation
 
 Start here:
 
 - `docs/READ_FIRST_AMALEY.md`
+- `docs/AMALEY_PLUGIN_WIDGET_REGISTRY_AND_CONFLICT_RULES.md`
 - `docs/AMALEY_DESIGN_SYSTEM_LOCKED.md`
 - `docs/AMALEY_PRIMARY_BUILD_RULES.md`
 - `docs/AMALEY_PERFORMANCE_AND_NO_ELEMENTOR_LOCK.md`
@@ -61,16 +83,9 @@ Start here:
 
 ## Target Architecture
 
-The future Amaley system should not depend permanently on:
+The future Amaley system should not depend permanently on ACF, CPT UI, JetEngine, Smart Filters, random utility plugins, or page-builder default widgets for important custom UI sections.
 
-- ACF
-- CPT UI
-- JetEngine
-- Smart Filters
-- Random utility plugins
-- Page-builder default widgets for important custom UI sections
-
-These may exist in old/current WordPress setups, but they are not part of the final target architecture.
+These may exist in old/current WordPress setups, but they are not the final target architecture.
 
 Target custom system:
 
@@ -78,46 +93,135 @@ Target custom system:
 - Amaley Discovery Engine
 - Amaley Site Shell
 - Amaley UI Sections Kit
+- Amaley Compact Widgets
 - Amaley Templates
 - Amaley Project Guard
 - Amaley Debug Toolkit
 
 ---
 
-## Future UI Direction
+## Plugin Boundaries
 
-For the future clean Amaley website, important UI sections must be Amaley-controlled and lightweight.
+### Amaley Core
 
-Future UI sections should not depend on Elementor default widgets such as:
+Amaley Core manages the data backbone only:
 
-- Elementor Heading widget
-- Elementor Button widget
-- Elementor Icon Box widget
-- Elementor Image Box widget
-- Elementor HTML widget
-- Elementor generic section layouts as the main system
+- Clusters
+- SHG Groups
+- SHG Members / Producers
+- Product Origin Mapping
+- Producer / maker profiles
+- Traceability fields
+- System health checks
 
-Elementor may still exist in old/current setups during migration, but new custom UI sections, buttons, cards, strips, CTAs, product blocks, origin blocks, and story sections must come from Amaley-controlled components.
+Rule: Amaley Core must not become a frontend design plugin.
 
-The future clean UI system should be:
+---
 
-- WordPress-native
-- Theme-like
-- Lightweight
-- Low-network-ready
-- Mobile-first
-- Global design-token controlled
-- Easy to disable
-- Easy to rollback
-- Safe for WooCommerce
+### Amaley Discovery Engine
+
+Discovery Engine manages listing and discovery logic:
+
+- Product filters
+- Search
+- Sorting
+- Pagination
+- Result grids
+- Topbar filters
+- Cluster / SHG / Member discovery where discovery logic is required
+
+Rule: Discovery Engine must stay separate from Core, Templates, UI Sections Kit and Compact Widgets.
+
+---
+
+### Amaley Site Shell
+
+Site Shell manages:
+
+- Header
+- Footer
+- Mobile header
+- Mobile drawer
+- Navigation shell
+- Announcement strip
+- Shell-level CTA controls
+
+Current rule: auto-render remains on hold. Header/footer replacement must not be done blindly on the live site.
+
+---
+
+### Amaley UI Sections Kit
+
+UI Sections Kit owns generic page/home visual sections and foundation UI components:
+
+- Home Hero V6
+- Page Trust Strip
+- Pages Hero Other
+- Foundation section headings/buttons/strips
+- Generic static page visual sections where they do not belong to Compact Widgets
+
+Rule: UI Sections Kit must not own CPT data cards, discovery filters, WooCommerce templates, header/footer, or compact card libraries.
+
+---
+
+### Amaley Compact Widgets
+
+Compact Widgets owns manual/static compact visual card and section widgets:
+
+- Info Cards Grid
+- Split Editorial Section
+- Traceability Journey as static visual section
+- Gifting / Bulk Band
+- Feature / Value Strip
+- Process Steps
+- Origin Story Cards where manual/static
+- Purpose Cards
+- Collection Cards where manual/static
+- Two Panel Info
+- Dark Chain Cards
+- Image Flip Cards
+- Image Cards
+- Image Info Cards
+- Image Overlay Cards
+- Quote Cards
+- CTA Tiles
+- Metric Tiles
+
+Rule: Compact Widgets must not own CPT/data logic, Discovery filters, WooCommerce template overrides, header/footer, Home Hero V6, Page Trust Strip, or Pages Hero Other.
+
+---
+
+### Amaley Templates
+
+Templates supports WooCommerce/page template modules:
+
+- Single product support modules
+- Shop page support modules
+- Product template sections
+- Product hero / tabs / trust strip / origin display where template-specific
+
+Rule: WooCommerce remains the commerce engine. Amaley Templates supports WooCommerce; it does not replace WooCommerce.
+
+---
+
+## WooCommerce Rule
+
+WooCommerce remains responsible for:
+
+- Products
+- Prices
+- Stock
+- Variations
+- Cart
+- Checkout
+- Orders
+- Reviews
+
+Custom Amaley plugins must support WooCommerce, not replace it.
 
 ---
 
 ## Performance Lock
-
-The Amaley website must remain extremely lightweight.
-
-It must load fast even in low-network areas and must not become heavy after products, sections, origin data, or future modules are added.
 
 Every plugin/module must follow:
 
@@ -136,285 +240,33 @@ If a component looks premium but makes the site heavy, it is not approved.
 
 ---
 
-## Global Design Token Direction
-
-The future Amaley UI/component system must be globally controlled through design tokens.
-
-When the final Amaley brand PDF is provided, global tokens should control:
-
-- Brand colors
-- Background colors
-- Text colors
-- Heading font
-- Body font
-- Font sizes
-- Button styling
-- Border radius
-- Card styling
-- Shadows
-- Section spacing
-- Mobile spacing
-- Product card styling
-- Trust strip styling
-
-If global font, color, radius, spacing, or button style changes, connected UI components should update without editing every section manually.
-
----
-
-## Active Custom Plugin / Module Direction
-
-### Amaley Core
-
-Core data and system backbone.
-
-Current / planned role:
-
-- Register Amaley CPTs safely
-- Manage Clusters
-- Manage SHG Groups
-- Manage SHG Members
-- Manage Product Origin Mapping
-- Manage producer / maker profiles
-- Manage traceability fields
-- Reduce dependency on third-party field/CPT plugins
-- Add system-level health checks
-- Keep data migration-safe
-
-Rule:
-
-Amaley Core handles the data backbone only.  
-It must not become a frontend design plugin.
-
----
-
-### Amaley Discovery Engine
-
-Discovery, filtering, listing, pagination, search, sorting, and Cluster / SHG / Member discovery system.
-
-Rule:
-
-Discovery Engine must remain separate from Amaley Core, Amaley Templates, and Amaley UI Sections Kit.
-
-It must stay lightweight and avoid expensive unlimited frontend queries.
-
----
-
-### Amaley Site Shell
-
-Header/footer shell system.
-
-Role:
-
-- Header
-- Footer
-- Mobile header
-- Mobile drawer
-- Navigation shell
-- Announcement strip
-- CTA controls
-- Footer contact and link controls
-
-Current status:
-
-- v1.0.1 source exists
-- Shortcode/manual mode tested
-- Auto-render exists but remains on HOLD
-- Full replacement must be tested only on fresh/staging after source of existing header/footer is confirmed
-
-Rule:
-
-Amaley Site Shell must not blindly override live/current header and footer.
-
----
-
-### Amaley UI Sections Kit
-
-Future lightweight WordPress-native UI section/component system.
-
-Role:
-
-- Buttons
-- Button groups
-- Section headings
-- Heading strips
-- Promise strips
-- Product cards
-- Product grids
-- Story sections
-- Media + text sections
-- Trust strips
-- CTA bands
-- Origin blocks
-- Cluster cards
-- SHG / women collective cards
-- Contact blocks
-- Footer CTA sections
-
-Rules:
-
-- No Elementor default widget dependency
-- No Elementor HTML widget dependency
-- No CPT creation
-- No WooCommerce replacement
-- No header/footer replacement
-- No discovery/filter engine replacement
-- Low-network-first
-- Global design-token controlled
-- No plugin ZIP should be built until structure, inventory, design tokens, and phase plan are approved
-
----
-
-### Amaley Templates
-
-Template-level support module.
-
-Role:
-
-- Existing or transitional template-level WooCommerce/page sections
-- Single product section support where already planned
-- Shop page section support where already planned
-- Product hero / info tabs / trust strip / origin display where already implemented or required during migration
-
-Rule:
-
-Amaley Templates must support WooCommerce, not replace it.
-
-Future clean reusable UI components should move toward Amaley UI Sections Kit instead of relying on Elementor default widgets.
-
----
-
-### Amaley Project Guard
-
-Future safety and health-check plugin.
-
-Planned role:
-
-- Show active Amaley plugin versions
-- Detect missing WooCommerce
-- Detect risky duplicate plugins
-- Detect old or broken Amaley plugins
-- Detect missing CPTs or fields
-- Warn before unsafe activation
-- Provide admin-only project health dashboard
-
-Rule:
-
-Project Guard must remain admin-only/lightweight and must not slow down the public frontend.
-
----
-
-### Amaley Debug Toolkit
-
-Future admin-only diagnostic plugin.
-
-Planned role:
-
-- Record plugin health status
-- Show module/component registration status
-- Show WooCommerce dependency status
-- Show product and origin data issues
-- Show cache-related warnings
-- Provide exportable debug reports for developers
-
-Debug tools must be:
-
-- Admin-only
-- Permission-protected
-- Safe for production
-- Easy to disable
-- Not visible to public users
-- Not exposing secrets
-- Not slowing the public frontend
-
----
-
-## WooCommerce Rule
-
-WooCommerce remains the commerce engine.
-
-WooCommerce handles:
-
-- Products
-- Prices
-- Stock
-- Variations
-- Cart
-- Checkout
-- Orders
-- Reviews
-
-Custom Amaley plugins must support WooCommerce, not replace it.
-
----
-
-## Google Drive vs GitHub
-
-Google Drive is for:
-
-- `.wpress` backups
-- Plugin ZIP backups
-- Elementor exports
-- WooCommerce exports
-- Product images
-- Screenshots
-- Videos
-- Handoff ZIP packages
-
-GitHub is for:
-
-- Source code
-- Documentation
-- Version history
-- Migration planning
-- QA notes
-- Developer handoff notes
-
----
-
 ## Development Standard
 
 Every change must be:
 
 - Versioned
 - Documented
-- Tested
+- Tested or clearly marked as not yet live-tested
 - Reversible
-- Consistent with the Amaley design system
+- Consistent with Amaley design rules
 - Safe for WooCommerce
 - Lightweight
 - Low-network-ready
 - Mobile-first
 - Debuggable
-- Global-design-token compatible where relevant
 - Non-coder manageable where relevant
 
-No random fixes.  
-No undocumented plugin edits.  
-No messy file names.  
-No backup files in GitHub.
+No random fixes. No undocumented edits. No backup files in GitHub.
 
 ---
 
 ## Step-by-Step Workflow Rule
 
-Future Amaley work must move in small steps.
+Future Amaley work must move in small steps:
 
-Rule:
-
-- One task at a time
-- No parallel build/update/confusion
-- Ask before starting plugin build
-- Ask before ZIP creation
-- Ask before Drive upload
-- Ask before GitHub structural change
-- Complete current step first
-- Check current step
-- Then move to next step
-
-No build should start without approval.
-
----
-
-## Hard Rule
-
-If a plugin cannot be tested, debugged, documented, rolled back, and managed safely, it is not production-ready.
+1. Review current source/repo status first.
+2. Use source files for GitHub updates.
+3. Do not commit ZIP/media/screenshots/videos to GitHub.
+4. Preview or dry-test visual widgets before calling them final.
+5. Update documentation/changelog after serious source changes.
+6. Verify the final repo state before reporting done.
