@@ -3,7 +3,7 @@
  * Plugin Name: Amaley Compact Widgets
  * Plugin URI: https://amaleycollective.com/
  * Description: Professional, compact, mobile-first Elementor widgets and shortcodes for Amaley page sections. Scoped, lightweight, no frontend JavaScript.
- * Version: 0.4.2
+ * Version: 0.4.3
  * Author: Praveen
  * Text Domain: amaley-compact-widgets
  * Requires at least: 6.0
@@ -15,7 +15,7 @@
 defined( 'ABSPATH' ) || exit;
 
 if ( ! defined( 'AMALEY_CW_VERSION' ) ) {
-	define( 'AMALEY_CW_VERSION', '0.4.2' );
+	define( 'AMALEY_CW_VERSION', '0.4.3' );
 }
 if ( ! defined( 'AMALEY_CW_FILE' ) ) {
 	define( 'AMALEY_CW_FILE', __FILE__ );
@@ -28,6 +28,7 @@ if ( ! defined( 'AMALEY_CW_URL' ) ) {
 }
 
 require_once AMALEY_CW_PATH . 'includes/class-amaley-cw-renderer.php';
+require_once AMALEY_CW_PATH . 'includes/class-amaley-cw-origin-map.php';
 require_once AMALEY_CW_PATH . 'includes/class-amaley-cw-shortcodes.php';
 require_once AMALEY_CW_PATH . 'includes/class-amaley-cw-plugin.php';
 
