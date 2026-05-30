@@ -6,11 +6,15 @@ Last updated: 2026-05-30
 
 This document is the source of truth for where Amaley widgets, sections, shortcodes, CSS and PHP classes should live. Do not add new widgets randomly without checking this registry first.
 
+---
+
 ## Core rule
 
 Each plugin must own one clear responsibility. Do not duplicate widgets, shortcodes, CSS prefixes, Elementor widget names or PHP classes across plugins.
 
-GitHub must stay clean source only. Do not commit ZIP files, backups, media dumps, videos, screenshots, passwords, wp-config files or All-in-One Migration archives.
+GitHub must stay clean source only. Do not commit ZIP files, backups, media dumps, videos, screenshots, passwords, `wp-config.php` files or All-in-One Migration archives.
+
+---
 
 ## Preview requirement lock
 
@@ -25,6 +29,8 @@ Required for every new visual build:
 
 Do not provide plugin ZIP/code alone for visual widgets. Preview is mandatory.
 
+---
+
 ## Plugin ownership map
 
 | Plugin | Owns | Must not own |
@@ -34,7 +40,9 @@ Do not provide plugin ZIP/code alone for visual widgets. Preview is mandatory.
 | Amaley Templates | Single product, shop page, product template modules, product-page trust strip, shop discovery wrapper | General page hero trust strip, CPT data management, Discovery Engine filter logic |
 | Amaley Site Shell | Header, footer, mobile drawer, site shell shortcodes/widgets | Content sections, product cards, discovery filters, CPT cards |
 | Amaley UI Sections Kit | General reusable page/homepage visual sections only: Home Hero V6, Page Trust Strip, Pages Hero Other and foundation UI components | CPT-specific cards, Discovery filters, header/footer, WooCommerce templates, origin data management, compact card libraries |
-| Amaley Compact Widgets | Generic compact visual card/section widgets for manual/static page building: info cards, split editorial, values, process, purpose, image/flip cards, CTA/metric tiles | CPT/data logic, Discovery filters, header/footer, WooCommerce templates, Home Hero V6, Page Trust Strip, Pages Hero Other |
+| Amaley Compact Widgets | Generic compact visual card/section widgets for manual/static page building: info cards, split editorial, values, process, purpose, map-style origin section, image/flip cards, CTA/metric tiles | CPT/data logic, Discovery filters, header/footer, WooCommerce templates, Home Hero V6, Page Trust Strip, Pages Hero Other |
+
+---
 
 ## Locked decisions
 
@@ -61,11 +69,9 @@ Amaley Discovery Engine already owns important filter/listing sections. Do not e
 
 Only touch Discovery Engine when the task is specifically about filters, search, sort, pagination, result rendering, discovery layout or a Discovery Engine bug fix.
 
-Before touching it, check for conflict with UI Sections Kit, Templates and Core.
-
 ### UI Sections Kit stays generic and hero-focused
 
-UI Sections Kit should only contain generic, reusable visual page sections that do not depend on CPT data, especially locked heroes and foundation components.
+UI Sections Kit should only contain generic reusable visual page sections that do not depend on CPT data, especially locked heroes and foundation components.
 
 Allowed examples:
 
@@ -98,6 +104,7 @@ Allowed examples:
 - Info Cards Grid
 - Split Editorial Section
 - Traceability Journey used as a static visual section only
+- Origin Map Path used as a static homepage origin/map-style section only
 - Gifting / Bulk Band
 - Feature / Value Strip
 - Process Steps
@@ -130,6 +137,8 @@ Amaley Templates owns product and shop page template modules only. Do not use Te
 
 No other plugin should create Amaley header/footer/mobile drawer widgets or shortcodes.
 
+---
+
 ## Current known widgets and shortcodes
 
 ### Amaley UI Sections Kit
@@ -138,22 +147,9 @@ Current accepted plugin build: v0.6.1 performance and conditional asset loading 
 
 Accepted/locked shortcodes:
 
-- [amaley_page_trust_strip]
-- [amaley_home_hero_v6]
-- [amaley_pages_hero_other]
-
-Existing foundation shortcodes:
-
-- [amaley_section_heading]
-- [amaley_button]
-- [amaley_button_group]
-- [amaley_trust_item]
-- [amaley_trust_strip] legacy alias only
-- [amaley_brand_promise]
-- [amaley_cta_band]
-- [amaley_empty_state]
-- [amaley_product_card]
-- [amaley_product_grid]
+- `[amaley_page_trust_strip]`
+- `[amaley_home_hero_v6]`
+- `[amaley_pages_hero_other]`
 
 Accepted Elementor widgets:
 
@@ -161,99 +157,75 @@ Accepted Elementor widgets:
 - Amaley UI > Amaley Home Hero V6
 - Amaley UI > Amaley Pages Hero Other
 
-Locked Page Trust Strip shortcode:
-
-[amaley_page_trust_strip tone="cream" style="cards" columns="4" mobile="stack" motion="glow" width="contained"]
-
-Locked Home Hero V6 shortcode:
-
-[amaley_home_hero_v6]
-
-Locked Pages Hero Other shortcode:
-
-[amaley_pages_hero_other]
-
-Home Hero V6 notes:
-
-- Based on the live HTML hero structure supplied by Praveen.
-- Final accepted visual version is v0.5.4.
-- Right image mosaic is no-gap absolute layout.
-- Default image behaviour is cover + center center.
-- Image fit/focus controls must stay available in Style tab.
-- Counter, medallion, buttons and image hover animation are scoped to the hero only.
-- Do not patch this hero casually. Any future edit requires preview first.
-
-UI Sections Kit v0.6.1 performance notes:
-
-- Base UI CSS loads only when Amaley UI shortcodes/widgets are detected.
-- Home Hero CSS/JS loads only when Home Hero V6 is detected.
-- Pages Hero Other CSS loads only when Pages Hero Other is detected.
-- Elementor editor/preview intentionally loads required assets for safe editing.
-
 ### Amaley Compact Widgets
 
-Current accepted plugin build: v0.4.2 final accepted lock.
+Current active accepted ZIP: v0.4.2.  
+Current GitHub source: v0.4.3 with Origin Map Path added.  
+Status: v0.4.3 source is ready for ZIP build and staging/dry-test before replacing the Drive active ZIP.
 
 Elementor category:
 
 - Amaley Compact
 
-Locked shortcodes:
+Locked / current shortcodes:
 
-- [amaley_cw_info_cards]
-- [amaley_cw_split_editorial]
-- [amaley_cw_traceability]
-- [amaley_cw_gifting_band]
-- [amaley_cw_value_strip]
-- [amaley_cw_process_steps]
-- [amaley_cw_origin_cards]
-- [amaley_cw_purpose_cards]
-- [amaley_cw_collection_cards]
-- [amaley_cw_two_panel_info]
-- [amaley_cw_dark_chain]
-- [amaley_cw_image_flip_cards]
-- [amaley_cw_image_cards]
-- [amaley_cw_image_info_cards]
-- [amaley_cw_image_overlay_cards]
-- [amaley_cw_quote_cards]
-- [amaley_cw_cta_tiles]
-- [amaley_cw_metric_tiles]
+- `[amaley_cw_info_cards]`
+- `[amaley_cw_split_editorial]`
+- `[amaley_cw_traceability]`
+- `[amaley_cw_origin_map]`
+- `[amaley_cw_gifting_band]`
+- `[amaley_cw_value_strip]`
+- `[amaley_cw_process_steps]`
+- `[amaley_cw_origin_cards]`
+- `[amaley_cw_purpose_cards]`
+- `[amaley_cw_collection_cards]`
+- `[amaley_cw_two_panel_info]`
+- `[amaley_cw_dark_chain]`
+- `[amaley_cw_image_flip_cards]`
+- `[amaley_cw_image_cards]`
+- `[amaley_cw_image_info_cards]`
+- `[amaley_cw_image_overlay_cards]`
+- `[amaley_cw_quote_cards]`
+- `[amaley_cw_cta_tiles]`
+- `[amaley_cw_metric_tiles]`
 
-Locked widgets:
+Current widgets:
 
 1. Amaley Info Cards Grid
 2. Amaley Split Editorial Section
 3. Amaley Traceability Journey
-4. Amaley Gifting / Bulk Band
-5. Amaley Feature / Value Strip
-6. Amaley Process Steps
-7. Amaley Origin Story Cards
-8. Amaley Purpose Cards
-9. Amaley Collection Cards
-10. Amaley Two Panel Info
-11. Amaley Dark Chain Cards
-12. Amaley Image Flip Cards
-13. Amaley Image Cards
-14. Amaley Image Info Cards
-15. Amaley Image Overlay Cards
-16. Amaley Quote Cards
-17. Amaley CTA Tiles
-18. Amaley Metric Tiles
+4. Amaley Origin Map Path
+5. Amaley Gifting / Bulk Band
+6. Amaley Feature / Value Strip
+7. Amaley Process Steps
+8. Amaley Origin Story Cards
+9. Amaley Purpose Cards
+10. Amaley Collection Cards
+11. Amaley Two Panel Info
+12. Amaley Dark Chain Cards
+13. Amaley Image Flip Cards
+14. Amaley Image Cards
+15. Amaley Image Info Cards
+16. Amaley Image Overlay Cards
+17. Amaley Quote Cards
+18. Amaley CTA Tiles
+19. Amaley Metric Tiles
 
-Compact Widgets v0.4.2 notes:
+Compact Widgets v0.4.3 source notes:
 
-- Final accepted after focused repairs to OUR STORY, TRACEABILITY, GIFTING, OUR VALUES and FOR WHOM.
-- Alignment controls added: Overall Content Alignment, Header Alignment, Card / Item Text Alignment and Button Row Alignment.
+- Adds Amaley Origin Map Path for the homepage.
+- Adds `[amaley_cw_origin_map]` shortcode.
+- Adds static CSS map board with route markers, label cards, route caption, right-side journey list and CTA.
 - No frontend JavaScript.
 - No external libraries.
-- CSS scope must remain `.amaley-cw4-*`.
-- Do not patch casually after v0.4.2. Future changes need focused scope, preview, dry test and source-only GitHub update.
+- CSS scope must remain `.amaley-cw4-*` and `.amaley-cw4-origin-map-path*`.
+- No CPT/ACF/data fetching, Discovery Engine, WooCommerce template, header/footer or Site Shell change.
 
 ### Amaley Discovery Engine
 
 Known responsibility:
 
-- [amaley_discovery]
+- `[amaley_discovery]`
 - Product discovery widget
 - Collection discovery widget
 - Cluster discovery widget
@@ -282,8 +254,8 @@ Important: Product Trust Strip in Templates is separate from Page Trust Strip in
 
 Shortcodes:
 
-- [amaley_site_header]
-- [amaley_site_footer]
+- `[amaley_site_header]`
+- `[amaley_site_footer]`
 
 Elementor widgets:
 
@@ -308,6 +280,8 @@ Future widgets to build in Amaley Core:
 7. Origin Chain widget/shortcode
 8. Product Traceability panel
 
+---
+
 ## Future build list by plugin
 
 ### Build in Amaley Core
@@ -321,10 +295,10 @@ Future widgets to build in Amaley Core:
 7. Origin Chain widget/shortcode
 8. Product Traceability panel
 
-### Build in Amaley Compact Widgets only after v0.4.2
+### Build in Amaley Compact Widgets after v0.4.3
 
 Only focused refinements or new manual compact visual widgets. Any addition requires preview and dry test before plugin ZIP/source delivery.
 
-### Build in Amaley UI Sections Kit only after v0.6.1
+### Build in Amaley UI Sections Kit after v0.6.1
 
 Only focused refinements to locked UI foundation, Home Hero V6, Page Trust Strip or Pages Hero Other. Do not add compact card libraries here.
