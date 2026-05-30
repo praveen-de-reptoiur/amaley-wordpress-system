@@ -2,8 +2,9 @@
 
 This document explains the Google Drive folder structure for the Amaley project.
 
-Google Drive is used for heavy project files.  
-GitHub is used for source code and documentation.
+Google Drive is used for heavy project files. GitHub is used for clean source code and documentation.
+
+---
 
 ## Main Drive Location
 
@@ -20,11 +21,13 @@ https://drive.google.com/drive/folders/1fYYtwPPxNGYDeSFwYqF1PZFseJ7VpAPN
 Access note:
 
 - This is the active Amaley project Drive folder reference.
-- Keep sensitive files, backups, plugin ZIPs, exports, screenshots, videos, and handoff packages in Drive, not GitHub.
+- Keep sensitive files, backups, plugin ZIPs, exports, screenshots, videos and handoff packages in Drive, not GitHub.
 - Do not store passwords, API keys, license keys, database credentials, or `wp-config.php` in GitHub or public notes.
 - If Drive permissions change, update this document with the current folder reference.
 
-## Folder Structure
+---
+
+## Recommended Folder Structure
 
 ```text
 Amaley Project/
@@ -42,9 +45,9 @@ Amaley Project/
   11_Handoff_Packages/
 ```
 
-## 00_Project_Control
+---
 
-Project control documents.
+## 00_Project_Control
 
 Use for:
 
@@ -53,12 +56,13 @@ Use for:
 - Project manifest
 - Next chat prompt
 - Folder map
+- Architecture registry copies
+
+---
 
 ## 01_Backups
 
-Website backups.
-
-Use for:
+Use for website backups:
 
 - `.wpress` backups
 - All-in-One WP Migration files
@@ -66,38 +70,53 @@ Use for:
 
 Do not upload these files to GitHub.
 
+---
+
 ## 02_Active_Plugins
 
-Latest usable plugin ZIP backups.
+Use for latest usable plugin ZIP backups only.
 
-Current active plugin ZIPs:
+Current active / locked plugin ZIP backups:
 
 ```text
-amaley-templates-v1.2.7.zip
+amaley-core-v1.0.2.zip
 amaley-discovery-engine-v1.3.5-no-cpt.zip
+amaley-site-shell-v1.0.1.zip
+amaley-ui-sections-kit-v0.6.1.zip
+amaley-compact-widgets-v0.4.2.zip
+amaley-templates-v1.2.7.zip
 ```
 
-Future active plugin ZIPs should also be stored here after testing.
+Rules:
+
+- Only current usable ZIP backups should stay here.
+- Old versions should move to `10_Archive_Do_Not_Use/old-plugin-versions/`.
+- GitHub should receive only the clean extracted source, never the plugin ZIP.
+
+---
 
 ## 03_Code_Source
 
-Extracted plugin source code.
+Use for extracted plugin source code copies when needed for handoff/reference.
 
-Expected future folders:
+Expected folders:
 
 ```text
-amaley-templates/
-amaley-discovery-engine/
 amaley-core/
+amaley-discovery-engine/
+amaley-site-shell/
+amaley-ui-sections-kit/
+amaley-compact-widgets/
+amaley-templates/
 amaley-project-guard/
 amaley-debug-toolkit/
 ```
 
-This source can also be added to GitHub after review.
+GitHub remains the main clean source repository after review.
+
+---
 
 ## 04_Elementor_Templates
-
-Elementor template exports.
 
 Use for:
 
@@ -110,9 +129,9 @@ Use for:
 - Popup / form trigger templates
 - Reusable section templates
 
-## 05_Data_Exports
+---
 
-Data exports.
+## 05_Data_Exports
 
 Use for:
 
@@ -126,9 +145,9 @@ Use for:
 - Amaley Core import/export CSVs
 - Variation import CSVs
 
-## 06_Design_System
+---
 
-Locked design-system documents.
+## 06_Design_System
 
 Use for:
 
@@ -142,11 +161,11 @@ Use for:
 - Full-control widget/template rules
 - Lightweight performance rules
 
+---
+
 ## 07_Media_Reference
 
-Media reference files.
-
-Use for:
+Use for media/reference files:
 
 - Logos
 - Product images
@@ -159,9 +178,9 @@ Use for:
 
 Do not upload large media files to GitHub.
 
-## 08_Migration
+---
 
-Migration planning files.
+## 08_Migration
 
 Use for:
 
@@ -172,9 +191,9 @@ Use for:
 - Live-to-fresh export notes
 - Staging test notes
 
-## 09_QA_Debug
+---
 
-Testing and debug notes.
+## 09_QA_Debug
 
 Use for:
 
@@ -187,11 +206,13 @@ Use for:
 - WooCommerce product/cart/checkout test notes
 - Low-network performance notes
 
+---
+
 ## 10_Archive_Do_Not_Use
 
-Old or unsafe files.
+Use for old, unsafe, superseded, rejected, or experimental files.
 
-Use for:
+Examples:
 
 - Broken plugins
 - Old plugin versions
@@ -202,22 +223,33 @@ Use for:
 
 Do not activate anything from this folder without review.
 
+---
+
 ## 11_Handoff_Packages
 
-Handoff ZIPs and project packages.
+Use for handoff ZIPs and project packages.
 
-Use for:
+Current handoff pattern:
 
-- Workspace starter ZIP
-- Master handoff ZIPs
-- Final transfer packages
-- Next-chat continuation files
-- Release notes packages
+```text
+AMALEY_MASTER_HANDOFF_YYYY-MM-DD_FINAL_LOCKED.zip
+```
+
+A good handoff package should contain:
+
+```text
+00_READ_FIRST_NEXT_CHAT/
+01_FINAL_ACCEPTED_PLUGINS/
+02_FINAL_PREVIEWS_AND_DRY_TESTS/
+03_GITHUB_SYNC_AND_REGISTRY/
+04_REJECTED_VERSION_HISTORY_DO_NOT_USE/
+05_RAW_USER_REFERENCES_AND_SCREENSHOTS/
+06_SHORTCODES_AND_INSTALL_GUIDES/
+07_MANIFESTS/
+```
+
+---
 
 ## Hard Rule
 
-Heavy files go to Google Drive.
-
-Source code and documentation go to GitHub.
-
-Do not mix them.
+Heavy files go to Google Drive. Clean reviewed source and documentation go to GitHub.
