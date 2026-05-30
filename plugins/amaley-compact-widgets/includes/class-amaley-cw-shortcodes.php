@@ -45,19 +45,10 @@ final class Amaley_CW_Shortcodes {
 		return call_user_func( array( 'Amaley_CW_Renderer', $method ), is_array( $atts ) ? $atts : array() );
 	}
 
-	public function origin_map( $atts ) {
-		if ( class_exists( 'Amaley_CW_Plugin' ) ) {
-			Amaley_CW_Plugin::instance()->enqueue_assets();
-		}
-		if ( ! class_exists( 'Amaley_CW_Origin_Map' ) ) {
-			return '';
-		}
-		return Amaley_CW_Origin_Map::render( is_array( $atts ) ? $atts : array() );
-	}
-
 	public function info_cards( $atts ) { return $this->render( 'info_cards', $atts ); }
 	public function split_editorial( $atts ) { return $this->render( 'split_editorial', $atts ); }
 	public function traceability( $atts ) { return $this->render( 'traceability', $atts ); }
+	public function origin_map( $atts ) { if ( class_exists( 'Amaley_CW_Plugin' ) ) { Amaley_CW_Plugin::instance()->enqueue_assets(); } return class_exists( 'Amaley_CW_Origin_Map' ) ? Amaley_CW_Origin_Map::render( is_array( $atts ) ? $atts : array() ) : ''; }
 	public function gifting_band( $atts ) { return $this->render( 'gifting_band', $atts ); }
 	public function value_strip( $atts ) { return $this->render( 'value_strip', $atts ); }
 	public function process_steps( $atts ) { return $this->render( 'process_steps', $atts ); }

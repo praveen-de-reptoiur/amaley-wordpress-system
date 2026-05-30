@@ -12,29 +12,13 @@ if ( ! class_exists( '\Elementor\Widget_Base' ) ) {
 }
 
 final class Amaley_CW_Origin_Map_Widget extends \Elementor\Widget_Base {
-	public function get_name() {
-		return 'amaley_cw_origin_map';
-	}
-
-	public function get_title() {
-		return esc_html__( 'Amaley Origin Map Path', 'amaley-compact-widgets' );
-	}
-
-	public function get_icon() {
-		return 'eicon-map-pin';
-	}
-
-	public function get_categories() {
-		return array( 'amaley-compact' );
-	}
-
-	public function get_style_depends() {
-		return array( 'amaley-compact-widgets', 'amaley-compact-widgets-origin-map' );
-	}
-
-	public function get_keywords() {
-		return array( 'amaley', 'origin', 'map', 'traceability', 'homepage' );
-	}
+	public function get_name() { return 'amaley_cw_origin_map'; }
+	public function get_title() { return esc_html__( 'Amaley Origin Map Path', 'amaley-compact-widgets' ); }
+	public function get_icon() { return 'eicon-map-pin'; }
+	public function get_categories() { return array( 'amaley-compact' ); }
+	public function get_style_depends() { return array( 'amaley-compact-widgets', 'amaley-compact-widgets-origin-map' ); }
+	public function get_script_depends() { return array( 'amaley-compact-widgets-origin-map' ); }
+	public function get_keywords() { return array( 'amaley', 'origin', 'map', 'traceability', 'homepage' ); }
 
 	protected function register_controls() {
 		$defaults = Amaley_CW_Origin_Map::defaults();
@@ -48,12 +32,15 @@ final class Amaley_CW_Origin_Map_Widget extends \Elementor\Widget_Base {
 		$this->add_control( 'right_description', array( 'label' => esc_html__( 'Right Description', 'amaley-compact-widgets' ), 'type' => \Elementor\Controls_Manager::TEXTAREA, 'rows' => 4, 'default' => $defaults['right_description'] ) );
 		$this->end_controls_section();
 
-		$this->start_controls_section( 'origin_map', array( 'label' => esc_html__( 'Map Card', 'amaley-compact-widgets' ) ) );
+		$this->start_controls_section( 'origin_map', array( 'label' => esc_html__( 'Real Map', 'amaley-compact-widgets' ) ) );
 		$this->add_control( 'map_kicker', array( 'label' => esc_html__( 'Map Kicker', 'amaley-compact-widgets' ), 'type' => \Elementor\Controls_Manager::TEXT, 'default' => $defaults['map_kicker'] ) );
 		$this->add_control( 'map_title', array( 'label' => esc_html__( 'Map Title', 'amaley-compact-widgets' ), 'type' => \Elementor\Controls_Manager::TEXT, 'default' => $defaults['map_title'] ) );
 		$this->add_control( 'route_text', array( 'label' => esc_html__( 'Route Caption', 'amaley-compact-widgets' ), 'type' => \Elementor\Controls_Manager::TEXTAREA, 'rows' => 2, 'default' => $defaults['route_text'] ) );
 		$this->add_control( 'foot_note', array( 'label' => esc_html__( 'Bottom Note', 'amaley-compact-widgets' ), 'type' => \Elementor\Controls_Manager::TEXTAREA, 'rows' => 2, 'default' => $defaults['foot_note'] ) );
-		$this->add_control( 'map_image_url', array( 'label' => esc_html__( 'Optional Map Image', 'amaley-compact-widgets' ), 'type' => \Elementor\Controls_Manager::MEDIA, 'default' => array( 'url' => '' ) ) );
+		$this->add_control( 'center_lat', array( 'label' => esc_html__( 'Map Center Latitude', 'amaley-compact-widgets' ), 'type' => \Elementor\Controls_Manager::TEXT, 'default' => $defaults['center_lat'] ) );
+		$this->add_control( 'center_lng', array( 'label' => esc_html__( 'Map Center Longitude', 'amaley-compact-widgets' ), 'type' => \Elementor\Controls_Manager::TEXT, 'default' => $defaults['center_lng'] ) );
+		$this->add_control( 'zoom', array( 'label' => esc_html__( 'Initial Zoom', 'amaley-compact-widgets' ), 'type' => \Elementor\Controls_Manager::NUMBER, 'min' => 4, 'max' => 15, 'step' => 1, 'default' => $defaults['zoom'] ) );
+		$this->add_control( 'tile_url', array( 'label' => esc_html__( 'Tile URL Template', 'amaley-compact-widgets' ), 'type' => \Elementor\Controls_Manager::TEXT, 'default' => $defaults['tile_url'], 'description' => esc_html__( 'Use {z}, {x}, {y}. Default uses OpenStreetMap tiles.', 'amaley-compact-widgets' ) ) );
 		$this->end_controls_section();
 
 		$this->start_controls_section( 'origin_items', array( 'label' => esc_html__( 'Right Step Cards', 'amaley-compact-widgets' ) ) );

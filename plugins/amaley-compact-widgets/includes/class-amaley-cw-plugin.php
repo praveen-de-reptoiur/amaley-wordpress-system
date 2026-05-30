@@ -30,11 +30,13 @@ final class Amaley_CW_Plugin {
 	public function register_assets() {
 		wp_register_style( 'amaley-compact-widgets', AMALEY_CW_URL . 'assets/css/amaley-compact-widgets.css', array(), AMALEY_CW_VERSION );
 		wp_register_style( 'amaley-compact-widgets-origin-map', AMALEY_CW_URL . 'assets/css/amaley-cw-origin-map.css', array( 'amaley-compact-widgets' ), AMALEY_CW_VERSION );
+		wp_register_script( 'amaley-compact-widgets-origin-map', AMALEY_CW_URL . 'assets/js/amaley-cw-origin-map.js', array(), AMALEY_CW_VERSION, true );
 	}
 
 	public function enqueue_assets() {
 		wp_enqueue_style( 'amaley-compact-widgets' );
 		wp_enqueue_style( 'amaley-compact-widgets-origin-map' );
+		wp_enqueue_script( 'amaley-compact-widgets-origin-map' );
 	}
 
 	public function maybe_enqueue_for_shortcodes() {

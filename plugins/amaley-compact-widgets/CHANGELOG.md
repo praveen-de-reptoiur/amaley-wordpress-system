@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.4.5-test
+- Replaced dull/static fake map texture with real OpenStreetMap tile rendering.
+- Fixed zoom controls with direct delegated click handling.
+- Added working drag/pan, mouse wheel zoom, touch drag and reset button.
+- Added route/marker/label projection on top of the real map.
+- Kept the widget scoped, manual/static and free from external JS libraries.
+
+## 0.4.4-test
+- Added drag/pan and zoom behaviour to the Origin Map Path map board.
+- Added scoped vanilla JS for map movement.
+- Kept no external libraries and no frontend dependency outside the plugin.
+
 ## 0.4.3
 - Added Amaley Origin Map Path widget for the homepage.
 - Added `[amaley_cw_origin_map]` shortcode.

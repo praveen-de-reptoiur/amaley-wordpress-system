@@ -1,0 +1,17 @@
+AMALEY COMPACT WIDGETS v0.4.5 TEST NOTES
+
+What changed:
+- Origin Map Path now uses real OpenStreetMap tiles.
+- Plus/minus zoom controls are wired through JS click handling.
+- Map drag/pan and wheel zoom are supported.
+- Touch drag is supported on mobile/tablet.
+
+How to test:
+1. Upload amaley-compact-widgets-v0.4.5-test.zip on staging/test site.
+2. Activate plugin.
+3. Add Elementor widget: Amaley Origin Map Path.
+4. Or use shortcode: [amaley_cw_origin_map]
+5. Test: drag map, click +/-, mouse wheel zoom, mobile touch drag.
+
+Do not mark as final active Drive ZIP until staging visual test passes.
+GitHub was not updated by assistant for this package.

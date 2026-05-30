@@ -12,38 +12,48 @@ final class Amaley_CW_Origin_Map {
 		return array(
 			'kicker'            => 'FROM CLUSTER TO KITCHEN',
 			'title'             => 'Know the Path of Every Product',
-			'description'       => 'The map traces ingredients moving from Himalayan clusters to women-led groups, small-batch production units and finally to the customer who brings Amaley home.',
-			'right_kicker'      => 'FROM CLUSTER TO KITCHEN',
-			'right_title'       => 'From Himalayan Clusters to Everyday Tables',
-			'right_description' => 'Amaley connects the origin of ingredients, women-led SHGs, careful small-batch production and the customer who chooses a product with identity.',
+			'description'       => 'A real map-style journey view that lets visitors drag, zoom and understand how Amaley products move from Himalayan origin to everyday tables.',
+			'right_kicker'      => 'FROM HIMALAYAN CLUSTERS TO EVERYDAY TABLES',
+			'right_title'       => 'A Visible Journey, Not Just a Product',
+			'right_description' => 'Each product carries a journey: where it begins, who prepares it, how it is made and how it reaches the customer.',
 			'map_kicker'        => 'AMALEY ORIGIN MAP',
 			'map_title'         => 'From Cluster to Kitchen',
-			'route_text'        => 'Sham Valley / Apricot Cluster to Nimmo SHG Group to Leh Women Makers to Product Hub to Customer',
-			'foot_note'         => 'A visible journey helps customers see origin, care and community behind every product.',
+			'route_text'        => 'Sham Valley / Apricot Cluster → Nimmo SHG Group → Leh Women Makers → Product Hub → Customer',
+			'foot_note'         => 'Drag the real map, zoom in or out, and follow the product route from origin to customer.',
 			'button_text'       => 'Explore Amaley Origins',
 			'button_url'        => '#',
-			'map_image_url'     => '',
+			'center_lat'        => '34.1850',
+			'center_lng'        => '77.4300',
+			'zoom'              => '10',
+			'tile_url'          => 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+			'attribution'       => '© OpenStreetMap contributors',
 			'items'             => '',
 		);
 	}
 
 	public static function default_items() {
 		return array(
-			array( 'number' => '01', 'title' => 'Cluster Origin', 'text' => 'Where the ingredient, landscape and local knowledge begin.' ),
-			array( 'number' => '02', 'title' => 'Women-led Groups', 'text' => 'SHGs handle preparation, value addition and quality discipline.' ),
-			array( 'number' => '03', 'title' => 'Small-batch Products', 'text' => 'Food is made with care, identity and consistency.' ),
-			array( 'number' => '04', 'title' => 'Customer Connection', 'text' => 'Each purchase supports a visible livelihood chain.' ),
+			array( 'number' => '01', 'title' => 'Cluster Origin', 'text' => 'Ingredients begin in Himalayan landscapes, seasons and local knowledge.' ),
+			array( 'number' => '02', 'title' => 'SHG & Maker Link', 'text' => 'Women-led groups prepare, sort and add value with care.' ),
+			array( 'number' => '03', 'title' => 'Small-batch Products', 'text' => 'Products are made in controlled small batches, not anonymous mass production.' ),
+			array( 'number' => '04', 'title' => 'Customer Connection', 'text' => 'The customer sees the visible chain behind what they buy.' ),
+		);
+	}
+
+	public static function route_points() {
+		return array(
+			array( 'slug' => 'cluster',  'number' => '01', 'lat' => '34.2300', 'lng' => '77.1600', 'title' => 'Cluster Origin', 'text' => 'Apricot and Himalayan ingredient belt.' ),
+			array( 'slug' => 'shg',      'number' => '02', 'lat' => '34.2050', 'lng' => '77.3400', 'title' => 'SHG Group', 'text' => 'Sorting, preparation and value addition.' ),
+			array( 'slug' => 'makers',   'number' => '03', 'lat' => '34.1526', 'lng' => '77.5771', 'title' => 'Women Makers', 'text' => 'Small-batch making and quality discipline.' ),
+			array( 'slug' => 'products', 'number' => '04', 'lat' => '34.1660', 'lng' => '77.5850', 'title' => 'Products', 'text' => 'Ready for Amaley shelves.' ),
+			array( 'slug' => 'customer', 'number' => '05', 'lat' => '34.1700', 'lng' => '77.6200', 'title' => 'Customer', 'text' => 'Homestays, travellers and conscious buyers.' ),
 		);
 	}
 
 	public static function render( $atts = array() ) {
-		$a     = self::parse_atts( $atts );
-		$items = self::parse_items( $a['items'] );
-		$style = '';
-
-		if ( ! empty( $a['map_image_url'] ) ) {
-			$style = ' style="background-image:linear-gradient(rgba(255,253,246,.10),rgba(255,253,246,.10)),url(' . self::url( $a['map_image_url'] ) . ')"';
-		}
+		$a      = self::parse_atts( $atts );
+		$items  = self::parse_items( $a['items'] );
+		$points = self::route_points();
 
 		$out  = '<section class="amaley-cw4 amaley-cw4-origin-map-path" data-acw="origin_map_path"><div class="amaley-cw4-inner">';
 		$out .= '<div class="amaley-cw4-origin-map-path-shell">';
@@ -52,17 +62,19 @@ final class Amaley_CW_Origin_Map {
 		$out .= '<div class="amaley-cw4-origin-map-path-board">';
 		$out .= '<p class="amaley-cw4-origin-map-path-board-kicker">' . self::esc( $a['map_kicker'] ) . '</p>';
 		$out .= '<h3>' . self::esc( $a['map_title'] ) . '</h3>';
-		$out .= '<div class="amaley-cw4-origin-map-path-canvas"' . $style . '>';
-		$out .= '<span class="amaley-cw4-origin-map-path-zoom">+<br>-</span>';
-		$out .= '<span class="amaley-cw4-origin-map-path-route"></span>';
-		$out .= '<span class="amaley-cw4-origin-map-path-pin amaley-cw4-origin-map-path-pin--one">01</span>';
-		$out .= '<span class="amaley-cw4-origin-map-path-pin amaley-cw4-origin-map-path-pin--two">02</span>';
-		$out .= self::map_label( 'cluster', 'Cluster Origin', 'Apricot and Himalayan ingredient belt around Sham Valley.' );
-		$out .= self::map_label( 'shg', 'SHG Group', 'Women-led group handling sorting and value addition.' );
-		$out .= self::map_label( 'makers', 'Women Makers', 'Small-batch processing by trained women.' );
-		$out .= self::map_label( 'products', 'Products', 'Ready for Amaley shelves.' );
-		$out .= self::map_label( 'customer', 'Customer', 'Product reaching homestays, travellers and local buyers.' );
-		$out .= '<span class="amaley-cw4-origin-map-path-credit">Map style reference</span>';
+		$out .= '<div class="amaley-cw4-origin-map-path-map" data-acw-origin-map data-center-lat="' . self::attr( $a['center_lat'] ) . '" data-center-lng="' . self::attr( $a['center_lng'] ) . '" data-zoom="' . self::attr( $a['zoom'] ) . '" data-tile-url="' . self::attr( $a['tile_url'] ) . '" role="application" aria-label="Interactive Amaley origin map. Drag the map and use plus or minus controls to zoom.">';
+		$out .= '<div class="amaley-cw4-origin-map-path-tile-layer" data-acw-tile-layer></div>';
+		$out .= '<svg class="amaley-cw4-origin-map-path-route-svg" data-acw-route-svg aria-hidden="true"><polyline data-acw-route-line points=""></polyline></svg>';
+		$out .= '<div class="amaley-cw4-origin-map-path-marker-layer" data-acw-marker-layer>';
+		foreach ( $points as $point ) {
+			$out .= '<button type="button" class="amaley-cw4-origin-map-path-marker amaley-cw4-origin-map-path-marker--' . self::attr( $point['slug'] ) . '" data-acw-map-point data-lat="' . self::attr( $point['lat'] ) . '" data-lng="' . self::attr( $point['lng'] ) . '"><span>' . self::esc( $point['number'] ) . '</span></button>';
+			$out .= '<div class="amaley-cw4-origin-map-path-label amaley-cw4-origin-map-path-label--' . self::attr( $point['slug'] ) . '" data-acw-map-label data-lat="' . self::attr( $point['lat'] ) . '" data-lng="' . self::attr( $point['lng'] ) . '"><strong>' . self::esc( $point['title'] ) . '</strong><small>' . self::esc( $point['text'] ) . '</small></div>';
+		}
+		$out .= '</div>';
+		$out .= '<div class="amaley-cw4-origin-map-path-controls" aria-label="Map zoom controls"><button type="button" data-acw-map-control="zoom-in" aria-label="Zoom in">+</button><button type="button" data-acw-map-control="zoom-out" aria-label="Zoom out">−</button></div>';
+		$out .= '<button type="button" class="amaley-cw4-origin-map-path-reset" data-acw-map-control="reset" aria-label="Reset map view">Reset</button>';
+		$out .= '<span class="amaley-cw4-origin-map-path-hint">Drag map · wheel/touch zoom · + / −</span>';
+		$out .= '<span class="amaley-cw4-origin-map-path-attribution">' . self::esc( $a['attribution'] ) . '</span>';
 		$out .= '</div>';
 		$out .= '<p class="amaley-cw4-origin-map-path-route-text">' . self::esc( $a['route_text'] ) . '</p>';
 		$out .= '</div>';
@@ -102,10 +114,6 @@ final class Amaley_CW_Origin_Map {
 		}
 		$decoded = json_decode( $raw, true );
 		return is_array( $decoded ) ? $decoded : self::default_items();
-	}
-
-	private static function map_label( $slug, $title, $text ) {
-		return '<div class="amaley-cw4-origin-map-path-label amaley-cw4-origin-map-path-label--' . self::attr( $slug ) . '"><strong>' . self::esc( $title ) . '</strong><small>' . self::esc( $text ) . '</small></div>';
 	}
 
 	private static function item_text( $item, $key, $default = '' ) {
