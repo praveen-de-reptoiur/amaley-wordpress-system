@@ -1,0 +1,17 @@
+AMALEY CORE v1.0.12 — STABLE EDITORIAL QUERY FIX
+
+What changed
+- Cluster and SHG editorial shortcodes were returning empty despite grid data being available.
+- Query behavior is now stabilized when show_only_website="0" is passed.
+- Cluster/SHG editorial layout now pulls from the same available CPT data path as grid layout.
+
+Test shortcodes
+[amaley_cluster_cards layout_style="editorial" show_only_website="0" limit="8"]
+[amaley_shg_cards layout_style="editorial" show_only_website="0" limit="8"]
+[amaley_member_cards layout_style="editorial" show_only_website="0" limit="8"]
+
+Expected
+- Cluster editorial cards should render.
+- SHG editorial cards should render.
+- Member editorial cards should still render.
+- Existing grid layout should not break.

@@ -1,0 +1,16 @@
+AMALEY CORE v1.0.8 — MEMBER CARDS LAYOUT POLISH
+
+What changed
+- Member / Producer cards redesigned into a more professional compact profile layout.
+- Large empty top block removed.
+- Circular avatar with initials fallback added.
+- Title / role / village / SHG / cluster hierarchy tightened.
+- Skills limited to 3 chips and products limited to 2 chips per card.
+- Default CTA text changed to View Profile.
+
+Quick checks
+1. Activate plugin update over v1.0.7.
+2. Load shortcode [amaley_member_cards show_only_website="0" order_by="title"].
+3. Confirm cards render without blank banner area.
+4. Confirm cards are compact and fit 4-across on desktop.
+5. Confirm no PHP fatal and no Elementor widget regression.

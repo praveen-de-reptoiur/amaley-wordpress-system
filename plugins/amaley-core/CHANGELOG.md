@@ -1,50 +1,64 @@
-# Amaley Core Changelog
 
-## 1.0.2 - 2026-05-27
+## v1.0.12
+- Stabilized editorial shortcode query behavior for Cluster and SHG widgets.
+- When `show_only_website="0"` is used, Cluster and SHG widgets now directly query all manageable statuses instead of relying on a secondary fallback.
+- Added stronger final fallback query so editorial layout uses the same available CPT data as grid layout.
+- No layout changes to existing grid cards.
 
-### Fixed
+## v1.0.11
+- Fixed editorial shortcodes returning empty for Cluster and SHG cards in test conditions by adding a safe fallback query when `show_only_website="0"` is used.
+- Preserved existing grid layouts.
+- Improved member editorial fallback media text while keeping proper rectangular image area.
+- No GitHub write required for this test package.
 
-- Added safe cluster import fallback to match existing blank-code clusters by exact title during first code backfill imports.
-- Prevents duplicate Cluster creation when old cluster records existed before Amaley Core stable codes were saved.
+
+## v1.0.10
+- Added optional Editorial Wide card variation for Cluster, SHG Group, and Member / Producer widgets.
+- Preserved existing grid card layout as default.
+- Added Elementor “Card Layout” control with Grid Cards and Editorial Wide options.
+- Added shortcode layout_style="editorial" support.
+- Kept warm Amaley design language without copying the external reference.
 
 
-## 1.0.1 — 2026-05-27
+## v1.0.9
+- Refined Member / Producer Cards again to keep a proper top image area instead of circular avatar style.
+- Added compact rectangular media section for real producer photos when available.
+- Added soft branded fallback media block when no image is available.
+- Preserved compact hierarchy and reduced chip clutter from v1.0.8.
 
-### Fixed
 
-- Declared WooCommerce High-Performance Order Storage compatibility using WooCommerce `FeaturesUtil`.
-- Removed WooCommerce incompatible-feature warning for stores with custom order tables enabled.
+## v1.0.8
+- Refined Member / Producer Cards layout into a compact professional profile card.
+- Removed the large empty hero-style image block from fallback cards.
+- Added compact circular avatar treatment with initials fallback.
+- Improved information hierarchy for name, role, village, SHG, and cluster.
+- Reduced chip clutter by limiting skills and product tags on cards.
+- Updated default member CTA text to “View Profile”.
 
-### Notes
+## v1.0.7 — Member / Producer Cards Grid
+- Added Member / Producer Cards Grid shortcode and Elementor widget.
+- Added scoped member card CSS.
+- Kept producer privacy safe: phone/exact contact data not rendered.
 
-- No data structure change.
-- No CPT change.
-- No field schema change.
-- No import/export change.
-- Safe patch over v1.0.0.
+## 1.0.6 - Import form restored
+- Restored full Import CSV form in Amaley Core → Import / Export.
+- Restored dry-run preview import handler for Clusters, SHGs, Members and Product Origin Mapping.
+- Kept v1.0.5 SHG cards and v1.0.4 compact cluster cards.
 
-## 1.0.0 — 2026-05-27
+## 1.0.5 - SHG Group Cards Grid test build
+- Added SHG Group Cards Grid shortcode `[amaley_shg_cards]`.
+- Added Elementor widget: Amaley SHG Group Cards Grid.
+- Added scoped mobile-first CSS and full visibility/layout/style controls.
 
-### Added
+# Changelog
 
-- Added Cluster CPT.
-- Added SHG Group CPT.
-- Added Member / Producer CPT.
-- Added central field registry.
-- Added non-coder friendly metaboxes.
-- Added WooCommerce Product Origin Mapping panel.
-- Added Amaley Core admin dashboard.
-- Added Product Origin Mapping status screen.
-- Added CSV template downloads.
-- Added CSV export for Clusters, SHGs, Members and Product Origin Mapping.
-- Added CSV import with dry-run preview, validation, and create/update modes.
-- Added lightweight scoped admin CSS.
+## 1.0.4 - Cluster Cards Grid — Compact 4 Column Test Build
 
-### Rule Lock
+- Added Cluster Cards Grid — Compact 4 Column shortcode: `[amaley_cluster_cards]`.
+- Added Elementor widget: Amaley Core > Amaley Cluster Cards Grid — Compact 4 Column.
+- Added scoped frontend CSS for mobile-first cluster cards.
+- Added data source, field visibility, layout, typography, color, spacing, border, background and button controls.
 
-- One Cluster can have multiple SHGs.
-- One SHG can have multiple Members.
-- One product can map to one Cluster, multiple SHGs, and optional Members.
-- Data relations use stable codes/IDs, not typed names only.
-- WooCommerce remains the commerce engine.
-- Old live site is not the development target.
+## 1.0.2
+
+- Cluster, SHG Group, Member/Producer and Product Origin Mapping backbone.

@@ -1,0 +1,16 @@
+AMALEY CORE v1.0.7 — Member / Producer Cards Grid TEST NOTES
+
+What changed:
+- Added Amaley Member / Producer Cards Grid widget.
+- Added [amaley_member_cards] shortcode.
+- Added scoped frontend CSS for member/producer cards.
+- Version bumped to 1.0.7.
+
+Test checklist:
+1. Plugin activates without critical error.
+2. [amaley_member_cards] shows imported members/producers.
+3. Elementor widget appears under Amaley Core.
+4. Field visibility toggles work.
+5. Desktop 4-column, tablet 2-column, mobile 1-column layout works.
+6. Filter by SHG ID and Cluster ID works when needed.
+7. Phone/private details are not shown on frontend.

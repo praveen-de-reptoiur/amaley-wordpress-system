@@ -1,0 +1,15 @@
+AMALEY CORE v1.0.9 — MEMBER CARDS IMAGE LAYOUT FIX
+
+What changed
+- Circular initials avatar removed.
+- Proper top media / image area restored in a compact form.
+- Real producer images continue to render when available.
+- Fallback is now a compact rectangular panel, not a circle.
+- Professional hierarchy from v1.0.8 retained.
+
+Quick checks
+1. Upload v1.0.9 test plugin ZIP.
+2. Open page with [amaley_member_cards].
+3. Confirm top image area shows on every card.
+4. Confirm no circular avatar appears.
+5. Confirm cards still fit 4-across on desktop.

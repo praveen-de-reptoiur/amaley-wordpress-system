@@ -1,0 +1,19 @@
+AMALEY CORE v1.0.4 — CLUSTER CARDS COMPACT TEST
+
+Purpose:
+- Make Cluster Cards Grid more compact.
+- Default desktop columns changed from 3 to 4.
+- Default image ratio changed from 4:3 to 16:9.
+- Card padding, title size, gaps, stats and button size reduced.
+
+Test steps:
+1. Upload ZIP in WordPress Plugins.
+2. Replace current Amaley Core test plugin.
+3. Add shortcode [amaley_cluster_cards] or Elementor widget.
+4. Confirm four cards fit in one desktop row when 4+ clusters exist.
+5. Check tablet remains 2 columns and mobile remains 1 column.
+6. Check Elementor Layout > Columns can still be changed.
+7. Check Image Ratio can still be changed.
+8. Check card typography/color/padding controls still work.
+
+No GitHub write was done for this build.

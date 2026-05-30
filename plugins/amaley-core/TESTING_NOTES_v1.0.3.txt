@@ -1,0 +1,10 @@
+AMALEY CORE v1.0.4 TEST NOTES
+
+1. Upload the plugin ZIP in WordPress Plugins.
+2. Activate/replace the existing Amaley Core only on staging or after backup.
+3. Test shortcode: [amaley_cluster_cards]
+4. In Elementor, search: Amaley Cluster Cards Grid — Compact 4 Column
+5. Confirm Cluster CPT data appears.
+6. Test hide/show fields, columns, image ratio, colors and responsive behavior.
+
+GitHub source update should happen only after approval.

@@ -1,0 +1,17 @@
+AMALEY CORE v1.0.11 — EDITORIAL SHORTCODE QUERY FIX
+
+What changed
+- Cluster editorial shortcode fallback query added for show_only_website="0".
+- SHG editorial shortcode fallback query added for show_only_website="0".
+- Member cards keep rectangular image layout and get a better fallback media label.
+
+Test shortcodes
+[amaley_cluster_cards layout_style="editorial" show_only_website="0" limit="8"]
+[amaley_shg_cards layout_style="editorial" show_only_website="0" limit="8"]
+[amaley_member_cards layout_style="editorial" show_only_website="0" limit="8"]
+
+Expected result
+- Cluster editorial cards should show data.
+- SHG editorial cards should show data.
+- Member editorial cards should still show.
+- Grid layout should continue working.

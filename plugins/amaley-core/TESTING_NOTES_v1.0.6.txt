@@ -1,0 +1,19 @@
+AMALEY CORE v1.0.6 — IMPORT FORM RESTORE TEST
+
+What changed:
+- Import CSV form restored under Amaley Core → Import / Export.
+- Dry-run import handler restored.
+- Cluster Cards and SHG Cards remain included.
+
+Test steps:
+1. Upload this plugin ZIP and replace existing Amaley Core test build.
+2. Open Amaley Core → Import / Export.
+3. Confirm Import CSV form shows Import Type, Import Mode, CSV File and Dry-run checkbox.
+4. Import in this order with Dry-run checked first:
+   a. AMALEY_IMPORT_01_CLUSTERS_FILLED.csv
+   b. AMALEY_IMPORT_02_SHGS_FILLED.csv
+   c. AMALEY_IMPORT_03_MEMBERS_FILLED.csv
+   d. Origins only after product_sku values are replaced with real WooCommerce SKUs.
+5. If dry-run report is clean, repeat with Dry-run unchecked.
+
+Do not update GitHub until Praveen approves this test build.

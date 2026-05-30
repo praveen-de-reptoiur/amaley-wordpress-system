@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Amaley Core
  * Description: Cluster, SHG Group, Member/Producer and Product Origin Mapping backbone for the Amaley fresh WordPress build.
- * Version: 1.0.2
+ * Version: 1.0.12
  * Author: Praveen
  * Text Domain: amaley-core
  * Requires at least: 6.0
@@ -15,12 +15,24 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'AMALEY_CORE_VERSION', '1.0.2' );
-define( 'AMALEY_CORE_SCHEMA_VERSION', '1' );
-define( 'AMALEY_CORE_FILE', __FILE__ );
-define( 'AMALEY_CORE_PATH', plugin_dir_path( __FILE__ ) );
-define( 'AMALEY_CORE_URL', plugin_dir_url( __FILE__ ) );
-define( 'AMALEY_CORE_BASENAME', plugin_basename( __FILE__ ) );
+if ( ! defined( 'AMALEY_CORE_VERSION' ) ) {
+    define( 'AMALEY_CORE_VERSION', '1.0.12' );
+}
+if ( ! defined( 'AMALEY_CORE_SCHEMA_VERSION' ) ) {
+    define( 'AMALEY_CORE_SCHEMA_VERSION', '1' );
+}
+if ( ! defined( 'AMALEY_CORE_FILE' ) ) {
+    define( 'AMALEY_CORE_FILE', __FILE__ );
+}
+if ( ! defined( 'AMALEY_CORE_PATH' ) ) {
+    define( 'AMALEY_CORE_PATH', plugin_dir_path( __FILE__ ) );
+}
+if ( ! defined( 'AMALEY_CORE_URL' ) ) {
+    define( 'AMALEY_CORE_URL', plugin_dir_url( __FILE__ ) );
+}
+if ( ! defined( 'AMALEY_CORE_BASENAME' ) ) {
+    define( 'AMALEY_CORE_BASENAME', plugin_basename( __FILE__ ) );
+}
 
 /**
  * Declare compatibility with WooCommerce features used on modern stores.
@@ -42,6 +54,9 @@ require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-metaboxes.php';
 require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-product-origin.php';
 require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-import-export.php';
 require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-admin.php';
+require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-cluster-cards.php';
+require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-shg-cards.php';
+require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-member-cards.php';
 require_once AMALEY_CORE_PATH . 'includes/class-amaley-core.php';
 
 /**

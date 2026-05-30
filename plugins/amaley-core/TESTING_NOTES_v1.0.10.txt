@@ -1,0 +1,25 @@
+AMALEY CORE v1.0.10 — EDITORIAL WIDE CARD VARIATION
+
+What changed:
+- Added optional Editorial Wide variation for:
+  1. Cluster Cards
+  2. SHG Group Cards
+  3. Member / Producer Cards
+- Existing Grid Cards layout remains default.
+- New shortcode option:
+  layout_style="editorial"
+
+Shortcode tests:
+[amaley_cluster_cards layout_style="editorial" show_only_website="0"]
+[amaley_shg_cards layout_style="editorial" show_only_website="0"]
+[amaley_member_cards layout_style="editorial" show_only_website="0"]
+
+Elementor:
+- Open the widget.
+- Go to Layout.
+- Set Card Layout = Editorial Wide.
+
+Important:
+- Reference image/design was not copied.
+- This is only an Amaley-style wide editorial variation.
+- GitHub not touched.

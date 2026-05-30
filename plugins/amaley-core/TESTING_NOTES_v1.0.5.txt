@@ -1,0 +1,19 @@
+AMALEY CORE v1.0.5 — SHG GROUP CARDS TEST BUILD
+
+What changed:
+- Added SHG Group Cards Grid.
+- Shortcode: [amaley_shg_cards]
+- Elementor widget: Amaley Core > Amaley SHG Group Cards Grid
+- Includes data source, field visibility, layout, typography, color, padding, gap, card, tag, stats and button controls.
+
+Test steps:
+1. Upload this ZIP as plugin update/replacement for Amaley Core.
+2. Confirm plugin activation has no critical error.
+3. Add shortcode [amaley_shg_cards] on a test page.
+4. In Elementor search for Amaley SHG Group Cards Grid.
+5. Check desktop/tablet/mobile columns.
+6. Toggle each field visibility control.
+7. Test cluster ID filtering if SHG groups are linked to clusters.
+8. Check empty state if no SHGs exist.
+
+GitHub was not touched while creating this ZIP.
