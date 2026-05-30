@@ -1,0 +1,19 @@
+AMALEY CORE v1.0.13 — PRODUCT ORIGIN PANEL
+
+What changed
+- Added Product Origin Panel widget and shortcode.
+- Shortcode: [amaley_product_origin_panel]
+- Elementor: Amaley Core → Amaley Product Origin Panel
+- Supports auto-detect current product, manual product ID, and manual product SKU.
+- Displays product name, origin cluster, SHG groups, producers, source village, origin note and traceability note.
+
+Important
+- Panel will show empty state until Product Origin Mapping data is saved/imported on WooCommerce products.
+- Product SKU based mapping requires actual WooCommerce SKU.
+
+Quick test
+1. Upload v1.0.13 test plugin ZIP.
+2. On any page, test empty state with [amaley_product_origin_panel].
+3. On a WooCommerce product with origin data, use [amaley_product_origin_panel].
+4. Or manually test with [amaley_product_origin_panel product_id="123"].
+5. Confirm no regression in Cluster / SHG / Member card widgets.

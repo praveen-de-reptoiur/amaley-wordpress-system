@@ -16,3 +16,26 @@ Shortcodes:
 - [amaley_cluster_cards]
 - [amaley_shg_cards]
 - [amaley_member_cards]
+
+
+### Product Origin Panel quick examples
+
+Use on a normal Elementor page when you know the WooCommerce product name:
+
+```text
+[amaley_product_origin_panel product_name="Amaley Ladakh Apricot Jam"]
+```
+
+Use on a product template or single product page:
+
+```text
+[amaley_product_origin_panel]
+```
+
+Use direct ID/SKU/slug when needed:
+
+```text
+[amaley_product_origin_panel product_id="1234"]
+[amaley_product_origin_panel product_sku="ACTUAL-SKU"]
+[amaley_product_origin_panel product_slug="product-slug"]
+```

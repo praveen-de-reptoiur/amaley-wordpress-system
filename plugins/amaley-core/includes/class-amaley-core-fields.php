@@ -165,7 +165,7 @@ class Amaley_Core_Fields {
             'clusters' => array( 'cluster_code', 'cluster_name', 'region', 'district', 'block_area', 'villages', 'short_intro', 'main_products', 'contact_person', 'phone', 'status' ),
             'shgs'     => array( 'shg_code', 'shg_name', 'cluster_code', 'village', 'district', 'member_count', 'product_categories', 'contact_person', 'phone', 'status' ),
             'members'  => array( 'member_code', 'member_name', 'shg_code', 'role', 'skills', 'products_handled', 'village', 'status' ),
-            'origins'  => array( 'product_sku', 'cluster_code', 'shg_codes', 'member_codes', 'source_village', 'origin_note', 'show_origin' ),
+            'origins'  => array( 'product_sku', 'product_id', 'product_name', 'cluster_code', 'shg_codes', 'member_codes', 'source_village', 'origin_note', 'show_origin' ),
         );
         return isset( $columns[ $type ] ) ? $columns[ $type ] : array();
     }

@@ -1,4 +1,18 @@
 
+## v1.0.14 - Product Origin import by product name / ID
+- Adds safer Product Origin Mapping import using product_sku, product_id, or exact product_name.
+- Keeps existing SKU import working.
+- Useful when WooCommerce SKUs are incomplete or not visible during mapping.
+
+
+## v1.0.13
+- Added Product Origin Panel shortcode and Elementor widget.
+- Added shortcode `[amaley_product_origin_panel]`.
+- Supports current product auto-detection, manual product ID, and manual WooCommerce SKU.
+- Displays origin cluster, linked SHG groups, linked producers, source village, origin note and traceability note.
+- Includes field visibility controls, layout styles, typography/color/background/padding controls, and safe empty state.
+
+
 ## v1.0.12
 - Stabilized editorial shortcode query behavior for Cluster and SHG widgets.
 - When `show_only_website="0"` is used, Cluster and SHG widgets now directly query all manageable statuses instead of relying on a secondary fallback.
@@ -62,3 +76,12 @@
 ## 1.0.2
 
 - Cluster, SHG Group, Member/Producer and Product Origin Mapping backbone.
+
+
+## v1.0.15 — Product Origin Panel Product Name Source
+
+- Added `product_name` attribute to `[amaley_product_origin_panel]` so mapped products can be rendered without manually finding product IDs/SKUs.
+- Added optional `product_slug` attribute for stable page/template usage.
+- Added Elementor data-source controls for Product Name and Product Slug.
+- Kept existing Product ID, Product SKU, and auto-detect behavior unchanged.
+- No WooCommerce template override, no Discovery Engine changes, no header/footer changes.

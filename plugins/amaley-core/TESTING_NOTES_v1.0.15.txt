@@ -1,0 +1,24 @@
+Amaley Core v1.0.15 — Product Origin Panel Product Name Source
+
+Purpose
+- Make Product Origin Panel easier to test/use on normal Elementor pages where current product auto-detection does not work.
+
+New shortcode examples
+- [amaley_product_origin_panel product_name="Amaley Ladakh Apricot Jam"]
+- [amaley_product_origin_panel product_name="Sea Buckthorn Herbal Tea"]
+- [amaley_product_origin_panel product_slug="amaley-ladakh-apricot-jam"]
+
+Existing examples remain supported
+- [amaley_product_origin_panel]
+- [amaley_product_origin_panel product_id="1234"]
+- [amaley_product_origin_panel product_sku="ACTUAL-SKU"]
+
+Testing
+1. Install AMALEY_CORE_v1.0.15_PRODUCT_ORIGIN_NAME_SOURCE_TEST_PLUGIN.zip.
+2. Confirm Product Origin Mapping page still shows mapped products.
+3. Add shortcode on normal Elementor page using exact WooCommerce product name.
+4. Confirm mapped product details render instead of empty state.
+5. Empty state should still show for unmapped or misspelled product names.
+
+Rollback
+- Reinstall v1.0.14 or v1.0.13 test plugin if needed.

@@ -237,7 +237,7 @@ class Amaley_Core_Import_Export {
             'clusters' => array( 'LAD-APR-001', 'Ladakh Apricot Cluster', 'Ladakh', 'Leh', 'Sham / Nubra Belt', 'Diskit, Turtuk', 'Mountain apricot value chain.', 'Apricot jam, dried apricot', 'Coordinator Name', '', 'active' ),
             'shgs'     => array( 'DISKIT-APR-SHG-001', 'Diskit Apricot Women Collective', 'LAD-APR-001', 'Diskit', 'Leh', '12', 'Apricot products, preserve', 'SHG Coordinator', '', 'active' ),
             'members'  => array( 'MEM-APR-001', 'Producer Member 01', 'DISKIT-APR-SHG-001', 'Producer', 'Sorting, drying, processing', 'Apricot preserve', 'Diskit', 'active' ),
-            'origins'  => array( 'ACTUAL-PRODUCT-SKU', 'LAD-APR-001', 'DISKIT-APR-SHG-001', 'MEM-APR-001', 'Diskit', 'Small-batch apricot product linked to SHG value chain.', '1' ),
+            'origins'  => array( 'ACTUAL-PRODUCT-SKU', '', 'Amaley Ladakh Apricot Jam', 'LAD-APR-001', 'DISKIT-APR-SHG-001', 'MEM-APR-001', 'Diskit', 'Small-batch apricot product linked to SHG value chain.', '1' ),
         );
         return isset( $samples[ $type ] ) ? $samples[ $type ] : array();
     }
@@ -348,7 +348,7 @@ class Amaley_Core_Import_Export {
             'clusters' => array( 'cluster_code', 'cluster_name' ),
             'shgs'     => array( 'shg_code', 'shg_name', 'cluster_code' ),
             'members'  => array( 'member_code', 'member_name', 'shg_code' ),
-            'origins'  => array( 'product_sku', 'cluster_code' ),
+            'origins'  => array( 'cluster_code' ),
         );
         return isset( $required[ $type ] ) ? $required[ $type ] : array();
     }
@@ -512,9 +512,19 @@ class Amaley_Core_Import_Export {
 
     /** Import product origin row. */
     private function import_origin( $row, $mode, $dry_run ) {
-        $product_id = $this->find_product_by_sku( $row['product_sku'] );
+        $product_id = $this->resolve_product_for_origin_row( $row );
         if ( ! $product_id ) {
-            return array( 'error' => 'Product SKU not found: ' . $row['product_sku'] );
+            $label = '';
+            if ( ! empty( $row['product_sku'] ) ) {
+                $label = 'SKU: ' . $row['product_sku'];
+            } elseif ( ! empty( $row['product_id'] ) ) {
+                $label = 'ID: ' . $row['product_id'];
+            } elseif ( ! empty( $row['product_name'] ) ) {
+                $label = 'Name: ' . $row['product_name'];
+            } else {
+                $label = 'missing product_sku/product_id/product_name';
+            }
+            return array( 'error' => 'Product not found for origin mapping (' . $label . ').' );
         }
         $cluster_id = $this->find_post_by_meta( 'amaley_cluster', '_amaley_cluster_code', $row['cluster_code'] );
         if ( ! $cluster_id ) {
@@ -525,7 +535,7 @@ class Amaley_Core_Import_Export {
         $member_ids = $this->codes_to_ids( isset( $row['member_codes'] ) ? $row['member_codes'] : '', 'amaley_member', '_amaley_member_code' );
 
         if ( $dry_run ) {
-            return array( 'action' => 'updated', 'message' => 'DRY-RUN update origin for SKU: ' . $row['product_sku'] );
+            return array( 'action' => 'updated', 'message' => 'DRY-RUN update origin for product ID ' . $product_id . $this->origin_row_product_label( $row ) );
         }
 
         update_post_meta( $product_id, '_amaley_origin_cluster_id', $cluster_id );
@@ -537,7 +547,82 @@ class Amaley_Core_Import_Export {
         update_post_meta( $product_id, '_amaley_origin_show_origin', isset( $row['show_origin'] ) ? ( '1' === (string) $row['show_origin'] ? '1' : '0' ) : '1' );
         update_post_meta( $product_id, '_amaley_origin_show_producer', '1' );
 
-        return array( 'action' => 'updated', 'message' => 'Updated origin mapping for SKU: ' . $row['product_sku'] );
+        return array( 'action' => 'updated', 'message' => 'Updated origin mapping for product ID ' . $product_id . $this->origin_row_product_label( $row ) );
+    }
+
+    /** Resolve product by SKU, product_id, or exact product_name. */
+    private function resolve_product_for_origin_row( $row ) {
+        if ( ! empty( $row['product_sku'] ) ) {
+            $product_id = $this->find_product_by_sku( $row['product_sku'] );
+            if ( $product_id ) {
+                return $product_id;
+            }
+        }
+
+        if ( ! empty( $row['product_id'] ) ) {
+            $product_id = absint( $row['product_id'] );
+            if ( $product_id && 'product' === get_post_type( $product_id ) ) {
+                return $product_id;
+            }
+        }
+
+        if ( ! empty( $row['product_name'] ) ) {
+            return $this->find_product_by_exact_title( $row['product_name'] );
+        }
+
+        return 0;
+    }
+
+    /** Build readable product locator label for reports. */
+    private function origin_row_product_label( $row ) {
+        if ( ! empty( $row['product_sku'] ) ) {
+            return ' (SKU: ' . $row['product_sku'] . ')';
+        }
+        if ( ! empty( $row['product_name'] ) ) {
+            return ' (Name: ' . $row['product_name'] . ')';
+        }
+        if ( ! empty( $row['product_id'] ) ) {
+            return ' (ID: ' . $row['product_id'] . ')';
+        }
+        return '';
+    }
+
+    /** Find WooCommerce product by exact title/name. */
+    private function find_product_by_exact_title( $title ) {
+        $title = trim( wp_strip_all_tags( (string) $title ) );
+        if ( '' === $title ) {
+            return 0;
+        }
+
+        $posts = get_posts( array(
+            'post_type'      => 'product',
+            'post_status'    => array( 'publish', 'draft', 'pending', 'private' ),
+            'posts_per_page' => 20,
+            'fields'         => 'ids',
+            's'              => $title,
+        ) );
+
+        $needle = $this->normalize_product_title_for_match( $title );
+        foreach ( $posts as $post_id ) {
+            if ( $needle === $this->normalize_product_title_for_match( get_the_title( $post_id ) ) ) {
+                return absint( $post_id );
+            }
+        }
+
+        // Safe fallback: if WordPress search returns only one product for the supplied name,
+        // use that product to reduce SKU dependency during controlled import.
+        if ( 1 === count( $posts ) ) {
+            return absint( $posts[0] );
+        }
+
+        return 0;
+    }
+
+    /** Normalize product title for exact matching. */
+    private function normalize_product_title_for_match( $title ) {
+        $title = wp_strip_all_tags( html_entity_decode( (string) $title, ENT_QUOTES, get_bloginfo( 'charset' ) ) );
+        $title = preg_replace( '/\s+/', ' ', $title );
+        return function_exists( 'mb_strtolower' ) ? mb_strtolower( trim( $title ) ) : strtolower( trim( $title ) );
     }
 
     /** Update meta values. */
