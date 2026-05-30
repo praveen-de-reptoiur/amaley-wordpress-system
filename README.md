@@ -1,5 +1,21 @@
 # Amaley WordPress System
 
+## READ FIRST — Mandatory Universal Standard
+
+Before any planning, design, Elementor widget, plugin, template, archive/single page, layout, or UI build, first read:
+
+1. `000_READ_FIRST_BEFORE_ANY_WORK.md`
+2. `docs/UNIVERSAL_FULL_CONTROL_WEBSITE_STANDARD.md`
+3. `docs/READ_FIRST_AMALEY.md`
+
+Locked rule:
+
+> Har section, har element ka non-coder-friendly Content + Show/Hide + Layout + Style + Responsive control, with scoped lightweight CSS and no conflict.
+
+This universal standard applies before project-specific Amaley rules. It is not limited to Amaley or Himalayan/formal design.
+
+---
+
 Controlled source-code and documentation repository for the Amaley WordPress ecosystem.
 
 This repository is maintained for clean plugin development, source history, design-system control, migration planning, QA, debugging, and future developer handoff.
@@ -47,8 +63,10 @@ Current source code belongs in GitHub. Plugin ZIP backups stay in Google Drive.
 
 ## Active Documentation
 
-Start here:
+Start here in this exact order:
 
+- `000_READ_FIRST_BEFORE_ANY_WORK.md`
+- `docs/UNIVERSAL_FULL_CONTROL_WEBSITE_STANDARD.md`
 - `docs/READ_FIRST_AMALEY.md`
 - `docs/AMALEY_PLUGIN_WIDGET_REGISTRY_AND_CONFLICT_RULES.md`
 - `docs/AMALEY_DESIGN_SYSTEM_LOCKED.md`
@@ -124,9 +142,11 @@ Templates supports WooCommerce/page template modules. WooCommerce remains the co
 
 ## Workflow Rule
 
-1. Review repo/source status first.
-2. Use source files for GitHub updates.
-3. Do not commit ZIP/media/screenshots/videos to GitHub.
-4. Preview or dry-test visual widgets before calling them final.
-5. Update documentation/changelog after serious source changes.
-6. Verify the final repo state before reporting done.
+1. Read `000_READ_FIRST_BEFORE_ANY_WORK.md` first.
+2. Read `docs/UNIVERSAL_FULL_CONTROL_WEBSITE_STANDARD.md` before planning/design/build.
+3. Review repo/source status before changing code.
+4. Use source files for GitHub updates.
+5. Do not commit ZIP/media/screenshots/videos to GitHub.
+6. Preview or dry-test visual widgets before calling them final.
+7. Update documentation/changelog after serious source changes.
+8. Verify the final repo state before reporting done.
