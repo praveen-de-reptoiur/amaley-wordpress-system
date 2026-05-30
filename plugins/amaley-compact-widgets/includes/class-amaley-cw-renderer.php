@@ -48,6 +48,9 @@ final class Amaley_CW_Renderer {
 		$out['style'] = preg_match( '/^style-[0-9]+$/', (string) $out['style'] ) ? (string) $out['style'] : 'style-1';
 		$out['columns'] = in_array( (string) $out['columns'], array( '1', '2', '3', '4' ), true ) ? (string) $out['columns'] : $defaults['columns'];
 		$out['align'] = in_array( (string) $out['align'], array( 'left', 'center', 'right' ), true ) ? (string) $out['align'] : 'left';
+		$out['header_align'] = in_array( (string) $out['header_align'], array( 'left', 'center', 'right' ), true ) ? (string) $out['header_align'] : $out['align'];
+		$out['card_align'] = in_array( (string) $out['card_align'], array( 'left', 'center', 'right' ), true ) ? (string) $out['card_align'] : '';
+		$out['button_align'] = in_array( (string) $out['button_align'], array( 'left', 'center', 'right' ), true ) ? (string) $out['button_align'] : '';
 		$out['image_side'] = in_array( (string) $out['image_side'], array( 'left', 'right' ), true ) ? (string) $out['image_side'] : 'left';
 		$out['items_array'] = self::items( $out['items'], self::default_items( $type ) );
 		return $out;
@@ -57,7 +60,7 @@ final class Amaley_CW_Renderer {
 		$base = array(
 			'style' => 'style-1', 'kicker' => 'AMALEY', 'title' => 'A Better Amaley Section', 'accent' => '',
 			'description' => '', 'button_text' => 'Explore', 'button_url' => '#', 'secondary_text' => '', 'secondary_url' => '#',
-			'image_url' => '', 'image_alt' => 'Amaley image', 'items' => '', 'columns' => '3', 'align' => 'left', 'image_side' => 'left',
+			'image_url' => '', 'image_alt' => 'Amaley image', 'items' => '', 'columns' => '3', 'align' => 'left', 'header_align' => '', 'card_align' => '', 'button_align' => '', 'image_side' => 'left',
 		);
 		$map = array(
 			'info_cards' => array( 'kicker'=>'FEATURED COLLECTIONS', 'title'=>'Collections that help a buyer decide faster', 'accent'=>'buyer', 'description'=>'Use for compact benefit cards, buyer notes and collection explanation sections.', 'columns'=>'4' ),
@@ -225,6 +228,9 @@ final class Amaley_CW_Renderer {
 
 	private static function section_open( $type, $a, $extra = '' ) {
 		$classes = 'amaley-cw4 amaley-cw4-' . str_replace( '_', '-', $type ) . ' amaley-cw4-' . self::attr( $a['style'] ) . ' amaley-cw4-align-' . self::attr( $a['align'] );
+		if ( ! empty( $a['header_align'] ) ) { $classes .= ' amaley-cw4-head-align-' . self::attr( $a['header_align'] ); }
+		if ( ! empty( $a['card_align'] ) ) { $classes .= ' amaley-cw4-card-align-' . self::attr( $a['card_align'] ); }
+		if ( ! empty( $a['button_align'] ) ) { $classes .= ' amaley-cw4-btn-align-' . self::attr( $a['button_align'] ); }
 		if ( $extra ) { $classes .= ' ' . $extra; }
 		return '<section class="' . self::attr( $classes ) . '" data-acw="' . self::attr( $type ) . '"><div class="amaley-cw4-inner">';
 	}

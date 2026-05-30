@@ -1,17 +1,14 @@
-# Visual Dry Test Report — v0.4.0
+# Visual Dry Test Report — v0.4.2
 
-Test file: `/mnt/data/acw_v040/all-widgets-test.html`
+Status: Final polish build.
 
-Checks completed:
-- All 18 shortcodes render on one dry-test page.
-- Desktop screenshot generated using Chromium/Playwright `set_content` flow.
-- Mobile screenshot generated using Chromium/Playwright `set_content` flow.
-- No network assets required.
-- No frontend JavaScript used.
-- No blank beige image boxes. Empty images render as styled premium placeholders.
-- CSS prefix audit: `.amaley-cw4-*` only for frontend output.
-- PHP lint passed for all plugin PHP files.
-- ZIP structure: one plugin folder only.
+Focus: keep accepted v0.4.1 visual layout and add alignment controls without changing plugin responsibility.
 
-Known note:
-- Final Elementor live-control testing must still be confirmed on staging because Elementor is not running inside the dry-test environment. Code-level controls are present and scoped.
+Checks performed:
+- PHP lint pass.
+- ZIP structure pass.
+- Single plugin root folder.
+- No frontend JavaScript.
+- No external libraries.
+- CSS remains scoped to `.amaley-cw4-*`.
+- Fine alignment controls present in Elementor base widget.

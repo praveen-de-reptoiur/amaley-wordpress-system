@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.4.2
+- Final professional polish after v0.4.1 visual approval.
+- Added Elementor alignment controls for header, card/item text and button row.
+- Added shortcode-level alignment classes for header/card/button alignment.
+- Kept accepted five-section visual repair intact.
+- No new widgets, no frontend JS, no external libraries.
+
+# Changelog
+
 ## 0.4.1
 - Focus repair for the five weak sections identified by Praveen: Our Story, Traceability, Gifting, Our Values and For Whom.
 - Rebuilt those five layouts only; no new widgets added.

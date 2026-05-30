@@ -1,26 +1,15 @@
 # Amaley Compact Widgets
 
-Professional, compact, mobile-first Elementor widgets and shortcodes for Amaley page sections.
+Professional compact Elementor widgets and shortcodes for Amaley visual sections.
 
 ## Version
-0.4.1
+0.4.2
 
-## Focus repair in this version
-This build specifically fixes:
-
-- Our Story — `[amaley_cw_split_editorial]`
-- Traceability — `[amaley_cw_traceability]`
-- Gifting — `[amaley_cw_gifting_band]`
-- Our Values — `[amaley_cw_value_strip]`
-- For Whom — `[amaley_cw_purpose_cards]`
-
-No new widget was added in v0.4.1. The purpose was to repair the weak/broken five sections without touching other plugins.
+## Final polish in this build
+- Fine alignment controls added: overall, header, card/item text and button row alignment.
+- Keeps v0.4.1 accepted visual repairs for OUR STORY, TRACEABILITY, GIFTING, OUR VALUES and FOR WHOM.
+- No new widgets, no frontend JavaScript, no external libraries.
+- CSS remains scoped to `.amaley-cw4-*`.
 
 ## Safety
-- CSS scoped to `.amaley-cw4-*`
-- PHP prefix: `Amaley_CW_`
-- Frontend JS: 0 KB
-- No external libraries
-- No WooCommerce/cart/checkout changes
-- No header/footer changes
-- No Discovery Engine/Core/Templates/Site Shell changes
+This plugin does not touch Discovery Engine, Amaley Core, Amaley Templates, Site Shell, WooCommerce cart/checkout, header/footer or CPT data logic.
