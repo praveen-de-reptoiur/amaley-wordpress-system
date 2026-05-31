@@ -6,6 +6,71 @@ Every entry should clearly explain what changed, why it changed, which file/plug
 
 ---
 
+## 2026-06-01
+
+### Amaley Core v1.0.46 — Cluster Single Spacing Rhythm Polish Source Sync
+
+- Synced `plugins/amaley-core/` source to Amaley Core v1.0.46.
+- Confirmed plugin header and `AMALEY_CORE_VERSION` are set to `1.0.46`.
+- Added/confirmed Cluster Single spacing rhythm polish after user-approved frontend review.
+- Preserved separate section widgets as the final editing workflow.
+- Tightened Hero → Quick Details → Story → Women Collectives → Producers → Products → CTA rhythm.
+- Preserved v1.0.41 explicit relation key:
+
+```text
+_amaley_cluster_linked_group_ids
+```
+
+- Preserved v1.0.45 Cluster Full Story rich editor direction.
+- Confirmed source sync did not include ZIP/media files.
+
+Affected source:
+
+```text
+plugins/amaley-core/
+plugins/amaley-core/amaley-core.php
+plugins/amaley-core/CHANGELOG.md
+plugins/amaley-core/CLUSTER_SINGLE_SPACING_RHYTHM_POLISH_v1.0.46.md
+plugins/amaley-core/RICH_TEXT_CLUSTER_STORY_FIELD_v1.0.45.md
+plugins/amaley-core/RELATION_EXPLICIT_LINKS_FIX_v1.0.41.md
+```
+
+Safety decision:
+
+```text
+No WooCommerce cart/checkout override.
+No header/footer override.
+No permalink rewrite.
+No relation/meta change.
+No all-in-one widget conversion.
+No ZIP/media committed to GitHub.
+```
+
+### Amaley Section Spacing Rhythm 1 Lock
+
+- Added `docs/AMALEY_SECTION_SPACING_RHYTHM_LOCK.md`.
+- Locked the approved v1.0.46 spacing density as the future whole-site section spacing reference.
+- Future Amaley sections should follow this compact, premium, connected spacing rhythm.
+- Existing loose sections should be updated later to match this rhythm.
+
+### CPT Single Section Structure Lock
+
+- Added `docs/AMALEY_CPT_SINGLE_SECTION_STRUCTURE_LOCK.md` before spacing polish continuation.
+- Locked that Archive and Single pages use separate section widgets.
+- Locked that all-in-one widgets may remain only as legacy/fallback/test helpers, not final workflow.
+- Locked Cluster Single, SHG Single and Member / Producer Single section order.
+
+### Documentation Alignment — v1.0.46
+
+- Updated root `README.md` to show Amaley Core v1.0.46 as the current GitHub source.
+- Updated `docs/READ_FIRST_AMALEY.md` to include v1.0.46, section structure lock and spacing rhythm lock.
+- Updated `docs/CHANGELOG.md` with this v1.0.46 source sync entry.
+- Updated `docs/PROJECT_MANIFEST.md` to align current source versions and new lock docs.
+- Updated `docs/NEXT_CHAT_PROMPT.md` so future chats continue from v1.0.46.
+- Updated `plugins/README.md` to align Amaley Core source status and responsibilities.
+
+---
+
 ## 2026-05-31
 
 ### Amaley Core v1.0.41 — Explicit Cluster Group Linking Source Sync
@@ -72,10 +137,10 @@ Source and documentation only.
 - Confirmed Compact Widgets remains frontend-JS-free and scoped to the `.amaley-cw4-*` CSS family.
 - Confirmed GitHub must remain source-only and documentation-only.
 
-Current source locks after the 2026-05-31 update:
+Current source locks after the 2026-06-01 update:
 
 ```text
-Amaley Core: v1.0.41
+Amaley Core: v1.0.46
 Amaley Discovery Engine: v1.3.5
 Amaley Site Shell: v1.0.1
 Amaley UI Sections Kit: v0.6.1
@@ -150,7 +215,7 @@ docs/PROJECT_MANIFEST.md
 - Every future Amaley component must be conflict-safe, mobile-first, scoped, lightweight, non-coder manageable, documented, testable, and rollback-ready.
 - The fresh/staging build remains the development base.
 - GitHub and Google Drive will be maintained together with clear separation.
-- Amaley Core v1.0.2 was the tested data-backbone baseline before later v1.0.41 source sync.
+- Amaley Core v1.0.2 was the tested data-backbone baseline before later v1.0.41 and v1.0.46 source syncs.
 
 ---
 
