@@ -6,6 +6,61 @@ Every entry should clearly explain what changed, why it changed, which file/plug
 
 ---
 
+## 2026-05-31
+
+### Amaley Core v1.0.41 — Explicit Cluster Group Linking Source Sync
+
+- Synced `plugins/amaley-core/` source to Amaley Core v1.0.41.
+- Confirmed the plugin header and `AMALEY_CORE_VERSION` are now set to `1.0.41`.
+- Added/confirmed explicit Cluster → SHG/Producer Group relation source:
+
+```text
+_amaley_cluster_linked_group_ids
+```
+
+- Added/confirmed Cluster edit screen side metabox:
+
+```text
+Amaley Linked Producer Groups / SHGs
+```
+
+- Confirmed this relation is saved directly on the Cluster record and is read first by the single cluster frontend.
+- Live/staging observation confirmed:
+  - Quick Details SHG count updates from selected groups.
+  - Women Collectives section renders selected SHG/Producer Group cards.
+  - People behind the cluster updates through linked SHGs.
+
+Affected source:
+
+```text
+plugins/amaley-core/
+plugins/amaley-core/amaley-core.php
+plugins/amaley-core/includes/class-amaley-core-metaboxes.php
+plugins/amaley-core/includes/class-amaley-core-cluster-single-sections.php
+plugins/amaley-core/RELATION_EXPLICIT_LINKS_FIX_v1.0.41.md
+```
+
+Safety decision:
+
+```text
+No WooCommerce cart/checkout override.
+No header/footer override.
+No permalink rewrite.
+No ZIP/media committed to GitHub.
+Source and documentation only.
+```
+
+### Documentation Alignment — v1.0.41
+
+- Updated root `README.md` to show Amaley Core v1.0.41 as the current GitHub source.
+- Updated `docs/READ_FIRST_AMALEY.md` to include v1.0.41 and the explicit relation meta key.
+- Updated `docs/CHANGELOG.md` with this v1.0.41 source sync entry.
+- Updated `docs/PROJECT_MANIFEST.md` to align current source versions.
+- Updated `docs/NEXT_CHAT_PROMPT.md` so future chats continue from v1.0.41, not v1.0.2.
+- Updated `plugins/README.md` to align the plugin source status table.
+
+---
+
 ## 2026-05-30
 
 ### Plugin Source Lock Update
@@ -17,14 +72,14 @@ Every entry should clearly explain what changed, why it changed, which file/plug
 - Confirmed Compact Widgets remains frontend-JS-free and scoped to the `.amaley-cw4-*` CSS family.
 - Confirmed GitHub must remain source-only and documentation-only.
 
-Current source locks:
+Current source locks after the 2026-05-31 update:
 
 ```text
-Amaley Core: v1.0.2
+Amaley Core: v1.0.41
 Amaley Discovery Engine: v1.3.5
 Amaley Site Shell: v1.0.1
 Amaley UI Sections Kit: v0.6.1
-Amaley Compact Widgets: v0.4.2
+Amaley Compact Widgets: v0.4.3 source / v0.4.2 active ZIP until staging test
 Amaley Templates: v1.2.7
 ```
 
@@ -95,7 +150,7 @@ docs/PROJECT_MANIFEST.md
 - Every future Amaley component must be conflict-safe, mobile-first, scoped, lightweight, non-coder manageable, documented, testable, and rollback-ready.
 - The fresh/staging build remains the development base.
 - GitHub and Google Drive will be maintained together with clear separation.
-- Amaley Core v1.0.2 is the current tested data-backbone baseline.
+- Amaley Core v1.0.2 was the tested data-backbone baseline before later v1.0.41 source sync.
 
 ---
 
