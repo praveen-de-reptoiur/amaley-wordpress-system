@@ -22,7 +22,7 @@ GitHub is not used for heavy backup files, media, screenshots, videos, plugin ZI
 
 ## Google Drive Role
 
-Google Drive is used for plugin ZIP backups, full website backups, Elementor exports, WooCommerce exports, product images, screenshots, videos, and handoff ZIP packages.
+Google Drive is used for plugin ZIP backups, full website backups, Elementor exports, WooCommerce exports, product images, screenshots, videos, and handoff packages.
 
 ---
 
@@ -30,12 +30,38 @@ Google Drive is used for plugin ZIP backups, full website backups, Elementor exp
 
 | Plugin / Module | Current Source | Role |
 | --- | --- | --- |
-| Amaley Core | v1.0.2 | Data backbone and product-origin mapping |
+| Amaley Core | v1.0.41 | Data backbone, product-origin mapping and explicit Cluster → SHG/Producer Group links |
 | Amaley Discovery Engine | v1.3.5 | Discovery, filters, listings, search, sort, pagination |
 | Amaley Site Shell | v1.0.1 | Header/footer shell and mobile drawer; auto-render on hold |
 | Amaley UI Sections Kit | v0.6.1 | Home Hero V6, Page Trust Strip, Pages Hero Other, UI foundation |
-| Amaley Compact Widgets | v0.4.2 | Manual/static compact visual widgets |
+| Amaley Compact Widgets | v0.4.3 source | Manual/static compact visual widgets; v0.4.2 active ZIP may remain until v0.4.3 staging test |
 | Amaley Templates | v1.2.7 | WooCommerce/page template support |
+
+---
+
+## Latest Amaley Core Relation Lock
+
+Current Amaley Core v1.0.41 includes the explicit Cluster → SHG/Producer Group linking workflow.
+
+Source of truth meta key:
+
+```text
+_amaley_cluster_linked_group_ids
+```
+
+Admin edit box:
+
+```text
+Amaley Linked Producer Groups / SHGs
+```
+
+This relation powers the single cluster frontend output first, before fallback relationship detection.
+
+Expected frontend behaviour:
+
+- Quick Details → SHGs count follows selected groups.
+- Women Collectives cards follow selected groups.
+- People behind the cluster follows linked SHGs/producers.
 
 ---
 
@@ -119,7 +145,7 @@ plugins/
 - Source files should be used for GitHub updates.
 - WooCommerce remains the commerce engine.
 - Discovery Engine owns discovery/filter/list/search/sort/pagination logic.
-- Core owns data backbone and origin mapping.
+- Core owns data backbone, origin mapping and explicit cluster group links.
 - UI Sections Kit owns locked generic page/home visual sections.
 - Compact Widgets owns manual/static compact visual widgets.
 - Templates supports WooCommerce/page template modules.
