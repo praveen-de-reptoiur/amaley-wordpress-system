@@ -29,7 +29,7 @@ Some future folders may remain planning-only until a real source module is appro
 
 | Plugin / Module | GitHub source status | Drive ZIP backup status |
 | --- | --- | --- |
-| Amaley Core | v1.0.41 | v1.0.41 ZIP backup belongs in Drive |
+| Amaley Core | v1.0.46 | v1.0.46 ZIP backup belongs in Drive |
 | Amaley Discovery Engine | v1.3.5 | `amaley-discovery-engine-v1.3.5-no-cpt.zip` |
 | Amaley Site Shell | v1.0.1 | `amaley-site-shell-v1.0.1.zip` |
 | Amaley UI Sections Kit | v0.6.1 | `amaley-ui-sections-kit-v0.6.1.zip` |
@@ -46,13 +46,32 @@ The future Amaley system should not depend permanently on ACF, CPT UI, JetEngine
 
 Target direction:
 
-- Amaley Core manages data structures, origin mapping and explicit Cluster → SHG/Producer Group links.
+- Amaley Core manages data structures, origin mapping, explicit Cluster → SHG/Producer Group links, rich Cluster Story content and CPT-driven section widgets.
 - Amaley Discovery Engine manages discovery, filters, listings, pagination, sorting and search.
 - Amaley Site Shell manages header/footer/mobile drawer only when approved.
 - Amaley UI Sections Kit manages locked generic page/home visual sections and foundation UI components.
 - Amaley Compact Widgets manages manual/static compact card and section widgets.
 - Amaley Templates supports WooCommerce/page template modules.
 - Project Guard / Debug Toolkit will manage diagnostics and safety checks.
+
+---
+
+## Current CPT / Spacing Locks
+
+Read before creating or changing Cluster, SHG or Member / Producer pages:
+
+```text
+docs/AMALEY_CPT_SINGLE_SECTION_STRUCTURE_LOCK.md
+docs/AMALEY_SECTION_SPACING_RHYTHM_LOCK.md
+```
+
+Locked principles:
+
+- Archive and single pages use separate section widgets.
+- All-in-one widgets are legacy/fallback/test helpers only.
+- Final editing workflow is one page template plus multiple Amaley Core section widgets.
+- Future sections should follow `Amaley Section Spacing Rhythm 1`.
+- Existing loose sections should be updated later to the approved v1.0.46 compact rhythm.
 
 ---
 
@@ -69,11 +88,14 @@ Owns:
 - SHG Members / Producers
 - Product Origin Mapping
 - Explicit Cluster → SHG/Producer Group links
+- Rich Cluster Full Story editor support
+- Cluster Single spacing rhythm polish
+- CPT-driven cards, archive sections and single sections
 - Producer / maker profiles
 - Traceability fields
 - System health checks
 
-Current v1.0.41 relation source of truth:
+Current relation source of truth:
 
 ```text
 _amaley_cluster_linked_group_ids
@@ -87,7 +109,13 @@ Amaley Linked Producer Groups / SHGs
 
 This field is edited on the Cluster edit screen and read first by single cluster frontend sections.
 
-Does not own broad frontend design sections.
+Current approved spacing reference:
+
+```text
+Amaley Core v1.0.46 — Cluster Single Spacing Rhythm Polish
+```
+
+Does not own broad generic frontend design sections.
 
 ---
 
