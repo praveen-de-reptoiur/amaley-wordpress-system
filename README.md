@@ -50,7 +50,7 @@ Do not upload ZIPs, videos, screenshots, product image dumps, passwords, API key
 
 | Plugin / Module | Current GitHub source status | Drive ZIP status | Role |
 | --- | --- | --- | --- |
-| Amaley Core | v1.0.41 | v1.0.41 ZIP backup belongs in Drive | Data backbone, CPTs, product-origin mapping and explicit Cluster → SHG/Producer Group links |
+| Amaley Core | v1.0.46 | v1.0.46 ZIP backup belongs in Drive | Data backbone, CPTs, product-origin mapping, explicit Cluster → SHG/Producer Group links, rich story editor and approved Cluster Single spacing rhythm |
 | Amaley Discovery Engine | v1.3.5 | `amaley-discovery-engine-v1.3.5-no-cpt.zip` | Discovery, filtering, search, sort and pagination |
 | Amaley Site Shell | v1.0.1 | `amaley-site-shell-v1.0.1.zip` | Header/footer shell; auto-render on hold |
 | Amaley UI Sections Kit | v0.6.1 | `amaley-ui-sections-kit-v0.6.1.zip` | Home Hero V6, Page Trust Strip, Pages Hero Other, UI foundation |
@@ -70,6 +70,7 @@ Start here in this exact order:
 - `docs/READ_FIRST_AMALEY.md`
 - `docs/AMALEY_PLUGIN_WIDGET_REGISTRY_AND_CONFLICT_RULES.md`
 - `docs/AMALEY_CPT_SINGLE_SECTION_STRUCTURE_LOCK.md`
+- `docs/AMALEY_SECTION_SPACING_RHYTHM_LOCK.md`
 - `docs/AMALEY_DESIGN_SYSTEM_LOCKED.md`
 - `docs/AMALEY_PRIMARY_BUILD_RULES.md`
 - `docs/AMALEY_PERFORMANCE_AND_NO_ELEMENTOR_LOCK.md`
@@ -105,9 +106,9 @@ Target custom system:
 
 ### Amaley Core
 
-Core manages data backbone only: Clusters, SHG Groups, SHG Members / Producers, Product Origin Mapping, producer profiles, traceability fields, explicit Cluster → SHG/Producer Group links and system health checks.
+Core manages data backbone only: Clusters, SHG Groups, SHG Members / Producers, Product Origin Mapping, producer profiles, traceability fields, explicit Cluster → SHG/Producer Group links, rich cluster story field support, approved CPT section spacing rhythm and system health checks.
 
-Current v1.0.41 relation source of truth:
+Current relation source of truth:
 
 ```text
 _amaley_cluster_linked_group_ids
@@ -119,7 +120,7 @@ This is managed from the Cluster edit screen box:
 Amaley Linked Producer Groups / SHGs
 ```
 
-Rule: Amaley Core must not become a frontend design plugin.
+Rule: Amaley Core must not become a broad frontend design plugin. It may own CPT-driven cards, sections and single/archive widgets because they depend on Amaley Core data.
 
 ### Amaley Discovery Engine
 
@@ -172,18 +173,41 @@ Locked principles:
 
 ---
 
+## Section Spacing Rhythm Lock
+
+The approved whole-site spacing density is locked in:
+
+```text
+docs/AMALEY_SECTION_SPACING_RHYTHM_LOCK.md
+```
+
+Approved reference:
+
+```text
+Amaley Core v1.0.46 — Cluster Single Spacing Rhythm Polish
+```
+
+This lock means:
+
+- Entire site should keep this level of compact, premium spacing between sections.
+- New sections must follow `Amaley Section Spacing Rhythm 1`.
+- Existing loose sections should be updated later to this rhythm.
+- Do not return to 80px–120px dead gaps between normal sections.
+
+---
+
 ## Latest Source Sync
 
-### Amaley Core v1.0.41
+### Amaley Core v1.0.46
 
-The GitHub source under `plugins/amaley-core/` is synced to v1.0.41.
+The GitHub source under `plugins/amaley-core/` is synced to v1.0.46.
 
-The key tested fix is explicit Cluster → SHG/Producer Group linking:
+Key locked changes preserved:
 
-- Cluster edit screen side box: **Amaley Linked Producer Groups / SHGs**
-- Saved meta key: `_amaley_cluster_linked_group_ids`
-- Single cluster frontend reads this field first
-- Quick Details SHG count and Women Collectives cards update from selected groups
+- v1.0.41 explicit Cluster → SHG/Producer Group relation key: `_amaley_cluster_linked_group_ids`
+- v1.0.45 rich editor for Cluster Full Story
+- v1.0.46 Cluster Single spacing rhythm polish
+- Separate section widgets remain the final editing structure
 
 Safety note:
 
