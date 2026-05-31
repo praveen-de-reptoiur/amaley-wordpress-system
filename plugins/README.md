@@ -29,11 +29,11 @@ Some future folders may remain planning-only until a real source module is appro
 
 | Plugin / Module | GitHub source status | Drive ZIP backup status |
 | --- | --- | --- |
-| Amaley Core | v1.0.2 | `amaley-core-v1.0.2.zip` |
+| Amaley Core | v1.0.41 | v1.0.41 ZIP backup belongs in Drive |
 | Amaley Discovery Engine | v1.3.5 | `amaley-discovery-engine-v1.3.5-no-cpt.zip` |
 | Amaley Site Shell | v1.0.1 | `amaley-site-shell-v1.0.1.zip` |
 | Amaley UI Sections Kit | v0.6.1 | `amaley-ui-sections-kit-v0.6.1.zip` |
-| Amaley Compact Widgets | v0.4.2 | `amaley-compact-widgets-v0.4.2.zip` |
+| Amaley Compact Widgets | v0.4.3 source | v0.4.2 active ZIP until v0.4.3 ZIP/staging test |
 | Amaley Templates | v1.2.7 | `amaley-templates-v1.2.7.zip` |
 
 ZIPs are backups and must not be uploaded into this GitHub folder.
@@ -46,7 +46,7 @@ The future Amaley system should not depend permanently on ACF, CPT UI, JetEngine
 
 Target direction:
 
-- Amaley Core manages data structures and origin mapping.
+- Amaley Core manages data structures, origin mapping and explicit Cluster → SHG/Producer Group links.
 - Amaley Discovery Engine manages discovery, filters, listings, pagination, sorting and search.
 - Amaley Site Shell manages header/footer/mobile drawer only when approved.
 - Amaley UI Sections Kit manages locked generic page/home visual sections and foundation UI components.
@@ -68,11 +68,26 @@ Owns:
 - SHG Groups
 - SHG Members / Producers
 - Product Origin Mapping
+- Explicit Cluster → SHG/Producer Group links
 - Producer / maker profiles
 - Traceability fields
 - System health checks
 
-Does not own frontend design sections.
+Current v1.0.41 relation source of truth:
+
+```text
+_amaley_cluster_linked_group_ids
+```
+
+Admin box:
+
+```text
+Amaley Linked Producer Groups / SHGs
+```
+
+This field is edited on the Cluster edit screen and read first by single cluster frontend sections.
+
+Does not own broad frontend design sections.
 
 ---
 
@@ -141,13 +156,15 @@ Does not own:
 
 Manual/static compact visual widgets.
 
-Currently locked source: v0.4.2.
+Current GitHub source: v0.4.3.  
+Current active ZIP backup may remain v0.4.2 until v0.4.3 is zipped and tested on staging.
 
 Owns:
 
 - Info Cards Grid
 - Split Editorial Section
 - Traceability Journey as static visual section
+- Origin Map Path as static homepage visual section
 - Gifting / Bulk Band
 - Feature / Value Strip
 - Process Steps
