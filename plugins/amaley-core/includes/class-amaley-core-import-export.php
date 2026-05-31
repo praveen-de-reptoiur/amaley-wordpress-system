@@ -234,9 +234,9 @@ class Amaley_Core_Import_Export {
      */
     private function sample_row( $type ) {
         $samples = array(
-            'clusters' => array( 'LAD-APR-001', 'Ladakh Apricot Cluster', 'Ladakh', 'Leh', 'Sham / Nubra Belt', 'Diskit, Turtuk', 'Mountain apricot value chain.', 'Apricot jam, dried apricot', 'Coordinator Name', '', 'active' ),
-            'shgs'     => array( 'DISKIT-APR-SHG-001', 'Diskit Apricot Women Collective', 'LAD-APR-001', 'Diskit', 'Leh', '12', 'Apricot products, preserve', 'SHG Coordinator', '', 'active' ),
-            'members'  => array( 'MEM-APR-001', 'Producer Member 01', 'DISKIT-APR-SHG-001', 'Producer', 'Sorting, drying, processing', 'Apricot preserve', 'Diskit', 'active' ),
+            'clusters' => array( 'LAD-APR-001', 'Ladakh Apricot Cluster', 'Ladakh', 'Leh', 'Sham / Nubra Belt', 'Diskit, Turtuk', 'Mountain apricot value chain.', 'Full cluster story, village context, seasonality and product journey.', 'Apricot jam, dried apricot', '', 'Coordinator Name', '', 'active' ),
+            'shgs'     => array( 'DISKIT-APR-SHG-001', 'Diskit Apricot Women Collective', 'LAD-APR-001', 'Diskit', 'Leh', '12', 'Apricot products, preserve', 'Short collective story.', 'Full SHG story, member work, sourcing role and production details.', 'verified', '', 'SHG Coordinator', '', 'active' ),
+            'members'  => array( 'MEM-APR-001', 'Producer Member 01', 'DISKIT-APR-SHG-001', 'Producer', 'Sorting, drying, processing', 'Apricot preserve', 'Short producer bio.', 'Full producer story and role in the value chain.', 'Diskit', '', '', 'active' ),
             'origins'  => array( 'ACTUAL-PRODUCT-SKU', '', 'Amaley Ladakh Apricot Jam', 'LAD-APR-001', 'DISKIT-APR-SHG-001', 'MEM-APR-001', 'Diskit', 'Small-batch apricot product linked to SHG value chain.', '1' ),
         );
         return isset( $samples[ $type ] ) ? $samples[ $type ] : array();
@@ -411,7 +411,9 @@ class Amaley_Core_Import_Export {
             '_amaley_block_area'      => isset( $row['block_area'] ) ? $row['block_area'] : '',
             '_amaley_villages'        => isset( $row['villages'] ) ? $row['villages'] : '',
             '_amaley_short_intro'     => isset( $row['short_intro'] ) ? $row['short_intro'] : '',
+            '_amaley_full_story'      => isset( $row['full_story'] ) ? $row['full_story'] : '',
             '_amaley_main_products'   => isset( $row['main_products'] ) ? $row['main_products'] : '',
+            '_amaley_gallery_urls'    => isset( $row['gallery_urls'] ) ? $row['gallery_urls'] : '',
             '_amaley_contact_person'  => isset( $row['contact_person'] ) ? $row['contact_person'] : '',
             '_amaley_phone'           => isset( $row['phone'] ) ? $row['phone'] : '',
             '_amaley_status'          => isset( $row['status'] ) ? $row['status'] : 'active',
@@ -458,6 +460,10 @@ class Amaley_Core_Import_Export {
             '_amaley_district'         => isset( $row['district'] ) ? $row['district'] : '',
             '_amaley_member_count'     => isset( $row['member_count'] ) ? absint( $row['member_count'] ) : 0,
             '_amaley_product_categories' => isset( $row['product_categories'] ) ? $row['product_categories'] : '',
+            '_amaley_short_story'       => isset( $row['short_story'] ) ? $row['short_story'] : '',
+            '_amaley_full_story'        => isset( $row['full_story'] ) ? $row['full_story'] : '',
+            '_amaley_verification_status' => isset( $row['verification_status'] ) ? $row['verification_status'] : 'pending',
+            '_amaley_gallery_urls'      => isset( $row['gallery_urls'] ) ? $row['gallery_urls'] : '',
             '_amaley_contact_person'   => isset( $row['contact_person'] ) ? $row['contact_person'] : '',
             '_amaley_phone'            => isset( $row['phone'] ) ? $row['phone'] : '',
             '_amaley_status'           => isset( $row['status'] ) ? $row['status'] : 'active',
@@ -503,7 +509,11 @@ class Amaley_Core_Import_Export {
             '_amaley_role'             => isset( $row['role'] ) ? $row['role'] : '',
             '_amaley_skills'           => isset( $row['skills'] ) ? $row['skills'] : '',
             '_amaley_products_handled' => isset( $row['products_handled'] ) ? $row['products_handled'] : '',
+            '_amaley_short_bio'        => isset( $row['short_bio'] ) ? $row['short_bio'] : '',
+            '_amaley_story'            => isset( $row['story'] ) ? $row['story'] : '',
             '_amaley_village'          => isset( $row['village'] ) ? $row['village'] : '',
+            '_amaley_phone'            => isset( $row['phone'] ) ? $row['phone'] : '',
+            '_amaley_photo_url'        => isset( $row['photo_url'] ) ? $row['photo_url'] : '',
             '_amaley_status'           => isset( $row['status'] ) ? $row['status'] : 'active',
             '_amaley_show_on_website'  => '1',
         ) );
@@ -687,13 +697,13 @@ class Amaley_Core_Import_Export {
     /** Export rows by type. */
     private function get_export_rows( $type ) {
         if ( 'clusters' === $type ) {
-            return $this->export_posts( 'amaley_cluster', array( '_amaley_cluster_code', 'post_title', '_amaley_region', '_amaley_district', '_amaley_block_area', '_amaley_villages', '_amaley_short_intro', '_amaley_main_products', '_amaley_contact_person', '_amaley_phone', '_amaley_status' ) );
+            return $this->export_posts( 'amaley_cluster', array( '_amaley_cluster_code', 'post_title', '_amaley_region', '_amaley_district', '_amaley_block_area', '_amaley_villages', '_amaley_short_intro', '_amaley_full_story', '_amaley_main_products', '_amaley_gallery_urls', '_amaley_contact_person', '_amaley_phone', '_amaley_status' ) );
         }
         if ( 'shgs' === $type ) {
-            return $this->export_posts( 'amaley_shg_group', array( '_amaley_shg_code', 'post_title', '_amaley_shg_cluster_code', '_amaley_village', '_amaley_district', '_amaley_member_count', '_amaley_product_categories', '_amaley_contact_person', '_amaley_phone', '_amaley_status' ) );
+            return $this->export_posts( 'amaley_shg_group', array( '_amaley_shg_code', 'post_title', '_amaley_shg_cluster_code', '_amaley_village', '_amaley_district', '_amaley_member_count', '_amaley_product_categories', '_amaley_short_story', '_amaley_full_story', '_amaley_verification_status', '_amaley_gallery_urls', '_amaley_contact_person', '_amaley_phone', '_amaley_status' ) );
         }
         if ( 'members' === $type ) {
-            return $this->export_posts( 'amaley_member', array( '_amaley_member_code', 'post_title', '_amaley_member_shg_code', '_amaley_role', '_amaley_skills', '_amaley_products_handled', '_amaley_village', '_amaley_status' ) );
+            return $this->export_posts( 'amaley_member', array( '_amaley_member_code', 'post_title', '_amaley_member_shg_code', '_amaley_role', '_amaley_skills', '_amaley_products_handled', '_amaley_short_bio', '_amaley_story', '_amaley_village', '_amaley_phone', '_amaley_photo_url', '_amaley_status' ) );
         }
         if ( 'origins' === $type ) {
             return $this->export_origins();

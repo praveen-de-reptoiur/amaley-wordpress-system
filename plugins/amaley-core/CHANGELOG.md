@@ -1,3 +1,82 @@
+## v1.0.36 - Cluster Single Relation Query Fix
+- Fixed Related SHGs showing only one record in cluster single template.
+- Added support for Meta Box plugin relationship table (`mb_relationships`) in single template related sections.
+- Related SHGs, Producers and Products now include all connected items by default with a new Show All Connected Items toggle.
+- Added fallback lookup by cluster code as well as cluster ID.
+- Kept changes scoped to Amaley Core single template widgets; no theme/WooCommerce/header/footer changes.
+
+
+## 1.0.31 - Cluster Archive Grid heading consistency fix
+- Fixed Cluster Archive Grid heading block so the small label stacks above the heading, matching the approved intro section rhythm.
+- Prevented the small label from becoming a large left-side vertical/side block.
+- Added Elementor controls for small label margin and description margin.
+- Kept theme/WooCommerce/header/footer untouched.
+
+## v1.0.28 — Cluster Archive Section Widgets System
+
+- Added section-wise Elementor widgets for Cluster Archive page.
+- Added Archive Hero, Trust Strip, Intro, Grid and CTA Band widgets.
+- Kept all-in-one archive/single widgets as legacy only.
+- Added scoped CSS under `amaley-core-cluster-archive-sections.css`.
+- Added fallback shortcodes for each archive section.
+- No WooCommerce/theme/header/footer override.
+
+
+## 1.0.26 - Page-Based Final Setup Lock
+- Locked safest implementation approach for live site: normal WordPress pages + Elementor + Amaley Core shortcodes/widgets.
+- Added Safe Page Setup guidance inside Amaley Core Settings.
+- Added admin control for archive card detail URL pattern.
+- Updated default detail URL pattern to `/cluster-detail/?cluster_id={id}`.
+- Updated single breadcrumb return URL default to `/clusters/`.
+- No WooCommerce template override, theme override, header/footer change, or clean permalink rewrite added.
+
+## v1.0.23 - Breadcrumb Link Fix
+- Made Cluster Archive and Single hero breadcrumbs functional links.
+- Added Elementor controls for breadcrumb URL targets.
+- Kept hero layout/body sections unchanged from v1.0.22.
+
+## 1.0.22 — Archive hero differentiation
+- Made Cluster Archive hero visually different from Cluster Single hero.
+- Added archive-specific browse/directory hero layout.
+- Kept single cluster page body structure unchanged.
+- No WooCommerce/theme/header/footer override.
+
+
+## v1.0.21 — Cluster Hero Cleanup + Archive Card Visibility Fix
+
+- Reduced cluster archive/single hero height.
+- Removed confusing right-side origin card and target/crosshair hero graphic.
+- Added cleaner dark chocolate hero aligned with Amaley site rhythm.
+- Fixed archive cluster query so clusters display even when display-order meta is missing.
+- Preserved approved single page content flow below hero.
+
+# Changelog
+
+## 1.0.32 - Archive section widgets full control rebuild
+- Rebuilt Cluster Archive Hero, Trust Strip, Intro, Grid and CTA Elementor controls.
+- Added section-wise Content, Data/Links, Layout, Section Box, Typography, Card, Image, Tags, Stats and Button controls.
+- Fixed grid heading alignment system so block alignment, text alignment and max width can be controlled separately.
+- Added full card inner controls for grid: card padding, inner gap, media height/radius, title/text margins, tag wrapper gap/margin, tag padding/radius/border, stat wrapper/box padding/margin/radius/border, stat number/label typography, and button width/alignment/margin/padding/radius.
+- Updated grid stat markup to separate number and label for reliable styling.
+- Reworked scoped archive CSS to reduce hardcoded layout conflicts and support Elementor-generated selectors.
+- No WooCommerce override, no theme template override, no header/footer change, no permalink rewrite.
+
+## 1.0.20
+- Refined Cluster Archive and Cluster Single hero to a richer Amaley premium dark-chocolate visual system.
+- Added origin story card stack inside hero for a more complete Amaley section feel.
+- Added data fallback profiles for clusters with incomplete fields.
+- Added sample-ready SHG, producer and product cards when linked data is missing.
+- Kept all CSS scoped and avoided WooCommerce/theme/header/footer overrides.
+
+
+## 1.0.20 — Cluster Pages Visual Polish
+
+- Polished OG-aligned Cluster Archive and Cluster Single visual system.
+- Added cluster image/fallback visual panels to featured cluster, archive cards and single detail layouts.
+- Improved dark hero, trust strip, traceability cards, map panel, CTA band and mobile responsiveness.
+- Changed archive default to show clusters without requiring the Show on Website flag, while preserving Elementor filtering control.
+- Maintains no WooCommerce template override, no theme template override, and no header/footer changes.
+
 
 ## v1.0.14 - Product Origin import by product name / ID
 - Adds safer Product Origin Mapping import using product_sku, product_id, or exact product_name.
@@ -66,6 +145,15 @@
 
 # Changelog
 
+## 1.0.32 - Archive section widgets full control rebuild
+- Rebuilt Cluster Archive Hero, Trust Strip, Intro, Grid and CTA Elementor controls.
+- Added section-wise Content, Data/Links, Layout, Section Box, Typography, Card, Image, Tags, Stats and Button controls.
+- Fixed grid heading alignment system so block alignment, text alignment and max width can be controlled separately.
+- Added full card inner controls for grid: card padding, inner gap, media height/radius, title/text margins, tag wrapper gap/margin, tag padding/radius/border, stat wrapper/box padding/margin/radius/border, stat number/label typography, and button width/alignment/margin/padding/radius.
+- Updated grid stat markup to separate number and label for reliable styling.
+- Reworked scoped archive CSS to reduce hardcoded layout conflicts and support Elementor-generated selectors.
+- No WooCommerce override, no theme template override, no header/footer change, no permalink rewrite.
+
 ## 1.0.4 - Cluster Cards Grid — Compact 4 Column Test Build
 
 - Added Cluster Cards Grid — Compact 4 Column shortcode: `[amaley_cluster_cards]`.
@@ -85,3 +173,55 @@
 - Added Elementor data-source controls for Product Name and Product Slug.
 - Kept existing Product ID, Product SKU, and auto-detect behavior unchanged.
 - No WooCommerce template override, no Discovery Engine changes, no header/footer changes.
+
+## 1.0.18 — OG-Aligned Cluster Archive + Single Page
+- Adds OG-inspired Cluster Archive and Cluster Single page widgets.
+- Uses dark chocolate `shop-hero` style in scoped plugin CSS.
+- Adds trust strip, traceability flow, featured cluster, cluster grid, single cluster story, related SHGs, members and products.
+- Preserves conflict-safe architecture: no WooCommerce/theme/header/footer override.
+## v1.0.24 — Cluster Archive Hero Directory Redesign
+
+- Redesigned Cluster Archive hero so it is visually different from the Cluster Single hero.
+- Converted archive hero into a compact directory/browse style section.
+- Removed confusing right-side archive card from the archive hero.
+- Kept single cluster body sections unchanged.
+- Kept CSS scoped and avoided WooCommerce/theme/header/footer overrides.
+## v1.0.25 — Admin Template Edit Panel
+
+- Added editable non-coder template settings panel under Amaley Core → Settings.
+- Added Cluster Archive defaults for hero, intro, traceability, archive copy, CTA, breadcrumb URLs and section visibility.
+- Added Cluster Single defaults for breadcrumb, CTA and section visibility.
+- Cluster Archive and Single widgets now use saved admin defaults while still allowing Elementor/shortcode overrides.
+- No WooCommerce template override, no theme override, no header/footer change, and no global CSS.
+
+
+## 1.0.29 - Page Template Assignment / Safe Routing
+- Added Page Template Assignment controls in Amaley Core Settings.
+- Added Cluster Archive Page and Cluster Single Template Page dropdowns.
+- Added cluster detail parameter mode: cluster_slug or cluster_id.
+- Added future SHG/Producer page assignment placeholders.
+- Updated Archive Grid widget with a dedicated Routing / Single Template panel.
+- Archive Grid can now use the assigned Single Template Page automatically.
+- Kept manual detail URL override as fallback.
+- No theme, WooCommerce, header/footer or rewrite override added.
+
+
+## 1.0.30 - Archive section controls and polish
+- Expanded Elementor controls for cluster archive section widgets.
+- Added section-wise controls for typography, color, padding, margin, spacing, border, radius, background, shadow and alignment.
+- Improved default archive card and section polish without touching theme, WooCommerce, header, footer or routes.
+- Kept all-in-one widgets legacy only; section-wise archive widgets remain the recommended workflow.
+
+
+## v1.0.35 — Single Detail Visual/Data Completion Polish
+- Improved single cluster story fallback behavior.
+- Extended Cluster/SHG/Member CSV templates/import/export with story, gallery, verification and profile fields.
+- Added richer SHG/Producer card data output.
+- Tightened single page heading scale, cards, images, spacing and responsive CSS.
+- No WooCommerce/theme/header/footer override.
+
+## v1.0.41 — Cluster Single Group-Like Render Fix
+
+- Fixes cluster single template relation display where admin showed multiple linked producer groups but frontend showed only one.
+- `get_shgs_for_cluster()` now fetches all detected group-like post types, not only `amaley_shg_group`.
+- Keeps section-wise widgets, scoped CSS, and no theme/WooCommerce overrides.

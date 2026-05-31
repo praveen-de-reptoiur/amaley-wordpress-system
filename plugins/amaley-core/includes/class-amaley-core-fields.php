@@ -162,9 +162,9 @@ class Amaley_Core_Fields {
 
     public function get_csv_columns( $type ) {
         $columns = array(
-            'clusters' => array( 'cluster_code', 'cluster_name', 'region', 'district', 'block_area', 'villages', 'short_intro', 'main_products', 'contact_person', 'phone', 'status' ),
-            'shgs'     => array( 'shg_code', 'shg_name', 'cluster_code', 'village', 'district', 'member_count', 'product_categories', 'contact_person', 'phone', 'status' ),
-            'members'  => array( 'member_code', 'member_name', 'shg_code', 'role', 'skills', 'products_handled', 'village', 'status' ),
+            'clusters' => array( 'cluster_code', 'cluster_name', 'region', 'district', 'block_area', 'villages', 'short_intro', 'full_story', 'main_products', 'gallery_urls', 'contact_person', 'phone', 'status' ),
+            'shgs'     => array( 'shg_code', 'shg_name', 'cluster_code', 'village', 'district', 'member_count', 'product_categories', 'short_story', 'full_story', 'verification_status', 'gallery_urls', 'contact_person', 'phone', 'status' ),
+            'members'  => array( 'member_code', 'member_name', 'shg_code', 'role', 'skills', 'products_handled', 'short_bio', 'story', 'village', 'phone', 'photo_url', 'status' ),
             'origins'  => array( 'product_sku', 'product_id', 'product_name', 'cluster_code', 'shg_codes', 'member_codes', 'source_village', 'origin_note', 'show_origin' ),
         );
         return isset( $columns[ $type ] ) ? $columns[ $type ] : array();

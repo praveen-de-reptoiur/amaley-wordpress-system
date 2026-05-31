@@ -1,1 +1,8 @@
 .amaley-core-wrap .amaley-core-lead{font-size:16px;max-width:860px;color:#4b5563}.amaley-core-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:20px 0}.amaley-core-card,.amaley-core-panel{background:#fff;border:1px solid #dcdcde;border-radius:12px;padding:18px;box-shadow:0 1px 2px rgba(0,0,0,.04)}.amaley-core-card span{display:block;color:#646970;font-size:13px}.amaley-core-card strong{display:block;font-size:26px;margin-top:6px}.amaley-core-field-section{background:#fff;border:1px solid #dcdcde;border-radius:12px;padding:18px;margin:16px 0}.amaley-core-field{margin:0 0 16px}.amaley-core-field label{display:block;font-weight:600;margin-bottom:6px}.amaley-core-field input[type=text],.amaley-core-field input[type=number],.amaley-core-field textarea,.amaley-core-field select{width:100%;max-width:720px}.amaley-core-inline-check{font-weight:400!important}.amaley-core-required{color:#b91c1c}
+
+/* v1.0.25 — Settings edit panel polish */
+.amaley-core-wrap .amaley-core-panel h3{margin-top:22px;padding-top:14px;border-top:1px solid #ece2cf;color:#2e1203;font-size:15px;letter-spacing:.02em}
+.amaley-core-wrap .description{max-width:760px;color:#6d5a49;line-height:1.6}
+.amaley-core-wrap .amaley-core-field textarea{min-height:86px;line-height:1.55}
+.amaley-core-wrap .amaley-core-field input[type="text"],.amaley-core-wrap .amaley-core-field textarea{border-color:#d8c7a8;background:#fffdf7;border-radius:8px;padding:9px 11px}
+.amaley-core-wrap .amaley-core-field input[type="text"]:focus,.amaley-core-wrap .amaley-core-field textarea:focus{border-color:#c2880a;box-shadow:0 0 0 1px #c2880a}

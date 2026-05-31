@@ -39,3 +39,8 @@ Use direct ID/SKU/slug when needed:
 [amaley_product_origin_panel product_sku="ACTUAL-SKU"]
 [amaley_product_origin_panel product_slug="product-slug"]
 ```
+
+
+## v1.0.24
+
+Cluster Archive hero redesigned into a distinct directory/browse hero, separate from Cluster Single hero.
