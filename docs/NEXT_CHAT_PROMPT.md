@@ -22,6 +22,8 @@ Every section and every element must have non-coder friendly controls for conten
 - Universal standard: `docs/UNIVERSAL_FULL_CONTROL_WEBSITE_STANDARD.md`
 - Amaley read-first: `docs/READ_FIRST_AMALEY.md`
 - Plugin/widget registry: `docs/AMALEY_PLUGIN_WIDGET_REGISTRY_AND_CONFLICT_RULES.md`
+- CPT structure lock: `docs/AMALEY_CPT_SINGLE_SECTION_STRUCTURE_LOCK.md`
+- Section spacing rhythm lock: `docs/AMALEY_SECTION_SPACING_RHYTHM_LOCK.md`
 - Design system: `docs/AMALEY_DESIGN_SYSTEM_LOCKED.md`
 - Changelog: `docs/CHANGELOG.md`
 - QA checklist: `docs/QA_CHECKLIST.md`
@@ -44,7 +46,7 @@ Every section and every element must have non-coder friendly controls for conten
 
 | Plugin / Module | GitHub source | Notes |
 | --- | --- | --- |
-| Amaley Core | v1.0.41 | Data backbone, product-origin mapping and explicit Cluster → SHG/Producer Group links |
+| Amaley Core | v1.0.46 | Data backbone, product-origin mapping, explicit Cluster → SHG/Producer Group links, rich story editor and approved Cluster Single spacing rhythm |
 | Amaley Discovery Engine | v1.3.5 | Discovery/filter/listing engine |
 | Amaley Site Shell | v1.0.1 | Header/footer shell; auto-render on hold |
 | Amaley UI Sections Kit | v0.6.1 | Home Hero V6, Page Trust Strip, Pages Hero Other |
@@ -53,7 +55,7 @@ Every section and every element must have non-coder friendly controls for conten
 
 ## Current Amaley Core continuation point
 
-Amaley Core v1.0.41 is now the current GitHub source.
+Amaley Core v1.0.46 is now the current GitHub source.
 
 Important relation key:
 
@@ -67,16 +69,41 @@ Admin field:
 Amaley Linked Producer Groups / SHGs
 ```
 
-This field is on the Cluster edit screen and is the first source read by the single cluster frontend.
+Preserved locks:
 
-Recent live/staging test result:
+```text
+v1.0.41 — explicit Cluster → SHG/Producer Group linking
+v1.0.45 — Cluster Full Story rich editor
+v1.0.46 — Cluster Single spacing rhythm polish
+```
 
-- Selecting SHG/Producer Groups from the Cluster edit screen updated the frontend single cluster page.
-- Quick Details SHG count changed correctly.
-- Women Collectives cards changed correctly.
-- People behind the cluster changed through linked SHGs/producers.
+Approved spacing reference:
 
-Next safe work should continue from this source state, not from older v1.0.2/v1.0.15 references.
+```text
+Amaley Section Spacing Rhythm 1
+```
+
+Future work should use the same compact section spacing across the site. Existing loose sections can be updated later.
+
+## Current architecture lock
+
+CPT archive/single pages must use separate Amaley Core section widgets.
+
+Final scalable workflow:
+
+```text
+One page template + multiple Amaley Core section widgets.
+```
+
+Do not turn Cluster, SHG or Member pages into one hardcoded all-in-one widget as the final workflow.
+
+## Next safe work sequence
+
+1. Complete product mapping for relevant WooCommerce products.
+2. Review Cluster Single product section after mapping.
+3. Start SHG Group Single section widgets using the same structure and spacing rhythm.
+4. Start Member / Producer Single section widgets after SHG Single pattern is stable.
+5. Later update older loose sections to Amaley Section Spacing Rhythm 1.
 
 ## Working style
 
