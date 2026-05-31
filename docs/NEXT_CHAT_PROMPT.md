@@ -44,12 +44,39 @@ Every section and every element must have non-coder friendly controls for conten
 
 | Plugin / Module | GitHub source | Notes |
 | --- | --- | --- |
-| Amaley Core | v1.0.2 | Data backbone and product-origin mapping baseline |
+| Amaley Core | v1.0.41 | Data backbone, product-origin mapping and explicit Cluster → SHG/Producer Group links |
 | Amaley Discovery Engine | v1.3.5 | Discovery/filter/listing engine |
 | Amaley Site Shell | v1.0.1 | Header/footer shell; auto-render on hold |
 | Amaley UI Sections Kit | v0.6.1 | Home Hero V6, Page Trust Strip, Pages Hero Other |
-| Amaley Compact Widgets | v0.4.2 | Manual/static compact widgets |
+| Amaley Compact Widgets | v0.4.3 source | Manual/static compact widgets; v0.4.2 ZIP may remain active until v0.4.3 staging test |
 | Amaley Templates | v1.2.7 | WooCommerce/page template support |
+
+## Current Amaley Core continuation point
+
+Amaley Core v1.0.41 is now the current GitHub source.
+
+Important relation key:
+
+```text
+_amaley_cluster_linked_group_ids
+```
+
+Admin field:
+
+```text
+Amaley Linked Producer Groups / SHGs
+```
+
+This field is on the Cluster edit screen and is the first source read by the single cluster frontend.
+
+Recent live/staging test result:
+
+- Selecting SHG/Producer Groups from the Cluster edit screen updated the frontend single cluster page.
+- Quick Details SHG count changed correctly.
+- Women Collectives cards changed correctly.
+- People behind the cluster changed through linked SHGs/producers.
+
+Next safe work should continue from this source state, not from older v1.0.2/v1.0.15 references.
 
 ## Working style
 
