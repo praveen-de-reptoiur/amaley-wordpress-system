@@ -30,7 +30,7 @@ Google Drive is used for plugin ZIP backups, full website backups, Elementor exp
 
 | Plugin / Module | Current Source | Role |
 | --- | --- | --- |
-| Amaley Core | v1.0.41 | Data backbone, product-origin mapping and explicit Cluster → SHG/Producer Group links |
+| Amaley Core | v1.0.46 | Data backbone, product-origin mapping, explicit Cluster → SHG/Producer Group links, rich story editor and approved Cluster Single spacing rhythm |
 | Amaley Discovery Engine | v1.3.5 | Discovery, filters, listings, search, sort, pagination |
 | Amaley Site Shell | v1.0.1 | Header/footer shell and mobile drawer; auto-render on hold |
 | Amaley UI Sections Kit | v0.6.1 | Home Hero V6, Page Trust Strip, Pages Hero Other, UI foundation |
@@ -39,11 +39,17 @@ Google Drive is used for plugin ZIP backups, full website backups, Elementor exp
 
 ---
 
-## Latest Amaley Core Relation Lock
+## Latest Amaley Core Locks
 
-Current Amaley Core v1.0.41 includes the explicit Cluster → SHG/Producer Group linking workflow.
+Current Amaley Core v1.0.46 includes:
 
-Source of truth meta key:
+```text
+v1.0.41 — Explicit Cluster → SHG/Producer Group linking
+v1.0.45 — Cluster Full Story rich editor
+v1.0.46 — Cluster Single spacing rhythm polish
+```
+
+Relation source of truth meta key:
 
 ```text
 _amaley_cluster_linked_group_ids
@@ -55,13 +61,25 @@ Admin edit box:
 Amaley Linked Producer Groups / SHGs
 ```
 
-This relation powers the single cluster frontend output first, before fallback relationship detection.
-
 Expected frontend behaviour:
 
 - Quick Details → SHGs count follows selected groups.
 - Women Collectives cards follow selected groups.
 - People behind the cluster follows linked SHGs/producers.
+- Cluster Story reads rich Full Story content from the Cluster record.
+- Cluster Single sections follow the approved compact spacing rhythm.
+
+---
+
+## Current Architecture / Visual Locks
+
+### `docs/AMALEY_CPT_SINGLE_SECTION_STRUCTURE_LOCK.md`
+
+Locks archive/single pages as section-wise systems using multiple Amaley Core section widgets.
+
+### `docs/AMALEY_SECTION_SPACING_RHYTHM_LOCK.md`
+
+Locks `Amaley Section Spacing Rhythm 1` as the approved spacing density for future Amaley sections and later updates to existing loose sections.
 
 ---
 
@@ -78,6 +96,14 @@ Primary onboarding file. Read before touching the project.
 ### `docs/AMALEY_PLUGIN_WIDGET_REGISTRY_AND_CONFLICT_RULES.md`
 
 Main plugin/widget ownership registry. Use before building, moving, or changing widgets.
+
+### `docs/AMALEY_CPT_SINGLE_SECTION_STRUCTURE_LOCK.md`
+
+CPT archive/single section structure lock for Cluster, SHG and Member / Producer pages.
+
+### `docs/AMALEY_SECTION_SPACING_RHYTHM_LOCK.md`
+
+Whole-site section spacing rhythm lock based on approved v1.0.46 Cluster Single spacing.
 
 ### `docs/AMALEY_DESIGN_SYSTEM_LOCKED.md`
 
@@ -145,7 +171,7 @@ plugins/
 - Source files should be used for GitHub updates.
 - WooCommerce remains the commerce engine.
 - Discovery Engine owns discovery/filter/list/search/sort/pagination logic.
-- Core owns data backbone, origin mapping and explicit cluster group links.
+- Core owns data backbone, origin mapping, explicit cluster group links, rich cluster story support and CPT-driven sections.
 - UI Sections Kit owns locked generic page/home visual sections.
 - Compact Widgets owns manual/static compact visual widgets.
 - Templates supports WooCommerce/page template modules.
