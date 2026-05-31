@@ -2,7 +2,7 @@
 
 Status: Active architecture lock  
 Owner: Praveen  
-Last updated: 2026-05-30
+Last updated: 2026-06-01
 
 This document is the source of truth for where Amaley widgets, sections, shortcodes, CSS and PHP classes should live. Do not add new widgets randomly without checking this registry first.
 
@@ -13,6 +13,29 @@ This document is the source of truth for where Amaley widgets, sections, shortco
 Each plugin must own one clear responsibility. Do not duplicate widgets, shortcodes, CSS prefixes, Elementor widget names or PHP classes across plugins.
 
 GitHub must stay clean source only. Do not commit ZIP files, backups, media dumps, videos, screenshots, passwords, `wp-config.php` files or All-in-One Migration archives.
+
+---
+
+## Required companion locks
+
+Read these before creating or changing any CPT-driven archive, single page, section widget, spacing system or Elementor template:
+
+```text
+docs/AMALEY_CPT_SINGLE_SECTION_STRUCTURE_LOCK.md
+docs/AMALEY_SECTION_SPACING_RHYTHM_LOCK.md
+```
+
+Current approved spacing reference:
+
+```text
+Amaley Section Spacing Rhythm 1
+```
+
+Approved implementation reference:
+
+```text
+Amaley Core v1.0.46 — Cluster Single Spacing Rhythm Polish
+```
 
 ---
 
@@ -35,12 +58,12 @@ Do not provide plugin ZIP/code alone for visual widgets. Preview is mandatory.
 
 | Plugin | Owns | Must not own |
 |---|---|---|
-| Amaley Core | CPTs, cluster data, SHG data, member/producer data, product-origin mapping, and all CPT-related cards/sections/widgets | Product discovery filters, header/footer, checkout/cart, generic homepage UI sections |
+| Amaley Core | CPTs, cluster data, SHG data, member/producer data, product-origin mapping, CPT/meta/data-backed cards, CPT archive sections, CPT single sections, rich Cluster Story, and origin/traceability context blocks | Product discovery filters, header/footer, checkout/cart, generic homepage UI sections |
 | Amaley Discovery Engine | Product/content discovery, filters, search, sort, pagination, result grids, topbar filters | Generic homepage widgets, CPT card design ownership, header/footer, cart/checkout |
 | Amaley Templates | Single product, shop page, product template modules, product-page trust strip, shop discovery wrapper | General page hero trust strip, CPT data management, Discovery Engine filter logic |
 | Amaley Site Shell | Header, footer, mobile drawer, site shell shortcodes/widgets | Content sections, product cards, discovery filters, CPT cards |
 | Amaley UI Sections Kit | General reusable page/homepage visual sections only: Home Hero V6, Page Trust Strip, Pages Hero Other and foundation UI components | CPT-specific cards, Discovery filters, header/footer, WooCommerce templates, origin data management, compact card libraries |
-| Amaley Compact Widgets | Generic compact visual card/section widgets for manual/static page building: info cards, split editorial, values, process, purpose, map-style origin section, image/flip cards, CTA/metric tiles | CPT/data logic, Discovery filters, header/footer, WooCommerce templates, Home Hero V6, Page Trust Strip, Pages Hero Other |
+| Amaley Compact Widgets | Generic compact visual card/section widgets for manual/static page building: info cards, split editorial, values, process, purpose, map-style origin section, image/flip cards, CTA/metric tiles | CPT/meta/data logic, Discovery filters, header/footer, WooCommerce templates, Home Hero V6, Page Trust Strip, Pages Hero Other |
 
 ---
 
@@ -55,13 +78,39 @@ All cards, sections, listings and display elements connected to these data types
 - SHG Members
 - Producers / Makers
 - Product Origin Mapping
-- Cluster story cards
-- SHG cards
-- Member/maker cards
+- Cluster story cards and sections
+- SHG cards and sections
+- Member/maker cards and sections
 - Origin traceability sections
 - Cluster-linked product context blocks
+- CPT-driven archive sections
+- CPT-driven single sections
 
-Reason: these elements depend on the same CPT and ACF/data backbone. Keeping them in Amaley Core prevents confusion and avoids duplicate logic across plugins.
+Reason: these elements depend on the same CPT/meta/data backbone. Keeping them in Amaley Core prevents confusion and avoids duplicate logic across plugins.
+
+### Section-wise CPT pages are final workflow
+
+CPT archive and single pages must use separate section widgets.
+
+Final scalable workflow:
+
+```text
+One page template + multiple Amaley Core section widgets.
+```
+
+All-in-one widgets may remain only as legacy, fallback, migration or quick-test helpers. They must not become the final production editing method.
+
+### Spacing rhythm is locked
+
+All future Amaley website sections should follow:
+
+```text
+Amaley Section Spacing Rhythm 1
+```
+
+Existing loose sections should be updated later to match this rhythm.
+
+Spacing problems must be solved through shared rhythm defaults and spacing controls, not by merging sections into one hardcoded block.
 
 ### Discovery Engine must not be touched casually
 
@@ -123,7 +172,7 @@ Allowed examples:
 
 Not allowed in Compact Widgets:
 
-- ACF/CPT data fetching
+- CPT/meta/data fetching
 - Product discovery/filter logic
 - WooCommerce template overrides
 - Header/footer/site shell logic
@@ -219,7 +268,7 @@ Compact Widgets v0.4.3 source notes:
 - No frontend JavaScript.
 - No external libraries.
 - CSS scope must remain `.amaley-cw4-*` and `.amaley-cw4-origin-map-path*`.
-- No CPT/ACF/data fetching, Discovery Engine, WooCommerce template, header/footer or Site Shell change.
+- No CPT/meta/data fetching, Discovery Engine, WooCommerce template, header/footer or Site Shell change.
 
 ### Amaley Discovery Engine
 
@@ -264,36 +313,58 @@ Elementor widgets:
 
 ### Amaley Core
 
+Current source: v1.0.46.
+
 Current role:
 
 - CPT backbone
 - Cluster, SHG, member/producer and product-origin mapping
+- Explicit Cluster → SHG/Producer Group linking
+- Rich Cluster Full Story editor support
+- CPT-driven cards, archive sections and single sections
+- Approved Cluster Single spacing rhythm reference
 
-Future widgets to build in Amaley Core:
+Active / current Cluster widgets and sections include:
 
-1. Cluster Card widget/shortcode
-2. Cluster Grid widget/shortcode
-3. SHG Group Card widget/shortcode
-4. SHG Group Grid widget/shortcode
-5. Member / Producer Card widget/shortcode
-6. Member / Producer Grid widget/shortcode
-7. Origin Chain widget/shortcode
-8. Product Traceability panel
+1. Cluster Archive Hero
+2. Cluster Archive Trust Strip
+3. Cluster Archive Intro
+4. Cluster Archive Grid
+5. Cluster Archive CTA
+6. Cluster Single Hero
+7. Cluster Single Snapshot / Quick Details
+8. Cluster Single Story
+9. Cluster Single SHGs / Women Collectives
+10. Cluster Single Producers / People
+11. Cluster Single Products
+12. Cluster Single Gallery
+13. Cluster Single Contact
+14. Cluster Single CTA
+15. Cluster Card widgets / shortcodes where present
+16. SHG Card widgets / shortcodes where present
+17. Member / Producer Card widgets / shortcodes where present
+18. Product Origin Panel where present
+
+Next CPT build phase inside Amaley Core:
+
+1. SHG Group Single section widgets using the locked structure and spacing rhythm
+2. Member / Producer Single section widgets using the locked structure and spacing rhythm
+3. SHG Group Archive section widgets
+4. Member / Producer Archive section widgets
+5. Product-origin traceability panel refinement
 
 ---
 
 ## Future build list by plugin
 
-### Build in Amaley Core
+### Build in Amaley Core next
 
-1. Cluster Card widget/shortcode
-2. Cluster Grid widget/shortcode
-3. SHG Group Card widget/shortcode
-4. SHG Group Grid widget/shortcode
-5. Member / Producer Card widget/shortcode
-6. Member / Producer Grid widget/shortcode
-7. Origin Chain widget/shortcode
-8. Product Traceability panel
+1. Complete product mapping review after v1.0.46.
+2. SHG Group Single section widgets.
+3. Member / Producer Single section widgets.
+4. SHG Group Archive section widgets.
+5. Member / Producer Archive section widgets.
+6. Product-origin traceability panel refinement.
 
 ### Build in Amaley Compact Widgets after v0.4.3
 
