@@ -87,7 +87,7 @@ GitHub is used for:
 
 | Plugin / Module | Current GitHub source | ZIP backup belongs in Drive |
 | --- | --- | --- |
-| Amaley Core | v1.0.41 | v1.0.41 ZIP backup belongs in Drive |
+| Amaley Core | v1.0.46 | v1.0.46 ZIP backup belongs in Drive |
 | Amaley Discovery Engine | v1.3.5 | `amaley-discovery-engine-v1.3.5-no-cpt.zip` |
 | Amaley Site Shell | v1.0.1 | `amaley-site-shell-v1.0.1.zip` |
 | Amaley UI Sections Kit | v0.6.1 | `amaley-ui-sections-kit-v0.6.1.zip` |
@@ -100,9 +100,17 @@ ZIPs stay in Google Drive. GitHub stores clean source code and documentation onl
 
 ## Latest Amaley Core Status
 
-Amaley Core source is now synced to **v1.0.41**.
+Amaley Core source is now synced to **v1.0.46**.
 
-Main tested addition:
+Locked changes preserved:
+
+```text
+v1.0.41 — Explicit Cluster → SHG/Producer Group relation
+v1.0.45 — Cluster Full Story rich editor
+v1.0.46 — Cluster Single spacing rhythm polish
+```
+
+Important relation key:
 
 ```text
 _amaley_cluster_linked_group_ids
@@ -114,13 +122,17 @@ This is the explicit Cluster → SHG/Producer Group relation meta key. It is edi
 Amaley Linked Producer Groups / SHGs
 ```
 
-Observed test result:
+Approved spacing reference:
 
-- Selected SHG/Producer Groups save on the Cluster record.
-- Single cluster frontend reads the explicit group IDs first.
-- Quick Details SHG count updates from the selected groups.
-- Women Collectives cards update from selected groups.
-- People behind the cluster updates through linked SHGs.
+```text
+Amaley Section Spacing Rhythm 1
+```
+
+Reference file:
+
+```text
+docs/AMALEY_SECTION_SPACING_RHYTHM_LOCK.md
+```
 
 Safety:
 
@@ -195,6 +207,26 @@ If a component looks premium but makes the site heavy, it is not approved.
 
 ---
 
+## CPT Section Structure and Spacing Locks
+
+Read these before any CPT archive/single work:
+
+```text
+docs/AMALEY_CPT_SINGLE_SECTION_STRUCTURE_LOCK.md
+docs/AMALEY_SECTION_SPACING_RHYTHM_LOCK.md
+```
+
+Locked principles:
+
+- Archive and single pages use separate section widgets.
+- All-in-one widgets are legacy/fallback/test helpers only.
+- Cluster Single, SHG Single and Member / Producer Single must follow reusable section-wise structures.
+- New sections must follow Amaley Section Spacing Rhythm 1.
+- Existing loose sections should be updated later to the approved compact rhythm.
+- Spacing problems must be solved through plugin defaults and widget controls, not by abandoning section-wise architecture.
+
+---
+
 ## Active Custom Plugin / Module Direction
 
 ### Amaley Core
@@ -208,19 +240,21 @@ Owns:
 - SHG Member / Producer records
 - Product Origin Mapping
 - Explicit Cluster → SHG/Producer Group links
+- Rich Cluster Full Story editor support
+- Cluster Single spacing rhythm polish
 - Producer / maker profiles
 - Source village and region data
 - Traceability fields
 - Product usage and storage fields
 - System health checks
 
-Current v1.0.41 relation source of truth:
+Current relation source of truth:
 
 ```text
 _amaley_cluster_linked_group_ids
 ```
 
-Rule: Amaley Core must not become a frontend design plugin.
+Rule: Amaley Core must not become a broad frontend design plugin. It may own CPT-driven cards, sections, archive widgets and single widgets because they depend on Amaley Core data.
 
 ---
 
