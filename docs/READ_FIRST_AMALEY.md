@@ -87,14 +87,47 @@ GitHub is used for:
 
 | Plugin / Module | Current GitHub source | ZIP backup belongs in Drive |
 | --- | --- | --- |
-| Amaley Core | v1.0.2 | `amaley-core-v1.0.2.zip` |
+| Amaley Core | v1.0.41 | v1.0.41 ZIP backup belongs in Drive |
 | Amaley Discovery Engine | v1.3.5 | `amaley-discovery-engine-v1.3.5-no-cpt.zip` |
 | Amaley Site Shell | v1.0.1 | `amaley-site-shell-v1.0.1.zip` |
 | Amaley UI Sections Kit | v0.6.1 | `amaley-ui-sections-kit-v0.6.1.zip` |
-| Amaley Compact Widgets | v0.4.2 | `amaley-compact-widgets-v0.4.2.zip` |
+| Amaley Compact Widgets | v0.4.3 source | v0.4.2 active ZIP until v0.4.3 ZIP/staging test |
 | Amaley Templates | v1.2.7 | `amaley-templates-v1.2.7.zip` |
 
 ZIPs stay in Google Drive. GitHub stores clean source code and documentation only.
+
+---
+
+## Latest Amaley Core Status
+
+Amaley Core source is now synced to **v1.0.41**.
+
+Main tested addition:
+
+```text
+_amaley_cluster_linked_group_ids
+```
+
+This is the explicit Cluster → SHG/Producer Group relation meta key. It is edited from the Cluster edit screen side box:
+
+```text
+Amaley Linked Producer Groups / SHGs
+```
+
+Observed test result:
+
+- Selected SHG/Producer Groups save on the Cluster record.
+- Single cluster frontend reads the explicit group IDs first.
+- Quick Details SHG count updates from the selected groups.
+- Women Collectives cards update from selected groups.
+- People behind the cluster updates through linked SHGs.
+
+Safety:
+
+- No WooCommerce cart/checkout override.
+- No header/footer override.
+- No permalink rewrite.
+- No ZIP/media should be committed to GitHub.
 
 ---
 
@@ -174,11 +207,18 @@ Owns:
 - SHG Group records
 - SHG Member / Producer records
 - Product Origin Mapping
+- Explicit Cluster → SHG/Producer Group links
 - Producer / maker profiles
 - Source village and region data
 - Traceability fields
 - Product usage and storage fields
 - System health checks
+
+Current v1.0.41 relation source of truth:
+
+```text
+_amaley_cluster_linked_group_ids
+```
 
 Rule: Amaley Core must not become a frontend design plugin.
 
@@ -261,13 +301,15 @@ Does not own:
 
 Manual/static compact visual widget system.
 
-Current locked source: v0.4.2.
+Current GitHub source: v0.4.3.  
+Current active ZIP backup may remain v0.4.2 until v0.4.3 is zipped and tested on staging.
 
 Owns:
 
 - Info Cards Grid
 - Split Editorial Section
 - Traceability Journey as static visual section
+- Origin Map Path as static homepage visual section
 - Gifting / Bulk Band
 - Feature / Value Strip
 - Process Steps
