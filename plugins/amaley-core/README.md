@@ -1,4 +1,13 @@
-# Amaley Core v1.0.7 Test Build
+# Amaley Core v1.0.46 — Cluster Single Spacing Rhythm Polish
+
+Current build focus:
+
+- Tightens Cluster Single section spacing rhythm.
+- Keeps separate section widgets as the final workflow.
+- Preserves v1.0.45 rich editor story fix.
+- Preserves v1.0.41 explicit Cluster → SHG/Producer Group relation fix.
+- No WooCommerce/header/footer/permalink override.
+
 
 Installable WordPress test plugin ZIP.
 

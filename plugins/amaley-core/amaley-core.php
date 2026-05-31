@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Amaley Core
  * Description: Cluster, SHG Group, Member/Producer and Product Origin Mapping backbone for the Amaley fresh WordPress build.
- * Version: 1.0.41
+ * Version: 1.0.46
  * Author: Praveen
  * Text Domain: amaley-core
  * Requires at least: 6.0
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! defined( 'AMALEY_CORE_VERSION' ) ) {
-    define( 'AMALEY_CORE_VERSION', '1.0.41' );
+    define( 'AMALEY_CORE_VERSION', '1.0.46' );
 }
 if ( ! defined( 'AMALEY_CORE_SCHEMA_VERSION' ) ) {
     define( 'AMALEY_CORE_SCHEMA_VERSION', '1' );

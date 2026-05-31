@@ -107,6 +107,18 @@ class Amaley_Core_Cluster_Single_Sections {
         return is_scalar( $value ) ? trim( (string) $value ) : '';
     }
 
+    /** Format rich text saved from cluster fields without double-wrapping existing paragraphs. */
+    public function rich_text( $value ) {
+        $value = is_scalar( $value ) ? trim( (string) $value ) : '';
+        if ( '' === $value ) {
+            return '';
+        }
+        if ( preg_match( '/<(p|br|ul|ol|li|blockquote|h1|h2|h3|h4|h5|h6|div)\b/i', $value ) ) {
+            return wp_kses_post( $value );
+        }
+        return wp_kses_post( wpautop( $value ) );
+    }
+
     /** Shortcodes. */
     public function shortcode_hero( $atts ) { $this->enqueue_assets(); return $this->render_hero( is_array( $atts ) ? $atts : array() ); }
     public function shortcode_snapshot( $atts ) { $this->enqueue_assets(); return $this->render_snapshot( is_array( $atts ) ? $atts : array() ); }
@@ -173,7 +185,6 @@ class Amaley_Core_Cluster_Single_Sections {
         return wp_parse_args( array(
             'label' => 'Cluster Story',
             'title' => 'The story behind this cluster',
-            'fallback_story' => '',
             'show_products' => '1',
             'show_villages' => '1',
         ), $this->base_defaults() );
@@ -187,7 +198,7 @@ class Amaley_Core_Cluster_Single_Sections {
             'description' => 'Records connected to this source cluster.',
             'limit' => '6',
             'show_all_connected' => '1',
-            'columns_desktop' => '3',
+            'columns_desktop' => '4',
             'columns_tablet' => '2',
             'columns_mobile' => '1',
             'show_empty_state' => '1',
@@ -421,13 +432,13 @@ class Amaley_Core_Cluster_Single_Sections {
         $cluster = $this->resolve_cluster( $a );
         if ( ! $cluster ) { return $this->empty_state( $a['empty_message'] ); }
         $m = $this->cluster_meta( $cluster );
-        $story = $m['story'] ? $m['story'] : ( $a['fallback_story'] ? $a['fallback_story'] : $this->generated_cluster_story( $m ) );
+        $story = $m['story'] ? $m['story'] : $this->generated_cluster_story( $m );
         $this->enqueue_assets();
         ob_start();
         ?>
         <section class="amcss-section amcss-story">
             <div class="amcss-container amcss-story-grid">
-                <div class="amcss-story-copy"><span class="amcss-label"><?php echo esc_html( $a['label'] ); ?></span><h2><?php echo esc_html( $a['title'] ); ?></h2><div class="amcss-rich-text"><?php echo wp_kses_post( wpautop( $story ) ); ?></div></div>
+                <div class="amcss-story-copy"><span class="amcss-label"><?php echo esc_html( $a['label'] ); ?></span><h2><?php echo esc_html( $a['title'] ); ?></h2><div class="amcss-rich-text"><?php echo $this->rich_text( $story ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div></div>
                 <aside class="amcss-story-side">
                     <?php if ( $this->boolish( $a['show_products'] ) && ! empty( $m['products'] ) ) : ?><div class="amcss-side-box"><h3>Main products</h3><div class="amcss-chip-row"><?php foreach ( $m['products'] as $product ) : ?><span><?php echo esc_html( $product ); ?></span><?php endforeach; ?></div></div><?php endif; ?>
                     <?php if ( $this->boolish( $a['show_villages'] ) && ! empty( $m['villages'] ) ) : ?><div class="amcss-side-box"><h3>Villages</h3><ul><?php foreach ( $m['villages'] as $village ) : ?><li><?php echo esc_html( $village ); ?></li><?php endforeach; ?></ul></div><?php endif; ?>
@@ -518,7 +529,7 @@ class Amaley_Core_Cluster_Single_Sections {
                 $verification ? array( 'Verification', ucfirst( $verification ) ) : null,
                 $contact ? array( 'Contact', $contact ) : null,
             ) );
-            $chips = array_slice( $categories, 0, 6 );
+            $chips = array_slice( $categories, 0, 3 );
             if ( '' === trim( (string) $excerpt ) ) {
                 $bits = array();
                 if ( $village ) { $bits[] = 'based in ' . $village; }
@@ -542,7 +553,7 @@ class Amaley_Core_Cluster_Single_Sections {
                 $village ? array( 'Village', $village ) : null,
                 $phone ? array( 'Phone', $phone ) : null,
             ) );
-            $chips = array_slice( array_merge( $skills, $handled ), 0, 6 );
+            $chips = array_slice( array_merge( $skills, $handled ), 0, 3 );
             if ( '' === trim( (string) $excerpt ) ) {
                 $bits = array();
                 if ( $role ) { $bits[] = $role; }
@@ -572,9 +583,9 @@ class Amaley_Core_Cluster_Single_Sections {
             <div class="amcss-card-body">
                 <span class="amcss-card-label"><?php echo esc_html( ucfirst( $type ) ); ?></span>
                 <h3><?php echo esc_html( $title ); ?></h3>
+                <p class="amcss-related-desc"><?php echo esc_html( $excerpt ); ?></p>
                 <?php if ( ! empty( $meta_rows ) ) : ?><dl class="amcss-meta-list"><?php foreach ( $meta_rows as $row ) : ?><div><dt><?php echo esc_html( $row[0] ); ?></dt><dd><?php echo esc_html( $row[1] ); ?></dd></div><?php endforeach; ?></dl><?php endif; ?>
                 <?php if ( ! empty( $chips ) ) : ?><div class="amcss-chip-row amcss-card-chips"><?php foreach ( $chips as $chip ) : ?><span><?php echo esc_html( $chip ); ?></span><?php endforeach; ?></div><?php endif; ?>
-                <p><?php echo esc_html( $excerpt ); ?></p>
                 <?php if ( 'product' === $type && $url ) : ?><a class="amcss-card-link" href="<?php echo esc_url( $url ); ?>"><?php echo esc_html( $button ); ?></a><?php elseif ( $button ) : ?><span class="amcss-card-link amcss-card-link-muted"><?php echo esc_html( $button ); ?></span><?php endif; ?>
             </div>
         </article>

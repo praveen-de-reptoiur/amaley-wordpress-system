@@ -6,3 +6,15 @@
 .amaley-core-wrap .amaley-core-field textarea{min-height:86px;line-height:1.55}
 .amaley-core-wrap .amaley-core-field input[type="text"],.amaley-core-wrap .amaley-core-field textarea{border-color:#d8c7a8;background:#fffdf7;border-radius:8px;padding:9px 11px}
 .amaley-core-wrap .amaley-core-field input[type="text"]:focus,.amaley-core-wrap .amaley-core-field textarea:focus{border-color:#c2880a;box-shadow:0 0 0 1px #c2880a}
+
+
+/* v1.0.45: Rich text fields inside Amaley Core metaboxes */
+.amaley-core-field-wysiwyg .wp-editor-wrap{
+    max-width: 860px;
+}
+.amaley-core-field-wysiwyg .wp-editor-area{
+    min-height: 220px;
+}
+.amaley-core-field-wysiwyg .description{
+    max-width: 860px;
+}

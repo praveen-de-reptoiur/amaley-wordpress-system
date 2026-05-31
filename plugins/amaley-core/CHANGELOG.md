@@ -1,3 +1,20 @@
+## v1.0.46 — Cluster Single Spacing Rhythm Polish
+
+- Reduced default vertical spacing between separate Cluster Single section widgets so the page reads as one continuous flow instead of disconnected blocks.
+- Added scoped rhythm overrides for Hero, Quick Details/Snapshot, Story, Women Collectives/SHGs, Producers, Products, Gallery, Contact and CTA sections.
+- Added Elementor widget-wrapper rhythm rules for stacked Cluster Single widgets.
+- Preserved section-wise architecture: widgets remain separate and non-coder controllable.
+- No data logic, relation mapping, WooCommerce, header/footer, route or permalink change.
+
+
+## v1.0.44 — Single Story Label + Rich Text Fix
+
+- Removed unwanted decorative prefix line before `.amcss-label` in cluster single section widgets.
+- Added rich text/WYSIWYG custom story fallback control to `Amaley Cluster Story` widget.
+- Added optional custom story override toggle so Elementor can use formatted story content when needed.
+- Kept cluster Full Story as default source unless override is enabled.
+- No WooCommerce/theme/header/footer/permalink changes.
+
 ## v1.0.36 - Cluster Single Relation Query Fix
 - Fixed Related SHGs showing only one record in cluster single template.
 - Added support for Meta Box plugin relationship table (`mb_relationships`) in single template related sections.

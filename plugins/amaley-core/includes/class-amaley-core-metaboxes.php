@@ -141,6 +141,25 @@ class Amaley_Core_Metaboxes {
                 $rows = isset( $field['rows'] ) ? absint( $field['rows'] ) : 3;
                 echo '<textarea id="' . esc_attr( $meta_key ) . '" name="' . esc_attr( $name ) . '" rows="' . esc_attr( $rows ) . '" placeholder="' . esc_attr( isset( $field['placeholder'] ) ? $field['placeholder'] : '' ) . '">' . esc_textarea( $value ) . '</textarea>';
                 break;
+            case 'wysiwyg':
+                $rows = isset( $field['rows'] ) ? absint( $field['rows'] ) : 9;
+                $editor_id = 'amaley_core_editor_' . sanitize_key( $meta_key ) . '_' . absint( $post_id );
+                wp_editor(
+                    wp_kses_post( (string) $value ),
+                    $editor_id,
+                    array(
+                        'textarea_name' => $name,
+                        'textarea_rows' => $rows,
+                        'media_buttons' => false,
+                        'teeny'         => false,
+                        'quicktags'     => true,
+                        'tinymce'       => array(
+                            'toolbar1' => 'formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,unlink,undo,redo',
+                            'toolbar2' => '',
+                        ),
+                    )
+                );
+                break;
             case 'number':
                 echo '<input type="number" id="' . esc_attr( $meta_key ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( $value ) . '" />';
                 break;
@@ -229,6 +248,7 @@ class Amaley_Core_Metaboxes {
         }
     }
     private function sanitize_value( $value, $type ) {
+        if ( 'wysiwyg' === $type ) { return wp_kses_post( $value ); }
         if ( 'textarea' === $type ) { return sanitize_textarea_field( $value ); }
         if ( 'number' === $type || false !== strpos( $type, 'relation_' ) ) { return absint( $value ); }
         return sanitize_text_field( $value );
