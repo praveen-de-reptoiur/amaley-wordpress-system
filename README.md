@@ -69,6 +69,7 @@ Start here in this exact order:
 - `docs/UNIVERSAL_FULL_CONTROL_WEBSITE_STANDARD.md`
 - `docs/READ_FIRST_AMALEY.md`
 - `docs/AMALEY_PLUGIN_WIDGET_REGISTRY_AND_CONFLICT_RULES.md`
+- `docs/AMALEY_CPT_SINGLE_SECTION_STRUCTURE_LOCK.md`
 - `docs/AMALEY_DESIGN_SYSTEM_LOCKED.md`
 - `docs/AMALEY_PRIMARY_BUILD_RULES.md`
 - `docs/AMALEY_PERFORMANCE_AND_NO_ELEMENTOR_LOCK.md`
@@ -149,6 +150,25 @@ Rule: Compact Widgets must not own CPT/data logic, Discovery filters, WooCommerc
 ### Amaley Templates
 
 Templates supports WooCommerce/page template modules. WooCommerce remains the commerce engine.
+
+---
+
+## CPT Single Section Structure Lock
+
+The section-wise CPT page structure is locked in:
+
+```text
+docs/AMALEY_CPT_SINGLE_SECTION_STRUCTURE_LOCK.md
+```
+
+Locked principles:
+
+- Archive pages and single pages use separate section widgets.
+- All-in-one widgets are legacy/fallback only, not the final workflow.
+- Cluster Single, SHG Single and Member / Producer Single must follow reusable section-wise structures.
+- Every section widget must provide non-coder controls for Content, Show/Hide, Layout, Style, Spacing and Responsive behaviour.
+- Separate widgets must still feel like one continuous page through shared spacing rhythm.
+- Spacing issues must be solved through plugin defaults and widget controls, not by abandoning the section-wise architecture.
 
 ---
 
