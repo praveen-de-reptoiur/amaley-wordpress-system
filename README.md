@@ -50,7 +50,7 @@ Do not upload ZIPs, videos, screenshots, product image dumps, passwords, API key
 
 | Plugin / Module | Current GitHub source status | Drive ZIP status | Role |
 | --- | --- | --- | --- |
-| Amaley Core | v1.0.46 | v1.0.46 ZIP backup belongs in Drive | Data backbone, CPTs, product-origin mapping, explicit Cluster → SHG/Producer Group links, rich story editor and approved Cluster Single spacing rhythm |
+| Amaley Core | v1.0.74 | v1.0.74 ZIP backup belongs in Drive | Data backbone, CPTs, product-origin mapping, explicit Cluster → SHG/Producer Group links, SHG archive/single widgets, rich story editor, gallery/media fields, approved card designs and section controls |
 | Amaley Discovery Engine | v1.3.5 | `amaley-discovery-engine-v1.3.5-no-cpt.zip` | Discovery, filtering, search, sort and pagination |
 | Amaley Site Shell | v1.0.1 | `amaley-site-shell-v1.0.1.zip` | Header/footer shell; auto-render on hold |
 | Amaley UI Sections Kit | v0.6.1 | `amaley-ui-sections-kit-v0.6.1.zip` | Home Hero V6, Page Trust Strip, Pages Hero Other, UI foundation |
@@ -71,6 +71,7 @@ Start here in this exact order:
 - `docs/AMALEY_PLUGIN_WIDGET_REGISTRY_AND_CONFLICT_RULES.md`
 - `docs/AMALEY_CPT_SINGLE_SECTION_STRUCTURE_LOCK.md`
 - `docs/AMALEY_SECTION_SPACING_RHYTHM_LOCK.md`
+- `docs/AMALEY_CARD_DESIGN_LOCK.md`
 - `docs/AMALEY_DESIGN_SYSTEM_LOCKED.md`
 - `docs/AMALEY_PRIMARY_BUILD_RULES.md`
 - `docs/AMALEY_PERFORMANCE_AND_NO_ELEMENTOR_LOCK.md`
@@ -106,7 +107,7 @@ Target custom system:
 
 ### Amaley Core
 
-Core manages data backbone only: Clusters, SHG Groups, SHG Members / Producers, Product Origin Mapping, producer profiles, traceability fields, explicit Cluster → SHG/Producer Group links, rich cluster story field support, approved CPT section spacing rhythm and system health checks.
+Core manages data backbone only: Clusters, SHG Groups, SHG Members / Producers, Product Origin Mapping, producer profiles, traceability fields, explicit Cluster → SHG/Producer Group links, rich story fields, gallery/media fields, approved CPT section spacing rhythm, approved CPT card families, CPT archive/single section widgets and system health checks.
 
 Current relation source of truth:
 
@@ -184,7 +185,7 @@ docs/AMALEY_SECTION_SPACING_RHYTHM_LOCK.md
 Approved reference:
 
 ```text
-Amaley Core v1.0.46 — Cluster Single Spacing Rhythm Polish
+Amaley Section Spacing Rhythm 1
 ```
 
 This lock means:
@@ -196,18 +197,44 @@ This lock means:
 
 ---
 
+## Card Design Lock
+
+The approved reusable CPT card designs are locked in:
+
+```text
+docs/AMALEY_CARD_DESIGN_LOCK.md
+```
+
+Locked card families:
+
+- Cluster card
+- SHG / Producer Group card
+- Member / Producer card
+- Product card
+
+Rules:
+
+- Same card type must look the same wherever it appears.
+- Cards should be reused across archive, single, related-item and later Discovery contexts.
+- Images must remain visible using cover center center image handling with practical height/ratio controls.
+- Description length, max tags/chips, CTA text, CTA link, button alignment, hover/transform and responsive layout must be controllable where relevant.
+- No random card redesign without explicit approval.
+
+---
+
 ## Latest Source Sync
 
-### Amaley Core v1.0.46
+### Amaley Core v1.0.74
 
-The GitHub source under `plugins/amaley-core/` is synced to v1.0.46.
+The GitHub source under `plugins/amaley-core/` is synced to v1.0.74.
 
 Key locked changes preserved:
 
 - v1.0.41 explicit Cluster → SHG/Producer Group relation key: `_amaley_cluster_linked_group_ids`
-- v1.0.45 rich editor for Cluster Full Story
-- v1.0.46 Cluster Single spacing rhythm polish
+- v1.0.45 rich editor direction for Cluster Full Story
+- v1.0.74 current SHG archive/single, gallery/media field direction, button alignment controls, product-card correction and card-design lock checkpoint
 - Separate section widgets remain the final editing structure
+- Cluster, SHG, Member and Product card visual families are locked and must not be changed casually
 
 Safety note:
 
@@ -217,14 +244,3 @@ Safety note:
 - No ZIP/media committed to GitHub
 
 ---
-
-## Workflow Rule
-
-1. Read `000_READ_FIRST_BEFORE_ANY_WORK.md` first.
-2. Read `docs/UNIVERSAL_FULL_CONTROL_WEBSITE_STANDARD.md` before planning/design/build.
-3. Review repo/source status before changing code.
-4. Use source files for GitHub updates.
-5. Do not commit ZIP/media/screenshots/videos to GitHub.
-6. Preview or dry-test visual widgets before calling them final.
-7. Update documentation/changelog after serious source changes.
-8. Verify the final repo state before reporting done.
