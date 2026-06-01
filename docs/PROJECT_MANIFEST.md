@@ -30,7 +30,7 @@ Google Drive is used for plugin ZIP backups, full website backups, Elementor exp
 
 | Plugin / Module | Current Source | Role |
 | --- | --- | --- |
-| Amaley Core | v1.0.46 | Data backbone, product-origin mapping, explicit Cluster → SHG/Producer Group links, rich story editor and approved Cluster Single spacing rhythm |
+| Amaley Core | v1.0.74 | Data backbone, product-origin mapping, explicit Cluster → SHG/Producer Group links, rich story editors, gallery/media fields, SHG archive/single widgets, approved CPT cards and section controls |
 | Amaley Discovery Engine | v1.3.5 | Discovery, filters, listings, search, sort, pagination |
 | Amaley Site Shell | v1.0.1 | Header/footer shell and mobile drawer; auto-render on hold |
 | Amaley UI Sections Kit | v0.6.1 | Home Hero V6, Page Trust Strip, Pages Hero Other, UI foundation |
@@ -41,12 +41,13 @@ Google Drive is used for plugin ZIP backups, full website backups, Elementor exp
 
 ## Latest Amaley Core Locks
 
-Current Amaley Core v1.0.46 includes:
+Current Amaley Core v1.0.74 includes:
 
 ```text
 v1.0.41 — Explicit Cluster → SHG/Producer Group linking
-v1.0.45 — Cluster Full Story rich editor
+v1.0.45 — Cluster Full Story rich editor direction
 v1.0.46 — Cluster Single spacing rhythm polish
+v1.0.74 — SHG archive/single polish, gallery/media fields, section-level buttons, controls and card-design locks
 ```
 
 Relation source of truth meta key:
@@ -64,10 +65,13 @@ Amaley Linked Producer Groups / SHGs
 Expected frontend behaviour:
 
 - Quick Details → SHGs count follows selected groups.
-- Women Collectives cards follow selected groups.
-- People behind the cluster follows linked SHGs/producers.
-- Cluster Story reads rich Full Story content from the Cluster record.
-- Cluster Single sections follow the approved compact spacing rhythm.
+- SHG cards follow selected groups.
+- People / Producer sections follow linked SHGs/producers.
+- Story sections read rich story content from CPT records where implemented.
+- Gallery sections use media/gallery fields where implemented.
+- Mapped Products sections use WooCommerce product origin mapping.
+- CPT sections follow the approved compact spacing rhythm.
+- Card designs remain consistent across pages and contexts.
 
 ---
 
@@ -80,6 +84,10 @@ Locks archive/single pages as section-wise systems using multiple Amaley Core se
 ### `docs/AMALEY_SECTION_SPACING_RHYTHM_LOCK.md`
 
 Locks `Amaley Section Spacing Rhythm 1` as the approved spacing density for future Amaley sections and later updates to existing loose sections.
+
+### `docs/AMALEY_CARD_DESIGN_LOCK.md`
+
+Locks the approved Cluster, SHG / Producer Group, Member / Producer and Product card families so the same card type stays visually consistent across the site.
 
 ---
 
@@ -104,6 +112,10 @@ CPT archive/single section structure lock for Cluster, SHG and Member / Producer
 ### `docs/AMALEY_SECTION_SPACING_RHYTHM_LOCK.md`
 
 Whole-site section spacing rhythm lock based on approved v1.0.46 Cluster Single spacing.
+
+### `docs/AMALEY_CARD_DESIGN_LOCK.md`
+
+Approved card design lock for Cluster, SHG / Producer Group, Member / Producer and Product card families.
 
 ### `docs/AMALEY_DESIGN_SYSTEM_LOCKED.md`
 
@@ -171,7 +183,8 @@ plugins/
 - Source files should be used for GitHub updates.
 - WooCommerce remains the commerce engine.
 - Discovery Engine owns discovery/filter/list/search/sort/pagination logic.
-- Core owns data backbone, origin mapping, explicit cluster group links, rich cluster story support and CPT-driven sections.
+- Core owns data backbone, origin mapping, explicit cluster group links, rich story support, gallery/media fields and CPT-driven sections.
+- Core owns the locked CPT card families because those cards depend on Amaley Core data.
 - UI Sections Kit owns locked generic page/home visual sections.
 - Compact Widgets owns manual/static compact visual widgets.
 - Templates supports WooCommerce/page template modules.
