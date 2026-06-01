@@ -29,7 +29,7 @@ Some future folders may remain planning-only until a real source module is appro
 
 | Plugin / Module | GitHub source status | Drive ZIP backup status |
 | --- | --- | --- |
-| Amaley Core | v1.0.46 | v1.0.46 ZIP backup belongs in Drive |
+| Amaley Core | v1.0.74 | v1.0.74 ZIP backup belongs in Drive |
 | Amaley Discovery Engine | v1.3.5 | `amaley-discovery-engine-v1.3.5-no-cpt.zip` |
 | Amaley Site Shell | v1.0.1 | `amaley-site-shell-v1.0.1.zip` |
 | Amaley UI Sections Kit | v0.6.1 | `amaley-ui-sections-kit-v0.6.1.zip` |
@@ -46,7 +46,7 @@ The future Amaley system should not depend permanently on ACF, CPT UI, JetEngine
 
 Target direction:
 
-- Amaley Core manages data structures, origin mapping, explicit Cluster → SHG/Producer Group links, rich Cluster Story content and CPT-driven section widgets.
+- Amaley Core manages data structures, origin mapping, explicit Cluster → SHG/Producer Group links, rich story content, gallery/media fields, locked CPT card families and CPT-driven section widgets.
 - Amaley Discovery Engine manages discovery, filters, listings, pagination, sorting and search.
 - Amaley Site Shell manages header/footer/mobile drawer only when approved.
 - Amaley UI Sections Kit manages locked generic page/home visual sections and foundation UI components.
@@ -56,13 +56,14 @@ Target direction:
 
 ---
 
-## Current CPT / Spacing Locks
+## Current CPT / Spacing / Card Locks
 
 Read before creating or changing Cluster, SHG or Member / Producer pages:
 
 ```text
 docs/AMALEY_CPT_SINGLE_SECTION_STRUCTURE_LOCK.md
 docs/AMALEY_SECTION_SPACING_RHYTHM_LOCK.md
+docs/AMALEY_CARD_DESIGN_LOCK.md
 ```
 
 Locked principles:
@@ -71,7 +72,10 @@ Locked principles:
 - All-in-one widgets are legacy/fallback/test helpers only.
 - Final editing workflow is one page template plus multiple Amaley Core section widgets.
 - Future sections should follow `Amaley Section Spacing Rhythm 1`.
-- Existing loose sections should be updated later to the approved v1.0.46 compact rhythm.
+- Existing loose sections should be updated later to the approved compact rhythm.
+- Cluster cards, SHG cards, Member / Producer cards and Product cards are locked.
+- Same card type must keep the same design wherever it appears.
+- Section-level CTA buttons are expected where a section shows limited cards and must have controls.
 
 ---
 
@@ -88,9 +92,13 @@ Owns:
 - SHG Members / Producers
 - Product Origin Mapping
 - Explicit Cluster → SHG/Producer Group links
-- Rich Cluster Full Story editor support
+- Rich story editor support
+- Gallery/media fields where implemented
 - Cluster Single spacing rhythm polish
+- SHG archive and SHG single section widgets
 - CPT-driven cards, archive sections and single sections
+- Locked Cluster, SHG, Member and Product card families used in CPT contexts
+- Section-level CTA controls where sections show limited cards
 - Producer / maker profiles
 - Traceability fields
 - System health checks
@@ -112,7 +120,13 @@ This field is edited on the Cluster edit screen and read first by single cluster
 Current approved spacing reference:
 
 ```text
-Amaley Core v1.0.46 — Cluster Single Spacing Rhythm Polish
+Amaley Section Spacing Rhythm 1
+```
+
+Current approved card reference:
+
+```text
+docs/AMALEY_CARD_DESIGN_LOCK.md
 ```
 
 Does not own broad generic frontend design sections.
@@ -135,6 +149,8 @@ Owns:
 - Safe empty states
 
 Does not own static compact card libraries or generic page heroes.
+
+When Discovery later displays Amaley products, it should reuse the locked product-card style where practical rather than inventing a new card family.
 
 ---
 
@@ -258,26 +274,11 @@ Future admin-only debug toolkit.
 
 Purpose:
 
-- Record plugin health status
-- Show widget/module registration status
-- Show WooCommerce dependency status
-- Show product and origin data issues
-- Show cache-related warnings
-- Provide exportable debug report for developers
+- Read-only checks
+- Source/version checks
+- Elementor template assignment checks
+- WooCommerce health checks
+- Debug reports
+- Safe staging diagnostics
 
 ---
-
-## Hard GitHub Rule
-
-Do not commit:
-
-- Plugin ZIPs
-- `.wpress` backups
-- Full website backups
-- Screenshots
-- Videos
-- Product image dumps
-- Passwords or secrets
-- `wp-config.php`
-
-GitHub remains source-only and documentation-only.
