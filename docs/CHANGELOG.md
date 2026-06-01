@@ -8,6 +8,47 @@ Every entry should clearly explain what changed, why it changed, which file/plug
 
 ## 2026-06-01
 
+### Amaley Core v1.0.74 — SHG Archive / Single Polish, Card Locks and Source Sync
+
+- Synced `plugins/amaley-core/` source to Amaley Core v1.0.74.
+- Confirmed plugin header and `AMALEY_CORE_VERSION` are set to `1.0.74`.
+- Preserved the source-only GitHub rule. ZIP/media/backups remain outside GitHub.
+- Continued the section-wise Elementor workflow instead of creating one hardcoded all-in-one page widget.
+- Preserved the approved Cluster Single spacing rhythm direction.
+- Added/updated SHG Archive and SHG Single section work after live/staging visual review.
+- Added/continued gallery/media field direction for Cluster, SHG and Member records where implemented.
+- Continued rich story editor direction for CPT story fields.
+- Added/confirmed section-level CTA button requirement where a section shows limited cards.
+- Added/confirmed button show/hide, text, URL, alignment and responsive-control expectations.
+- Added `docs/AMALEY_CARD_DESIGN_LOCK.md` to lock approved Cluster, SHG, Member and Product card families.
+- Locked that Cluster cards, SHG cards, Member / Producer cards and Product cards must not be randomly redesigned across pages.
+- Locked product-card image handling and compact product-card direction for later Discovery integration.
+
+Affected source / docs:
+
+```text
+plugins/amaley-core/
+plugins/amaley-core/amaley-core.php
+plugins/amaley-core/includes/class-amaley-core-shg-archive-sections.php
+plugins/amaley-core/includes/class-amaley-core-shg-single-sections.php
+plugins/amaley-core/includes/class-amaley-core-shg-cards.php
+plugins/amaley-core/includes/class-amaley-core-cluster-cards.php
+plugins/amaley-core/includes/class-amaley-core-member-cards.php
+plugins/amaley-core/includes/class-amaley-core-metaboxes.php
+docs/AMALEY_CARD_DESIGN_LOCK.md
+```
+
+Safety decision:
+
+```text
+No WooCommerce cart/checkout override.
+No header/footer override.
+No permalink rewrite intentionally documented.
+No ZIP/media committed to GitHub.
+No global CSS dump approved.
+No random card redesign allowed after this lock.
+```
+
 ### Amaley Core v1.0.46 — Cluster Single Spacing Rhythm Polish Source Sync
 
 - Synced `plugins/amaley-core/` source to Amaley Core v1.0.46.
@@ -60,13 +101,13 @@ No ZIP/media committed to GitHub.
 - Locked that all-in-one widgets may remain only as legacy/fallback/test helpers, not final workflow.
 - Locked Cluster Single, SHG Single and Member / Producer Single section order.
 
-### Documentation Alignment — v1.0.46
+### Documentation Alignment — v1.0.74
 
-- Updated root `README.md` to show Amaley Core v1.0.46 as the current GitHub source.
-- Updated `docs/READ_FIRST_AMALEY.md` to include v1.0.46, section structure lock and spacing rhythm lock.
-- Updated `docs/CHANGELOG.md` with this v1.0.46 source sync entry.
-- Updated `docs/PROJECT_MANIFEST.md` to align current source versions and new lock docs.
-- Updated `docs/NEXT_CHAT_PROMPT.md` so future chats continue from v1.0.46.
+- Updated root `README.md` to show Amaley Core v1.0.74 as the current GitHub source.
+- Updated `docs/READ_FIRST_AMALEY.md` to include v1.0.74 and the card design lock.
+- Updated `docs/CHANGELOG.md` with the v1.0.74 source sync entry.
+- Updated `docs/PROJECT_MANIFEST.md` to align current source versions and lock docs.
+- Updated `docs/NEXT_CHAT_PROMPT.md` so future chats continue from v1.0.74.
 - Updated `plugins/README.md` to align Amaley Core source status and responsibilities.
 
 ---
@@ -140,7 +181,7 @@ Source and documentation only.
 Current source locks after the 2026-06-01 update:
 
 ```text
-Amaley Core: v1.0.46
+Amaley Core: v1.0.74
 Amaley Discovery Engine: v1.3.5
 Amaley Site Shell: v1.0.1
 Amaley UI Sections Kit: v0.6.1
@@ -218,12 +259,3 @@ docs/PROJECT_MANIFEST.md
 - Amaley Core v1.0.2 was the tested data-backbone baseline before later v1.0.41 and v1.0.46 source syncs.
 
 ---
-
-## 2026-05-25
-
-### Added
-
-- Created GitHub repository: `praveen-de-reptoiur/amaley-wordpress-system`.
-- Updated root README.md with professional repository purpose and target architecture.
-- Added core documentation files under `docs/`.
-- Added `plugins/README.md`.
