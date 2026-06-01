@@ -6,8 +6,9 @@ This file must be read before starting **any** website, WordPress, Elementor, pl
 
 Before planning, designing, coding, generating Elementor widgets, making plugin files, or giving UI/build guidance, first read:
 
-1. `docs/READ_FIRST_UNIVERSAL_FULL_CONTROL_STANDARD.md`
-2. `docs/UNIVERSAL_FULL_CONTROL_WEBSITE_STANDARD.md`
+1. `docs/UNIVERSAL_FULL_CONTROL_WEBSITE_STANDARD.md`
+2. `docs/READ_FIRST_AMALEY.md`
+3. `docs/PROJECT_MANIFEST.md`
 
 ## Locked standard
 
