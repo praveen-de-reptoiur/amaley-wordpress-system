@@ -13,6 +13,7 @@ class Amaley_Core_Cluster_Archive_Hero_Widget extends \Elementor\Widget_Base {
 
     protected function register_controls() {
         $this->start_controls_section( 'hero_content', array( 'label' => esc_html__( '1. Hero Content', 'amaley-core' ) ) );
+        $this->add_control( 'show_section', array( 'label' => esc_html__( 'Show Section', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::SWITCHER, 'return_value' => '1', 'default' => '1' ) );
         $this->add_control( 'label', array( 'label' => esc_html__( 'Small Label', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::TEXT, 'default' => 'Amaley Origins' ) );
         $this->add_control( 'title', array( 'label' => esc_html__( 'Main Heading', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::TEXTAREA, 'default' => 'Browse Amaley Source Clusters', 'rows' => 2 ) );
         $this->add_control( 'accent', array( 'label' => esc_html__( 'Accent Word', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::TEXT, 'default' => 'Clusters' ) );

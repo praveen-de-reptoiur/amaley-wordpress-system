@@ -11,6 +11,10 @@ class Amaley_Core_Cluster_Archive_Trust_Strip_Widget extends \Elementor\Widget_B
     public function get_style_depends() { return array( 'amaley-core-cluster-archive-sections' ); }
 
     protected function register_controls() {
+        $this->start_controls_section( 'section_visibility', array( 'label' => esc_html__( '0. Section Visibility', 'amaley-core' ) ) );
+        $this->add_control( 'show_section', array( 'label' => esc_html__( 'Show Section', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::SWITCHER, 'return_value' => '1', 'default' => '1' ) );
+        $this->end_controls_section();
+
         for ( $i = 1; $i <= 4; $i++ ) {
             $names = array( 1 => 'one', 2 => 'two', 3 => 'three', 4 => 'four' );
             $key = $names[$i];

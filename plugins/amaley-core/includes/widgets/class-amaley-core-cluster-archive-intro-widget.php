@@ -12,6 +12,7 @@ class Amaley_Core_Cluster_Archive_Intro_Widget extends \Elementor\Widget_Base {
 
     protected function register_controls() {
         $this->start_controls_section( 'content', array( 'label' => esc_html__( '1. Intro Content', 'amaley-core' ) ) );
+        $this->add_control( 'show_section', array( 'label' => esc_html__( 'Show Section', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::SWITCHER, 'return_value' => '1', 'default' => '1' ) );
         $this->add_control( 'label', array( 'label' => esc_html__( 'Small Label', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::TEXT, 'default' => 'Why clusters matter' ) );
         $this->add_control( 'title', array( 'label' => esc_html__( 'Heading', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::TEXTAREA, 'default' => 'Every Amaley product begins somewhere.', 'rows' => 2 ) );
         $this->add_control( 'description', array( 'label' => esc_html__( 'Description', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::TEXTAREA, 'default' => 'A cluster is not just a location. It connects ingredients, villages, women collectives, producer skills and product stories into one clear origin system.', 'rows' => 4 ) );

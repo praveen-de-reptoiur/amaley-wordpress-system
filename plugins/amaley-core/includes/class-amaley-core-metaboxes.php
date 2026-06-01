@@ -159,6 +159,10 @@ class Amaley_Core_Metaboxes {
                         ),
                     )
                 );
+                echo '<p class="description amaley-core-richtext-note">Use Visual tab for normal writing. Code tab remains available for clean HTML if TinyMCE is slow.</p>';
+                break;
+            case 'gallery':
+                $this->render_gallery_field( $meta_key, $name, $value );
                 break;
             case 'number':
                 echo '<input type="number" id="' . esc_attr( $meta_key ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( $value ) . '" />';
@@ -197,6 +201,40 @@ class Amaley_Core_Metaboxes {
         foreach ( $posts as $item ) { echo '<option value="' . esc_attr( $item->ID ) . '" ' . selected( (string) $value, (string) $item->ID, false ) . '>' . esc_html( get_the_title( $item ) ) . '</option>'; }
         echo '</select>';
     }
+    private function render_gallery_field( $meta_key, $name, $value ) {
+        $urls = $this->gallery_urls_from_value( $value );
+        echo '<div class="amaley-core-gallery-field" data-gallery-field="1">';
+        echo '<textarea class="amaley-core-gallery-value" id="' . esc_attr( $meta_key ) . '" name="' . esc_attr( $name ) . '" rows="5" readonly>' . esc_textarea( implode( "
+", $urls ) ) . '</textarea>';
+        echo '<div class="amaley-core-gallery-actions">';
+        echo '<button type="button" class="button button-primary amaley-core-gallery-select">Add / Select Gallery Images</button> ';
+        echo '<button type="button" class="button amaley-core-gallery-clear">Clear Gallery</button>';
+        echo '</div>';
+        echo '<div class="amaley-core-gallery-preview">';
+        foreach ( $urls as $url ) {
+            echo '<figure><img src="' . esc_url( $url ) . '" alt="" loading="lazy" /><button type="button" class="button-link-delete amaley-core-gallery-remove" aria-label="Remove image">×</button></figure>';
+        }
+        echo '</div>';
+        echo '<p class="description">This stores one clean image URL per line. Use WordPress Featured Image for the main visual; use this gallery for the visual story section.</p>';
+        echo '</div>';
+    }
+
+    private function gallery_urls_from_value( $value ) {
+        if ( is_array( $value ) ) {
+            $parts = $value;
+        } else {
+            $parts = preg_split( '/[
+,]+/', (string) $value );
+        }
+        $urls = array();
+        foreach ( (array) $parts as $part ) {
+            $url = trim( (string) $part );
+            if ( '' === $url ) { continue; }
+            if ( filter_var( $url, FILTER_VALIDATE_URL ) ) { $urls[] = esc_url_raw( $url ); }
+        }
+        return array_values( array_unique( $urls ) );
+    }
+
     public function save_cluster( $post_id, $post ) {
         $this->save_entity( $post_id, 'cluster' );
         $this->save_cluster_linked_groups( $post_id );
@@ -249,6 +287,7 @@ class Amaley_Core_Metaboxes {
     }
     private function sanitize_value( $value, $type ) {
         if ( 'wysiwyg' === $type ) { return wp_kses_post( $value ); }
+        if ( 'gallery' === $type ) { return implode( "\n", $this->gallery_urls_from_value( $value ) ); }
         if ( 'textarea' === $type ) { return sanitize_textarea_field( $value ); }
         if ( 'number' === $type || false !== strpos( $type, 'relation_' ) ) { return absint( $value ); }
         return sanitize_text_field( $value );

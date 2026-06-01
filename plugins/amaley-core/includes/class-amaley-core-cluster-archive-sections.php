@@ -25,6 +25,7 @@ class Amaley_Core_Cluster_Archive_Sections {
         add_shortcode( 'amaley_cluster_archive_trust_strip', array( $this, 'shortcode_trust_strip' ) );
         add_shortcode( 'amaley_cluster_archive_intro', array( $this, 'shortcode_intro' ) );
         add_shortcode( 'amaley_cluster_archive_grid', array( $this, 'shortcode_grid' ) );
+        add_shortcode( 'amaley_cluster_archive_gallery', array( $this, 'shortcode_gallery' ) );
         add_shortcode( 'amaley_cluster_archive_cta', array( $this, 'shortcode_cta' ) );
 
         add_action( 'elementor/elements/categories_registered', array( $this, 'register_elementor_category' ) );
@@ -59,6 +60,7 @@ class Amaley_Core_Cluster_Archive_Sections {
             'class-amaley-core-cluster-archive-trust-strip-widget.php',
             'class-amaley-core-cluster-archive-intro-widget.php',
             'class-amaley-core-cluster-archive-grid-widget.php',
+            'class-amaley-core-cluster-archive-gallery-widget.php',
             'class-amaley-core-cluster-archive-cta-widget.php',
         );
 
@@ -74,6 +76,7 @@ class Amaley_Core_Cluster_Archive_Sections {
             'Amaley_Core_Cluster_Archive_Trust_Strip_Widget',
             'Amaley_Core_Cluster_Archive_Intro_Widget',
             'Amaley_Core_Cluster_Archive_Grid_Widget',
+            'Amaley_Core_Cluster_Archive_Gallery_Widget',
             'Amaley_Core_Cluster_Archive_CTA_Widget',
         );
 
@@ -139,15 +142,18 @@ class Amaley_Core_Cluster_Archive_Sections {
     public function shortcode_intro( $atts ) { $this->enqueue_assets(); return $this->render_intro( is_array( $atts ) ? $atts : array() ); }
     /** Shortcode grid. */
     public function shortcode_grid( $atts ) { $this->enqueue_assets(); return $this->render_grid( is_array( $atts ) ? $atts : array() ); }
+    /** Shortcode gallery. */
+    public function shortcode_gallery( $atts ) { $this->enqueue_assets(); return $this->render_gallery( is_array( $atts ) ? $atts : array() ); }
     /** Shortcode CTA. */
     public function shortcode_cta( $atts ) { $this->enqueue_assets(); return $this->render_cta( is_array( $atts ) ? $atts : array() ); }
 
     /** Defaults: hero. */
     public function hero_defaults() {
         return array(
+            'show_section' => '1',
             'label'              => 'Amaley Origins',
             'title'              => 'Browse Amaley Source Clusters',
-            'accent'             => 'Clusters',
+            'accent'             => '',
             'description'        => 'Explore origin geographies, women collectives, producer families and products through a simple cluster directory.',
             'home_label'         => 'Home',
             'home_url'           => '/',
@@ -174,6 +180,7 @@ class Amaley_Core_Cluster_Archive_Sections {
     /** Defaults: trust. */
     public function trust_defaults() {
         return array(
+            'show_section' => '1',
             'item_one_icon' => '⌂',
             'item_one_title' => 'Geography-led',
             'item_one_text' => 'Browse by place and origin.',
@@ -192,6 +199,7 @@ class Amaley_Core_Cluster_Archive_Sections {
     /** Defaults: intro. */
     public function intro_defaults() {
         return array(
+            'show_section' => '1',
             'label' => 'Why clusters matter',
             'title' => 'Every Amaley product begins somewhere.',
             'description' => 'A cluster is not just a location. It connects ingredients, villages, women collectives, producer skills and product stories into one clear origin system.',
@@ -207,6 +215,7 @@ class Amaley_Core_Cluster_Archive_Sections {
     /** Defaults: grid. */
     public function grid_defaults() {
         return array(
+            'show_section' => '1',
             'label' => 'Cluster directory',
             'title' => 'Open a cluster to explore the full origin story',
             'description' => 'Each cluster card opens a deeper page with its SHGs, producers, mapped products and origin journey.',
@@ -230,12 +239,40 @@ class Amaley_Core_Cluster_Archive_Sections {
             'show_products' => '1',
             'show_counts' => '1',
             'show_button' => '1',
+            'show_section_button' => '1',
+            'section_button_text' => 'View All Clusters',
+            'section_button_url' => '/clusters/',
+            'section_button_align' => 'center',
+        );
+    }
+
+    /** Defaults: gallery. */
+    public function gallery_defaults() {
+        return array(
+            'show_section' => '1',
+            'label' => 'Cluster Gallery',
+            'title' => 'Visual notes from Amaley source clusters',
+            'description' => 'A gallery section using cluster featured images and gallery photo URLs. Add images from Cluster edit screen to make this section richer.',
+            'limit' => '8',
+            'columns_desktop' => '4',
+            'columns_tablet' => '2',
+            'columns_mobile' => '1',
+            'show_label' => '1',
+            'show_title' => '1',
+            'show_description' => '1',
+            'show_caption' => '1',
+            'show_only_website' => '',
+            'featured_only' => '',
+            'order_by' => 'menu_order',
+            'order' => 'ASC',
+            'empty_message' => 'Gallery images are not added yet. Add featured images or gallery URLs in Cluster records.',
         );
     }
 
     /** Defaults: CTA. */
     public function cta_defaults() {
         return array(
+            'show_section' => '1',
             'label' => 'Build origin-led shelves',
             'title' => 'Use Amaley clusters for products, gifting, hospitality and retail partnerships.',
             'description' => 'Cluster visibility helps customers and partners understand what they are buying, where it comes from and who is connected to the product journey.',
@@ -261,6 +298,7 @@ class Amaley_Core_Cluster_Archive_Sections {
     /** Render hero. */
     public function render_hero( $atts ) {
         $a = shortcode_atts( $this->hero_defaults(), $atts, 'amaley_cluster_archive_hero' );
+        if ( isset( $a['show_section'] ) && ! $this->boolish( $a['show_section'] ) ) { return ''; }
         $stats = $this->stats();
         $classes = 'amaley-archive-sec amcas-hero amcas-hero-' . sanitize_html_class( $a['hero_height'] ) . ' amcas-hero-style-' . sanitize_html_class( $a['visual_style'] );
         ob_start();
@@ -277,7 +315,13 @@ class Amaley_Core_Cluster_Archive_Sections {
                         </nav>
                     <?php endif; ?>
                     <p class="amcas-label"><?php echo esc_html( $a['label'] ); ?></p>
-                    <h1><?php echo esc_html( $a['title'] ); ?> <em><?php echo esc_html( $a['accent'] ); ?></em></h1>
+                    <?php
+                    $hero_accent = trim( (string) $a['accent'] );
+                    if ( '' !== $hero_accent && false !== stripos( (string) $a['title'], $hero_accent ) ) {
+                        $hero_accent = '';
+                    }
+                    ?>
+                    <h1><?php echo esc_html( $a['title'] ); ?><?php if ( '' !== $hero_accent ) : ?> <em><?php echo esc_html( $hero_accent ); ?></em><?php endif; ?></h1>
                     <p class="amcas-hero-desc"><?php echo esc_html( $a['description'] ); ?></p>
                     <?php if ( $this->boolish( $a['show_buttons'] ) ) : ?>
                         <div class="amcas-actions">
@@ -309,6 +353,7 @@ class Amaley_Core_Cluster_Archive_Sections {
     /** Render trust strip. */
     public function render_trust_strip( $atts ) {
         $a = shortcode_atts( $this->trust_defaults(), $atts, 'amaley_cluster_archive_trust_strip' );
+        if ( isset( $a['show_section'] ) && ! $this->boolish( $a['show_section'] ) ) { return ''; }
         $items = array(
             array( $a['item_one_icon'], $a['item_one_title'], $a['item_one_text'] ),
             array( $a['item_two_icon'], $a['item_two_title'], $a['item_two_text'] ),
@@ -331,6 +376,7 @@ class Amaley_Core_Cluster_Archive_Sections {
     /** Render intro. */
     public function render_intro( $atts ) {
         $a = shortcode_atts( $this->intro_defaults(), $atts, 'amaley_cluster_archive_intro' );
+        if ( isset( $a['show_section'] ) && ! $this->boolish( $a['show_section'] ) ) { return ''; }
         $cards = array(
             array( $a['card_one_title'], $a['card_one_text'] ),
             array( $a['card_two_title'], $a['card_two_text'] ),
@@ -375,6 +421,41 @@ class Amaley_Core_Cluster_Archive_Sections {
         }
         if ( $meta_query ) { $args['meta_query'] = $meta_query; }
         return new WP_Query( $args );
+    }
+
+
+    /** Cluster gallery items. */
+    public function cluster_gallery_items( $a ) {
+        $query = $this->get_clusters( array_merge( $this->grid_defaults(), $a, array( 'limit' => max( 1, absint( $a['limit'] ) ) ) ) );
+        $items = array();
+        if ( $query->have_posts() ) {
+            while ( $query->have_posts() ) {
+                $query->the_post();
+                $id = get_the_ID();
+                foreach ( $this->all_gallery_urls( $id ) as $url ) {
+                    $items[] = array( 'url' => $url, 'title' => get_the_title( $id ) );
+                    if ( count( $items ) >= absint( $a['limit'] ) ) { break 2; }
+                }
+            }
+            wp_reset_postdata();
+        }
+        return $items;
+    }
+
+    /** All gallery urls for a cluster. */
+    public function all_gallery_urls( $post_id ) {
+        $urls = array();
+        $featured = get_the_post_thumbnail_url( $post_id, 'large' );
+        if ( $featured ) { $urls[] = esc_url_raw( $featured ); }
+        $gallery = $this->meta( $post_id, '_amaley_gallery_urls' );
+        foreach ( preg_split( '/
+|
+|
+|,/', (string) $gallery ) as $url ) {
+            $url = trim( $url );
+            if ( $url && filter_var( $url, FILTER_VALIDATE_URL ) ) { $urls[] = esc_url_raw( $url ); }
+        }
+        return array_values( array_unique( $urls ) );
     }
 
     /** CSV to IDs. */
@@ -426,6 +507,7 @@ class Amaley_Core_Cluster_Archive_Sections {
     /** Render grid. */
     public function render_grid( $atts ) {
         $a = shortcode_atts( $this->grid_defaults(), $atts, 'amaley_cluster_archive_grid' );
+        if ( isset( $a['show_section'] ) && ! $this->boolish( $a['show_section'] ) ) { return ''; }
         $q = $this->get_clusters( $a );
         $detail_pattern = $this->resolve_detail_url_pattern( isset( $a['detail_url_pattern'] ) ? $a['detail_url_pattern'] : '', isset( $a['use_template_single'] ) ? $a['use_template_single'] : '1' );
         $style = '--amcas-cols:' . absint( $a['columns_desktop'] ) . ';--amcas-cols-tab:' . absint( $a['columns_tablet'] ) . ';--amcas-cols-mob:' . absint( $a['columns_mobile'] ) . ';';
@@ -456,6 +538,42 @@ class Amaley_Core_Cluster_Archive_Sections {
                             </article>
                         <?php endwhile; wp_reset_postdata(); ?>
                     </div>
+                    <?php if ( $this->boolish( $a['show_section_button'] ) && ! empty( $a['section_button_text'] ) ) : ?>
+                        <div class="amcas-section-button-wrap amcas-section-button-align-<?php echo esc_attr( sanitize_html_class( $a['section_button_align'] ) ); ?>">
+                            <a class="amcas-section-button" href="<?php echo esc_url( $a['section_button_url'] ); ?>"><?php echo esc_html( $a['section_button_text'] ); ?></a>
+                        </div>
+                    <?php endif; ?>
+                <?php endif; ?>
+            </div>
+        </section>
+        <?php
+        return ob_get_clean();
+    }
+
+
+    /** Render gallery. */
+    public function render_gallery( $atts ) {
+        $a = shortcode_atts( $this->gallery_defaults(), $atts, 'amaley_cluster_archive_gallery' );
+        if ( isset( $a['show_section'] ) && ! $this->boolish( $a['show_section'] ) ) { return ''; }
+        $items = $this->cluster_gallery_items( $a );
+        $style = '--amcas-cols:' . absint( $a['columns_desktop'] ) . ';--amcas-cols-tab:' . absint( $a['columns_tablet'] ) . ';--amcas-cols-mob:' . absint( $a['columns_mobile'] ) . ';';
+        ob_start();
+        ?>
+        <section class="amaley-archive-sec amcas-gallery-sec" style="<?php echo esc_attr( $style ); ?>">
+            <div class="amcas-wrap">
+                <div class="amcas-sec-head amcas-sec-head-stacked">
+                    <?php if ( $this->boolish( $a['show_label'] ) ) : ?><p class="amcas-label"><?php echo esc_html( $a['label'] ); ?></p><?php endif; ?>
+                    <?php if ( $this->boolish( $a['show_title'] ) ) : ?><h2><?php echo esc_html( $a['title'] ); ?></h2><?php endif; ?>
+                    <?php if ( $this->boolish( $a['show_description'] ) ) : ?><p class="amcas-head-desc"><?php echo esc_html( $a['description'] ); ?></p><?php endif; ?>
+                </div>
+                <?php if ( empty( $items ) ) : ?>
+                    <div class="amcas-empty"><?php echo esc_html( $a['empty_message'] ); ?></div>
+                <?php else : ?>
+                    <div class="amcas-gallery-grid">
+                        <?php foreach ( $items as $item ) : ?>
+                            <figure class="amcas-gallery-card"><img src="<?php echo esc_url( $item['url'] ); ?>" alt="<?php echo esc_attr( $item['title'] ); ?>" loading="lazy" /><?php if ( $this->boolish( $a['show_caption'] ) ) : ?><figcaption><span>Cluster</span><strong><?php echo esc_html( $item['title'] ); ?></strong></figcaption><?php endif; ?></figure>
+                        <?php endforeach; ?>
+                    </div>
                 <?php endif; ?>
             </div>
         </section>
@@ -466,6 +584,7 @@ class Amaley_Core_Cluster_Archive_Sections {
     /** Render CTA. */
     public function render_cta( $atts ) {
         $a = shortcode_atts( $this->cta_defaults(), $atts, 'amaley_cluster_archive_cta' );
+        if ( isset( $a['show_section'] ) && ! $this->boolish( $a['show_section'] ) ) { return ''; }
         ob_start();
         ?>
         <section class="amaley-archive-sec amcas-cta">

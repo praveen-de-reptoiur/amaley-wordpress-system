@@ -45,7 +45,7 @@ class Amaley_Core_Fields {
             'media' => array(
                 'label' => 'Media',
                 'fields' => array(
-                    '_amaley_gallery_urls' => array( 'label' => 'Gallery Image URLs', 'type' => 'textarea', 'description' => 'One image URL per line. Featured image should be set using WordPress Featured Image.' ),
+                    '_amaley_gallery_urls' => array( 'label' => 'Photo Gallery', 'type' => 'gallery', 'description' => 'Use Add / Select Gallery Images to upload or choose images from Media Library. Featured Image remains the main photo; these images power the gallery / visual story section.' ),
                 ),
             ),
             'contact' => array(
@@ -97,7 +97,7 @@ class Amaley_Core_Fields {
             'media' => array(
                 'label' => 'Media',
                 'fields' => array(
-                    '_amaley_gallery_urls' => array( 'label' => 'Gallery Image URLs', 'type' => 'textarea', 'description' => 'One image URL per line. Featured image should be set using WordPress Featured Image.' ),
+                    '_amaley_gallery_urls' => array( 'label' => 'Photo Gallery', 'type' => 'gallery', 'description' => 'Use Add / Select Gallery Images to upload or choose images from Media Library. Featured Image remains the main photo; these images power the gallery / visual story section.' ),
                 ),
             ),
             'contact' => array(
@@ -141,6 +141,12 @@ class Amaley_Core_Fields {
                     '_amaley_photo_url'        => array( 'label' => 'Photo URL', 'type' => 'text', 'description' => 'Optional URL. Featured image can also be used.' ),
                 ),
             ),
+            'media' => array(
+                'label' => 'Media',
+                'fields' => array(
+                    '_amaley_gallery_urls' => array( 'label' => 'Photo Gallery', 'type' => 'gallery', 'description' => 'Use Add / Select Gallery Images to upload or choose images from Media Library. Featured Image or Photo URL remains the main portrait; these images power the additional member / producer gallery section.' ),
+                ),
+            ),
         );
     }
 
@@ -164,7 +170,7 @@ class Amaley_Core_Fields {
         $columns = array(
             'clusters' => array( 'cluster_code', 'cluster_name', 'region', 'district', 'block_area', 'villages', 'short_intro', 'full_story', 'main_products', 'gallery_urls', 'contact_person', 'phone', 'status' ),
             'shgs'     => array( 'shg_code', 'shg_name', 'cluster_code', 'village', 'district', 'member_count', 'product_categories', 'short_story', 'full_story', 'verification_status', 'gallery_urls', 'contact_person', 'phone', 'status' ),
-            'members'  => array( 'member_code', 'member_name', 'shg_code', 'role', 'skills', 'products_handled', 'short_bio', 'story', 'village', 'phone', 'photo_url', 'status' ),
+            'members'  => array( 'member_code', 'member_name', 'shg_code', 'role', 'skills', 'products_handled', 'short_bio', 'story', 'village', 'phone', 'photo_url', 'gallery_urls', 'status' ),
             'origins'  => array( 'product_sku', 'product_id', 'product_name', 'cluster_code', 'shg_codes', 'member_codes', 'source_village', 'origin_note', 'show_origin' ),
         );
         return isset( $columns[ $type ] ) ? $columns[ $type ] : array();

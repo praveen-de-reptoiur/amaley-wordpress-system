@@ -18,3 +18,68 @@
 .amaley-core-field-wysiwyg .description{
     max-width: 860px;
 }
+
+/* v1.0.74 — Reliable rich text + Media Library gallery picker for Cluster / SHG / Member admin fields */
+.amaley-core-field-wysiwyg .wp-editor-wrap{
+    max-width: 920px;
+}
+.amaley-core-field-wysiwyg .wp-editor-area{
+    min-height: 240px;
+    line-height: 1.6;
+}
+.amaley-core-richtext-note{
+    margin-top: 8px;
+}
+.amaley-core-gallery-field{
+    max-width: 920px;
+}
+.amaley-core-gallery-field .amaley-core-gallery-value{
+    width: 100%;
+    max-width: 920px;
+    min-height: 72px;
+    font-family: monospace;
+    background: #fffdf7;
+}
+.amaley-core-gallery-actions{
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 10px 0 12px;
+}
+.amaley-core-gallery-preview{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+    gap: 10px;
+    max-width: 920px;
+}
+.amaley-core-gallery-preview figure{
+    position: relative;
+    margin: 0;
+    border: 1px solid #dcc9a7;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #f9f0dd;
+    aspect-ratio: 4 / 3;
+}
+.amaley-core-gallery-preview img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    display: block;
+}
+.amaley-core-gallery-preview .amaley-core-gallery-remove{
+    position: absolute;
+    top: 5px;
+    right: 6px;
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    background: #fff;
+    color: #b91c1c;
+    text-decoration: none;
+    line-height: 22px;
+    text-align: center;
+    font-weight: 700;
+    box-shadow: 0 1px 6px rgba(0,0,0,.18);
+}

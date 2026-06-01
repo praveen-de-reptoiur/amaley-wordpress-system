@@ -4,7 +4,7 @@
 .amcss-section{--amcss-cream:#fdf8ef;--amcss-ivory:#fbf5e6;--amcss-parchment:#ead9b8;--amcss-choco:#2e1203;--amcss-mid:#5b3214;--amcss-gold:#c2880a;--amcss-rust:#b5502a;--amcss-soft:#fffaf2;padding:72px 22px;background:var(--amcss-cream);color:var(--amcss-choco);font-family:inherit;overflow:hidden}
 .amcss-container{width:100%;max-width:1180px;margin:0 auto}
 .amcss-label{display:inline-flex;align-items:center;gap:8px;margin:0 0 14px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:var(--amcss-gold)}
-.amcss-label:before{content:none!important;display:none!important}
+.amcss-label:before{content:none;display:none}
 .amcss-title,.amcss-heading h2,.amcss-story-copy h2,.amcss-cta h2{margin:0 0 16px;color:var(--amcss-choco);font-family:inherit;font-size:clamp(30px,4.4vw,58px);line-height:1.02;letter-spacing:-.03em;font-weight:800}
 .amcss-heading{max-width:760px;margin:0 0 30px}.amcss-heading p,.amcss-description,.amcss-rich-text,.amcss-cta p{margin:0;color:rgba(46,18,3,.74);font-size:16px;line-height:1.75}.amcss-rich-text p{margin:0 0 14px}
 .amcss-breadcrumb{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 22px;font-size:13px;color:rgba(255,250,242,.72)}
@@ -14,7 +14,7 @@
 .amcss-button-row{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin:28px 0 0}.amcss-btn,.amcss-card-link{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:13px 20px;border-radius:999px;font-size:13px;line-height:1;text-decoration:none;font-weight:900;letter-spacing:.06em;text-transform:uppercase;transition:transform .18s ease,box-shadow .18s ease,background .18s ease,color .18s ease}.amcss-btn-primary,.amcss-card-link{background:var(--amcss-rust);color:#fffaf2}.amcss-btn-secondary{background:#fffaf2;color:var(--amcss-choco);border:1px solid rgba(194,136,10,.3)}.amcss-btn:hover,.amcss-card-link:hover{transform:translateY(-1px);box-shadow:0 14px 34px rgba(46,18,3,.14)}
 .amcss-snapshot-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px}.amcss-stat-card{background:#fffaf2;border:1px solid rgba(194,136,10,.24);border-radius:24px;padding:20px;box-shadow:0 18px 50px rgba(46,18,3,.06)}.amcss-stat-label{display:block;margin:0 0 8px;text-transform:uppercase;letter-spacing:.12em;font-size:11px;color:var(--amcss-gold);font-weight:900}.amcss-stat-value{display:block;font-size:18px;line-height:1.35;color:var(--amcss-choco)}
 .amcss-story-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.44fr);gap:34px;align-items:start}.amcss-story-copy,.amcss-side-box{background:#fffaf2;border:1px solid rgba(194,136,10,.22);border-radius:30px;padding:34px;box-shadow:0 18px 55px rgba(46,18,3,.06)}.amcss-side-box+ .amcss-side-box{margin-top:18px}.amcss-side-box h3{margin:0 0 14px;font-size:18px;color:var(--amcss-choco)}.amcss-side-box ul{margin:0;padding-left:20px;color:rgba(46,18,3,.74);line-height:1.7}
-.amcss-card-grid{display:grid;grid-template-columns:repeat(var(--amcss-cols,3),minmax(0,1fr));gap:24px}.amcss-card{background:#fffaf2;border:1px solid rgba(194,136,10,.23);border-radius:28px;overflow:hidden;box-shadow:0 18px 55px rgba(46,18,3,.06)}.amcss-card-image{height:190px;background:linear-gradient(135deg,rgba(194,136,10,.18),rgba(181,80,42,.09));display:grid;place-items:center;overflow:hidden}.amcss-card-image img{width:100%;height:100%;object-fit:cover;display:block}.amcss-card-image span{width:74px;height:74px;border-radius:50%;display:grid;place-items:center;background:rgba(46,18,3,.08);color:var(--amcss-gold);font-size:24px;font-weight:900;text-transform:uppercase}.amcss-card-body{padding:22px}.amcss-card-label{display:block;margin:0 0 8px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--amcss-gold);font-weight:900}.amcss-card h3{margin:0 0 8px;font-size:21px;line-height:1.2;color:var(--amcss-choco)}.amcss-card p{margin:0 0 14px;color:rgba(46,18,3,.72);line-height:1.65}.amcss-card-meta{font-weight:800;color:var(--amcss-mid)!important}.amcss-card-link{margin-top:4px;width:100%}.amcss-empty-card{padding:26px}.amcss-empty p{max-width:760px;background:#fffaf2;border:1px solid rgba(194,136,10,.24);border-radius:22px;padding:22px;color:rgba(46,18,3,.75)}
+.amcss-card-grid{display:grid;grid-template-columns:repeat(var(--amcss-cols,3),minmax(0,1fr));gap:24px}.amcss-card{background:#fffaf2;border:1px solid rgba(194,136,10,.23);border-radius:28px;overflow:hidden;box-shadow:0 18px 55px rgba(46,18,3,.06)}.amcss-card-image{height:190px;background:linear-gradient(135deg,rgba(194,136,10,.18),rgba(181,80,42,.09));display:grid;place-items:center;overflow:hidden}.amcss-card-image img{width:100%;height:100%;object-fit:cover;display:block}.amcss-card-image span{width:74px;height:74px;border-radius:50%;display:grid;place-items:center;background:rgba(46,18,3,.08);color:var(--amcss-gold);font-size:24px;font-weight:900;text-transform:uppercase}.amcss-card-body{padding:22px}.amcss-card-label{display:block;margin:0 0 8px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--amcss-gold);font-weight:900}.amcss-card h3{margin:0 0 8px;font-size:21px;line-height:1.2;color:var(--amcss-choco)}.amcss-card p{margin:0 0 14px;color:rgba(46,18,3,.72);line-height:1.65}.amcss-card-meta{font-weight:800;color:var(--amcss-mid)}.amcss-card-link{margin-top:4px;width:100%}.amcss-empty-card{padding:26px}.amcss-empty p{max-width:760px;background:#fffaf2;border:1px solid rgba(194,136,10,.24);border-radius:22px;padding:22px;color:rgba(46,18,3,.75)}
 .amcss-cta{background:linear-gradient(135deg,#2e1203,#4a2208);color:#fffaf2}.amcss-cta-inner{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:36px;align-items:center}.amcss-cta h2{color:#fffaf2;font-size:clamp(28px,3vw,44px)}.amcss-cta p{color:rgba(255,250,242,.82)}
 @media (max-width:1024px){.amcss-hero-grid,.amcss-story-grid,.amcss-cta-inner{grid-template-columns:1fr}.amcss-card-grid{grid-template-columns:repeat(var(--amcss-cols-tablet,2),minmax(0,1fr))}.amcss-hero-media{min-height:280px}}
 @media (max-width:640px){.amcss-section{padding:52px 16px}.amcss-hero{padding:60px 16px}.amcss-card-grid{grid-template-columns:repeat(var(--amcss-cols-mobile,1),minmax(0,1fr))}.amcss-title,.amcss-heading h2,.amcss-story-copy h2,.amcss-cta h2{font-size:32px}.amcss-story-copy,.amcss-side-box{padding:24px}.amcss-button-row,.amcss-btn{width:100%}.amcss-cta-inner{text-align:left}.amcss-hero-media{min-height:220px}}
@@ -25,7 +25,7 @@
 .amcss-meta-list dt{margin:0;text-transform:uppercase;letter-spacing:.12em;font-size:10px;font-weight:900;color:var(--amcss-gold)}
 .amcss-meta-list dd{margin:0;color:var(--amcss-choco);font-weight:700;line-height:1.45}
 .amcss-card-chips{margin:14px 0 14px}
-.amcss-card-link-muted{cursor:default;opacity:.82;background:rgba(46,18,3,.08)!important;color:var(--amcss-choco)!important;border:1px solid rgba(194,136,10,.2)}
+.amcss-card-link-muted{cursor:default;opacity:.82;background:rgba(46,18,3,.08);color:var(--amcss-choco);border:1px solid rgba(194,136,10,.2)}
 .amcss-gallery-grid{display:grid;grid-template-columns:repeat(var(--amcss-cols,3),minmax(0,1fr));gap:22px}
 .amcss-gallery-grid figure{margin:0;height:270px;overflow:hidden;border-radius:28px;background:#ead9b8;border:1px solid rgba(194,136,10,.22);box-shadow:0 18px 50px rgba(46,18,3,.07)}
 .amcss-gallery-grid img{width:100%;height:100%;object-fit:cover;display:block}
@@ -225,7 +225,7 @@
 @media (max-width:640px){.amcss-related-card .amcss-card-image{height:145px}.amcss-related-card .amcss-related-desc{-webkit-line-clamp:2}}
 
 /* v1.0.44: remove unwanted decorative line before labels everywhere in single template widgets. */
-.amcss-section .amcss-label:before{content:none!important;display:none!important;width:0!important;height:0!important;background:transparent!important}
+.amcss-section .amcss-label:before{content:none;display:none;width:0;height:0;background:transparent}
 .amcss-section .amcss-label{gap:0}
 
 
@@ -352,3 +352,29 @@
   .amcss-story-grid,.amcss-contact-grid{gap:16px}
   .amcss-card-grid,.amcss-related .amcss-card-grid,.amcss-gallery-grid{gap:14px}
 }
+
+
+/* v1.0.66 — Cluster Single consistency + section action buttons.
+   Scoped only. Keeps existing card data/details intact. */
+.amcss-section-action{display:flex;justify-content:center;margin-top:26px;gap:12px;flex-wrap:wrap}
+.amcss-section-link{min-width:190px}
+.amcss-related .amcss-heading{display:flex;flex-direction:column;align-items:flex-start}
+.amcss-related-card .amcss-card-image img,
+.amcss-hero-media img,
+.amcss-gallery-grid img{object-fit:cover;object-position:center center}
+.amcss-related-card{transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+.amcss-related-card:hover{transform:translateY(-2px);box-shadow:0 24px 58px rgba(46,18,3,.1);border-color:rgba(194,136,10,.36)}
+.amcss-related-card .amcss-card-image img{transition:transform .35s ease}
+.amcss-related-card:hover .amcss-card-image img{transform:scale(1.025)}
+.amcss-related .amcss-card-grid{grid-template-columns:repeat(var(--amcss-cols,4),minmax(0,1fr));gap:18px}
+.amcss-related-card .amcss-card-chips span:nth-child(n+4){display:none}
+@media(max-width:1024px){.amcss-related .amcss-card-grid{grid-template-columns:repeat(var(--amcss-cols-tablet,2),minmax(0,1fr))}}
+@media(max-width:640px){.amcss-section-action{margin-top:18px}.amcss-section-link{width:100%}.amcss-related .amcss-card-grid{grid-template-columns:repeat(var(--amcss-cols-mobile,1),minmax(0,1fr))}}
+
+
+/* v1.0.72 — Cluster Single section action link visibility safety.
+   Scope: section-level View All links only; card layouts remain untouched. */
+.amcss-section-action{display:flex;justify-content:center;align-items:center;margin-top:24px;gap:12px;flex-wrap:wrap;width:100%}
+.amcss-section-link{background:#b5502a!important;border-color:#b5502a!important;color:#fffaf2!important;box-shadow:0 10px 24px rgba(181,80,42,.13)}
+.amcss-section-link:hover{background:#2e1203!important;border-color:#2e1203!important;color:#fffaf2!important;box-shadow:0 16px 34px rgba(46,18,3,.16)}
+@media(max-width:480px){.amcss-section-link{width:100%;max-width:100%}}

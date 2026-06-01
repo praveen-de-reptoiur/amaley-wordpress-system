@@ -13,6 +13,7 @@ class Amaley_Core_Cluster_Archive_Grid_Widget extends \Elementor\Widget_Base {
 
     protected function register_controls() {
         $this->start_controls_section( 'content_heading', array( 'label' => esc_html__( '1. Section Heading', 'amaley-core' ) ) );
+        $this->add_control( 'show_section', array( 'label' => esc_html__( 'Show Section', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::SWITCHER, 'return_value' => '1', 'default' => '1' ) );
         $this->add_control( 'label', array( 'label' => esc_html__( 'Small Label', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::TEXT, 'default' => 'Cluster directory' ) );
         $this->add_control( 'title', array( 'label' => esc_html__( 'Heading', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::TEXTAREA, 'default' => 'Open a cluster to explore the full origin story', 'rows' => 2 ) );
         $this->add_control( 'description', array( 'label' => esc_html__( 'Description', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::TEXTAREA, 'default' => 'Each cluster card opens a deeper page with its SHGs, producers, mapped products and origin journey.', 'rows' => 3 ) );
@@ -25,7 +26,14 @@ class Amaley_Core_Cluster_Archive_Grid_Widget extends \Elementor\Widget_Base {
         $this->add_control( 'button_text', array( 'label' => esc_html__( 'Card Button Text', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::TEXT, 'default' => 'View Cluster Story' ) );
         $this->end_controls_section();
 
-        $this->start_controls_section( 'data', array( 'label' => esc_html__( '3. Data Query', 'amaley-core' ) ) );
+        $this->start_controls_section( 'section_button_controls', array( 'label' => esc_html__( '3. Section Button / View All', 'amaley-core' ) ) );
+        $this->add_control( 'show_section_button', array( 'label' => esc_html__( 'Show Section Button', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::SWITCHER, 'return_value' => '1', 'default' => '1' ) );
+        $this->add_control( 'section_button_text', array( 'label' => esc_html__( 'Section Button Text', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::TEXT, 'default' => 'View All Clusters' ) );
+        $this->add_control( 'section_button_url', array( 'label' => esc_html__( 'Section Button URL', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::TEXT, 'default' => '/clusters/' ) );
+        $this->add_control( 'section_button_align', array( 'label' => esc_html__( 'Section Button Alignment', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::CHOOSE, 'options' => array( 'left'=>array('title'=>'Left','icon'=>'eicon-h-align-left'), 'center'=>array('title'=>'Center','icon'=>'eicon-h-align-center'), 'right'=>array('title'=>'Right','icon'=>'eicon-h-align-right') ), 'default'=>'center' ) );
+        $this->end_controls_section();
+
+        $this->start_controls_section( 'data', array( 'label' => esc_html__( '4. Data Query', 'amaley-core' ) ) );
         $this->add_control( 'limit', array( 'label' => esc_html__( 'Number of Clusters', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::NUMBER, 'min' => 1, 'max' => 60, 'default' => 12 ) );
         $this->add_control( 'show_only_website', array( 'label' => esc_html__( 'Only Website-Enabled', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::SWITCHER, 'return_value' => '1', 'default' => '' ) );
         $this->add_control( 'featured_only', array( 'label' => esc_html__( 'Featured Only', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::SWITCHER, 'return_value' => '1', 'default' => '' ) );
@@ -140,6 +148,18 @@ class Amaley_Core_Cluster_Archive_Grid_Widget extends \Elementor\Widget_Base {
         $this->add_control( 'button_hover_bg', array( 'label' => esc_html__( 'Button Hover Background', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::COLOR, 'selectors' => array( '{{WRAPPER}} .amcas-card-link:hover' => 'background: {{VALUE}};' ) ) );
         $this->add_control( 'button_hover_color', array( 'label' => esc_html__( 'Button Hover Text Color', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::COLOR, 'selectors' => array( '{{WRAPPER}} .amcas-card-link:hover' => 'color: {{VALUE}};' ) ) );
         $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array( 'name' => 'button_typo', 'label' => esc_html__( 'Button Typography', 'amaley-core' ), 'selector' => '{{WRAPPER}} .amcas-card-link' ) );
+        $this->end_controls_section();
+
+        $this->start_controls_section( 'section_button_style', array( 'label' => esc_html__( '14. Section Button / View All', 'amaley-core' ), 'tab' => \Elementor\Controls_Manager::TAB_STYLE ) );
+        $this->add_responsive_control( 'section_button_wrap_margin', array( 'label' => esc_html__( 'Wrapper Margin', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::DIMENSIONS, 'size_units' => array( 'px','em' ), 'selectors' => array( '{{WRAPPER}} .amcas-section-button-wrap' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ) ) );
+        $this->add_responsive_control( 'section_button_padding', array( 'label' => esc_html__( 'Button Padding', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::DIMENSIONS, 'size_units' => array( 'px','em' ), 'selectors' => array( '{{WRAPPER}} .amcas-section-button' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ) ) );
+        $this->add_responsive_control( 'section_button_radius', array( 'label' => esc_html__( 'Button Radius', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::DIMENSIONS, 'size_units' => array( 'px','%' ), 'selectors' => array( '{{WRAPPER}} .amcas-section-button' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ) ) );
+        $this->add_control( 'section_button_bg', array( 'label' => esc_html__( 'Button Background', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::COLOR, 'selectors' => array( '{{WRAPPER}} .amcas-section-button' => 'background: {{VALUE}};' ) ) );
+        $this->add_control( 'section_button_color', array( 'label' => esc_html__( 'Button Text Color', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::COLOR, 'selectors' => array( '{{WRAPPER}} .amcas-section-button' => 'color: {{VALUE}};' ) ) );
+        $this->add_control( 'section_button_border_color', array( 'label' => esc_html__( 'Button Border Color', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::COLOR, 'selectors' => array( '{{WRAPPER}} .amcas-section-button' => 'border-color: {{VALUE}};' ) ) );
+        $this->add_control( 'section_button_hover_bg', array( 'label' => esc_html__( 'Hover Background', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::COLOR, 'selectors' => array( '{{WRAPPER}} .amcas-section-button:hover' => 'background: {{VALUE}};' ) ) );
+        $this->add_control( 'section_button_hover_color', array( 'label' => esc_html__( 'Hover Text Color', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::COLOR, 'selectors' => array( '{{WRAPPER}} .amcas-section-button:hover' => 'color: {{VALUE}};' ) ) );
+        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array( 'name' => 'section_button_typography', 'label' => esc_html__( 'Button Typography', 'amaley-core' ), 'selector' => '{{WRAPPER}} .amcas-section-button' ) );
         $this->end_controls_section();
     }
 

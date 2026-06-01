@@ -12,6 +12,7 @@ class Amaley_Core_Cluster_Archive_CTA_Widget extends \Elementor\Widget_Base {
 
     protected function register_controls() {
         $this->start_controls_section( 'content', array( 'label' => esc_html__( '1. CTA Content', 'amaley-core' ) ) );
+        $this->add_control( 'show_section', array( 'label' => esc_html__( 'Show Section', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::SWITCHER, 'return_value' => '1', 'default' => '1' ) );
         $this->add_control( 'label', array( 'label' => esc_html__( 'Small Label', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::TEXT, 'default' => 'Build origin-led shelves' ) );
         $this->add_control( 'title', array( 'label' => esc_html__( 'Heading', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::TEXTAREA, 'default' => 'Use Amaley clusters for products, gifting, hospitality and retail partnerships.', 'rows' => 3 ) );
         $this->add_control( 'description', array( 'label' => esc_html__( 'Description', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::TEXTAREA, 'default' => 'Cluster visibility helps customers and partners understand what they are buying, where it comes from and who is connected to the product journey.', 'rows' => 4 ) );

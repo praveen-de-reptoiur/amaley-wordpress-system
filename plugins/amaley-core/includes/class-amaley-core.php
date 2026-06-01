@@ -35,6 +35,8 @@ class Amaley_Core {
         new Amaley_Core_Cluster_Pages();
         new Amaley_Core_Cluster_Archive_Sections();
         new Amaley_Core_Cluster_Single_Sections();
+        new Amaley_Core_SHG_Archive_Sections();
+        new Amaley_Core_SHG_Single_Sections();
 
         add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_assets' ) );
         add_action( 'admin_notices', array( $this, 'admin_dependency_notice' ) );
@@ -64,6 +66,20 @@ class Amaley_Core {
                 AMALEY_CORE_URL . 'assets/admin.css',
                 array(),
                 AMALEY_CORE_VERSION
+            );
+        }
+
+        if ( in_array( $post_type, array( 'amaley_cluster', 'amaley_shg_group', 'amaley_member' ), true ) ) {
+            wp_enqueue_media();
+            if ( function_exists( 'wp_enqueue_editor' ) ) {
+                wp_enqueue_editor();
+            }
+            wp_enqueue_script(
+                'amaley-core-admin',
+                AMALEY_CORE_URL . 'assets/admin.js',
+                array( 'jquery' ),
+                AMALEY_CORE_VERSION,
+                true
             );
         }
     }

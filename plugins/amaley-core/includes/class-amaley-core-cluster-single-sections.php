@@ -196,8 +196,12 @@ class Amaley_Core_Cluster_Single_Sections {
             'label' => 'Connected Network',
             'title' => 'Linked items',
             'description' => 'Records connected to this source cluster.',
-            'limit' => '6',
-            'show_all_connected' => '1',
+            'limit' => '4',
+            'show_all_connected' => '0',
+            'show_section_button' => '1',
+            'section_button_text' => 'View all',
+            'section_button_url' => '#',
+            'section_button_position' => 'after',
             'columns_desktop' => '4',
             'columns_tablet' => '2',
             'columns_mobile' => '1',
@@ -451,31 +455,66 @@ class Amaley_Core_Cluster_Single_Sections {
 
     /** Render SHGs. */
     public function render_shgs( $atts = array() ) {
-        $a = wp_parse_args( $atts, $this->related_defaults() );
-        $a['label'] = isset( $a['label'] ) ? $a['label'] : 'Women collectives';
+        $type_defaults = array(
+            'label' => 'Women collectives',
+            'title' => 'SHGs connected with this cluster',
+            'description' => 'Groups directly linked with this source cluster.',
+            'limit' => '4',
+            'show_all_connected' => '0',
+            'section_button_text' => 'View all SHG groups',
+            'section_button_url' => '/shg-groups/',
+        );
+        $a = wp_parse_args( $atts, wp_parse_args( $type_defaults, $this->related_defaults() ) );
         $cluster = $this->resolve_cluster( $a );
         if ( ! $cluster ) { return $this->empty_state( $a['empty_message'] ); }
-        $limit = $this->boolish( isset( $a['show_all_connected'] ) ? $a['show_all_connected'] : '1' ) ? 200 : absint( $a['limit'] );
+        $limit = absint( $a['limit'] );
+        if ( ! empty( $a['show_all_connected'] ) && $this->boolish( $a['show_all_connected'] ) ) {
+            $limit = 200;
+        }
         $items = $this->get_shgs_for_cluster( $cluster->ID, $limit );
         return $this->render_related_cards( $a, $items, 'shg' );
     }
 
     /** Render producers. */
     public function render_producers( $atts = array() ) {
-        $a = wp_parse_args( $atts, $this->related_defaults() );
+        $type_defaults = array(
+            'label' => 'Producer profiles',
+            'title' => 'People behind the cluster',
+            'description' => 'Members and producers connected through linked SHGs.',
+            'limit' => '4',
+            'show_all_connected' => '0',
+            'section_button_text' => 'View all producers',
+            'section_button_url' => '/members-producers/',
+        );
+        $a = wp_parse_args( $atts, wp_parse_args( $type_defaults, $this->related_defaults() ) );
         $cluster = $this->resolve_cluster( $a );
         if ( ! $cluster ) { return $this->empty_state( $a['empty_message'] ); }
-        $limit = $this->boolish( isset( $a['show_all_connected'] ) ? $a['show_all_connected'] : '1' ) ? 200 : absint( $a['limit'] );
+        $limit = absint( $a['limit'] );
+        if ( ! empty( $a['show_all_connected'] ) && $this->boolish( $a['show_all_connected'] ) ) {
+            $limit = 200;
+        }
         $items = $this->get_members_for_cluster( $cluster->ID, $limit );
         return $this->render_related_cards( $a, $items, 'producer' );
     }
 
     /** Render products. */
     public function render_products( $atts = array() ) {
-        $a = wp_parse_args( $atts, $this->related_defaults() );
+        $type_defaults = array(
+            'label' => 'Mapped products',
+            'title' => 'Products mapped to this cluster',
+            'description' => 'WooCommerce products carrying this cluster as their origin.',
+            'limit' => '4',
+            'show_all_connected' => '0',
+            'section_button_text' => 'View all products',
+            'section_button_url' => '/shop/',
+        );
+        $a = wp_parse_args( $atts, wp_parse_args( $type_defaults, $this->related_defaults() ) );
         $cluster = $this->resolve_cluster( $a );
         if ( ! $cluster ) { return $this->empty_state( $a['empty_message'] ); }
-        $limit = $this->boolish( isset( $a['show_all_connected'] ) ? $a['show_all_connected'] : '1' ) ? 200 : absint( $a['limit'] );
+        $limit = absint( $a['limit'] );
+        if ( ! empty( $a['show_all_connected'] ) && $this->boolish( $a['show_all_connected'] ) ) {
+            $limit = 200;
+        }
         $items = $this->get_products_for_cluster( $cluster->ID, $limit );
         return $this->render_related_cards( $a, $items, 'product' );
     }
@@ -496,10 +535,42 @@ class Amaley_Core_Cluster_Single_Sections {
                         <?php foreach ( $items as $item ) : echo $this->related_card( $item, $type ); endforeach; ?>
                     </div>
                 <?php endif; ?>
+                <?php if ( $this->boolish( isset( $a['show_section_button'] ) ? $a['show_section_button'] : '0' ) && ! empty( $a['section_button_text'] ) && ! empty( $a['section_button_url'] ) ) : ?>
+                    <div class="amcss-section-action amcss-section-action-<?php echo esc_attr( isset( $a['section_button_position'] ) ? $a['section_button_position'] : 'after' ); ?>">
+                        <a class="amcss-btn amcss-btn-secondary amcss-section-link" href="<?php echo esc_url( $a['section_button_url'] ); ?>"><?php echo esc_html( $a['section_button_text'] ); ?></a>
+                    </div>
+                <?php endif; ?>
             </div>
         </section>
         <?php
         return ob_get_clean();
+    }
+
+    /** Build safe links from related cards to their assigned template pages. */
+    private function related_detail_url( $post, $type ) {
+        $settings = get_option( 'amaley_core_template_settings', array() );
+        $id       = absint( $post->ID );
+        $slug     = $post->post_name;
+
+        if ( 'shg' === $type ) {
+            $page_id = absint( isset( $settings['shg_single_page_id'] ) ? $settings['shg_single_page_id'] : 0 );
+            $base    = $page_id ? get_permalink( $page_id ) : home_url( '/shg-detail/' );
+            return add_query_arg( array( 'shg_slug' => $slug ), $base ? $base : home_url( '/' ) );
+        }
+
+        if ( 'producer' === $type ) {
+            $page_id = absint( isset( $settings['producer_single_page_id'] ) ? $settings['producer_single_page_id'] : 0 );
+            $base    = $page_id ? get_permalink( $page_id ) : home_url( '/producer-detail/' );
+            return add_query_arg( array( 'member_slug' => $slug, 'member_id' => $id ), $base ? $base : home_url( '/' ) );
+        }
+
+        if ( 'cluster' === $type ) {
+            $page_id = absint( isset( $settings['cluster_single_page_id'] ) ? $settings['cluster_single_page_id'] : 0 );
+            $base    = $page_id ? get_permalink( $page_id ) : home_url( '/cluster-detail/' );
+            return add_query_arg( array( 'cluster_slug' => $slug ), $base ? $base : home_url( '/' ) );
+        }
+
+        return get_permalink( $id );
     }
 
     /** Single related card. */
@@ -537,6 +608,7 @@ class Amaley_Core_Cluster_Single_Sections {
                 if ( ! empty( $categories ) ) { $bits[] = 'working with ' . implode( ', ', array_slice( $categories, 0, 3 ) ); }
                 $excerpt = ! empty( $bits ) ? 'This collective is ' . implode( ', ', $bits ) . '.' : '';
             }
+            $url = $this->related_detail_url( $post, 'shg' );
             $button = 'View collective details';
         } elseif ( 'producer' === $type ) {
             $excerpt = get_post_meta( $id, '_amaley_short_bio', true );
@@ -561,6 +633,7 @@ class Amaley_Core_Cluster_Single_Sections {
                 if ( ! empty( $handled ) ) { $bits[] = 'connected with ' . implode( ', ', array_slice( $handled, 0, 3 ) ); }
                 $excerpt = ! empty( $bits ) ? implode( ', ', $bits ) . '.' : '';
             }
+            $url = $this->related_detail_url( $post, 'producer' );
             $button = 'View producer profile';
         } else {
             $excerpt = $post->post_excerpt ? $post->post_excerpt : wp_trim_words( wp_strip_all_tags( $post->post_content ), 22 );
@@ -586,7 +659,7 @@ class Amaley_Core_Cluster_Single_Sections {
                 <p class="amcss-related-desc"><?php echo esc_html( $excerpt ); ?></p>
                 <?php if ( ! empty( $meta_rows ) ) : ?><dl class="amcss-meta-list"><?php foreach ( $meta_rows as $row ) : ?><div><dt><?php echo esc_html( $row[0] ); ?></dt><dd><?php echo esc_html( $row[1] ); ?></dd></div><?php endforeach; ?></dl><?php endif; ?>
                 <?php if ( ! empty( $chips ) ) : ?><div class="amcss-chip-row amcss-card-chips"><?php foreach ( $chips as $chip ) : ?><span><?php echo esc_html( $chip ); ?></span><?php endforeach; ?></div><?php endif; ?>
-                <?php if ( 'product' === $type && $url ) : ?><a class="amcss-card-link" href="<?php echo esc_url( $url ); ?>"><?php echo esc_html( $button ); ?></a><?php elseif ( $button ) : ?><span class="amcss-card-link amcss-card-link-muted"><?php echo esc_html( $button ); ?></span><?php endif; ?>
+                <?php if ( $button && $url && '#' !== $url ) : ?><a class="amcss-card-link" href="<?php echo esc_url( $url ); ?>"><?php echo esc_html( $button ); ?></a><?php elseif ( $button ) : ?><span class="amcss-card-link amcss-card-link-muted"><?php echo esc_html( $button ); ?></span><?php endif; ?>
             </div>
         </article>
         <?php
