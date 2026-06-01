@@ -87,7 +87,7 @@ GitHub is used for:
 
 | Plugin / Module | Current GitHub source | ZIP backup belongs in Drive |
 | --- | --- | --- |
-| Amaley Core | v1.0.46 | v1.0.46 ZIP backup belongs in Drive |
+| Amaley Core | v1.0.74 | v1.0.74 ZIP backup belongs in Drive |
 | Amaley Discovery Engine | v1.3.5 | `amaley-discovery-engine-v1.3.5-no-cpt.zip` |
 | Amaley Site Shell | v1.0.1 | `amaley-site-shell-v1.0.1.zip` |
 | Amaley UI Sections Kit | v0.6.1 | `amaley-ui-sections-kit-v0.6.1.zip` |
@@ -100,14 +100,15 @@ ZIPs stay in Google Drive. GitHub stores clean source code and documentation onl
 
 ## Latest Amaley Core Status
 
-Amaley Core source is now synced to **v1.0.46**.
+Amaley Core source is now synced to **v1.0.74**.
 
 Locked changes preserved:
 
 ```text
 v1.0.41 — Explicit Cluster → SHG/Producer Group relation
-v1.0.45 — Cluster Full Story rich editor
+v1.0.45 — Cluster Full Story rich editor direction
 v1.0.46 — Cluster Single spacing rhythm polish
+v1.0.74 — SHG archive/single polish, gallery/media fields, section buttons, card locks and product-card correction checkpoint
 ```
 
 Important relation key:
@@ -128,10 +129,12 @@ Approved spacing reference:
 Amaley Section Spacing Rhythm 1
 ```
 
-Reference file:
+Reference files:
 
 ```text
+docs/AMALEY_CPT_SINGLE_SECTION_STRUCTURE_LOCK.md
 docs/AMALEY_SECTION_SPACING_RHYTHM_LOCK.md
+docs/AMALEY_CARD_DESIGN_LOCK.md
 ```
 
 Safety:
@@ -214,6 +217,7 @@ Read these before any CPT archive/single work:
 ```text
 docs/AMALEY_CPT_SINGLE_SECTION_STRUCTURE_LOCK.md
 docs/AMALEY_SECTION_SPACING_RHYTHM_LOCK.md
+docs/AMALEY_CARD_DESIGN_LOCK.md
 ```
 
 Locked principles:
@@ -224,6 +228,29 @@ Locked principles:
 - New sections must follow Amaley Section Spacing Rhythm 1.
 - Existing loose sections should be updated later to the approved compact rhythm.
 - Spacing problems must be solved through plugin defaults and widget controls, not by abandoning section-wise architecture.
+- Section-level CTA buttons are expected where a section shows only limited cards.
+- Section-level CTA buttons need show/hide, text, URL, alignment and responsive controls.
+
+---
+
+## Card Design Lock
+
+Cluster card, SHG / Producer Group card, Member / Producer card and Product card families are now locked.
+
+Reference:
+
+```text
+docs/AMALEY_CARD_DESIGN_LOCK.md
+```
+
+Rules:
+
+- Same card type must keep the same design across the site.
+- Do not create random alternate card designs for different pages.
+- Product cards used inside Amaley Core should follow the approved compact product-card family and later be reused in Discovery where practical.
+- Images should use cover center center handling and must have practical height/ratio controls where relevant.
+- Description word count, max chips/tags, card buttons, section buttons, button alignment, transform/hover, animation intensity and responsive layout should be controllable where relevant.
+- Only bug fixes, data fixes, responsiveness fixes and accessibility/performance improvements are allowed without explicit redesign approval.
 
 ---
 
@@ -237,15 +264,18 @@ Owns:
 
 - Cluster records
 - SHG Group records
-- SHG Member / Producer records
+- SHG Members / Producers records
 - Product Origin Mapping
 - Explicit Cluster → SHG/Producer Group links
-- Rich Cluster Full Story editor support
+- Rich story editor support for CPT story fields
+- Gallery/media fields for Cluster, SHG and Member records where implemented
 - Cluster Single spacing rhythm polish
+- SHG archive and SHG single section widgets
 - Producer / maker profiles
 - Source village and region data
 - Traceability fields
 - Product usage and storage fields
+- CPT-driven card families and related-item sections
 - System health checks
 
 Current relation source of truth:
@@ -257,151 +287,3 @@ _amaley_cluster_linked_group_ids
 Rule: Amaley Core must not become a broad frontend design plugin. It may own CPT-driven cards, sections, archive widgets and single widgets because they depend on Amaley Core data.
 
 ---
-
-### Amaley Discovery Engine
-
-Discovery and listing system.
-
-Owns:
-
-- Product discovery
-- Filters
-- Listings
-- Search
-- Sorting
-- Pagination
-- Product grids where discovery logic is required
-- Cluster discovery
-- SHG group discovery
-- SHG member discovery
-- Mobile filter behaviour
-- Safe empty-state handling
-
-Rule: Discovery Engine must remain separate from Amaley Core, Amaley Templates, Amaley UI Sections Kit and Amaley Compact Widgets.
-
----
-
-### Amaley Site Shell
-
-Header/footer shell system.
-
-Owns:
-
-- Header
-- Footer
-- Mobile header
-- Mobile drawer
-- Navigation shell
-- Announcement strip
-- Shell-level CTA controls
-- Footer contact and link controls
-
-Current status:
-
-- v1.0.1 source exists.
-- Shortcode/manual mode tested.
-- Auto-render exists but remains on hold.
-- Full replacement must be tested only on fresh/staging after source of existing header/footer is confirmed.
-
-Rule: Amaley Site Shell must not blindly override live/current header and footer.
-
----
-
-### Amaley UI Sections Kit
-
-Generic page/home visual section system.
-
-Current locked source: v0.6.1.
-
-Owns:
-
-- Home Hero V6
-- Page Trust Strip
-- Pages Hero Other
-- Foundation UI helpers
-- Generic static page visual sections where they do not belong to Compact Widgets
-
-Does not own:
-
-- CPT/data logic
-- Discovery filters
-- WooCommerce template overrides
-- Header/footer
-- Compact card libraries
-
----
-
-### Amaley Compact Widgets
-
-Manual/static compact visual widget system.
-
-Current GitHub source: v0.4.3.  
-Current active ZIP backup may remain v0.4.2 until v0.4.3 is zipped and tested on staging.
-
-Owns:
-
-- Info Cards Grid
-- Split Editorial Section
-- Traceability Journey as static visual section
-- Origin Map Path as static homepage visual section
-- Gifting / Bulk Band
-- Feature / Value Strip
-- Process Steps
-- Origin Story Cards where manual/static
-- Purpose Cards
-- Collection Cards where manual/static
-- Two Panel Info
-- Dark Chain Cards
-- Image Flip Cards
-- Image Cards
-- Image Info Cards
-- Image Overlay Cards
-- Quote Cards
-- CTA Tiles
-- Metric Tiles
-
-Does not own:
-
-- ACF/CPT data fetching
-- Discovery filters
-- WooCommerce template overrides
-- Header/footer
-- Home Hero V6
-- Page Trust Strip
-- Pages Hero Other
-
----
-
-### Amaley Templates
-
-Template-level support module.
-
-Owns:
-
-- Existing or transitional WooCommerce/page template sections
-- Single product support modules
-- Shop page support modules
-- Product hero / info tabs / trust strip / origin display where template-specific
-
-Rule: Amaley Templates must support WooCommerce, not replace it.
-
----
-
-## WooCommerce Rule
-
-WooCommerce remains responsible for products, prices, stock, variations, cart, checkout, orders and reviews.
-
-Custom Amaley plugins must support WooCommerce, not replace it.
-
----
-
-## Work Rules
-
-- Review repo/source status before changing anything.
-- Use source files for GitHub updates.
-- Keep ZIPs/media/screenshots/videos out of GitHub.
-- Give commit messages before updates.
-- Preview or dry-test visual widgets before final lock.
-- Do not say done without verification.
-- Update docs/changelog after serious source changes.
-- Work in small, safe, sequential steps.
