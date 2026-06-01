@@ -35,12 +35,19 @@ Every CPT section widget must provide non-coder friendly controls for:
 - Show / Hide
 - Data source where relevant
 - Layout
+- Alignment
 - Style
 - Typography
 - Colors
 - Spacing
 - Border / radius / shadow where relevant
 - Buttons / links where relevant
+- Button alignment desktop / tablet / mobile where relevant
+- Section-level CTA button controls where the section shows limited cards
+- Image / gallery visibility, height, fit and position where relevant
+- Description word count / excerpt length where relevant
+- Chips / tags max count where relevant
+- Smooth animation / transform controls where relevant
 - Responsive desktop / tablet / mobile behaviour
 - Empty-state text where relevant
 
@@ -77,6 +84,55 @@ Manual one-off Elementor spacing fixes should not be the main solution. Plugin d
 
 ---
 
+## Section-level CTA button rule
+
+Whenever a section shows a limited number of related cards, the section should provide an optional section-level CTA button.
+
+Examples:
+
+```text
+View all SHGs
+View all producers
+View all products
+View all clusters
+```
+
+This button must have:
+
+- Show / hide control
+- Button text control
+- URL control
+- Alignment control for desktop / tablet / mobile
+- Style controls so it does not disappear into the background
+- Responsive spacing controls
+
+This applies across Cluster Archive, Cluster Single, SHG Archive, SHG Single, Member / Producer pages, and Product-origin sections wherever limited-card previews are used.
+
+---
+
+## Gallery / media rule
+
+Cluster, SHG and Member / Producer records should support gallery/media fields where visual story sections are required.
+
+Gallery fields should be manageable from the relevant CPT edit screen, not only by manually pasting placeholder image URLs.
+
+Where URL fallback fields exist for migration/testing, they should not replace the long-term media-management direction.
+
+Gallery sections should have controls for:
+
+- Show / hide
+- Label, title and description
+- Image source / fallback
+- Number of images
+- Image ratio / height
+- Object fit and object position
+- Columns desktop / tablet / mobile
+- Gap
+- Overlay text visibility where relevant
+- Responsive behaviour
+
+---
+
 ## Cluster Archive structure lock
 
 Cluster Archive must be built section-wise.
@@ -87,7 +143,8 @@ Recommended final order:
 2. Cluster Archive Trust Strip
 3. Cluster Archive Intro / Why Section
 4. Cluster Archive Grid
-5. Cluster Archive CTA Band
+5. Cluster Archive Gallery / Story Visual Section where approved
+6. Cluster Archive CTA Band
 
 The archive grid should route to the assigned Cluster Single Template Page where applicable.
 
@@ -126,6 +183,7 @@ Amaley Linked Producer Groups / SHGs
 
 - Products should come from WooCommerce product origin mapping.
 - The Cluster Single flow must remain data-driven and reusable for all clusters.
+- SHG, Producer and Product sections should include optional section-level CTA buttons when only limited cards are shown.
 
 ---
 
@@ -139,7 +197,8 @@ Recommended final order:
 2. SHG Archive Trust / Context Strip
 3. SHG Archive Intro
 4. SHG Group Grid
-5. SHG Archive CTA Band
+5. SHG Archive Gallery / Story Visual Section where approved
+6. SHG Archive CTA Band
 
 The archive should be able to filter or group by cluster, region, product category or status in future phases, but that discovery/filter logic must stay aligned with Amaley Core and Amaley Discovery Engine boundaries.
 
@@ -167,6 +226,7 @@ Important:
 - Members / Producers must use the saved Member → SHG relation.
 - Products should use product origin mapping where available.
 - The SHG Single flow must not become a custom one-page-per-SHG design.
+- Member / Producer and Product sections should include optional section-level CTA buttons when only limited cards are shown.
 
 ---
 
@@ -180,7 +240,8 @@ Recommended final order:
 2. Member Archive Context / Trust Strip
 3. Member Archive Intro
 4. Member / Producer Grid
-5. Member Archive CTA Band
+5. Member Archive Gallery / Story Visual Section where approved
+6. Member Archive CTA Band
 
 The archive should support future filtering by SHG, cluster, region, role, product handled and visibility status, while keeping discovery/filter responsibility properly separated.
 
@@ -209,6 +270,7 @@ Important:
 - Linked Cluster should resolve through the linked SHG wherever possible.
 - Products handled may come from member profile fields and product origin mapping.
 - The Member Single flow must not be manually rebuilt per person.
+- Related SHG, Cluster and Product sections should include optional section-level CTA buttons when only limited cards are shown.
 
 ---
 
@@ -245,10 +307,32 @@ Keep:
 - Same button style family
 - Same responsive behaviour
 - Same mobile-first spacing logic
+- Same image handling logic for cards and galleries
 
 Do not create random new visual systems for SHG and Member pages.
 
 SHG and Member pages should inherit the Cluster Single structure and rhythm, adjusted only for their data type.
+
+---
+
+## Card family rule
+
+Use the locked card designs from:
+
+```text
+docs/AMALEY_CARD_DESIGN_LOCK.md
+```
+
+Locked card families:
+
+- Cluster card
+- SHG / Producer Group card
+- Member / Producer card
+- Product card
+
+Same card type must keep the same design everywhere it appears.
+
+Do not redesign cards while moving from archive to single pages or from Core to Discovery contexts.
 
 ---
 
