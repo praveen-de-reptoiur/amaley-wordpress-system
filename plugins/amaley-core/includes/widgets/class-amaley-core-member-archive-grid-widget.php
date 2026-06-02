@@ -1,5 +1,15 @@
 <?php
-/** Amaley Member Archive Grid Elementor widget — v1.0.76.4 chip overflow controls. */
+/**
+ * Amaley Member Archive Grid Elementor widget.
+ *
+ * v1.0.99.4 source note:
+ * - Adds Card Template selector for Current / Existing Card and OG Member Card 1.
+ * - Keeps render-level show/hide controls for Member Archive cards.
+ * - Uses existing Member Archive style-control classes bridged in the renderer.
+ * - Does not add heavy OG full-control sections or transform controls.
+ *
+ * @package Amaley_Core
+ */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 if ( ! class_exists( '\Elementor\Widget_Base' ) ) { return; }
 
@@ -89,70 +99,54 @@ class Amaley_Core_Member_Archive_Grid_Widget extends \Elementor\Widget_Base {
         $this->start_controls_section('style_text',array('label'=>'8. Card Text / Meta / Tags','tab'=>\Elementor\Controls_Manager::TAB_STYLE));
         $this->add_control('card_label_color',array('label'=>'Card Label Color','type'=>\Elementor\Controls_Manager::COLOR,'selectors'=>array('{{WRAPPER}} .ampa-card-label'=>'color: {{VALUE}};')));
         $this->add_group_control(\Elementor\Group_Control_Typography::get_type(),array('name'=>'card_label_typography','selector'=>'{{WRAPPER}} .ampa-card-label'));
-        $this->add_responsive_control('card_label_margin',array('label'=>'Card Label Margin','type'=>\Elementor\Controls_Manager::DIMENSIONS,'size_units'=>array('px','em'),'selectors'=>array('{{WRAPPER}} .ampa-card-label'=>'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};')));
-
         $this->add_control('card_title_color',array('label'=>'Card Title Color','type'=>\Elementor\Controls_Manager::COLOR,'selectors'=>array('{{WRAPPER}} .ampa-member-body h3'=>'color: {{VALUE}};')));
         $this->add_group_control(\Elementor\Group_Control_Typography::get_type(),array('name'=>'card_title_typography','selector'=>'{{WRAPPER}} .ampa-member-body h3'));
-        $this->add_responsive_control('card_title_margin',array('label'=>'Card Title Margin','type'=>\Elementor\Controls_Manager::DIMENSIONS,'size_units'=>array('px','em'),'selectors'=>array('{{WRAPPER}} .ampa-member-body h3'=>'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};')));
+        $this->add_control('card_desc_color',array('label'=>'Bio Text Color','type'=>\Elementor\Controls_Manager::COLOR,'selectors'=>array('{{WRAPPER}} .ampa-card-desc'=>'color: {{VALUE}};')));
+        $this->add_group_control(\Elementor\Group_Control_Typography::get_type(),array('name'=>'card_desc_typography','selector'=>'{{WRAPPER}} .ampa-card-desc'));
+        $this->add_responsive_control('label_margin',array('label'=>'Label Margin Bottom','type'=>\Elementor\Controls_Manager::SLIDER,'size_units'=>array('px'),'range'=>array('px'=>array('min'=>0,'max'=>40)),'selectors'=>array('{{WRAPPER}} .ampa-card-label'=>'margin-bottom: {{SIZE}}{{UNIT}};')));
+        $this->add_responsive_control('title_margin',array('label'=>'Title Margin Bottom','type'=>\Elementor\Controls_Manager::SLIDER,'size_units'=>array('px'),'range'=>array('px'=>array('min'=>0,'max'=>40)),'selectors'=>array('{{WRAPPER}} .ampa-member-body h3'=>'margin-bottom: {{SIZE}}{{UNIT}};')));
+        $this->add_responsive_control('desc_margin',array('label'=>'Bio Margin Bottom','type'=>\Elementor\Controls_Manager::SLIDER,'size_units'=>array('px'),'range'=>array('px'=>array('min'=>0,'max'=>40)),'selectors'=>array('{{WRAPPER}} .ampa-card-desc'=>'margin-bottom: {{SIZE}}{{UNIT}};')));
+        $this->add_control('desc_line_clamp',array('label'=>'Bio Line Clamp','type'=>\Elementor\Controls_Manager::NUMBER,'min'=>1,'max'=>8,'default'=>2,'selectors'=>array('{{WRAPPER}} .ampa-card-desc'=>'-webkit-line-clamp: {{VALUE}};')));
+        $this->end_controls_section();
 
-        $this->add_control('bio_color',array('label'=>'Bio / Description Color','type'=>\Elementor\Controls_Manager::COLOR,'selectors'=>array('{{WRAPPER}} .ampa-card-desc'=>'color: {{VALUE}};')));
-        $this->add_group_control(\Elementor\Group_Control_Typography::get_type(),array('name'=>'bio_typography','selector'=>'{{WRAPPER}} .ampa-card-desc'));
-        $this->add_responsive_control('bio_margin',array('label'=>'Bio / Description Margin','type'=>\Elementor\Controls_Manager::DIMENSIONS,'size_units'=>array('px','em'),'selectors'=>array('{{WRAPPER}} .ampa-card-desc'=>'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};')));
-
-        $this->add_control('meta_controls_note',array('label'=>'Meta Detail Boxes','type'=>\Elementor\Controls_Manager::HEADING,'separator'=>'before'));
-        $this->add_responsive_control('meta_columns',array('label'=>'Meta Columns','type'=>\Elementor\Controls_Manager::SELECT,'default'=>'','options'=>array(''=>'Default','1'=>'1','2'=>'2'),'selectors'=>array('{{WRAPPER}} .ampa-card-meta'=>'grid-template-columns: repeat({{VALUE}}, minmax(0, 1fr));')));
-        $this->add_responsive_control('meta_gap',array('label'=>'Meta Box Gap','type'=>\Elementor\Controls_Manager::SLIDER,'size_units'=>array('px'),'range'=>array('px'=>array('min'=>0,'max'=>32)),'selectors'=>array('{{WRAPPER}} .ampa-card-meta'=>'gap: {{SIZE}}{{UNIT}};')));
-        $this->add_responsive_control('meta_margin',array('label'=>'Meta Group Margin','type'=>\Elementor\Controls_Manager::DIMENSIONS,'size_units'=>array('px','em'),'selectors'=>array('{{WRAPPER}} .ampa-card-meta'=>'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};')));
-        $this->add_control('meta_bg',array('label'=>'Meta Box Background','type'=>\Elementor\Controls_Manager::COLOR,'selectors'=>array('{{WRAPPER}} .ampa-card-meta div'=>'background: {{VALUE}};')));
-        $this->add_control('meta_border',array('label'=>'Meta Box Border','type'=>\Elementor\Controls_Manager::COLOR,'selectors'=>array('{{WRAPPER}} .ampa-card-meta div'=>'border-color: {{VALUE}};')));
-        $this->add_responsive_control('meta_padding',array('label'=>'Meta Box Padding','type'=>\Elementor\Controls_Manager::DIMENSIONS,'size_units'=>array('px','em'),'selectors'=>array('{{WRAPPER}} .ampa-card-meta div'=>'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};')));
-        $this->add_responsive_control('meta_radius',array('label'=>'Meta Box Radius','type'=>\Elementor\Controls_Manager::SLIDER,'size_units'=>array('px'),'range'=>array('px'=>array('min'=>0,'max'=>40)),'selectors'=>array('{{WRAPPER}} .ampa-card-meta div'=>'border-radius: {{SIZE}}{{UNIT}};')));
+        $this->start_controls_section('style_meta',array('label'=>'9. Meta Boxes Style','tab'=>\Elementor\Controls_Manager::TAB_STYLE));
+        $this->add_control('meta_columns',array('label'=>'Meta Columns','type'=>\Elementor\Controls_Manager::NUMBER,'min'=>1,'max'=>4,'default'=>2,'selectors'=>array('{{WRAPPER}} .ampa-card-meta'=>'grid-template-columns: repeat({{VALUE}}, minmax(0,1fr));')));
+        $this->add_responsive_control('meta_gap',array('label'=>'Meta Gap','type'=>\Elementor\Controls_Manager::SLIDER,'size_units'=>array('px'),'range'=>array('px'=>array('min'=>0,'max'=>35)),'selectors'=>array('{{WRAPPER}} .ampa-card-meta'=>'gap: {{SIZE}}{{UNIT}};')));
+        $this->add_responsive_control('meta_margin',array('label'=>'Meta Margin','type'=>\Elementor\Controls_Manager::DIMENSIONS,'size_units'=>array('px','em'),'selectors'=>array('{{WRAPPER}} .ampa-card-meta'=>'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};')));
+        $this->add_responsive_control('meta_box_padding',array('label'=>'Meta Box Padding','type'=>\Elementor\Controls_Manager::DIMENSIONS,'size_units'=>array('px','em'),'selectors'=>array('{{WRAPPER}} .ampa-card-meta div'=>'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};')));
+        $this->add_control('meta_box_bg',array('label'=>'Meta Box Background','type'=>\Elementor\Controls_Manager::COLOR,'selectors'=>array('{{WRAPPER}} .ampa-card-meta div'=>'background: {{VALUE}};')));
+        $this->add_control('meta_box_border',array('label'=>'Meta Box Border Color','type'=>\Elementor\Controls_Manager::COLOR,'selectors'=>array('{{WRAPPER}} .ampa-card-meta div'=>'border-color: {{VALUE}};')));
         $this->add_control('meta_label_color',array('label'=>'Meta Label Color','type'=>\Elementor\Controls_Manager::COLOR,'selectors'=>array('{{WRAPPER}} .ampa-card-meta dt'=>'color: {{VALUE}};')));
         $this->add_group_control(\Elementor\Group_Control_Typography::get_type(),array('name'=>'meta_label_typography','selector'=>'{{WRAPPER}} .ampa-card-meta dt'));
-        $this->add_responsive_control('meta_label_margin',array('label'=>'Meta Label Margin','type'=>\Elementor\Controls_Manager::DIMENSIONS,'size_units'=>array('px','em'),'selectors'=>array('{{WRAPPER}} .ampa-card-meta dt'=>'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};')));
         $this->add_control('meta_value_color',array('label'=>'Meta Value Color','type'=>\Elementor\Controls_Manager::COLOR,'selectors'=>array('{{WRAPPER}} .ampa-card-meta dd'=>'color: {{VALUE}};')));
         $this->add_group_control(\Elementor\Group_Control_Typography::get_type(),array('name'=>'meta_value_typography','selector'=>'{{WRAPPER}} .ampa-card-meta dd'));
-        $this->add_responsive_control('meta_value_margin',array('label'=>'Meta Value Margin','type'=>\Elementor\Controls_Manager::DIMENSIONS,'size_units'=>array('px','em'),'selectors'=>array('{{WRAPPER}} .ampa-card-meta dd'=>'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};')));
-
-        $this->add_control('tag_controls_note',array('label'=>'Skill / Product Chips','type'=>\Elementor\Controls_Manager::HEADING,'separator'=>'before'));
-        $this->add_responsive_control('tag_row_gap',array('label'=>'Chip Row Gap','type'=>\Elementor\Controls_Manager::SLIDER,'size_units'=>array('px'),'range'=>array('px'=>array('min'=>0,'max'=>28)),'selectors'=>array('{{WRAPPER}} .ampa-chip-row'=>'gap: {{SIZE}}{{UNIT}};')));
-        $this->add_responsive_control('tag_row_margin',array('label'=>'Chip Row Margin','type'=>\Elementor\Controls_Manager::DIMENSIONS,'size_units'=>array('px','em'),'selectors'=>array('{{WRAPPER}} .ampa-chip-row'=>'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};')));
-        $this->add_responsive_control('tag_row_align',array('label'=>'Chip Row Alignment','type'=>\Elementor\Controls_Manager::CHOOSE,'options'=>array('flex-start'=>array('title'=>'Left','icon'=>'eicon-h-align-left'),'center'=>array('title'=>'Center','icon'=>'eicon-h-align-center'),'flex-end'=>array('title'=>'Right','icon'=>'eicon-h-align-right')),'selectors'=>array('{{WRAPPER}} .ampa-chip-row'=>'justify-content: {{VALUE}};')));
-        $this->add_responsive_control('tag_wrap',array('label'=>'Chip Wrap / Overflow','type'=>\Elementor\Controls_Manager::SELECT,'default'=>'wrap','options'=>array('wrap'=>'Wrap safely','nowrap'=>'Single line with hidden overflow'),'selectors'=>array('{{WRAPPER}} .ampa-chip-row'=>'flex-wrap: {{VALUE}}; max-height: none;')));
-        $this->add_responsive_control('tag_row_max_height',array('label'=>'Chip Row Max Height','type'=>\Elementor\Controls_Manager::SLIDER,'size_units'=>array('px'),'range'=>array('px'=>array('min'=>20,'max'=>120)),'selectors'=>array('{{WRAPPER}} .ampa-chip-row'=>'max-height: {{SIZE}}{{UNIT}}; overflow: hidden;')));
-        $this->add_control('tag_bg',array('label'=>'Chip Background','type'=>\Elementor\Controls_Manager::COLOR,'selectors'=>array('{{WRAPPER}} .ampa-chip-row span'=>'background: {{VALUE}};')));
-        $this->add_control('tag_color',array('label'=>'Chip Text Color','type'=>\Elementor\Controls_Manager::COLOR,'selectors'=>array('{{WRAPPER}} .ampa-chip-row span'=>'color: {{VALUE}};')));
-        $this->add_control('tag_border',array('label'=>'Chip Border Color','type'=>\Elementor\Controls_Manager::COLOR,'selectors'=>array('{{WRAPPER}} .ampa-chip-row span'=>'border-color: {{VALUE}};')));
-        $this->add_group_control(\Elementor\Group_Control_Typography::get_type(),array('name'=>'tag_typography','selector'=>'{{WRAPPER}} .ampa-chip-row span'));
-        $this->add_responsive_control('tag_padding',array('label'=>'Chip Padding','type'=>\Elementor\Controls_Manager::DIMENSIONS,'size_units'=>array('px','em'),'selectors'=>array('{{WRAPPER}} .ampa-chip-row span'=>'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};')));
-        $this->add_responsive_control('tag_radius',array('label'=>'Chip Radius','type'=>\Elementor\Controls_Manager::SLIDER,'size_units'=>array('px'),'range'=>array('px'=>array('min'=>0,'max'=>40)),'selectors'=>array('{{WRAPPER}} .ampa-chip-row span'=>'border-radius: {{SIZE}}{{UNIT}};')));
-        $this->add_responsive_control('tag_max_width',array('label'=>'Chip Max Width','type'=>\Elementor\Controls_Manager::SLIDER,'size_units'=>array('px'),'range'=>array('px'=>array('min'=>40,'max'=>220)),'selectors'=>array('{{WRAPPER}} .ampa-chip-row span'=>'max-width: {{SIZE}}{{UNIT}};')));
-        $this->add_responsive_control('tag_min_width',array('label'=>'Chip Min Width','type'=>\Elementor\Controls_Manager::SLIDER,'size_units'=>array('px'),'range'=>array('px'=>array('min'=>0,'max'=>140)),'selectors'=>array('{{WRAPPER}} .ampa-chip-row span'=>'min-width: {{SIZE}}{{UNIT}};')));
+        $this->add_control('meta_value_line_clamp',array('label'=>'Meta Value Line Clamp','type'=>\Elementor\Controls_Manager::NUMBER,'min'=>1,'max'=>5,'default'=>2,'selectors'=>array('{{WRAPPER}} .ampa-card-meta dd'=>'-webkit-line-clamp: {{VALUE}};')));
         $this->end_controls_section();
 
-        $this->start_controls_section('style_buttons',array('label'=>'9. Card + Section Button Style','tab'=>\Elementor\Controls_Manager::TAB_STYLE));
-        $this->add_responsive_control('card_button_align',array('label'=>'Card Button Alignment','type'=>\Elementor\Controls_Manager::SELECT,'options'=>array('stretch'=>'Stretch','flex-start'=>'Left','center'=>'Center','flex-end'=>'Right'),'selectors'=>array('{{WRAPPER}} .ampa-card-button'=>'align-self: {{VALUE}};')));
-        $this->add_responsive_control('card_button_padding',array('label'=>'Card Button Padding','type'=>\Elementor\Controls_Manager::DIMENSIONS,'size_units'=>array('px','em'),'selectors'=>array('{{WRAPPER}} .ampa-card-button'=>'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};')));
-        $this->add_responsive_control('card_button_margin',array('label'=>'Card Button Margin','type'=>\Elementor\Controls_Manager::DIMENSIONS,'size_units'=>array('px','em'),'selectors'=>array('{{WRAPPER}} .ampa-card-button'=>'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};')));
-        $this->add_responsive_control('card_button_radius',array('label'=>'Card Button Radius','type'=>\Elementor\Controls_Manager::SLIDER,'size_units'=>array('px'),'range'=>array('px'=>array('min'=>0,'max'=>50)),'selectors'=>array('{{WRAPPER}} .ampa-card-button'=>'border-radius: {{SIZE}}{{UNIT}};')));
-        $this->add_control('card_button_bg',array('label'=>'Card Button Background','type'=>\Elementor\Controls_Manager::COLOR,'selectors'=>array('{{WRAPPER}} .ampa-card-button'=>'background: {{VALUE}};')));
-        $this->add_control('card_button_color',array('label'=>'Card Button Text','type'=>\Elementor\Controls_Manager::COLOR,'selectors'=>array('{{WRAPPER}} .ampa-card-button'=>'color: {{VALUE}};')));
-        $this->add_group_control(\Elementor\Group_Control_Typography::get_type(),array('name'=>'card_button_typography','selector'=>'{{WRAPPER}} .ampa-card-button'));
-        $this->add_responsive_control('section_button_align',array('label'=>'Section Button Alignment','type'=>\Elementor\Controls_Manager::SELECT,'options'=>array('flex-start'=>'Left','center'=>'Center','flex-end'=>'Right'),'selectors'=>array('{{WRAPPER}} .ampa-section-actions'=>'justify-content: {{VALUE}};')));
-        $this->add_responsive_control('section_button_wrapper_margin',array('label'=>'Section Button Wrapper Margin','type'=>\Elementor\Controls_Manager::DIMENSIONS,'size_units'=>array('px','em'),'selectors'=>array('{{WRAPPER}} .ampa-section-actions'=>'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};')));
-        $this->add_responsive_control('section_button_padding',array('label'=>'Section Button Padding','type'=>\Elementor\Controls_Manager::DIMENSIONS,'size_units'=>array('px','em'),'selectors'=>array('{{WRAPPER}} .ampa-section-button'=>'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};')));
-        $this->add_responsive_control('section_button_radius',array('label'=>'Section Button Radius','type'=>\Elementor\Controls_Manager::SLIDER,'size_units'=>array('px'),'range'=>array('px'=>array('min'=>0,'max'=>50)),'selectors'=>array('{{WRAPPER}} .ampa-section-button'=>'border-radius: {{SIZE}}{{UNIT}};')));
+        $this->start_controls_section('style_chips_button',array('label'=>'10. Chips + Button Style','tab'=>\Elementor\Controls_Manager::TAB_STYLE));
+        $this->add_responsive_control('chip_gap',array('label'=>'Chip Gap','type'=>\Elementor\Controls_Manager::SLIDER,'size_units'=>array('px'),'range'=>array('px'=>array('min'=>0,'max'=>30)),'selectors'=>array('{{WRAPPER}} .ampa-chip-row'=>'gap: {{SIZE}}{{UNIT}};')));
+        $this->add_responsive_control('chip_margin',array('label'=>'Chip Row Margin','type'=>\Elementor\Controls_Manager::DIMENSIONS,'size_units'=>array('px','em'),'selectors'=>array('{{WRAPPER}} .ampa-chip-row'=>'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};')));
+        $this->add_responsive_control('chip_padding',array('label'=>'Chip Padding','type'=>\Elementor\Controls_Manager::DIMENSIONS,'size_units'=>array('px','em'),'selectors'=>array('{{WRAPPER}} .ampa-chip-row span'=>'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};')));
+        $this->add_control('chip_bg',array('label'=>'Chip Background','type'=>\Elementor\Controls_Manager::COLOR,'selectors'=>array('{{WRAPPER}} .ampa-chip-row span'=>'background: {{VALUE}};')));
+        $this->add_control('chip_color',array('label'=>'Chip Text Color','type'=>\Elementor\Controls_Manager::COLOR,'selectors'=>array('{{WRAPPER}} .ampa-chip-row span'=>'color: {{VALUE}};')));
+        $this->add_control('chip_border',array('label'=>'Chip Border Color','type'=>\Elementor\Controls_Manager::COLOR,'selectors'=>array('{{WRAPPER}} .ampa-chip-row span'=>'border-color: {{VALUE}};')));
+        $this->add_group_control(\Elementor\Group_Control_Typography::get_type(),array('name'=>'chip_typography','selector'=>'{{WRAPPER}} .ampa-chip-row span'));
+        $this->add_responsive_control('button_align',array('label'=>'Card Button Alignment','type'=>\Elementor\Controls_Manager::CHOOSE,'options'=>array('left'=>array('title'=>'Left','icon'=>'eicon-text-align-left'),'center'=>array('title'=>'Center','icon'=>'eicon-text-align-center'),'right'=>array('title'=>'Right','icon'=>'eicon-text-align-right'),'stretch'=>array('title'=>'Stretch','icon'=>'eicon-h-align-stretch')),'selectors'=>array('{{WRAPPER}} .ampa-card-button'=>'align-self: {{VALUE}};')));
+        $this->add_responsive_control('button_padding',array('label'=>'Button Padding','type'=>\Elementor\Controls_Manager::DIMENSIONS,'size_units'=>array('px','em'),'selectors'=>array('{{WRAPPER}} .ampa-card-button'=>'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};')));
+        $this->add_responsive_control('button_margin_top',array('label'=>'Button Margin Top','type'=>\Elementor\Controls_Manager::SLIDER,'size_units'=>array('px'),'range'=>array('px'=>array('min'=>0,'max'=>60)),'selectors'=>array('{{WRAPPER}} .ampa-card-button'=>'margin-top: {{SIZE}}{{UNIT}};')));
+        $this->add_responsive_control('button_radius',array('label'=>'Button Radius','type'=>\Elementor\Controls_Manager::SLIDER,'size_units'=>array('px'),'range'=>array('px'=>array('min'=>0,'max'=>80)),'selectors'=>array('{{WRAPPER}} .ampa-card-button'=>'border-radius: {{SIZE}}{{UNIT}};')));
+        $this->add_control('button_bg',array('label'=>'Button Background','type'=>\Elementor\Controls_Manager::COLOR,'selectors'=>array('{{WRAPPER}} .ampa-card-button'=>'background: {{VALUE}} !important;')));
+        $this->add_control('button_color',array('label'=>'Button Text Color','type'=>\Elementor\Controls_Manager::COLOR,'selectors'=>array('{{WRAPPER}} .ampa-card-button'=>'color: {{VALUE}} !important;')));
+        $this->add_control('button_hover_bg',array('label'=>'Button Hover Background','type'=>\Elementor\Controls_Manager::COLOR,'selectors'=>array('{{WRAPPER}} .ampa-card-button:hover'=>'background: {{VALUE}} !important;')));
+        $this->add_control('button_hover_color',array('label'=>'Button Hover Text Color','type'=>\Elementor\Controls_Manager::COLOR,'selectors'=>array('{{WRAPPER}} .ampa-card-button:hover'=>'color: {{VALUE}} !important;')));
+        $this->add_group_control(\Elementor\Group_Control_Typography::get_type(),array('name'=>'button_typography','selector'=>'{{WRAPPER}} .ampa-card-button'));
+        $this->end_controls_section();
+        $this->start_controls_section('style_section_button',array('label'=>'11. Section Button Style','tab'=>\Elementor\Controls_Manager::TAB_STYLE));
+        $this->add_responsive_control('section_button_align',array('label'=>'Section Button Alignment','type'=>\Elementor\Controls_Manager::CHOOSE,'options'=>array('left'=>array('title'=>'Left','icon'=>'eicon-text-align-left'),'center'=>array('title'=>'Center','icon'=>'eicon-text-align-center'),'right'=>array('title'=>'Right','icon'=>'eicon-text-align-right')),'selectors'=>array('{{WRAPPER}} .ampa-section-actions'=>'text-align: {{VALUE}};')));
+        $this->add_responsive_control('section_button_margin_top',array('label'=>'Section Button Top Gap','type'=>\Elementor\Controls_Manager::SLIDER,'size_units'=>array('px'),'range'=>array('px'=>array('min'=>0,'max'=>80)),'selectors'=>array('{{WRAPPER}} .ampa-section-actions'=>'margin-top: {{SIZE}}{{UNIT}};')));
         $this->add_control('section_button_bg',array('label'=>'Section Button Background','type'=>\Elementor\Controls_Manager::COLOR,'selectors'=>array('{{WRAPPER}} .ampa-section-button'=>'background: {{VALUE}};')));
-        $this->add_control('section_button_border',array('label'=>'Section Button Border','type'=>\Elementor\Controls_Manager::COLOR,'selectors'=>array('{{WRAPPER}} .ampa-section-button'=>'border-color: {{VALUE}};')));
-        $this->add_control('section_button_color',array('label'=>'Section Button Text','type'=>\Elementor\Controls_Manager::COLOR,'selectors'=>array('{{WRAPPER}} .ampa-section-button'=>'color: {{VALUE}};')));
-        $this->add_group_control(\Elementor\Group_Control_Typography::get_type(),array('name'=>'section_button_typography','selector'=>'{{WRAPPER}} .ampa-section-button'));
-        $this->end_controls_section();
-
-        $this->start_controls_section('style_motion',array('label'=>'10. Smooth Animation / Transform','tab'=>\Elementor\Controls_Manager::TAB_STYLE));
-        $this->add_control('motion_mode',array('label'=>'Motion','type'=>\Elementor\Controls_Manager::SELECT,'default'=>'','options'=>array(''=>'Default','on'=>'On','off'=>'Off'),'prefix_class'=>'ampa-motion-'));
-        $this->add_control('hover_lift',array('label'=>'Hover Lift','type'=>\Elementor\Controls_Manager::SLIDER,'size_units'=>array('px'),'range'=>array('px'=>array('min'=>0,'max'=>8)),'selectors'=>array('{{WRAPPER}} .ampa-section'=>'--ampa-hover-lift: {{SIZE}}px;')));
-        $this->add_control('image_zoom',array('label'=>'Image Hover Zoom','type'=>\Elementor\Controls_Manager::SLIDER,'range'=>array('px'=>array('min'=>1,'max'=>1.08,'step'=>0.002)),'selectors'=>array('{{WRAPPER}} .ampa-section'=>'--ampa-image-zoom: {{SIZE}};')));
+        $this->add_control('section_button_color',array('label'=>'Section Button Color','type'=>\Elementor\Controls_Manager::COLOR,'selectors'=>array('{{WRAPPER}} .ampa-section-button'=>'color: {{VALUE}};')));
         $this->end_controls_section();
     }
-    protected function render(){ $r=isset($GLOBALS['amaley_core_member_archive_sections'])?$GLOBALS['amaley_core_member_archive_sections']:new Amaley_Core_Member_Archive_Sections(); echo $r->render_grid($this->get_settings_for_display()); }
+    protected function render(){ $settings=$this->get_settings_for_display(); echo $GLOBALS['amaley_core_member_archive_sections']->render_grid($settings); }
 }
