@@ -29,6 +29,7 @@ class APG_Admin {
             'plugins'      => 'Plugins',
             'checks'       => 'Core Target Checks',
             'elementor'    => 'Elementor',
+            'usage-map'    => 'Usage Map',
             'woocommerce'  => 'WooCommerce',
             'reports'      => 'Reports',
         );
@@ -73,6 +74,9 @@ class APG_Admin {
                     break;
                 case 'elementor':
                     self::render_elementor( $report );
+                    break;
+                case 'usage-map':
+                    self::render_usage_map( $report );
                     break;
                 case 'woocommerce':
                     self::render_woocommerce( $report );
@@ -194,6 +198,130 @@ class APG_Admin {
         }
         echo '</tbody></table></div>';
     }
+
+
+    /** Usage Map. */
+    private static function render_usage_map( $report ) {
+        $usage = (array) ( $report['usage_map'] ?? array() );
+        $counts = (array) ( $usage['counts'] ?? array() );
+        $widgets = (array) ( $usage['widgets'] ?? array() );
+        $shortcodes = (array) ( $usage['shortcodes'] ?? array() );
+
+        echo '<div class="apg-card"><h2>Usage Map</h2>';
+        echo '<p><strong>Read-only scan:</strong> shows where Amaley widgets and shortcodes were found. This is for review only, not cleanup action.</p>';
+        if ( ! empty( $usage['scope']['note'] ) ) {
+            echo '<p class="description">' . esc_html( (string) $usage['scope']['note'] ) . '</p>';
+        }
+        self::render_assoc_summary( $counts );
+        echo '</div>';
+
+        echo '<div class="apg-usage-grid">';
+        echo '<div class="apg-card apg-usage-section"><h2>Used Elementor Widgets</h2>';
+        self::render_usage_rows( (array) ( $widgets['used'] ?? array() ), 'widget' );
+        echo '</div>';
+
+        echo '<div class="apg-card apg-usage-section"><h2>Used Shortcodes</h2>';
+        self::render_usage_rows( (array) ( $shortcodes['used'] ?? array() ), 'shortcode' );
+        echo '</div>';
+        echo '</div>';
+
+        echo '<div class="apg-usage-grid">';
+        echo '<div class="apg-card apg-usage-section"><h2>Unused Widgets — Review Only</h2>';
+        self::render_unused_rows( (array) ( $widgets['unused'] ?? array() ), 'widget' );
+        echo '</div>';
+
+        echo '<div class="apg-card apg-usage-section"><h2>Unused Shortcodes — Review Only</h2>';
+        self::render_unused_rows( (array) ( $shortcodes['unused'] ?? array() ), 'shortcode' );
+        echo '</div>';
+        echo '</div>';
+    }
+
+    /**
+     * Render usage rows.
+     *
+     * @param array<int,array<string,mixed>> $rows Rows.
+     * @param string $type Type.
+     * @return void
+     */
+    private static function render_usage_rows( $rows, $type ) {
+        if ( empty( $rows ) ) {
+            echo '<p>No usage found in this scan scope.</p>';
+            return;
+        }
+
+        echo '<div class="apg-section-note">Compact view: open any row to see exact page/template usage. This is read-only.</div>';
+        echo '<div class="apg-usage-accordion-list">';
+        foreach ( $rows as $index => $row ) {
+            $name       = 'shortcode' === $type ? (string) ( $row['tag'] ?? '' ) : (string) ( $row['name'] ?? '' );
+            $count      = absint( $row['count'] ?? 0 );
+            $detail     = ! empty( $row['class'] ) ? (string) $row['class'] : (string) ( $row['callback'] ?? '' );
+            $item_count = count( (array) ( $row['items'] ?? array() ) );
+
+            echo '<details class="apg-usage-accordion">';
+            echo '<summary>';
+            echo '<span class="apg-usage-summary-title"><strong>' . esc_html( $name ) . '</strong>';
+            if ( '' !== $detail ) {
+                echo '<code>' . esc_html( $detail ) . '</code>';
+            }
+            echo '</span>';
+            echo '<span class="apg-count-pill">Used ' . esc_html( (string) $count ) . ' time(s)</span>';
+            echo '</summary>';
+
+            echo '<div class="apg-usage-locations apg-usage-locations-compact">';
+            if ( 0 === $item_count ) {
+                echo '<p>No exact page/template item stored for this row.</p>';
+            }
+
+            foreach ( (array) ( $row['items'] ?? array() ) as $item ) {
+                $label     = '#' . (string) ( $item['id'] ?? '' ) . ' — ' . (string) ( $item['title'] ?? '' ) . ' (' . (string) ( $item['post_type'] ?? '' ) . ', ' . (string) ( $item['status'] ?? '' ) . ')';
+                $edit_link = (string) ( $item['edit_link'] ?? '' );
+
+                echo '<div class="apg-usage-item">';
+                if ( '' !== $edit_link ) {
+                    echo '<a href="' . esc_url( $edit_link ) . '">' . esc_html( $label ) . '</a>';
+                } else {
+                    echo esc_html( $label );
+                }
+
+                echo '<br><span class="description">Source: ' . esc_html( (string) ( $item['source'] ?? '' ) );
+                if ( ! empty( $item['widget_id'] ) ) {
+                    echo ' · Widget ID: ' . esc_html( (string) $item['widget_id'] );
+                }
+                echo '</span></div>';
+            }
+
+            echo '</div>';
+            echo '</details>';
+        }
+        echo '</div>';
+    }
+
+    /**
+     * Render unused rows.
+     *
+     * @param array<int,array<string,mixed>> $rows Rows.
+     * @param string $type Type.
+     * @return void
+     */
+    private static function render_unused_rows( $rows, $type ) {
+        if ( empty( $rows ) ) {
+            echo '<p>No unused items found in this scan scope.</p>';
+            return;
+        }
+
+        echo '<div class="apg-section-note">Review-only list. Do not delete anything from here without manual confirmation.</div>';
+        echo '<details class="apg-review-panel">';
+        echo '<summary><strong>Show review-only unused list</strong><span class="apg-count-pill">' . esc_html( (string) count( $rows ) ) . ' item(s)</span></summary>';
+        echo '<div class="apg-review-list">';
+        foreach ( $rows as $row ) {
+            $name   = 'shortcode' === $type ? (string) ( $row['tag'] ?? '' ) : (string) ( $row['name'] ?? '' );
+            $detail = 'shortcode' === $type ? (string) ( $row['callback'] ?? '' ) : (string) ( $row['class'] ?? '' );
+            echo '<div class="apg-review-item"><strong>' . esc_html( $name ) . '</strong><code>' . esc_html( $detail ) . '</code><span class="apg-review-status">' . esc_html( (string) ( $row['status'] ?? '' ) ) . '</span></div>';
+        }
+        echo '</div>';
+        echo '</details>';
+    }
+
 
     /** WooCommerce. */
     private static function render_woocommerce( $report ) {

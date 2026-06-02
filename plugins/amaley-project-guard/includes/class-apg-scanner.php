@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class APG_Scanner {
 
     /**
-     * Run v1.0.0 Quick Scan.
+     * Run v1.0.1.3 Quick Scan.
      *
      * @return array<string,mixed>
      */
@@ -43,6 +43,13 @@ class APG_Scanner {
         $issues = array_merge( $issues, (array) ( $woocommerce['issues'] ?? array() ) );
         $scanned_items += count( (array) ( $woocommerce['pages'] ?? array() ) );
 
+        $usage_scanner = new APG_Widget_Usage_Scanner();
+        $usage_map = $usage_scanner->scan( $elementor, $shortcodes );
+        $scanned_items += (int) ( $usage_map['counts']['elementor_documents_scanned'] ?? 0 );
+        $scanned_items += (int) ( $usage_map['counts']['shortcode_documents_scanned'] ?? 0 );
+        $scanned_items += (int) ( $usage_map['counts']['elementor_widget_hits'] ?? 0 );
+        $scanned_items += (int) ( $usage_map['counts']['shortcode_hits'] ?? 0 );
+
         $map_builder = new APG_Project_Map();
         $project_map = $map_builder->build( $plugins, $shortcodes, $elementor );
 
@@ -50,9 +57,9 @@ class APG_Scanner {
             $issues[] = APG_Utils::issue(
                 'INFO',
                 'Project Guard',
-                'Quick Scan completed without critical/high findings from v1.0.0 checks',
+                'Quick Scan completed without critical/high findings from v1.0.1.3 checks',
                 'Amaley Project Guard → Overview',
-                'The foundation scan did not detect blocking issues in its limited v1.0.0 scope.',
+                'The foundation + usage map scan did not detect blocking issues in its limited v1.0.1.3 scope.',
                 'Continue with manual frontend/editor checks before making major changes.'
             );
         }
@@ -84,6 +91,7 @@ class APG_Scanner {
             'shortcodes'   => $shortcodes,
             'elementor'    => $elementor,
             'woocommerce'  => $woocommerce,
+            'usage_map'    => $usage_map,
             'project_map'  => $project_map,
         );
     }

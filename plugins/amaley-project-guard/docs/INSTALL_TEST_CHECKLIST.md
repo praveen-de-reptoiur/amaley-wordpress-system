@@ -1,12 +1,37 @@
-# Install and Test Checklist
+# Amaley Project Guard v1.0.1 — Install/Test Checklist
 
-1. Take a backup/export before installing.
-2. Delete/deactivate any earlier Project Guard test plugin if already active.
-3. Upload `amaley-project-guard-v1.0.0-clean-separate.zip`.
-4. Activate **Amaley Project Guard**.
-5. Confirm admin menu shows as top-level **Amaley Project Guard**.
-6. Confirm it is not inside Amaley Core.
-7. Open Project Guard and click **Run Quick Scan**.
-8. Check Home, Shop, Single Product, Cluster Single, SHG Single and Member Single pages.
-9. Open Elementor editor for one existing template and confirm controls open.
-10. Export Markdown report and save it with the project handoff.
+## Before Install
+
+- [ ] Backup completed.
+- [ ] Confirm plugin folder is `plugins/amaley-project-guard/`.
+- [ ] Confirm not inside `plugins/amaley-core/`.
+
+## After Install
+
+- [ ] Plugin activates without fatal error.
+- [ ] Separate admin menu appears: Amaley Project Guard.
+- [ ] Run Quick Scan manually.
+- [ ] Overview shows report.
+- [ ] Project Map opens.
+- [ ] Plugins tab opens.
+- [ ] Core Target Checks opens.
+- [ ] Elementor tab opens.
+- [ ] Usage Map tab opens.
+- [ ] WooCommerce tab opens.
+- [ ] Reports tab opens.
+
+## Usage Map Checks
+
+- [ ] Used Elementor widgets display page/template names.
+- [ ] Used shortcodes display page names.
+- [ ] Unused widgets are marked review-only.
+- [ ] Unused shortcodes are marked review-only.
+- [ ] No cleanup/delete action exists.
+
+## Safety Checks
+
+- [ ] Homepage frontend unchanged.
+- [ ] Shop page unchanged.
+- [ ] Product page unchanged.
+- [ ] Elementor editor opens.
+- [ ] No frontend CSS/JS from Project Guard.

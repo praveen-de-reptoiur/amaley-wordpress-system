@@ -28,7 +28,7 @@ class APG_Report_Exporter {
         }
 
         $content = self::build_markdown( $report );
-        self::download_text( 'amaley-project-guard-report-v1.0.0.md', $content, 'text/markdown' );
+        self::download_text( 'amaley-project-guard-report-v' . APG_VERSION . '.md', $content, 'text/markdown' );
     }
 
     /**
@@ -48,7 +48,7 @@ class APG_Report_Exporter {
         }
 
         $content = wp_json_encode( $report, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES );
-        self::download_text( 'amaley-project-guard-report-v1.0.0.json', $content, 'application/json' );
+        self::download_text( 'amaley-project-guard-report-v' . APG_VERSION . '.json', $content, 'application/json' );
     }
 
     /**
@@ -87,6 +87,12 @@ class APG_Report_Exporter {
         }
         $lines[] = '## Plugin Summary';
         foreach ( (array) ( $report['plugins']['counts'] ?? array() ) as $key => $value ) {
+            $lines[] = '- ' . $key . ': ' . $value;
+        }
+        $lines[] = '';
+        $lines[] = '';
+        $lines[] = '## Usage Map Summary';
+        foreach ( (array) ( $report['usage_map']['counts'] ?? array() ) as $key => $value ) {
             $lines[] = '- ' . $key . ': ' . $value;
         }
         $lines[] = '';

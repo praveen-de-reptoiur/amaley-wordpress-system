@@ -1,4 +1,4 @@
 (function(){
   'use strict';
-  // v1.0.0 intentionally minimal. No frontend script. Admin screen only.
+  // v1.0.1 intentionally minimal. No frontend script. Admin screen only.
 })();
