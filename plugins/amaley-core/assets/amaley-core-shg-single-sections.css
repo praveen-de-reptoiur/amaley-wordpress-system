@@ -184,3 +184,57 @@
 .amss-products .amss-section-actions,.amss-members .amss-section-actions,.amss-cluster .amss-section-actions,.amss-gallery .amss-section-actions{justify-content:center}
 @media(max-width:767px){.amss-section-actions{margin-top:20px}.amss-section-button{min-height:42px}}
 @media(max-width:480px){.amss-section-actions{justify-content:center}.amss-section-button{width:100%;max-width:100%}}
+
+/* v1.0.93 — SHG Single OG Card 1 compatibility */
+.amss-linked-cluster .amaley-card,
+.amss-members .amaley-card,
+.amss-products .amaley-card{
+  width:100%;
+  max-width:100%;
+}
+
+/* v1.0.93.2 — SHG Single OG controls working fix */
+.amss-linked-cluster .amaley-card,
+.amss-members .amaley-card,
+.amss-products .amaley-card{
+  width:100%;
+  max-width:100%;
+}
+
+/* v1.0.95 — SHG Single clean safe pagination */
+.amss-related-results{position:relative}
+.amss-pagination{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin:26px 0 0;
+}
+.amss-page-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:40px;
+  min-height:40px;
+  padding:10px 14px;
+  border-radius:999px;
+  border:1px solid rgba(92,61,37,.18);
+  background:#fffaf2;
+  color:#4b2f1f;
+  font-size:13px;
+  font-weight:800;
+  line-height:1;
+  text-decoration:none;
+}
+.amss-page-link:hover{background:#f1dfc6;color:#2e1b12}
+.amss-page-current{background:#7b4a24;color:#fff;border-color:#7b4a24}
+.amss-page-prev,.amss-page-next{min-width:auto;padding-inline:18px}
+.amss-related-loading .amss-related-results{opacity:.58;pointer-events:none}
+.amss-related-loading .amss-related-results::after{content:"";position:absolute;inset:0;border-radius:18px;background:rgba(255,248,237,.28)}
+.amss-pagination a[aria-disabled="true"]{pointer-events:none}
+@media (max-width:640px){
+  .amss-pagination{gap:8px}
+  .amss-page-link{min-width:36px;min-height:36px;padding:9px 11px;font-size:12px}
+  .amss-page-prev,.amss-page-next{width:100%}
+}

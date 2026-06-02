@@ -378,3 +378,248 @@
 .amcss-section-link{background:#b5502a!important;border-color:#b5502a!important;color:#fffaf2!important;box-shadow:0 10px 24px rgba(181,80,42,.13)}
 .amcss-section-link:hover{background:#2e1203!important;border-color:#2e1203!important;color:#fffaf2!important;box-shadow:0 16px 34px rgba(46,18,3,.16)}
 @media(max-width:480px){.amcss-section-link{width:100%;max-width:100%}}
+
+/* v1.0.82 — Cluster Single central card connection.
+   Applies only to SHG and Producer cards rendered through Amaley Core Card Renderer. */
+.amcss-related-shg .amcss-card-grid .amaley-card,
+.amcss-related-producer .amcss-card-grid .amaley-card{
+  height:100%;
+  min-width:0;
+}
+.amcss-related-shg .amcss-card-grid .amaley-card__button,
+.amcss-related-producer .amcss-card-grid .amaley-card__button{
+  margin-top:auto;
+}
+.amcss-related-shg .amcss-card-grid .amaley-card__title,
+.amcss-related-producer .amcss-card-grid .amaley-card__title{
+  min-height:44px;
+}
+.amcss-related-shg .amcss-card-grid .amaley-card__excerpt,
+.amcss-related-producer .amcss-card-grid .amaley-card__excerpt{
+  min-height:38px;
+}
+@media(max-width:640px){
+  .amcss-related-shg .amcss-card-grid .amaley-card__title,
+  .amcss-related-producer .amcss-card-grid .amaley-card__title,
+  .amcss-related-shg .amcss-card-grid .amaley-card__excerpt,
+  .amcss-related-producer .amcss-card-grid .amaley-card__excerpt{
+    min-height:0;
+  }
+}
+
+/* v1.0.82.2 — Cluster Single central card visual polish.
+   Scope: only Cluster Single SHG and Producer cards that use the Amaley Core Card Renderer. */
+.amcss-related-shg .amcss-card-grid,
+.amcss-related-producer .amcss-card-grid{
+  align-items:stretch;
+}
+
+.amcss-related-shg .amcss-card-grid .amaley-card,
+.amcss-related-producer .amcss-card-grid .amaley-card{
+  border-radius:18px;
+  background:#fff9ee;
+  border:1px solid rgba(194,136,10,.24);
+  box-shadow:0 14px 34px rgba(46,18,3,.07);
+}
+
+.amcss-related-shg .amcss-card-grid .amaley-card__media,
+.amcss-related-producer .amcss-card-grid .amaley-card__media{
+  height:150px;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(194,136,10,.13) 0 0, transparent 48px),
+    linear-gradient(135deg,#f2e4ca 0%,#ecdab8 100%);
+}
+
+.amcss-related-producer .amcss-card-grid .amaley-card__media{
+  height:154px;
+}
+
+.amcss-related-shg .amcss-card-grid .amaley-card__initials,
+.amcss-related-producer .amcss-card-grid .amaley-card__initials{
+  width:64px;
+  height:64px;
+  background:rgba(194,136,10,.16);
+  border:1px solid rgba(194,136,10,.16);
+  box-shadow:0 10px 24px rgba(46,18,3,.06);
+  color:#b88009;
+}
+
+.amcss-related-shg .amcss-card-grid .amaley-card__body,
+.amcss-related-producer .amcss-card-grid .amaley-card__body{
+  padding:17px 18px 18px;
+  gap:9px;
+}
+
+.amcss-related-shg .amcss-card-grid .amaley-card__label,
+.amcss-related-producer .amcss-card-grid .amaley-card__label{
+  margin-bottom:0;
+  font-size:10px;
+  letter-spacing:.14em;
+}
+
+.amcss-related-shg .amcss-card-grid .amaley-card__title,
+.amcss-related-producer .amcss-card-grid .amaley-card__title{
+  min-height:42px;
+  font-size:21px;
+  line-height:1.08;
+}
+
+.amcss-related-shg .amcss-card-grid .amaley-card__excerpt,
+.amcss-related-producer .amcss-card-grid .amaley-card__excerpt{
+  min-height:42px;
+  font-size:13px;
+  line-height:1.48;
+  color:rgba(46,18,3,.74);
+}
+
+.amcss-related-shg .amcss-card-grid .amaley-card__meta,
+.amcss-related-producer .amcss-card-grid .amaley-card__meta{
+  gap:7px;
+}
+
+.amcss-related-shg .amcss-card-grid .amaley-card__meta-item,
+.amcss-related-producer .amcss-card-grid .amaley-card__meta-item{
+  min-height:50px;
+  padding:8px 9px;
+  border-radius:10px;
+  background:rgba(194,136,10,.055);
+  border:1px solid rgba(194,136,10,.22);
+}
+
+.amcss-related-shg .amcss-card-grid .amaley-card__meta span,
+.amcss-related-producer .amcss-card-grid .amaley-card__meta span{
+  font-size:8.8px;
+  margin-bottom:4px;
+}
+
+.amcss-related-shg .amcss-card-grid .amaley-card__meta strong,
+.amcss-related-producer .amcss-card-grid .amaley-card__meta strong{
+  font-size:11.6px;
+  line-height:1.22;
+  -webkit-line-clamp:2;
+}
+
+.amcss-related-shg .amcss-card-grid .amaley-card__tags,
+.amcss-related-producer .amcss-card-grid .amaley-card__tags{
+  gap:6px;
+  max-height:54px;
+}
+
+.amcss-related-shg .amcss-card-grid .amaley-card__tags span,
+.amcss-related-producer .amcss-card-grid .amaley-card__tags span{
+  min-height:22px;
+  padding:5px 8px;
+  font-size:9.6px;
+  background:rgba(194,136,10,.075);
+}
+
+.amcss-related-shg .amcss-card-grid .amaley-card__button,
+.amcss-related-producer .amcss-card-grid .amaley-card__button{
+  min-height:40px;
+  margin-top:auto;
+  border-radius:999px;
+  font-size:10.5px;
+  letter-spacing:.075em;
+}
+
+@media(max-width:1024px){
+  .amcss-related-shg .amcss-card-grid .amaley-card__media,
+  .amcss-related-producer .amcss-card-grid .amaley-card__media{
+    height:145px;
+  }
+}
+
+@media(max-width:640px){
+  .amcss-related-shg .amcss-card-grid .amaley-card__media,
+  .amcss-related-producer .amcss-card-grid .amaley-card__media{
+    height:142px;
+  }
+  .amcss-related-shg .amcss-card-grid .amaley-card__title,
+  .amcss-related-producer .amcss-card-grid .amaley-card__title,
+  .amcss-related-shg .amcss-card-grid .amaley-card__excerpt,
+  .amcss-related-producer .amcss-card-grid .amaley-card__excerpt{
+    min-height:0;
+  }
+}
+
+/* v1.0.90 — Cluster related-card pagination */
+.amcss-pagination{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin:26px 0 0;
+}
+.amcss-page-link,
+.amcss-page-ellipsis{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:40px;
+  min-height:40px;
+  padding:10px 14px;
+  border-radius:999px;
+  border:1px solid rgba(92,61,37,.18);
+  background:#fffaf2;
+  color:#4b2f1f;
+  font-size:13px;
+  font-weight:700;
+  line-height:1;
+  text-decoration:none;
+}
+.amcss-page-link:hover{
+  background:#f1dfc6;
+  color:#2e1b12;
+}
+.amcss-page-current{
+  background:#7b4a24;
+  color:#fff;
+  border-color:#7b4a24;
+}
+.amcss-page-prev,
+.amcss-page-next{
+  min-width:auto;
+  padding-inline:18px;
+}
+.amcss-page-ellipsis{
+  border-color:transparent;
+  background:transparent;
+  min-width:24px;
+  padding-inline:4px;
+}
+@media (max-width: 640px){
+  .amcss-pagination{
+    gap:8px;
+  }
+  .amcss-page-link,
+  .amcss-page-ellipsis{
+    min-width:36px;
+    min-height:36px;
+    padding:9px 11px;
+    font-size:12px;
+  }
+  .amcss-page-prev,
+  .amcss-page-next{
+    width:100%;
+  }
+}
+
+/* v1.0.91 — AJAX/no-reload related-card pagination state */
+.amcss-related-results{
+  position:relative;
+}
+.amcss-related-loading .amcss-related-results{
+  opacity:.58;
+  pointer-events:none;
+}
+.amcss-related-loading .amcss-related-results::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:18px;
+  background:rgba(255,248,237,.28);
+}
+.amcss-pagination a[aria-disabled="true"]{
+  pointer-events:none;
+}
