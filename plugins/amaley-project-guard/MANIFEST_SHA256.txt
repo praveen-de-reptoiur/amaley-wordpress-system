@@ -1,0 +1,16 @@
+f44694ad7c3194d061c050bfb1a192f8a10541dc26d495a292d4ae2d2eaa5821  ./README.md
+92a658c764c3b31e349be31598afdf22d2056fe39ff6ced8dd3f3a994a7da978  ./amaley-project-guard.php
+37235673eedd9b7bc26a4edcd0c7bbdca6f46710f84a6aef4a697956d760ebf2  ./assets/admin.css
+6ebb4918ff8870ac9089bf14cd03434f326045add36e45c220081d67fb28c446  ./assets/admin.js
+135602ea126f9f43d73cb3d03a6d40946c787c9dd470e2801907301ac2870022  ./docs/CHANGELOG.md
+81a39c7e7a7e480a88f03ecf62d09366a04bd1a51eabd4e8368d1bfdf9069656  ./docs/INSTALL_TEST_CHECKLIST.md
+1757e5c1e300b2212ad0eb3c98d1dd42dd422f33c48dca50ee29c72d020d2d42  ./docs/PROJECT_GUARD_PLAN.md
+266b55f8d8c6793ae94cdc4562c5c89c84972307446838e91a85e5b1e4946463  ./includes/class-apg-admin.php
+89973d0bf545c7b724366a553d209deb71a04ca9bbf60543dbe2a05988e5bb4e  ./includes/class-apg-elementor-scanner.php
+674599bf6105d262251e7098c25cc4309dc21d600d7c46b9f159712651750748  ./includes/class-apg-plugin-registry.php
+9d65ec48dad246d5bc8a9d1ca2d80a685827e5465c567c407ca3061b0d0e02e4  ./includes/class-apg-plugin.php
+b6b66bc4abb87070ea081591eeaa8fc706db252cb4495b6ad6bf7ff6a5cef5b3  ./includes/class-apg-project-map.php
+050394ff0f5c64f73b2c4251730cff2f151a572c27e6fd4f4cfa9144b8744e0b  ./includes/class-apg-report-exporter.php
+b1c8af3c838af03eb8f56e88a13174446a1af7404cddbc2435ba5f1a5e703fb6  ./includes/class-apg-scanner.php
+85b9d688cb6dbe43841b57ed1f9ab50d426b47a43ecad3ed242675ffc0d0eb17  ./includes/class-apg-utils.php
+34f67672d765ff95d6165383c6e274868320f9c31473faee3c74c0abfde94f18  ./includes/class-apg-woocommerce-scanner.php

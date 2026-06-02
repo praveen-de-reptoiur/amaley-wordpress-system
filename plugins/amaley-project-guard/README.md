@@ -1,36 +1,33 @@
 # Amaley Project Guard
 
-Status: v1.0.0 Clean Separate Foundation Pass
-Author: Praveen
-Plugin folder: plugins/amaley-project-guard/
-Admin menu: Amaley Project Guard
+Independent read-only admin control room for the Amaley WordPress ecosystem.
 
-Amaley Project Guard is a separate read-only admin control room for the Amaley WordPress ecosystem.
+## Version
 
-It is not part of Amaley Core. It does not register inside the Amaley Core menu and does not include Amaley Core files.
+1.0.0 — Clean separate plugin rebuild.
 
-## v1.0.0 Completed
+## Author
 
-- Separate top-level admin menu
-- Manual Quick Scan
-- Cached scan report
-- Plugin registry
-- Basic Project Map
-- Amaley Core read-only target checks
-- Elementor widget detection
-- WooCommerce status detection
-- Markdown and JSON report export
+Praveen
 
-Live test status:
+## Important architecture note
 
-- Critical: 0
-- High: 0
-- Medium: 0
-- Low: 0
-- Info: 1
+This plugin is intentionally separate from Amaley Core.
 
-## Next Build
+- It does not create a submenu under Amaley Core.
+- It does not include Amaley Core files.
+- It does not require Amaley Core to activate.
+- It only scans Amaley Core as a read-only target if detected.
 
-v1.0.1 Usage Map
+## Admin menu
 
-Purpose: detect which widgets and shortcodes are used on which pages/templates before any cleanup.
+WordPress Dashboard → Amaley Project Guard
+
+## Safety
+
+- No frontend output.
+- No frontend CSS/JS.
+- No auto-fix.
+- No deletion.
+- No plugin activation/deactivation.
+- Manual scan only.
