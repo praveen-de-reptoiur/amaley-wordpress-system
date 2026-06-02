@@ -1,0 +1,32 @@
+version,status,work,result,issues,decision
+v1.0.74,Old GitHub baseline,"SHG Archive/Single polish, card design lock, gallery/media field direction, rich story direction, CTA/control expectations",Stable previous GitHub source,Missing latest universal card/member/archive/pagination/price work,Historical baseline only
+v1.0.75,Intermediate,Member Archive clean rebuild from v1.0.74 baseline,Started clean structure,Not final,Document only
+v1.0.76,Intermediate,Member Archive controls-only update,Added control direction,Not final,Document only
+v1.0.76.1,Intermediate,Member Archive gallery compact polish,Improved compact gallery handling,Superseded by universal card flow,Document only
+v1.0.76.2,Intermediate,Member Archive grid card micro controls,Added micro controls,Increased control complexity,Audit during cleanup
+v1.0.76.3,Intermediate,Manual gallery controls,Expanded manual gallery handling,May be unused,Audit before deleting
+v1.0.76.4,Intermediate,Chip overflow controls,Improved chip handling,May duplicate universal chip controls,Audit during cleanup
+v1.0.76.5,Intermediate,Generic Manual Gallery Section,Added reusable manual gallery section,Confirm usage,Keep only if active
+v1.0.77,Intermediate,Member Single normal build,Started Member Single structure,Superseded by later polish,Historical step
+v1.0.78,Intermediate,Member Single visual rhythm polish,Improved spacing/flow,Superseded by later universal card updates,Historical step
+v1.0.78.10,Safety baseline,Product card consistency fix before Card Library direction,Stable reference before expansion,Not final,Historical safety baseline
+v1.0.82.2,Accepted,Cluster Core Card Visual Polish,Accepted on phone/frontend,Product/Discovery/Woo/header/footer untouched,Keep
+v1.0.89,Accepted,Cluster Single OG Card Visibility + Transform Controls,Controls worked for related SHGs/producers,Transform controls add editor weight,Keep but audit heaviness
+v1.0.91,Accepted,Cluster AJAX Pagination No-Reload,No-reload pagination worked for Cluster Single related sections,Archive pagination still pending,Keep as pagination reference
+v1.0.92.4,Accepted,Member Single OG Full Card Controls,Member Single linked SHG/Cluster/Products controls aligned,Full controls may add editor weight,Keep but audit
+v1.0.95,Working,SHG Single Pagination Clean Safe,Members/products pagination added,Retest after cleanup,Keep
+v1.0.96,Working,Member Single Products Pagination,Product pagination added,Linked SHG/Cluster unpaginated by design,Keep
+v1.0.97,Rejected,Cluster Archive OG full controls,Selector/controls added,Too heavy/confusing,Do not use
+v1.0.97.1,Rejected,Cluster Archive visual fix attempt,Partial correction,Not sufficient,Do not use
+v1.0.97.2,Rescue,Cluster Archive Lightweight OG Card Rescue,Removed heavy controls,Needed later show/hide/style mapping,Good rescue direction
+v1.0.97.3,Audited lightweight lock,Cluster Archive audited lightweight lock,Confirmed no heavy controls/transform/JS,Needed further refinement,Safe intermediate
+v1.0.97.4,Fix,Cluster Archive OG Show/Hide Fix,Show/hide mapped more strongly,Style mapping still needed,Keep in chain
+v1.0.97.5,Working,Cluster Archive Existing Controls Work on OG,Existing controls 8-13 mapped to OG Cluster Card,Needs final practical retest,Keep
+v1.0.97.6,Working,Universal Product Card PRICE label/value fix,PRICE label/value hierarchy improved,Discovery/Product Archive integration pending,Keep
+v1.0.98,Initial SHG Archive selector,OG SHG Card 1 selector added,Selector added,Controls weak,Superseded
+v1.0.98.1,Working,SHG Archive OG Controls Selector Fix,Scoped selectors fixed controls,Needs final retest,Keep
+v1.0.99,Rejected,Member Archive Universal Card Selector + Controls,Selector/mapping added,Elementor loader issue/too heavy,Do not use
+v1.0.99.1,Rejected,Member Archive Lightweight Rescue,Attempted lighter selector,Not enough before Atomic issue fixed,Do not use
+v1.0.99.2,Rollback,Member Archive rollback/editor-safe,Restored safety,OG selector removed,Emergency fallback
+v1.0.99.3,Working lightweight attempt,Member Archive Lightweight OG Selector,Added selector/render path,Style controls not bridged,Superseded
+v1.0.99.4,Current latest source,Member Archive OG hide/show + style-control bridge,Existing classes bridge controls without heavy new sections,Needs full-site test and cleanup,Use current source
