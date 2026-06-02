@@ -1,0 +1,70 @@
+SAFE CLEANUP PLAN — DO NOT DELETE BLINDLY
+
+Purpose:
+The plugin has accumulated many versions and patches. Cleanup is necessary, but it must be done safely.
+
+PHASE 1 — BACKUP AND BASELINE
+1. Keep v1.0.99.4 source on GitHub.
+2. Keep the installable ZIP separately in Drive.
+3. Take full WordPress backup before installing cleanup versions.
+4. Confirm Elementor Atomic Editor is inactive.
+5. Confirm current v1.0.99.4 frontend/editor is stable enough before cleanup begins.
+
+PHASE 2 — INVENTORY
+Review and list:
+1. Active widgets
+2. Unused widgets
+3. Duplicate helper methods
+4. Old CSS blocks
+5. Old documentation files inside plugin
+6. Old card renderer paths
+7. Unused AJAX handlers
+8. Old control sections no longer needed
+9. Old experimental card-template options
+10. Any code introduced by rejected versions v1.0.97, v1.0.97.1, v1.0.99 and v1.0.99.1
+
+PHASE 3 — REMOVE ONLY SAFE ITEMS
+Safe to remove only after confirming not referenced:
+1. Old docs that are not needed in plugin runtime
+2. Unused CSS blocks
+3. Duplicate helper functions
+4. Deprecated card template labels/options
+5. Experimental render paths that are no longer used
+6. Dead archive/member-control mappings from rejected heavy versions
+
+PHASE 4 — TEST AFTER EACH SMALL CLEANUP
+For every cleanup version:
+1. Activate plugin
+2. Open Elementor editor
+3. Test frontend
+4. Test mobile
+5. Test key pages:
+   - Single Cluster
+   - Single SHG
+   - Single Member
+   - Cluster Archive
+   - SHG Archive
+   - Member Archive
+   - Product cards
+
+PHASE 5 — LOCK CLEAN BASE
+After cleanup:
+1. Create a new master handoff ZIP
+2. Update GitHub
+3. Write final cleanup changelog
+4. Continue new widget work only after clean base is stable
+
+SUGGESTED CLEANUP VERSION NAME
+
+v1.0.100 CLEANUP BASELINE
+
+or
+
+v1.1.0 CLEANUP BASELINE
+
+DO NOT
+- Do not reactivate Atomic Editor.
+- Do not add new widgets during cleanup.
+- Do not delete files without checking references.
+- Do not merge cleanup with Discovery Engine integration.
+- Do not merge cleanup with WooCommerce archive changes.
