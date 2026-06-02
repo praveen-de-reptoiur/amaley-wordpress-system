@@ -1,0 +1,41 @@
+KNOWN GAPS AND RISKS — AMALEY CORE v1.0.99.4
+
+1. Plugin cleanup is pending.
+There may be unused legacy code, repeated controls, and old helper paths from multiple patch versions.
+
+2. Some widgets may still have too many Elementor controls.
+Even if working now, the plugin needs a controlled cleanup phase to keep the editor light.
+
+3. Member Archive v1.0.99.4 needs final real-site testing.
+Especially check:
+- Card Template selector
+- Show/hide controls
+- Style controls
+- Frontend layout
+- Mobile layout
+- Editor panel stability
+
+4. Atomic Editor must remain inactive.
+Reactivating it can bring back loader/spinner issues.
+
+5. Archive pagination is not fully finalized across all archive pages.
+A later phase should define:
+- Pagination
+- Load More
+- AJAX/no-reload behavior
+- Archive-specific performance rules
+
+6. Discovery Engine integration is pending.
+Discovery Engine should eventually call the central Amaley Core product card renderer instead of maintaining separate card HTML.
+
+7. WooCommerce product archive/shop consistency is pending.
+Current universal product cards are improved, but full WooCommerce archive card replacement needs a dedicated phase.
+
+8. Avoid large mixed patches.
+Future versions should focus on one widget/module at a time.
+
+9. Do not cleanup blindly.
+Some old methods may still be referenced by shortcodes, Elementor widgets, or fallback renderers.
+
+10. Do not build a new widget before cleanup baseline.
+Current source has accumulated many patches and needs stabilization first.
