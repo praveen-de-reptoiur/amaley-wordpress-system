@@ -29,7 +29,7 @@ Some future folders may remain planning-only until a real source module is appro
 
 | Plugin / Module | GitHub source status | Drive ZIP backup status |
 | --- | --- | --- |
-| Amaley Core | v1.0.74 | v1.0.74 ZIP backup belongs in Drive |
+| Amaley Core | v1.0.99.4 | ZIP backup belongs in Drive only |
 | Amaley Discovery Engine | v1.3.5 | `amaley-discovery-engine-v1.3.5-no-cpt.zip` |
 | Amaley Site Shell | v1.0.1 | `amaley-site-shell-v1.0.1.zip` |
 | Amaley UI Sections Kit | v0.6.1 | `amaley-ui-sections-kit-v0.6.1.zip` |
@@ -37,6 +37,37 @@ Some future folders may remain planning-only until a real source module is appro
 | Amaley Templates | v1.2.7 | `amaley-templates-v1.2.7.zip` |
 
 ZIPs are backups and must not be uploaded into this GitHub folder.
+
+---
+
+## Current Amaley Core v1.0.99.4 Lock
+
+`plugins/amaley-core/` is now synced to v1.0.99.4.
+
+Important included work:
+
+- Universal OG card direction across Cluster, SHG / Collective, Member / Producer and Product contexts.
+- Cluster Single accepted card/control/pagination work.
+- Member Single linked SHG, linked Cluster and Products card-control work.
+- Single SHG card controls and pagination work from the current plugin chain.
+- Cluster Archive OG Cluster Card 1 selector and existing controls bridge.
+- SHG Archive OG SHG Card 1 selector and control selector fix.
+- Product Card PRICE label/value readability fix.
+- Member Archive OG Member Card 1 hide/show and style-control bridge.
+
+Editor stability lock:
+
+```text
+Elementor Atomic Editor must remain inactive.
+```
+
+Reason: Atomic Editor caused repeated Elementor left-panel loading/spinner issues during universal-card work.
+
+Cleanup status:
+
+```text
+Cleanup is pending before the next new widget/module.
+```
 
 ---
 
@@ -64,6 +95,7 @@ Read before creating or changing Cluster, SHG or Member / Producer pages:
 docs/AMALEY_CPT_SINGLE_SECTION_STRUCTURE_LOCK.md
 docs/AMALEY_SECTION_SPACING_RHYTHM_LOCK.md
 docs/AMALEY_CARD_DESIGN_LOCK.md
+docs/AMALEY_CORE_VERSION_HISTORY_v1.0.74_to_v1.0.99.4.md
 ```
 
 Locked principles:
@@ -76,6 +108,7 @@ Locked principles:
 - Cluster cards, SHG cards, Member / Producer cards and Product cards are locked.
 - Same card type must keep the same design wherever it appears.
 - Section-level CTA buttons are expected where a section shows limited cards and must have controls.
+- Avoid heavy OG full controls unless they are essential and tested.
 
 ---
 
@@ -96,8 +129,10 @@ Owns:
 - Gallery/media fields where implemented
 - Cluster Single spacing rhythm polish
 - SHG archive and SHG single section widgets
+- Member archive and Member single section widgets where CPT data is involved
 - CPT-driven cards, archive sections and single sections
 - Locked Cluster, SHG, Member and Product card families used in CPT contexts
+- Universal OG card selectors/bridges for CPT contexts
 - Section-level CTA controls where sections show limited cards
 - Producer / maker profiles
 - Traceability fields
@@ -150,7 +185,7 @@ Owns:
 
 Does not own static compact card libraries or generic page heroes.
 
-When Discovery later displays Amaley products, it should reuse the locked product-card style where practical rather than inventing a new card family.
+When Discovery later displays Amaley products, it should reuse the locked Amaley Core product-card style where practical rather than inventing a new card family.
 
 ---
 
@@ -258,27 +293,14 @@ Future safety and project protection plugin.
 
 Purpose:
 
-- Show active Amaley plugin versions
-- Show required dependency status
-- Detect missing WooCommerce
-- Detect risky duplicate plugins
-- Detect old or broken Amaley plugin versions
-- Warn before unsafe activation
-- Provide admin-only status dashboard
+- Diagnostics
+- Compatibility checks
+- Version notes
+- Rollback support notes
+- Safe cleanup validation
 
 ---
 
-### amaley-debug-toolkit
+## Next Safe Step
 
-Future admin-only debug toolkit.
-
-Purpose:
-
-- Read-only checks
-- Source/version checks
-- Elementor template assignment checks
-- WooCommerce health checks
-- Debug reports
-- Safe staging diagnostics
-
----
+Before building the next new widget, create a cleanup baseline for Amaley Core and remove unnecessary code only after testing references and rollback safety.
