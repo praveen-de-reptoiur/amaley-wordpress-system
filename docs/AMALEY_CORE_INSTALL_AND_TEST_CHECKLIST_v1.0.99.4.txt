@@ -1,0 +1,50 @@
+INSTALL AND TEST CHECKLIST — AMALEY CORE v1.0.99.4
+
+Before install:
+[ ] Take WordPress backup
+[ ] Confirm Elementor Atomic Editor is inactive
+[ ] Keep older working plugin ZIP available for rollback
+[ ] Confirm GitHub source is synced to v1.0.99.4
+
+After install:
+[ ] LiteSpeed Cache -> Purge All
+[ ] Elementor -> Tools -> Regenerate CSS/Data if needed
+[ ] Browser hard refresh Ctrl + F5
+[ ] Open Elementor editor and confirm left panel loads normally
+
+Test pages:
+[ ] Single Cluster page
+[ ] Single SHG page
+[ ] Single Member page
+[ ] Cluster Archive page
+[ ] SHG Archive page
+[ ] Member Archive page
+[ ] Product card sections
+
+Member Archive v1.0.99.4 specific:
+[ ] Card Template selector visible
+[ ] OG Member Card 1 selectable
+[ ] Show/hide controls working
+[ ] Style controls affecting OG card
+[ ] Editor left panel not stuck
+[ ] Frontend layout okay
+[ ] Mobile layout okay
+
+Cluster Archive:
+[ ] OG Cluster Card 1 still selectable
+[ ] Existing controls still affect OG cards
+[ ] Frontend layout okay
+[ ] Mobile layout okay
+
+SHG Archive:
+[ ] OG SHG Card 1 still selectable
+[ ] Existing controls still affect OG cards
+[ ] Frontend layout okay
+[ ] Mobile layout okay
+
+Product Card:
+[ ] PRICE label displays clearly
+[ ] Price value is bold/readable
+[ ] WooCommerce price markup renders properly
+
+Do not continue new widget work until this checklist is stable.
