@@ -37,9 +37,28 @@ class Amaley_Core {
         new Amaley_Core_Cluster_Single_Sections();
         new Amaley_Core_SHG_Archive_Sections();
         new Amaley_Core_SHG_Single_Sections();
+        new Amaley_Core_Member_Archive_Sections();
+        new Amaley_Core_Member_Single_Sections();
 
+        add_action( 'wp_enqueue_scripts', array( $this, 'register_card_assets' ) );
         add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_assets' ) );
         add_action( 'admin_notices', array( $this, 'admin_dependency_notice' ) );
+    }
+
+    /**
+     * Register centralized card library assets.
+     *
+     * v1.0.79 only registers the stylesheet. Future connected widgets/renderers may enqueue it.
+     *
+     * @return void
+     */
+    public function register_card_assets() {
+        wp_register_style(
+            'amaley-core-cards',
+            AMALEY_CORE_URL . 'assets/amaley-core-cards.css',
+            array(),
+            AMALEY_CORE_VERSION
+        );
     }
 
     /**

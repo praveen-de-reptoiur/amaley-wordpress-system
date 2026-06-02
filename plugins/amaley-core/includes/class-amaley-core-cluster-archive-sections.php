@@ -34,11 +34,16 @@ class Amaley_Core_Cluster_Archive_Sections {
 
     /** Register frontend assets. */
     public function register_assets() {
-        wp_register_style( 'amaley-core-cluster-archive-sections', AMALEY_CORE_URL . 'assets/amaley-core-cluster-archive-sections.css', array(), AMALEY_CORE_VERSION );
+        wp_register_style( 'amaley-core-cards', AMALEY_CORE_URL . 'assets/amaley-core-cards.css', array(), AMALEY_CORE_VERSION );
+        wp_register_style( 'amaley-core-cluster-archive-sections', AMALEY_CORE_URL . 'assets/amaley-core-cluster-archive-sections.css', array( 'amaley-core-cards' ), AMALEY_CORE_VERSION );
     }
 
     /** Enqueue frontend assets. */
     public function enqueue_assets() {
+        if ( ! wp_style_is( 'amaley-core-cards', 'registered' ) ) {
+            wp_register_style( 'amaley-core-cards', AMALEY_CORE_URL . 'assets/amaley-core-cards.css', array(), AMALEY_CORE_VERSION );
+        }
+        wp_enqueue_style( 'amaley-core-cards' );
         wp_enqueue_style( 'amaley-core-cluster-archive-sections' );
     }
 
@@ -239,6 +244,8 @@ class Amaley_Core_Cluster_Archive_Sections {
             'show_products' => '1',
             'show_counts' => '1',
             'show_button' => '1',
+            'card_template' => 'current_existing',
+            'description_words' => '18',
             'show_section_button' => '1',
             'section_button_text' => 'View All Clusters',
             'section_button_url' => '/clusters/',
@@ -505,22 +512,156 @@ class Amaley_Core_Cluster_Archive_Sections {
     }
 
     /** Render grid. */
+    private function cluster_archive_initials( $title ) {
+        $title = trim( wp_strip_all_tags( (string) $title ) );
+        if ( '' === $title ) { return 'CL'; }
+        $words = preg_split( '/\s+/', $title );
+        $letters = '';
+        foreach ( $words as $word ) {
+            if ( '' === $word ) { continue; }
+            $letters .= mb_substr( $word, 0, 1 );
+            if ( mb_strlen( $letters ) >= 2 ) { break; }
+        }
+        return strtoupper( $letters ? $letters : mb_substr( $title, 0, 2 ) );
+    }
+
+    private function cluster_archive_meta_value( $id, $key, $fallback = '' ) {
+        $value = get_post_meta( absint( $id ), $key, true );
+        if ( '' === $value || null === $value ) { return $fallback; }
+        if ( is_array( $value ) ) {
+            $value = implode( ', ', array_filter( array_map( 'strval', $value ) ) );
+        }
+        return (string) $value;
+    }
+
+    private function cluster_archive_control_on( $a, $key, $default = '1' ) {
+        $value = array_key_exists( $key, $a ) ? $a[ $key ] : $default;
+
+        if ( is_bool( $value ) ) {
+            return $value;
+        }
+
+        if ( is_numeric( $value ) ) {
+            return 1 === absint( $value );
+        }
+
+        $value = strtolower( trim( (string) $value ) );
+
+        return in_array( $value, array( '1', 'yes', 'true', 'on', 'show' ), true );
+    }
+
+    private function render_cluster_archive_og_card_light( $id, $a, $detail ) {
+        $title = get_the_title( $id );
+        $img = $this->cluster_image_url( $id );
+        $counts = $this->related_counts( $id );
+
+        $label = $this->cluster_archive_meta_value( $id, '_amaley_region', '' );
+        if ( '' === trim( $label ) ) {
+            $label = $this->cluster_archive_meta_value( $id, '_amaley_district', 'Ladakh' );
+        }
+
+        $description = $this->cluster_archive_meta_value( $id, '_amaley_villages', '' );
+        if ( '' === trim( $description ) ) {
+            $description = wp_strip_all_tags( get_the_excerpt( $id ) );
+        }
+        if ( '' === trim( $description ) ) {
+            $description = 'Source cluster connected with producer collectives and traceable Himalayan products.';
+        }
+
+        $products_raw = $this->cluster_archive_meta_value( $id, '_amaley_main_products', '' );
+        if ( '' === trim( $products_raw ) ) {
+            $products_raw = $this->cluster_archive_meta_value( $id, '_amaley_products', '' );
+        }
+        if ( '' === trim( $products_raw ) ) {
+            $products_raw = 'Traceable origin, Himalayan products';
+        }
+
+        $tags = $this->split_list( $products_raw, 4 );
+        $district = $this->cluster_archive_meta_value( $id, '_amaley_district', 'Ladakh' );
+        $villages = $this->cluster_archive_meta_value( $id, '_amaley_villages', 'Source villages' );
+
+        ob_start();
+        ?>
+        <article class="amcas-og-simple-card">
+            <?php if ( $this->cluster_archive_control_on( $a, 'show_image', '1' ) ) : ?>
+                <div class="amcas-og-simple-card__media">
+                    <?php if ( $img ) : ?>
+                        <img src="<?php echo esc_url( $img ); ?>" alt="<?php echo esc_attr( $title ); ?>" loading="lazy" />
+                    <?php else : ?>
+                        <span><?php echo esc_html( $this->cluster_archive_initials( $title ) ); ?></span>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+
+            <div class="amcas-og-simple-card__body">
+                <?php if ( $this->cluster_archive_control_on( $a, 'show_region', '1' ) ) : ?>
+                    <div class="amcas-og-simple-card__label"><?php echo esc_html( $label ); ?></div>
+                <?php endif; ?>
+
+                <h3 class="amcas-og-simple-card__title"><?php echo esc_html( $title ); ?></h3>
+
+                <?php if ( $this->cluster_archive_control_on( $a, 'show_villages', '1' ) ) : ?>
+                    <p class="amcas-og-simple-card__desc"><?php echo esc_html( wp_trim_words( wp_strip_all_tags( $description ), absint( $a['description_words'] ?? 18 ) ) ); ?></p>
+                <?php endif; ?>
+
+                <?php if ( $this->cluster_archive_control_on( $a, 'show_counts', '1' ) ) : ?>
+                    <div class="amcas-og-simple-card__meta">
+                        <div><span>District</span><strong><?php echo esc_html( $district ); ?></strong></div>
+                        <div><span>Villages</span><strong><?php echo esc_html( wp_trim_words( wp_strip_all_tags( $villages ), 4, '…' ) ); ?></strong></div>
+                        <div><span>SHGs</span><strong><?php echo esc_html( $counts['shgs'] ); ?></strong></div>
+                        <div><span>Producers</span><strong><?php echo esc_html( $counts['members'] ); ?></strong></div>
+                    </div>
+                <?php endif; ?>
+
+                <?php if ( $this->cluster_archive_control_on( $a, 'show_products', '1' ) && ! empty( $tags ) ) : ?>
+                    <div class="amcas-og-simple-card__tags">
+                        <?php foreach ( $tags as $tag ) : ?>
+                            <span><?php echo esc_html( $tag ); ?></span>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+
+                <?php if ( $this->cluster_archive_control_on( $a, 'show_button', '1' ) ) : ?>
+                    <a class="amcas-og-simple-card__button" href="<?php echo esc_url( $detail ); ?>"><?php echo esc_html( $a['button_text'] ); ?></a>
+                <?php endif; ?>
+            </div>
+        </article>
+        <?php
+        return ob_get_clean();
+    }
+
     public function render_grid( $atts ) {
         $a = shortcode_atts( $this->grid_defaults(), $atts, 'amaley_cluster_archive_grid' );
         if ( isset( $a['show_section'] ) && ! $this->boolish( $a['show_section'] ) ) { return ''; }
+
         $q = $this->get_clusters( $a );
         $detail_pattern = $this->resolve_detail_url_pattern( isset( $a['detail_url_pattern'] ) ? $a['detail_url_pattern'] : '', isset( $a['use_template_single'] ) ? $a['use_template_single'] : '1' );
         $style = '--amcas-cols:' . absint( $a['columns_desktop'] ) . ';--amcas-cols-tab:' . absint( $a['columns_tablet'] ) . ';--amcas-cols-mob:' . absint( $a['columns_mobile'] ) . ';';
+        $use_og_card = 'og_card_1' === sanitize_key( isset( $a['card_template'] ) ? $a['card_template'] : 'current_existing' );
+
         ob_start();
         ?>
-        <section id="cluster-grid" class="amaley-archive-sec amcas-grid-sec" style="<?php echo esc_attr( $style ); ?>">
+        <section id="cluster-grid" class="amaley-archive-sec amcas-grid-sec<?php echo $use_og_card ? ' amcas-grid-sec-og-simple' : ''; ?>" style="<?php echo esc_attr( $style ); ?>">
             <div class="amcas-wrap">
                 <div class="amcas-sec-head amcas-sec-head-stacked"><p class="amcas-label"><?php echo esc_html( $a['label'] ); ?></p><h2><?php echo esc_html( $a['title'] ); ?></h2><p class="amcas-head-desc"><?php echo esc_html( $a['description'] ); ?></p></div>
                 <?php if ( ! $q->have_posts() ) : ?>
                     <div class="amcas-empty"><?php echo esc_html( $a['empty_message'] ); ?></div>
                 <?php else : ?>
                     <div class="amcas-grid">
-                        <?php while ( $q->have_posts() ) : $q->the_post(); $id = get_the_ID(); $counts = $this->related_counts( $id ); $img = $this->cluster_image_url( $id ); $detail = str_replace( array( '{id}', '{slug}' ), array( $id, get_post_field( 'post_name', $id ) ), $detail_pattern ); ?>
+                        <?php
+                        while ( $q->have_posts() ) :
+                            $q->the_post();
+                            $id = get_the_ID();
+                            $detail = str_replace( array( '{id}', '{slug}' ), array( $id, get_post_field( 'post_name', $id ) ), $detail_pattern );
+
+                            if ( $use_og_card ) {
+                                echo $this->render_cluster_archive_og_card_light( $id, $a, $detail );
+                                continue;
+                            }
+
+                            $counts = $this->related_counts( $id );
+                            $img = $this->cluster_image_url( $id );
+                            ?>
                             <article class="amcas-cluster-card">
                                 <?php if ( $this->boolish( $a['show_image'] ) ) : ?>
                                     <div class="amcas-card-media">

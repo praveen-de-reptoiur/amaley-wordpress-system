@@ -23,6 +23,9 @@ class Amaley_Core_Cluster_Single_Products_Widget extends \Elementor\Widget_Base 
         $this->start_controls_section( 'query_section', array( 'label' => esc_html__( '3. Query / Layout', 'amaley-core' ) ) );
         $this->add_control( 'limit', array( 'label' => esc_html__( 'Number of Items', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::NUMBER, 'min' => 1, 'max' => 24, 'default' => 4 ) );
         $this->add_control( 'show_all_connected', array( 'label' => esc_html__( 'Show All Connected Items', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::SWITCHER, 'return_value' => '1', 'default' => '0', 'description' => esc_html__( 'Turn on only when you intentionally want to show every linked item. Keep off for preview sections with a section button.', 'amaley-core' ) ) );
+        $this->add_control( 'enable_pagination', array( 'label' => esc_html__( 'Enable Pagination', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::SWITCHER, 'label_on' => esc_html__( 'Yes', 'amaley-core' ), 'label_off' => esc_html__( 'No', 'amaley-core' ), 'return_value' => '1', 'default' => '1', 'description' => esc_html__( 'Shows page numbers when total linked items are more than the Number of Items value.', 'amaley-core' ) ) );
+        $this->add_control( 'pagination_prev_text', array( 'label' => esc_html__( 'Previous Text', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::TEXT, 'default' => 'Previous', 'condition' => array( 'enable_pagination' => '1' ) ) );
+        $this->add_control( 'pagination_next_text', array( 'label' => esc_html__( 'Next Text', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::TEXT, 'default' => 'Next', 'condition' => array( 'enable_pagination' => '1' ) ) );
         $this->add_responsive_control( 'columns_desktop', array( 'label' => esc_html__( 'Columns Desktop', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::SELECT, 'default' => '4', 'options' => array( '1' => '1', '2' => '2', '3' => '3', '4' => '4' ) ) );
         $this->add_responsive_control( 'columns_tablet', array( 'label' => esc_html__( 'Columns Tablet', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::SELECT, 'default' => '2', 'options' => array( '1' => '1', '2' => '2', '3' => '3' ) ) );
         $this->add_responsive_control( 'columns_mobile', array( 'label' => esc_html__( 'Columns Mobile', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::SELECT, 'default' => '1', 'options' => array( '1' => '1', '2' => '2' ) ) );
@@ -41,6 +44,7 @@ class Amaley_Core_Cluster_Single_Products_Widget extends \Elementor\Widget_Base 
         $this->add_chip_style_controls();
         $this->add_meta_style_controls();
         $this->add_button_style_controls();
+        $this->add_pagination_style_controls();
         
     }
 

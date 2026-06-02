@@ -34,11 +34,16 @@ class Amaley_Core_SHG_Archive_Sections {
 
     /** Register assets. */
     public function register_assets() {
-        wp_register_style( 'amaley-core-shg-archive-sections', AMALEY_CORE_URL . 'assets/amaley-core-shg-archive-sections.css', array(), AMALEY_CORE_VERSION );
+        wp_register_style( 'amaley-core-cards', AMALEY_CORE_URL . 'assets/amaley-core-cards.css', array(), AMALEY_CORE_VERSION );
+        wp_register_style( 'amaley-core-shg-archive-sections', AMALEY_CORE_URL . 'assets/amaley-core-shg-archive-sections.css', array( 'amaley-core-cards' ), AMALEY_CORE_VERSION );
     }
 
     /** Enqueue assets. */
     public function enqueue_assets() {
+        if ( ! wp_style_is( 'amaley-core-cards', 'registered' ) ) {
+            wp_register_style( 'amaley-core-cards', AMALEY_CORE_URL . 'assets/amaley-core-cards.css', array(), AMALEY_CORE_VERSION );
+        }
+        wp_enqueue_style( 'amaley-core-cards' );
         wp_enqueue_style( 'amaley-core-shg-archive-sections' );
     }
 
@@ -201,6 +206,7 @@ Village work|Sorting, drying, preserving, blending and packing work.",
             'show_story' => '1',
             'show_product_tags' => '1',
             'show_button' => '1',
+            'card_template' => 'current_existing',
             'label' => 'SHG Directory',
             'title' => 'Browse SHG groups',
             'description' => 'A compact archive of SHG groups, linked clusters, members and product-origin work.',
@@ -324,12 +330,119 @@ Village work|Sorting, drying, preserving, blending and packing work.",
         return $out;
     }
 
+    private function shg_archive_control_on( $a, $key, $default = '1' ) {
+        $value = array_key_exists( $key, $a ) ? $a[ $key ] : $default;
+
+        if ( is_bool( $value ) ) {
+            return $value;
+        }
+
+        if ( is_numeric( $value ) ) {
+            return 1 === absint( $value );
+        }
+
+        $value = strtolower( trim( (string) $value ) );
+
+        return in_array( $value, array( '1', 'yes', 'true', 'on', 'show' ), true );
+    }
+
+    private function render_og_shg_archive_card( $shg, $a ) {
+        $id = $shg->ID;
+        $cluster_id = absint( get_post_meta( $id, '_amaley_shg_cluster_id', true ) );
+        $cluster_title = $cluster_id ? get_the_title( $cluster_id ) : '';
+        $village = get_post_meta( $id, '_amaley_village', true );
+        $district = get_post_meta( $id, '_amaley_district', true );
+        $contact = get_post_meta( $id, '_amaley_contact_person', true );
+        $products = get_post_meta( $id, '_amaley_product_categories', true );
+        if ( ! $products ) {
+            $products = get_post_meta( $id, '_amaley_main_products', true );
+        }
+        $story = get_post_meta( $id, '_amaley_short_story', true );
+        if ( '' === $story ) {
+            $story = $shg->post_excerpt ? $shg->post_excerpt : wp_trim_words( wp_strip_all_tags( $shg->post_content ), 22 );
+        }
+        $verification = get_post_meta( $id, '_amaley_verification_status', true );
+        $member_count = $this->count_members_for_shg( $id );
+        $image = get_the_post_thumbnail_url( $id, 'large' );
+        $url = str_replace( array( '{id}', '{slug}', '{cluster_id}' ), array( $id, $shg->post_name, $cluster_id ), (string) $a['detail_url_pattern'] );
+
+        $has_media = $this->shg_archive_control_on( $a, 'show_images', '1' ) && ( $image || $this->shg_archive_control_on( $a, 'show_placeholder', '1' ) );
+        $tags = $this->split_terms( $products, isset( $a['max_tags'] ) ? absint( $a['max_tags'] ) : 3 );
+
+        $meta = array();
+        if ( $this->shg_archive_control_on( $a, 'show_cluster', '1' ) && $cluster_title ) {
+            $meta[] = array( 'label' => 'Cluster', 'value' => $cluster_title );
+        }
+        if ( $this->shg_archive_control_on( $a, 'show_location', '1' ) && ( $village || $district ) ) {
+            $meta[] = array( 'label' => 'Location', 'value' => implode( ' · ', array_filter( array( $village, $district ) ) ) );
+        }
+        if ( $this->shg_archive_control_on( $a, 'show_member_count', '1' ) ) {
+            $meta[] = array( 'label' => 'Members', 'value' => absint( $member_count ) );
+        }
+        if ( $this->shg_archive_control_on( $a, 'show_verification_detail', '0' ) ) {
+            $meta[] = array( 'label' => 'Status', 'value' => $this->verification_label( $verification ) );
+        }
+        if ( $this->shg_archive_control_on( $a, 'show_contact', '1' ) && $contact ) {
+            $meta[] = array( 'label' => 'Contact', 'value' => $contact, 'wide' => true );
+        }
+
+        $out = '<article class="amaley-card amaley-card--shg amaley-card--og-shg-card-1 amaley-card--shg-archive">';
+        if ( $has_media ) {
+            $out .= '<div class="amaley-card__media">';
+            if ( $image ) {
+                $out .= '<img src="' . esc_url( $image ) . '" alt="' . esc_attr( get_the_title( $shg ) ) . '" loading="lazy" />';
+            } else {
+                $out .= '<span class="amaley-card__initials" aria-hidden="true">' . esc_html( $this->initials( get_the_title( $shg ) ) ) . '</span>';
+            }
+            if ( $this->shg_archive_control_on( $a, 'show_verification_badge', '1' ) ) {
+                $out .= '<span class="amaley-card__badge">' . esc_html( $this->verification_label( $verification ) ) . '</span>';
+            }
+            $out .= '</div>';
+        }
+
+        $out .= '<div class="amaley-card__body">';
+        $out .= '<p class="amaley-card__label">SHG</p>';
+        if ( ! $has_media && $this->shg_archive_control_on( $a, 'show_verification_badge', '1' ) ) {
+            $out .= '<span class="amaley-card__badge-inline">' . esc_html( $this->verification_label( $verification ) ) . '</span>';
+        }
+        $out .= '<h3 class="amaley-card__title">' . esc_html( get_the_title( $shg ) ) . '</h3>';
+
+        if ( $this->shg_archive_control_on( $a, 'show_story', '1' ) && $story ) {
+            $out .= '<p class="amaley-card__excerpt">' . esc_html( wp_trim_words( $story, max( 6, absint( $a['story_word_limit'] ?? 16 ) ) ) ) . '</p>';
+        }
+
+        if ( ! empty( $meta ) ) {
+            $out .= '<div class="amaley-card__meta">';
+            foreach ( $meta as $row ) {
+                $wide = ! empty( $row['wide'] ) ? ' amaley-card__meta-item--wide' : '';
+                $out .= '<div class="amaley-card__meta-item' . esc_attr( $wide ) . '"><span>' . esc_html( $row['label'] ) . '</span><strong>' . esc_html( $row['value'] ) . '</strong></div>';
+            }
+            $out .= '</div>';
+        }
+
+        if ( $this->shg_archive_control_on( $a, 'show_product_tags', '1' ) && ! empty( $tags ) ) {
+            $out .= '<div class="amaley-card__tags">';
+            foreach ( $tags as $tag ) {
+                $out .= '<span>' . esc_html( $tag ) . '</span>';
+            }
+            $out .= '</div>';
+        }
+
+        if ( $this->shg_archive_control_on( $a, 'show_button', '1' ) ) {
+            $out .= '<a class="amaley-card__button" href="' . esc_url( $url ) . '">' . esc_html( $a['button_text'] ) . '</a>';
+        }
+
+        $out .= '</div></article>';
+        return $out;
+    }
+
     public function render_grid( $atts = array() ) {
         $a = $this->normalize( $atts, $this->grid_defaults() );
         if ( ! $this->boolish( $a['show_section'] ) ) { return ''; }
         $items = $this->get_shgs( $a );
         $style = '--acore-cols:' . absint( $a['columns_desktop'] ) . ';--acore-cols-tablet:' . absint( $a['columns_tablet'] ) . ';--acore-cols-mobile:' . absint( $a['columns_mobile'] ) . ';';
-        $out = '<section class="amaley-core-shg-archive-section amaley-core-shg-grid-section"><div class="amaley-core-shg-archive-wrap"><div class="amaley-core-shg-grid-head"><div>';
+        $use_og_card = 'og_card_1' === sanitize_key( isset( $a['card_template'] ) ? $a['card_template'] : 'current_existing' );
+        $out = '<section class="amaley-core-shg-archive-section amaley-core-shg-grid-section' . ( $use_og_card ? ' amaley-core-shg-grid-section-og' : '' ) . '"><div class="amaley-core-shg-archive-wrap"><div class="amaley-core-shg-grid-head"><div>';
         if ( $this->boolish( $a['show_label'] ) ) { $out .= '<p class="amaley-core-shg-kicker">' . esc_html( $a['label'] ) . '</p>'; }
         if ( $this->boolish( $a['show_title'] ) ) { $out .= '<h2 class="amaley-core-shg-section-title">' . esc_html( $a['title'] ) . '</h2>'; }
         if ( $this->boolish( $a['show_description'] ) ) { $out .= '<p class="amaley-core-shg-section-desc">' . esc_html( $a['description'] ) . '</p>'; }
@@ -339,7 +452,7 @@ Village work|Sorting, drying, preserving, blending and packing work.",
         }
         $out .= '<div class="amaley-core-shg-cards-grid" style="' . esc_attr( $style ) . '">';
         foreach ( $items as $shg ) {
-            $out .= $this->render_card( $shg, $a );
+            $out .= $use_og_card ? $this->render_og_shg_archive_card( $shg, $a ) : $this->render_card( $shg, $a );
         }
         $out .= '</div></div></section>';
         return $out;

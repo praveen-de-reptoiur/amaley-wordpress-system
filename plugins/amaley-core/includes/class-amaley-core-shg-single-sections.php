@@ -3,6 +3,10 @@
  * SHG Single section widgets renderer.
  *
  * v1.0.69: CSS recovery pass for SHG Single; keeps section buttons while restoring approved card/hero/contact styling.
+ * v1.0.93: Adds safe OG Card 1 selector and full controls support for SHG Single linked Cluster, Members and Products.
+ * v1.0.93.2: Fixes SHG Single OG Card full controls registration so controls actually apply in Elementor.
+ * v1.0.93.3: Hides duplicate legacy card controls when SHG Single Card Template is OG Card 1.
+ * v1.0.95: Clean safe pagination for SHG Single Members and Products from stable base.
  *
  * @package Amaley_Core
  */
@@ -20,6 +24,9 @@ class Amaley_Core_SHG_Single_Sections {
         add_action( 'elementor/editor/after_enqueue_styles', array( $this, 'enqueue_assets' ) );
         add_action( 'elementor/preview/enqueue_styles', array( $this, 'enqueue_assets' ) );
 
+        add_action( 'wp_ajax_amaley_shg_single_pagination', array( $this, 'ajax_shg_single_pagination' ) );
+        add_action( 'wp_ajax_nopriv_amaley_shg_single_pagination', array( $this, 'ajax_shg_single_pagination' ) );
+
         add_shortcode( 'amaley_shg_single_hero', array( $this, 'shortcode_hero' ) );
         add_shortcode( 'amaley_shg_single_snapshot', array( $this, 'shortcode_snapshot' ) );
         add_shortcode( 'amaley_shg_single_story', array( $this, 'shortcode_story' ) );
@@ -36,11 +43,43 @@ class Amaley_Core_SHG_Single_Sections {
     }
 
     public function register_assets() {
-        wp_register_style( 'amaley-core-shg-single-sections', AMALEY_CORE_URL . 'assets/amaley-core-shg-single-sections.css', array(), AMALEY_CORE_VERSION );
+        wp_register_style( 'amaley-core-cards', AMALEY_CORE_URL . 'assets/amaley-core-cards.css', array(), AMALEY_CORE_VERSION );
+        wp_register_style( 'amaley-core-shg-single-sections', AMALEY_CORE_URL . 'assets/amaley-core-shg-single-sections.css', array( 'amaley-core-cards' ), AMALEY_CORE_VERSION );
+        wp_register_script( 'amaley-core-shg-pagination', AMALEY_CORE_URL . 'assets/amaley-core-shg-pagination.js', array(), AMALEY_CORE_VERSION, true );
     }
 
     public function enqueue_assets() {
+        if ( ! wp_style_is( 'amaley-core-cards', 'registered' ) ) {
+            wp_register_style( 'amaley-core-cards', AMALEY_CORE_URL . 'assets/amaley-core-cards.css', array(), AMALEY_CORE_VERSION );
+        }
+        wp_enqueue_style( 'amaley-core-cards' );
         wp_enqueue_style( 'amaley-core-shg-single-sections' );
+
+        if ( $this->should_load_shg_pagination_script() ) {
+            if ( ! wp_script_is( 'amaley-core-shg-pagination', 'registered' ) ) {
+                wp_register_script( 'amaley-core-shg-pagination', AMALEY_CORE_URL . 'assets/amaley-core-shg-pagination.js', array(), AMALEY_CORE_VERSION, true );
+            }
+            wp_enqueue_script( 'amaley-core-shg-pagination' );
+        }
+    }
+
+    private function should_load_shg_pagination_script() {
+        if ( is_admin() ) { return false; }
+
+        /*
+         * Elementor editor preview iframe behaves like frontend.
+         * Do not load pagination JS there, otherwise Elementor sidebar can keep refreshing.
+         */
+        if ( isset( $_GET['action'] ) && 'elementor' === sanitize_key( wp_unslash( $_GET['action'] ) ) ) { return false; } // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        if ( isset( $_GET['elementor-preview'] ) || isset( $_GET['preview_id'] ) || isset( $_GET['preview_nonce'] ) ) { return false; } // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+        if ( did_action( 'elementor/loaded' ) && class_exists( '\Elementor\Plugin' ) ) {
+            $elementor = \Elementor\Plugin::$instance;
+            if ( isset( $elementor->editor ) && method_exists( $elementor->editor, 'is_edit_mode' ) && $elementor->editor->is_edit_mode() ) { return false; }
+            if ( isset( $elementor->preview ) && method_exists( $elementor->preview, 'is_preview_mode' ) && $elementor->preview->is_preview_mode() ) { return false; }
+        }
+
+        return true;
     }
 
     public function register_elementor_category( $elements_manager ) {
@@ -118,10 +157,10 @@ class Amaley_Core_SHG_Single_Sections {
     public function hero_defaults() { return wp_parse_args( array( 'label' => 'SHG Group', 'title' => '', 'description' => '', 'show_image' => '1', 'show_meta' => '1', 'show_breadcrumb' => '1', 'home_label' => 'Home', 'home_url' => '/', 'middle_label' => 'SHG Groups', 'middle_url' => '/shg-groups/', 'primary_text' => 'Explore Products', 'primary_url' => '/shop/', 'secondary_text' => 'Back to SHG Groups', 'secondary_url' => '/shg-groups/' ), $this->base_defaults() ); }
     public function snapshot_defaults() { return wp_parse_args( array( 'label' => 'Collective Snapshot', 'title' => 'Quick details', 'description' => 'Key details for this SHG group, its cluster, location, members and product linkages.', 'columns_desktop' => 4, 'columns_tablet' => 2, 'columns_mobile' => 2 ), $this->base_defaults() ); }
     public function story_defaults() { return wp_parse_args( array( 'label' => 'Collective Story', 'title' => 'The story behind this group', 'description' => 'A human layer behind the product origin.', 'show_products' => '1', 'max_tags' => 6 ), $this->base_defaults() ); }
-    public function cluster_defaults() { return wp_parse_args( array( 'label' => 'Linked Cluster', 'title' => 'Source cluster connection', 'description' => 'This SHG group is connected to a larger Amaley source cluster.', 'button_text' => 'View Cluster Story', 'button_url' => '/cluster-detail/?cluster_slug={cluster_slug}', 'show_section_button' => '1', 'section_button_text' => 'View All Clusters', 'section_button_url' => '/cluster-archive-page/', 'description_words' => 18, 'max_tags' => 4, 'columns_desktop' => 4, 'columns_tablet' => 2, 'columns_mobile' => 1 ), $this->base_defaults() ); }
+    public function cluster_defaults() { return wp_parse_args( array( 'label' => 'Linked Cluster', 'title' => 'Source cluster connection', 'description' => 'This SHG group is connected to a larger Amaley source cluster.', 'button_text' => 'View Cluster Story', 'button_url' => '/cluster-detail/?cluster_slug={cluster_slug}', 'show_section_button' => '1', 'section_button_text' => 'View All Clusters', 'section_button_url' => '/cluster-archive-page/', 'description_words' => 18, 'max_tags' => 4, 'columns_desktop' => 4, 'columns_tablet' => 2, 'columns_mobile' => 1, 'card_template' => 'current_existing', 'show_card_media' => '1', 'show_card_label' => '1', 'show_card_title' => '1', 'show_card_description' => '1', 'show_card_meta' => '1', 'show_card_tags' => '1', 'show_card_button' => '1' ), $this->base_defaults() ); }
     public function related_defaults() { return wp_parse_args( array( 'label' => 'Connected Network', 'title' => 'Linked items', 'description' => 'Records connected to this SHG group.', 'limit' => 8, 'columns_desktop' => 4, 'columns_tablet' => 2, 'columns_mobile' => 1, 'description_words' => 14, 'max_tags' => 4, 'show_empty_state' => '1' ), $this->base_defaults() ); }
-    public function member_defaults() { return wp_parse_args( array( 'label' => 'People Behind The Group', 'title' => 'Members and producers', 'description' => 'Producer members connected to this SHG group.', 'limit' => 4, 'columns_desktop' => 4, 'columns_tablet' => 2, 'columns_mobile' => 1, 'description_words' => 14, 'max_tags' => 3, 'show_empty_state' => '1', 'show_card_button' => '1', 'card_button_text' => 'View Producer Profile', 'show_section_button' => '1', 'section_button_text' => 'View All Producers', 'section_button_url' => '/producers/' ), $this->base_defaults() ); }
-    public function product_defaults() { return wp_parse_args( array( 'label' => 'Mapped Products', 'title' => 'Products linked to this collective', 'description' => 'WooCommerce products mapped to this SHG group through Amaley Origin Mapping.', 'limit' => 4, 'columns_desktop' => 4, 'columns_tablet' => 2, 'columns_mobile' => 1, 'description_words' => 14, 'max_tags' => 2, 'show_empty_state' => '1', 'show_card_button' => '1', 'card_button_text' => 'View Product', 'show_section_button' => '1', 'section_button_text' => 'View All Products', 'section_button_url' => '/shop/' ), $this->base_defaults() ); }
+    public function member_defaults() { return wp_parse_args( array( 'label' => 'People Behind The Group', 'title' => 'Members and producers', 'description' => 'Producer members connected to this SHG group.', 'limit' => 4, 'columns_desktop' => 4, 'columns_tablet' => 2, 'columns_mobile' => 1, 'description_words' => 14, 'max_tags' => 3, 'show_empty_state' => '1', 'show_card_button' => '1', 'card_button_text' => 'View Producer Profile', 'show_section_button' => '1', 'section_button_text' => 'View All Producers', 'section_button_url' => '/producers/', 'enable_pagination' => '0', 'pagination_prev_text' => 'Previous', 'pagination_next_text' => 'Next', 'card_template' => 'current_existing', 'show_card_media' => '1', 'show_card_label' => '1', 'show_card_title' => '1', 'show_card_description' => '1', 'show_card_meta' => '1', 'show_card_tags' => '1' ), $this->base_defaults() ); }
+    public function product_defaults() { return wp_parse_args( array( 'label' => 'Mapped Products', 'title' => 'Products linked to this collective', 'description' => 'WooCommerce products mapped to this SHG group through Amaley Origin Mapping.', 'limit' => 4, 'columns_desktop' => 4, 'columns_tablet' => 2, 'columns_mobile' => 1, 'description_words' => 14, 'max_tags' => 2, 'show_empty_state' => '1', 'show_card_button' => '1', 'card_button_text' => 'View Product', 'show_section_button' => '1', 'section_button_text' => 'View All Products', 'section_button_url' => '/shop/', 'enable_pagination' => '0', 'pagination_prev_text' => 'Previous', 'pagination_next_text' => 'Next', 'card_template' => 'current_existing', 'show_card_media' => '1', 'show_card_label' => '1', 'show_card_title' => '1', 'show_card_description' => '1', 'show_card_meta' => '1', 'show_card_tags' => '1' ), $this->base_defaults() ); }
     public function gallery_defaults() { return wp_parse_args( array( 'label' => 'Gallery', 'title' => 'Images from this collective', 'description' => 'Visual references from the group, producers, ingredients or processing work.', 'columns_desktop' => 3, 'columns_tablet' => 2, 'columns_mobile' => 1, 'show_section_button' => '0', 'section_button_text' => 'View Gallery', 'section_button_url' => '#' ), $this->base_defaults() ); }
     public function contact_defaults() { return wp_parse_args( array( 'label' => 'Source Support', 'title' => 'Need details about this collective?', 'description' => 'Contact Amaley for retail shelves, institutional gifting, hospitality counters or product storytelling connected to this group.', 'primary_text' => 'Contact Amaley', 'primary_url' => '/contact/', 'secondary_text' => 'Explore Products', 'secondary_url' => '/shop/' ), $this->base_defaults() ); }
     public function cta_defaults() { return wp_parse_args( array( 'label' => 'Work with Amaley', 'title' => 'Build product stories around verified producer groups.', 'description' => 'Use SHG visibility for conscious retail, hospitality counters, curated shelves and origin-led storytelling.', 'primary_text' => 'Explore Products', 'primary_url' => '/shop/', 'secondary_text' => 'Contact Amaley', 'secondary_url' => '/contact/' ), $this->base_defaults() ); }
@@ -189,8 +228,70 @@ class Amaley_Core_SHG_Single_Sections {
     private function ids_from_meta( $value ) { if ( empty( $value ) ) { return array(); } if ( is_array( $value ) ) { return array_values( array_filter( array_map( 'absint', $value ) ) ); } return array_values( array_filter( array_map( 'absint', explode( ',', (string) $value ) ) ) ); }
     private function image_for_post( $id, $meta_key = '' ) { $img = get_the_post_thumbnail_url( $id, 'large' ); if ( ! $img && $meta_key ) { $raw = $this->meta( $id, $meta_key ); $img = filter_var( $raw, FILTER_VALIDATE_URL ) ? $raw : ''; } return $img; }
     private function count_members_for_shg( $shg_id ) { $q = new WP_Query( array( 'post_type' => 'amaley_member', 'post_status' => array( 'publish' ), 'posts_per_page' => 1, 'fields' => 'ids', 'meta_query' => array( array( 'key' => '_amaley_member_shg_id', 'value' => absint( $shg_id ), 'compare' => '=' ) ) ) ); return absint( $q->found_posts ); }
-    private function get_members_for_shg( $shg_id, $limit ) { return get_posts( array( 'post_type' => 'amaley_member', 'post_status' => array( 'publish' ), 'posts_per_page' => max( 1, absint( $limit ) ), 'orderby' => 'title', 'order' => 'ASC', 'meta_query' => array( array( 'key' => '_amaley_member_shg_id', 'value' => absint( $shg_id ), 'compare' => '=' ) ) ) ); }
-    private function get_products_for_shg( $shg_id, $limit ) { $products = get_posts( array( 'post_type' => 'product', 'post_status' => array( 'publish', 'private' ), 'posts_per_page' => 200, 'orderby' => 'title', 'order' => 'ASC' ) ); $matched = array(); foreach ( $products as $product ) { $ids = $this->ids_from_meta( get_post_meta( $product->ID, '_amaley_origin_shg_ids', true ) ); if ( in_array( absint( $shg_id ), $ids, true ) ) { $matched[] = $product; } if ( count( $matched ) >= absint( $limit ) ) { break; } } return $matched; }
+    private function get_member_ids_for_shg( $shg_id ) {
+        return get_posts( array(
+            'post_type'      => 'amaley_member',
+            'post_status'    => array( 'publish' ),
+            'fields'         => 'ids',
+            'posts_per_page' => 500,
+            'orderby'        => 'title',
+            'order'          => 'ASC',
+            'meta_query'     => array( array( 'key' => '_amaley_member_shg_id', 'value' => absint( $shg_id ), 'compare' => '=' ) ),
+        ) );
+    }
+
+    private function get_members_for_shg( $shg_id, $limit, $offset = 0 ) {
+        $ids = array_slice( array_map( 'absint', $this->get_member_ids_for_shg( $shg_id ) ), max( 0, absint( $offset ) ), max( 1, absint( $limit ) ) );
+        if ( empty( $ids ) ) { return array(); }
+
+        return get_posts( array(
+            'post_type'      => 'amaley_member',
+            'post_status'    => array( 'publish' ),
+            'post__in'       => $ids,
+            'posts_per_page' => count( $ids ),
+            'orderby'        => 'post__in',
+        ) );
+    }
+
+    private function get_product_ids_for_shg( $shg_id ) {
+        $products = get_posts( array(
+            'post_type'      => 'product',
+            'post_status'    => array( 'publish', 'private' ),
+            'fields'         => 'ids',
+            'posts_per_page' => 500,
+            'orderby'        => 'title',
+            'order'          => 'ASC',
+        ) );
+
+        $matched = array();
+        foreach ( $products as $product_id ) {
+            $meta_ids = array_merge(
+                $this->ids_from_meta( get_post_meta( absint( $product_id ), '_amaley_origin_shg_ids', true ) ),
+                $this->ids_from_meta( get_post_meta( absint( $product_id ), '_amaley_origin_shg_id', true ) ),
+                $this->ids_from_meta( get_post_meta( absint( $product_id ), 'linked_shg_group', true ) ),
+                $this->ids_from_meta( get_post_meta( absint( $product_id ), '_linked_shg_group', true ) )
+            );
+
+            if ( in_array( absint( $shg_id ), array_map( 'absint', $meta_ids ), true ) ) {
+                $matched[] = absint( $product_id );
+            }
+        }
+
+        return array_values( array_unique( array_filter( array_map( 'absint', $matched ) ) ) );
+    }
+
+    private function get_products_for_shg( $shg_id, $limit, $offset = 0 ) {
+        $ids = array_slice( $this->get_product_ids_for_shg( $shg_id ), max( 0, absint( $offset ) ), max( 1, absint( $limit ) ) );
+        if ( empty( $ids ) ) { return array(); }
+
+        return get_posts( array(
+            'post_type'      => 'product',
+            'post_status'    => array( 'publish', 'private' ),
+            'post__in'       => $ids,
+            'posts_per_page' => count( $ids ),
+            'orderby'        => 'post__in',
+        ) );
+    }
     private function gallery_urls( $id ) {
         $urls = array();
         $featured = get_the_post_thumbnail_url( $id, 'large' );
@@ -282,6 +383,30 @@ class Amaley_Core_SHG_Single_Sections {
         $cluster = get_post( $cluster_id );
         if ( ! $cluster ) { return ''; }
 
+        if ( 'og_card_1' === sanitize_key( isset( $a['card_template'] ) ? $a['card_template'] : 'current_existing' ) && class_exists( 'Amaley_Core_Card_Renderer' ) ) {
+            $preset = class_exists( 'Amaley_Core_Card_Registry' ) ? Amaley_Core_Card_Registry::get_assignment( 'card_template_cluster', 'og_cluster_card_1' ) : 'og_cluster_card_1';
+            $raw_url = $this->url_from_setting( $a['button_url'], '/cluster-detail/?cluster_slug={cluster_slug}' );
+            $url = $this->replace_placeholders( $raw_url, $shg, array( 'cluster_slug' => $cluster->post_name, 'cluster_id' => $cluster_id ) );
+            $out = '<section class="amss-section amss-linked-cluster"><div class="amss-wrap">' . $this->section_head( $a['label'], $a['title'], $a['description'] );
+            $out .= '<div class="amss-grid amss-linked-cluster-grid" style="' . esc_attr( $this->columns_style( $a ) ) . '">';
+            $out .= Amaley_Core_Card_Renderer::render_cluster( $cluster_id, array(
+                'preset' => $preset,
+                'url' => $url,
+                'button_text' => isset( $a['button_text'] ) ? $a['button_text'] : 'View Cluster Story',
+                'show_image' => $this->boolish( $a['show_card_media'] ?? '1' ),
+                'show_label' => $this->boolish( $a['show_card_label'] ?? '1' ),
+                'show_title' => $this->boolish( $a['show_card_title'] ?? '1' ),
+                'show_excerpt' => $this->boolish( $a['show_card_description'] ?? '1' ),
+                'show_meta' => $this->boolish( $a['show_card_meta'] ?? '1' ),
+                'show_tags' => $this->boolish( $a['show_card_tags'] ?? '1' ),
+                'show_button' => $this->boolish( $a['show_card_button'] ?? '1' ),
+                'excerpt_words' => isset( $a['description_words'] ) ? absint( $a['description_words'] ) : 18,
+                'class' => 'amaley-card--shg-single-linked-cluster',
+            ) );
+            $out .= '</div>' . $this->section_button( $a, $shg, array( 'cluster_slug' => $cluster->post_name, 'cluster_id' => $cluster_id ) ) . '</div></section>';
+            return $out;
+        }
+
         $image      = $this->image_for_post( $cluster_id, '_amaley_cluster_image_url' );
         $intro      = get_post_meta( $cluster_id, '_amaley_cluster_intro', true );
         $region     = get_post_meta( $cluster_id, '_amaley_region', true );
@@ -320,53 +445,267 @@ class Amaley_Core_SHG_Single_Sections {
         return $a;
     }
 
+    private function shg_related_current_page( $type ) {
+        $key = 'amss_' . sanitize_key( $type ) . '_page';
+        return isset( $_GET[ $key ] ) ? max( 1, absint( wp_unslash( $_GET[ $key ] ) ) ) : 1; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+    }
+
+    private function shg_pagination_data( $type, $total, $per_page, $current, $a ) {
+        $total    = max( 0, absint( $total ) );
+        $per_page = max( 1, absint( $per_page ) );
+        $pages    = (int) ceil( $total / $per_page );
+
+        if ( $pages <= 1 ) { return array(); }
+
+        return array(
+            'type'      => sanitize_key( $type ),
+            'key'       => 'amss_' . sanitize_key( $type ) . '_page',
+            'current'   => max( 1, min( absint( $current ), $pages ) ),
+            'pages'     => $pages,
+            'prev_text' => ! empty( $a['pagination_prev_text'] ) ? (string) $a['pagination_prev_text'] : 'Previous',
+            'next_text' => ! empty( $a['pagination_next_text'] ) ? (string) $a['pagination_next_text'] : 'Next',
+        );
+    }
+
+    private function render_shg_pagination( $p ) {
+        if ( empty( $p ) || empty( $p['pages'] ) || absint( $p['pages'] ) <= 1 ) { return ''; }
+
+        $type    = sanitize_key( $p['type'] );
+        $key     = sanitize_key( $p['key'] );
+        $current = max( 1, absint( $p['current'] ) );
+        $pages   = max( 1, absint( $p['pages'] ) );
+        $anchor  = 'amss-related-' . $type;
+
+        $out = '<nav class="amss-pagination amss-pagination-' . esc_attr( $type ) . '" aria-label="' . esc_attr__( 'SHG related cards pagination', 'amaley-core' ) . '">';
+
+        if ( $current > 1 ) {
+            $out .= '<a class="amss-page-link amss-page-prev" data-amss-page="' . esc_attr( $current - 1 ) . '" href="' . esc_url( $this->shg_pagination_url( $key, $current - 1, $anchor ) ) . '">' . esc_html( $p['prev_text'] ) . '</a>';
+        }
+
+        for ( $i = 1; $i <= $pages; $i++ ) {
+            if ( $i === $current ) {
+                $out .= '<span class="amss-page-link amss-page-current" aria-current="page">' . esc_html( (string) $i ) . '</span>';
+            } else {
+                $out .= '<a class="amss-page-link" data-amss-page="' . esc_attr( $i ) . '" href="' . esc_url( $this->shg_pagination_url( $key, $i, $anchor ) ) . '">' . esc_html( (string) $i ) . '</a>';
+            }
+        }
+
+        if ( $current < $pages ) {
+            $out .= '<a class="amss-page-link amss-page-next" data-amss-page="' . esc_attr( $current + 1 ) . '" href="' . esc_url( $this->shg_pagination_url( $key, $current + 1, $anchor ) ) . '">' . esc_html( $p['next_text'] ) . '</a>';
+        }
+
+        $out .= '</nav>';
+        return $out;
+    }
+
+    private function shg_pagination_url( $key, $page, $anchor ) {
+        return add_query_arg( sanitize_key( $key ), max( 1, absint( $page ) ) ) . '#' . sanitize_key( $anchor );
+    }
+
+    private function shg_ajax_settings( $a ) {
+        $allowed = array(
+            'limit',
+            'columns_desktop',
+            'columns_tablet',
+            'columns_mobile',
+            'description_words',
+            'max_tags',
+            'show_empty_state',
+            'enable_pagination',
+            'pagination_prev_text',
+            'pagination_next_text',
+            'card_template',
+            'show_card_media',
+            'show_card_label',
+            'show_card_title',
+            'show_card_description',
+            'show_card_meta',
+            'show_card_tags',
+            'show_card_button',
+            'card_button_text',
+        );
+
+        $out = array();
+        foreach ( $allowed as $key ) {
+            if ( isset( $a[ $key ] ) ) {
+                $out[ $key ] = is_scalar( $a[ $key ] ) ? (string) $a[ $key ] : '';
+            }
+        }
+        return $out;
+    }
+
+    private function render_shg_member_card_for_pagination( $member, $a ) {
+        if ( 'og_card_1' === sanitize_key( isset( $a['card_template'] ) ? $a['card_template'] : 'current_existing' ) && class_exists( 'Amaley_Core_Card_Renderer' ) ) {
+            $preset = class_exists( 'Amaley_Core_Card_Registry' ) ? Amaley_Core_Card_Registry::get_assignment( 'card_template_member', 'og_member_card_1' ) : 'og_member_card_1';
+            return Amaley_Core_Card_Renderer::render_member( $member->ID, array(
+                'preset'        => $preset,
+                'url'           => get_permalink( $member ),
+                'button_text'   => isset( $a['card_button_text'] ) ? $a['card_button_text'] : 'View Producer Profile',
+                'show_image'    => $this->boolish( $a['show_card_media'] ?? '1' ),
+                'show_label'    => $this->boolish( $a['show_card_label'] ?? '1' ),
+                'show_title'    => $this->boolish( $a['show_card_title'] ?? '1' ),
+                'show_excerpt'  => $this->boolish( $a['show_card_description'] ?? '1' ),
+                'show_meta'     => $this->boolish( $a['show_card_meta'] ?? '1' ),
+                'show_tags'     => $this->boolish( $a['show_card_tags'] ?? '1' ),
+                'show_button'   => $this->boolish( $a['show_card_button'] ?? '1' ),
+                'excerpt_words' => isset( $a['description_words'] ) ? absint( $a['description_words'] ) : 14,
+                'class'         => 'amaley-card--shg-single-member',
+            ) );
+        }
+
+        $role    = get_post_meta( $member->ID, '_amaley_role', true );
+        $bio     = get_post_meta( $member->ID, '_amaley_short_bio', true );
+        $img     = $this->image_for_post( $member->ID, '_amaley_photo_url' );
+        $village = get_post_meta( $member->ID, '_amaley_village', true );
+        $skill   = get_post_meta( $member->ID, '_amaley_skill', true );
+
+        $out = '<article class="amss-card amss-network-card amss-member-card"><div class="amss-card-image">' . ( $img ? '<img src="' . esc_url( $img ) . '" alt="' . esc_attr( get_the_title( $member ) ) . '" loading="lazy" />' : '<span>' . esc_html( $this->initials( get_the_title( $member ) ) ) . '</span>' ) . '</div>';
+        $out .= '<div class="amss-card-body"><span class="amss-card-label">Producer</span><h3 class="amss-card-title">' . esc_html( get_the_title( $member ) ) . '</h3>';
+        $out .= '<p class="amss-card-text amss-related-desc">' . esc_html( $bio ? wp_trim_words( wp_strip_all_tags( $bio ), absint( $a['description_words'] ) ) : 'Linked producer member.' ) . '</p>';
+        $out .= '<dl class="amss-card-meta"><div><dt>Role</dt><dd>' . esc_html( $role ? $role : 'Producer' ) . '</dd></div><div><dt>Village</dt><dd>' . esc_html( $village ? $village : '—' ) . '</dd></div></dl>';
+        if ( $skill ) { $out .= '<div class="amss-chip-row"><span class="amss-chip">' . esc_html( $skill ) . '</span></div>'; }
+        if ( $this->card_button_enabled( $a ) ) { $out .= '<div class="amss-card-actions"><a class="amss-card-link amss-card-link-muted" href="' . esc_url( get_permalink( $member ) ) . '">' . esc_html( isset( $a['card_button_text'] ) ? $a['card_button_text'] : 'View Producer Profile' ) . '</a></div>'; }
+        $out .= '</div></article>';
+
+        return $out;
+    }
+
+    private function render_shg_product_card_for_pagination( $product_post, $a ) {
+        if ( 'og_card_1' === sanitize_key( isset( $a['card_template'] ) ? $a['card_template'] : 'current_existing' ) && class_exists( 'Amaley_Core_Card_Renderer' ) ) {
+            $preset = class_exists( 'Amaley_Core_Card_Registry' ) ? Amaley_Core_Card_Registry::get_assignment( 'card_template_product', 'og_product_card_1' ) : 'og_product_card_1';
+            return Amaley_Core_Card_Renderer::render_product( $product_post->ID, array(
+                'preset'        => $preset,
+                'url'           => get_permalink( $product_post ),
+                'button_text'   => isset( $a['card_button_text'] ) ? $a['card_button_text'] : 'View Product',
+                'show_image'    => $this->boolish( $a['show_card_media'] ?? '1' ),
+                'show_label'    => $this->boolish( $a['show_card_label'] ?? '1' ),
+                'show_title'    => $this->boolish( $a['show_card_title'] ?? '1' ),
+                'show_excerpt'  => $this->boolish( $a['show_card_description'] ?? '1' ),
+                'show_meta'     => $this->boolish( $a['show_card_meta'] ?? '1' ),
+                'show_tags'     => $this->boolish( $a['show_card_tags'] ?? '1' ),
+                'show_button'   => $this->boolish( $a['show_card_button'] ?? '1' ),
+                'excerpt_words' => isset( $a['description_words'] ) ? absint( $a['description_words'] ) : 14,
+                'class'         => 'amaley-card--shg-single-product',
+            ) );
+        }
+
+        $product = function_exists( 'wc_get_product' ) ? wc_get_product( $product_post->ID ) : null;
+        $img = get_the_post_thumbnail_url( $product_post->ID, 'large' );
+        $price = ( $product && function_exists( 'wc_price' ) ) ? wc_price( $product->get_price() ) : '';
+        $excerpt = $product_post->post_excerpt ? $product_post->post_excerpt : $product_post->post_content;
+        $origin = get_post_meta( $product_post->ID, '_amaley_origin_note', true );
+        $origin_text = $origin ? wp_trim_words( wp_strip_all_tags( $origin ), 5 ) : 'Mapped to this group';
+
+        $out = '<article class="amss-product-card amss-final-product-card"><a class="amss-product-image" href="' . esc_url( get_permalink( $product_post ) ) . '">' . ( $img ? '<img src="' . esc_url( $img ) . '" alt="' . esc_attr( get_the_title( $product_post ) ) . '" loading="lazy" />' : '<span>' . esc_html( $this->initials( get_the_title( $product_post ) ) ) . '</span>' ) . '</a>';
+        $out .= '<div class="amss-product-body"><span class="amss-card-label">Product</span><h3 class="amss-card-title">' . esc_html( get_the_title( $product_post ) ) . '</h3>';
+        $out .= '<p class="amss-card-text">' . esc_html( wp_trim_words( wp_strip_all_tags( $excerpt ), absint( $a['description_words'] ) ) ) . '</p>';
+        $out .= '<div class="amss-product-meta"><div><span>Price</span><strong>' . wp_kses_post( $price ? $price : '—' ) . '</strong></div><div><span>Origin</span><strong>' . esc_html( $origin_text ) . '</strong></div></div>';
+        $out .= '<div class="amss-chip-row"><span class="amss-chip">Traceable</span><span class="amss-chip">Origin linked</span></div>';
+        if ( $this->card_button_enabled( $a ) ) { $out .= '<div class="amss-card-actions amss-product-actions"><a class="amss-product-button" href="' . esc_url( get_permalink( $product_post ) ) . '">' . esc_html( isset( $a['card_button_text'] ) ? $a['card_button_text'] : 'View Product' ) . '</a></div>'; }
+        $out .= '</div></article>';
+
+        return $out;
+    }
+
+    private function render_shg_members_grid_inner( $a, $members ) {
+        $out = '';
+        if ( empty( $members ) ) {
+            $out .= '<div class="amss-empty-card">No members are linked yet.</div>';
+        } else {
+            $out .= '<div class="amss-grid" style="' . esc_attr( $this->columns_style( $a ) ) . '">';
+            foreach ( $members as $member ) {
+                $out .= $this->render_shg_member_card_for_pagination( $member, $a );
+            }
+            $out .= '</div>';
+        }
+        $out .= $this->render_shg_pagination( isset( $a['_pagination'] ) ? $a['_pagination'] : array() );
+        return $out;
+    }
+
+    private function render_shg_products_grid_inner( $a, $products ) {
+        $out = '';
+        if ( empty( $products ) ) {
+            $out .= '<div class="amss-empty-card">No mapped products found yet.</div>';
+        } else {
+            $out .= '<div class="amss-grid amss-product-grid" style="' . esc_attr( $this->columns_style( $a ) ) . '">';
+            foreach ( $products as $product_post ) {
+                $out .= $this->render_shg_product_card_for_pagination( $product_post, $a );
+            }
+            $out .= '</div>';
+        }
+        $out .= $this->render_shg_pagination( isset( $a['_pagination'] ) ? $a['_pagination'] : array() );
+        return $out;
+    }
+
+    public function ajax_shg_single_pagination() {
+        if ( ! check_ajax_referer( 'amaley_shg_single_pagination', 'nonce', false ) ) {
+            wp_send_json_error( array( 'message' => 'Invalid pagination request.' ), 403 );
+        }
+
+        $type = isset( $_POST['type'] ) ? sanitize_key( wp_unslash( $_POST['type'] ) ) : '';
+        $shg_id = isset( $_POST['shg_id'] ) ? absint( wp_unslash( $_POST['shg_id'] ) ) : 0;
+        $page = isset( $_POST['page'] ) ? max( 1, absint( wp_unslash( $_POST['page'] ) ) ) : 1;
+        $settings_json = isset( $_POST['settings'] ) ? wp_unslash( $_POST['settings'] ) : '{}';
+        $settings = json_decode( (string) $settings_json, true );
+        if ( ! is_array( $settings ) ) { $settings = array(); }
+
+        if ( ! $shg_id || ! in_array( $type, array( 'members', 'products' ), true ) ) {
+            wp_send_json_error( array( 'message' => 'Missing pagination data.' ), 400 );
+        }
+
+        $a = 'members' === $type ? $this->clean_related_copy( wp_parse_args( $settings, $this->member_defaults() ), 'members' ) : $this->clean_related_copy( wp_parse_args( $settings, $this->product_defaults() ), 'products' );
+        $limit = max( 1, absint( isset( $a['limit'] ) ? $a['limit'] : 4 ) );
+        $offset = ( $page - 1 ) * $limit;
+
+        if ( 'members' === $type ) {
+            $total = count( $this->get_member_ids_for_shg( $shg_id ) );
+            $items = $this->get_members_for_shg( $shg_id, $limit, $offset );
+            $a['_pagination'] = $this->shg_pagination_data( 'members', $total, $limit, $page, $a );
+            wp_send_json_success( array( 'html' => $this->render_shg_members_grid_inner( $a, $items ) ) );
+        }
+
+        $total = count( $this->get_product_ids_for_shg( $shg_id ) );
+        $items = $this->get_products_for_shg( $shg_id, $limit, $offset );
+        $a['_pagination'] = $this->shg_pagination_data( 'products', $total, $limit, $page, $a );
+        wp_send_json_success( array( 'html' => $this->render_shg_products_grid_inner( $a, $items ) ) );
+    }
+
     public function render_members( $atts = array() ) {
         $a = $this->clean_related_copy( wp_parse_args( $atts, $this->member_defaults() ), 'members' ); if ( ! $this->should_render( $a ) ) { return ''; }
         $shg = $this->resolve_shg( $a ); if ( ! $shg ) { return $this->empty_state( $a['empty_message'] ); }
-        $members = $this->get_members_for_shg( $shg->ID, $a['limit'] );
-        $out = '<section class="amss-section amss-members"><div class="amss-wrap">' . $this->section_head( $a['label'], $a['title'], $a['description'] );
-        if ( empty( $members ) ) { return $out . '<div class="amss-empty-card">No members are linked yet.</div></div></section>'; }
-        $out .= '<div class="amss-grid" style="' . esc_attr( $this->columns_style( $a ) ) . '">';
-        foreach ( $members as $member ) {
-            $role    = get_post_meta( $member->ID, '_amaley_role', true );
-            $bio     = get_post_meta( $member->ID, '_amaley_short_bio', true );
-            $img     = $this->image_for_post( $member->ID, '_amaley_photo_url' );
-            $village = get_post_meta( $member->ID, '_amaley_village', true );
-            $skill   = get_post_meta( $member->ID, '_amaley_skill', true );
-            $out .= '<article class="amss-card amss-network-card amss-member-card"><div class="amss-card-image">' . ( $img ? '<img src="' . esc_url( $img ) . '" alt="' . esc_attr( get_the_title( $member ) ) . '" loading="lazy" />' : '<span>' . esc_html( $this->initials( get_the_title( $member ) ) ) . '</span>' ) . '</div>';
-            $out .= '<div class="amss-card-body"><span class="amss-card-label">Producer</span><h3 class="amss-card-title">' . esc_html( get_the_title( $member ) ) . '</h3>';
-            $out .= '<p class="amss-card-text amss-related-desc">' . esc_html( $bio ? wp_trim_words( wp_strip_all_tags( $bio ), absint( $a['description_words'] ) ) : 'Linked producer member.' ) . '</p>';
-            $out .= '<dl class="amss-card-meta"><div><dt>Role</dt><dd>' . esc_html( $role ? $role : 'Producer' ) . '</dd></div><div><dt>Village</dt><dd>' . esc_html( $village ? $village : '—' ) . '</dd></div></dl>';
-            if ( $skill ) { $out .= '<div class="amss-chip-row"><span class="amss-chip">' . esc_html( $skill ) . '</span></div>'; }
-            if ( $this->card_button_enabled( $a ) ) { $out .= '<div class="amss-card-actions"><a class="amss-card-link amss-card-link-muted" href="' . esc_url( get_permalink( $member ) ) . '">' . esc_html( isset( $a['card_button_text'] ) ? $a['card_button_text'] : 'View Producer Profile' ) . '</a></div>'; }
-            $out .= '</div></article>';
+
+        $limit = max( 1, absint( isset( $a['limit'] ) ? $a['limit'] : 4 ) );
+        $page = $this->shg_related_current_page( 'members' );
+        $offset = 0;
+
+        if ( $this->boolish( isset( $a['enable_pagination'] ) ? $a['enable_pagination'] : '0' ) ) {
+            $offset = ( $page - 1 ) * $limit;
+            $a['_pagination'] = $this->shg_pagination_data( 'members', count( $this->get_member_ids_for_shg( $shg->ID ) ), $limit, $page, $a );
         }
-        return $out . '</div>' . $this->section_button( $a, $shg ) . '</div></section>';
+
+        $members = $this->get_members_for_shg( $shg->ID, $limit, $offset );
+        $out = '<section id="amss-related-members" class="amss-section amss-members" data-amss-related-section="1" data-amss-type="members" data-amss-shg-id="' . esc_attr( absint( $shg->ID ) ) . '" data-amss-ajax-url="' . esc_url( admin_url( 'admin-ajax.php' ) ) . '" data-amss-nonce="' . esc_attr( wp_create_nonce( 'amaley_shg_single_pagination' ) ) . '" data-amss-settings="' . esc_attr( wp_json_encode( $this->shg_ajax_settings( $a ) ) ) . '"><div class="amss-wrap">' . $this->section_head( $a['label'], $a['title'], $a['description'] );
+        $out .= '<div class="amss-related-results" data-amss-results="1">' . $this->render_shg_members_grid_inner( $a, $members ) . '</div>';
+        return $out . $this->section_button( $a, $shg ) . '</div></section>';
     }
 
     public function render_products( $atts = array() ) {
         $a = $this->clean_related_copy( wp_parse_args( $atts, $this->product_defaults() ), 'products' ); if ( ! $this->should_render( $a ) ) { return ''; }
         $shg = $this->resolve_shg( $a ); if ( ! $shg ) { return $this->empty_state( $a['empty_message'] ); }
-        $products = $this->get_products_for_shg( $shg->ID, $a['limit'] );
-        $out = '<section class="amss-section amss-products"><div class="amss-wrap">' . $this->section_head( $a['label'], $a['title'], $a['description'] );
-        if ( empty( $products ) ) { return $out . '<div class="amss-empty-card">No mapped products found yet.</div></div></section>'; }
-        $out .= '<div class="amss-grid amss-product-grid" style="' . esc_attr( $this->columns_style( $a ) ) . '">';
-        foreach ( $products as $product_post ) {
-            $product = function_exists( 'wc_get_product' ) ? wc_get_product( $product_post->ID ) : null;
-            $img = get_the_post_thumbnail_url( $product_post->ID, 'large' );
-            $price = ( $product && function_exists( 'wc_price' ) ) ? wc_price( $product->get_price() ) : '';
-            $excerpt = $product_post->post_excerpt ? $product_post->post_excerpt : $product_post->post_content;
-            $origin = get_post_meta( $product_post->ID, '_amaley_origin_note', true );
-            $origin_text = $origin ? wp_trim_words( wp_strip_all_tags( $origin ), 5 ) : 'Mapped to this group';
-            $out .= '<article class="amss-product-card amss-final-product-card"><a class="amss-product-image" href="' . esc_url( get_permalink( $product_post ) ) . '">' . ( $img ? '<img src="' . esc_url( $img ) . '" alt="' . esc_attr( get_the_title( $product_post ) ) . '" loading="lazy" />' : '<span>' . esc_html( $this->initials( get_the_title( $product_post ) ) ) . '</span>' ) . '</a>';
-            $out .= '<div class="amss-product-body"><span class="amss-card-label">Product</span><h3 class="amss-card-title">' . esc_html( get_the_title( $product_post ) ) . '</h3>';
-            $out .= '<p class="amss-card-text">' . esc_html( wp_trim_words( wp_strip_all_tags( $excerpt ), absint( $a['description_words'] ) ) ) . '</p>';
-            $out .= '<div class="amss-product-meta"><div><span>Price</span><strong>' . wp_kses_post( $price ? $price : '—' ) . '</strong></div><div><span>Origin</span><strong>' . esc_html( $origin_text ) . '</strong></div></div>';
-            $out .= '<div class="amss-chip-row"><span class="amss-chip">Traceable</span><span class="amss-chip">Origin linked</span></div>';
-            if ( $this->card_button_enabled( $a ) ) { $out .= '<div class="amss-card-actions amss-product-actions"><a class="amss-product-button" href="' . esc_url( get_permalink( $product_post ) ) . '">' . esc_html( isset( $a['card_button_text'] ) ? $a['card_button_text'] : 'View Product' ) . '</a></div>'; }
-            $out .= '</div></article>';
+
+        $limit = max( 1, absint( isset( $a['limit'] ) ? $a['limit'] : 4 ) );
+        $page = $this->shg_related_current_page( 'products' );
+        $offset = 0;
+
+        if ( $this->boolish( isset( $a['enable_pagination'] ) ? $a['enable_pagination'] : '0' ) ) {
+            $offset = ( $page - 1 ) * $limit;
+            $a['_pagination'] = $this->shg_pagination_data( 'products', count( $this->get_product_ids_for_shg( $shg->ID ) ), $limit, $page, $a );
         }
-        return $out . '</div>' . $this->section_button( $a, $shg ) . '</div></section>';
+
+        $products = $this->get_products_for_shg( $shg->ID, $limit, $offset );
+        $out = '<section id="amss-related-products" class="amss-section amss-products" data-amss-related-section="1" data-amss-type="products" data-amss-shg-id="' . esc_attr( absint( $shg->ID ) ) . '" data-amss-ajax-url="' . esc_url( admin_url( 'admin-ajax.php' ) ) . '" data-amss-nonce="' . esc_attr( wp_create_nonce( 'amaley_shg_single_pagination' ) ) . '" data-amss-settings="' . esc_attr( wp_json_encode( $this->shg_ajax_settings( $a ) ) ) . '"><div class="amss-wrap">' . $this->section_head( $a['label'], $a['title'], $a['description'] );
+        $out .= '<div class="amss-related-results" data-amss-results="1">' . $this->render_shg_products_grid_inner( $a, $products ) . '</div>';
+        return $out . $this->section_button( $a, $shg ) . '</div></section>';
     }
 
     public function render_gallery( $atts = array() ) {

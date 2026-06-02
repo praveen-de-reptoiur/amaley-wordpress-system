@@ -80,6 +80,8 @@ class Amaley_Core_Admin {
         $this->page_dropdown_field( $settings, 'producer_single_page_id', 'Producer Single Template Page' );
         echo '</div>';
 
+        $this->render_card_assignment_panel( $settings );
+
         echo '<div class="amaley-core-panel"><h2>Cluster Archive Template Defaults</h2><p class="description">These values are used by <code>[amaley_cluster_archive_page]</code> and the Elementor Cluster Archive Page widget unless overridden inside Elementor.</p>';
         $this->text_field( $settings, 'archive_title', 'Hero Title' );
         $this->text_field( $settings, 'archive_title_accent', 'Hero Accent Word' );
@@ -156,6 +158,30 @@ class Amaley_Core_Admin {
             'shg_single_page_id' => '0',
             'producer_archive_page_id' => '0',
             'producer_single_page_id' => '0',
+            // v1.0.85 Simple family-level card templates.
+            'card_template_cluster' => 'og_cluster_card_1',
+            'card_template_shg' => 'og_shg_card_1',
+            'card_template_member' => 'og_member_card_1',
+            'card_template_product' => 'og_product_card_1',
+
+            // Legacy internal location keys retained only for backward compatibility. Hidden from UI.
+            'card_product_discovery_grid' => 'og_product_card_1',
+            'card_product_member_single_products' => 'og_product_card_1',
+            'card_product_shg_single_products' => 'og_product_card_1',
+            'card_product_cluster_single_products' => 'og_product_card_1',
+            'card_product_home_sections' => 'og_product_card_1',
+            'card_shg_member_single_linked' => 'og_shg_card_1',
+            'card_shg_cluster_single_list' => 'og_shg_card_1',
+            'card_shg_archive' => 'og_shg_card_1',
+            'card_shg_ecosystem_sections' => 'og_shg_card_1',
+            'card_cluster_member_single_linked' => 'og_cluster_card_1',
+            'card_cluster_archive' => 'og_cluster_card_1',
+            'card_cluster_shg_single_linked' => 'og_cluster_card_1',
+            'card_cluster_ecosystem_sections' => 'og_cluster_card_1',
+            'card_member_shg_single_members' => 'og_member_card_1',
+            'card_member_archive' => 'og_member_card_1',
+            'card_member_cluster_producers' => 'og_member_card_1',
+            'card_member_ecosystem_sections' => 'og_member_card_1',
             'archive_title' => 'Browse Amaley Source Clusters',
             'archive_title_accent' => 'Source',
             'archive_kicker' => 'Origin Directory',
@@ -210,6 +236,12 @@ class Amaley_Core_Admin {
             }
             if ( false !== strpos( $key, '_page_id' ) ) {
                 $clean[ $key ] = isset( $raw[ $key ] ) ? (string) absint( $raw[ $key ] ) : '0';
+                continue;
+            }
+            if ( 0 === strpos( $key, 'card_' ) && class_exists( 'Amaley_Core_Card_Registry' ) ) {
+                $family = Amaley_Core_Card_Registry::family_from_assignment_key( $key );
+                $value = isset( $raw[ $key ] ) ? sanitize_key( $raw[ $key ] ) : (string) $default;
+                $clean[ $key ] = Amaley_Core_Card_Registry::is_valid_preset( $family, $value ) ? $value : (string) $default;
                 continue;
             }
             if ( 'cluster_detail_param_mode' === $key ) {
@@ -279,6 +311,67 @@ class Amaley_Core_Admin {
         }
         return isset( $settings['archive_detail_url_pattern'] ) && $settings['archive_detail_url_pattern'] ? $settings['archive_detail_url_pattern'] : '/cluster-detail/?cluster_slug={slug}';
     }
+
+
+    /**
+     * Render Card Templates & Assignments panel.
+     *
+     * v1.0.79: settings-only base. Existing frontend widgets are not switched to the card library yet.
+     *
+     * @param array $settings Settings.
+     * @return void
+     */
+    private function render_card_assignment_panel( $settings ) {
+        if ( ! class_exists( 'Amaley_Core_Card_Registry' ) ) {
+            return;
+        }
+
+        echo '<div class="amaley-core-panel"><h2>Card Templates</h2>';
+        echo '<p class="description"><strong>Simple model:</strong> one approved OG card template per family. More templates will be added only later if a new design is approved. Section widgets can later choose Current/Existing Card or the family OG card.</p>';
+
+        echo '<div class="amaley-core-card-assignment-family">';
+        echo '<h3>Cluster</h3>';
+        $this->card_assignment_select_field( $settings, 'card_template_cluster', 'Cluster Card Temp', 'cluster' );
+        echo '</div>';
+
+        echo '<div class="amaley-core-card-assignment-family">';
+        echo '<h3>SHGs</h3>';
+        $this->card_assignment_select_field( $settings, 'card_template_shg', 'SHG Card Temp', 'shg' );
+        echo '</div>';
+
+        echo '<div class="amaley-core-card-assignment-family">';
+        echo '<h3>Member</h3>';
+        $this->card_assignment_select_field( $settings, 'card_template_member', 'Member Card Temp', 'member' );
+        echo '</div>';
+
+        echo '<div class="amaley-core-card-assignment-family">';
+        echo '<h3>Product</h3>';
+        $this->card_assignment_select_field( $settings, 'card_template_product', 'Product Card Temp', 'product' );
+        echo '</div>';
+
+        echo '<p class="description"><strong>Safety:</strong> this screen only stores the family-level default template. Existing pages do not change automatically. Old section-wise assignment keys are kept internally only for backward compatibility.</p>';
+        echo '</div>';
+    }
+
+    /**
+     * Render one card assignment select field.
+     *
+     * @param array  $settings Settings.
+     * @param string $key Setting key.
+     * @param string $label Label.
+     * @param string $family Card family.
+     * @return void
+     */
+    private function card_assignment_select_field( $settings, $key, $label, $family ) {
+        $options = class_exists( 'Amaley_Core_Card_Registry' ) ? Amaley_Core_Card_Registry::preset_options_for_family( $family ) : array();
+        $current = isset( $settings[ $key ] ) ? (string) $settings[ $key ] : '';
+        echo '<div class="amaley-core-field amaley-core-card-assignment-field"><label for="amaley-core-' . esc_attr( $key ) . '">' . esc_html( $label ) . '</label><select id="amaley-core-' . esc_attr( $key ) . '" name="amaley_core_template_settings[' . esc_attr( $key ) . ']">';
+        foreach ( $options as $value => $text ) {
+            echo '<option value="' . esc_attr( $value ) . '" ' . selected( $current, (string) $value, false ) . '>' . esc_html( $text ) . '</option>';
+        }
+        echo '</select></div>';
+    }
+
 
     private function render_stat_card( $label, $value ) { echo '<div class="amaley-core-card"><span>' . esc_html( $label ) . '</span><strong>' . esc_html( $value ) . '</strong></div>'; }
     private function count_posts( $post_type ) { $counts = wp_count_posts( $post_type ); return isset( $counts->publish ) ? absint( $counts->publish ) : 0; }
