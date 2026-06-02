@@ -6,6 +6,104 @@ Every entry should clearly explain what changed, why it changed, which file/plug
 
 ---
 
+## 2026-06-02
+
+### Amaley Core v1.0.99.4 — Universal Card Archive/Single Work, Member Archive Bridge and Source Sync
+
+- Synced `plugins/amaley-core/` source to Amaley Core v1.0.99.4.
+- Confirmed plugin header and `AMALEY_CORE_VERSION` are set to `1.0.99.4`.
+- Preserved the GitHub source-only rule. ZIP/media/backups remain outside GitHub.
+- Documented that Elementor Atomic Editor must remain inactive because it caused repeated Elementor left-panel loading/spinner issues during universal-card work.
+- Preserved the locked universal OG card flow:
+
+```text
+image / initials placeholder → label → title → description → meta/stat boxes → tags/chips → full-width rounded button
+```
+
+Version chain captured:
+
+```text
+v1.0.74   — previous GitHub source baseline
+v1.0.82.2 — accepted Cluster Single card visual polish
+v1.0.89   — accepted Cluster Single OG card visibility + transform controls
+v1.0.91   — accepted Cluster Single no-reload pagination
+v1.0.92.4 — accepted Member Single OG full card controls
+v1.0.95   — SHG Single pagination clean safe
+v1.0.96   — Member Single Products pagination
+v1.0.97.5 — Cluster Archive existing controls mapped to OG Cluster Card 1
+v1.0.97.6 — Universal Product Card PRICE label/value readability fix
+v1.0.98.1 — SHG Archive OG controls selector fix
+v1.0.99.4 — Member Archive OG hide/show + style-control bridge
+```
+
+What changed in the current source sync:
+
+- Updated Amaley Core source from v1.0.74 to v1.0.99.4.
+- Added/kept universal card direction for Cluster, SHG / Collective, Member / Producer and Product card contexts.
+- Kept Single Cluster related cards and accepted pagination/control work.
+- Kept Single SHG card-control and pagination work from the current plugin chain.
+- Kept Member Single linked SHG, linked Cluster and Products card-control work.
+- Kept Cluster Archive OG Cluster Card 1 selector and existing-controls bridge.
+- Kept SHG Archive OG SHG Card 1 selector and stronger selector-control fix.
+- Kept Universal Product Card price label/value readability fix.
+- Kept Member Archive OG Member Card 1 hide/show + style-control bridge using existing class bridge instead of new heavy controls.
+- Added version-wise Amaley Core history documentation.
+- Added cleanup and next-work planning documentation.
+
+Affected source / docs:
+
+```text
+plugins/amaley-core/
+plugins/amaley-core/amaley-core.php
+plugins/amaley-core/assets/
+plugins/amaley-core/includes/
+docs/AMALEY_CORE_VERSION_HISTORY_v1.0.74_to_v1.0.99.4.md
+docs/AMALEY_CORE_VERSION_HISTORY_v1.0.74_to_v1.0.99.4.csv
+docs/AMALEY_CORE_DOCS_UPLOAD_GUIDE_v1.0.99.4.md
+docs/AMALEY_CORE_CURRENT_STATUS_v1.0.99.4.md
+docs/AMALEY_CORE_KNOWN_GAPS_AND_RISKS_v1.0.99.4.txt
+docs/AMALEY_CORE_SAFE_CLEANUP_PLAN_v1.0.99.4.txt
+docs/AMALEY_CORE_NEXT_WORK_PLAN_v1.0.99.4.txt
+docs/AMALEY_CORE_INSTALL_AND_TEST_CHECKLIST_v1.0.99.4.txt
+README.md
+plugins/README.md
+docs/CHANGELOG.md
+docs/PROJECT_MANIFEST.md
+docs/NEXT_CHAT_PROMPT.md
+```
+
+Safety decision:
+
+```text
+No WooCommerce cart/checkout override.
+No header/footer override.
+No permalink rewrite.
+No ZIP/media committed to GitHub.
+No new Member Archive JS/AJAX in v1.0.99.4.
+No new OG full controls in the Member Archive v1.0.99.4 bridge.
+Atomic Editor must remain inactive.
+Cleanup is pending before new widget development.
+```
+
+Known gaps after v1.0.99.4:
+
+- Full cleanup is still pending.
+- Some older widgets may still contain too many Elementor controls.
+- Archive pagination strategy still needs a final cross-archive review.
+- Discovery Engine is not yet fully connected to the central Amaley Core Product Card renderer.
+- Product archive/shop loop consistency still needs a separate phase.
+
+Next safe work:
+
+```text
+1. Test v1.0.99.4 across Single Cluster, Single SHG, Single Member, Cluster Archive, SHG Archive, Member Archive and product cards.
+2. Do not build a new widget before cleanup.
+3. Create a cleanup baseline version, preferably v1.0.100 CLEANUP BASELINE or v1.1.0 CLEANUP BASELINE.
+4. Remove unnecessary/duplicate code only after reference checks and rollback safety.
+```
+
+---
+
 ## 2026-06-01
 
 ### Amaley Core v1.0.74 — SHG Archive / Single Polish, Card Locks and Source Sync
@@ -178,10 +276,10 @@ Source and documentation only.
 - Confirmed Compact Widgets remains frontend-JS-free and scoped to the `.amaley-cw4-*` CSS family.
 - Confirmed GitHub must remain source-only and documentation-only.
 
-Current source locks after the 2026-06-01 update:
+Current source locks after the 2026-06-02 update:
 
 ```text
-Amaley Core: v1.0.74
+Amaley Core: v1.0.99.4
 Amaley Discovery Engine: v1.3.5
 Amaley Site Shell: v1.0.1
 Amaley UI Sections Kit: v0.6.1
@@ -218,44 +316,3 @@ Documentation/source lock cleanup only.
 - Clarified that Elementor may still exist temporarily in old/current migration contexts.
 - Created `plugins/amaley-ui-sections-kit/README.md` as the planning folder for the future lightweight UI section/component system.
 - Removed the old `plugins/amaley-widgets-kit/` planning folder to avoid the outdated Elementor-only direction.
-- Updated `plugins/README.md`, root `README.md`, and `docs/PROJECT_MANIFEST.md` to reflect the revised architecture.
-
-Affected files:
-
-```text
-README.md
-plugins/README.md
-plugins/amaley-ui-sections-kit/README.md
-docs/AMALEY_PERFORMANCE_AND_NO_ELEMENTOR_LOCK.md
-docs/PROJECT_MANIFEST.md
-```
-
-### Added
-
-- Added `docs/AMALEY_PRIMARY_BUILD_RULES.md`.
-- Added `docs/AMALEY_WIDGET_TEMPLATE_PERFORMANCE_FULL_CONTROL_RULE.md`.
-- Updated `docs/DRIVE_FOLDER_MAP.md`.
-- Added Amaley Core v1.0.2 plugin source under `plugins/amaley-core/`.
-
-### Fixed
-
-- Updated Amaley Core from v1.0.0 / v1.0.1 to v1.0.2 after staging testing.
-- Added WooCommerce HPOS compatibility declaration.
-- Added safe cluster import fallback.
-- Prevented duplicate Cluster creation during initial Cluster code backfill.
-
-### Amaley Site Shell v1.0.1
-
-- Added `plugins/amaley-site-shell/` as the lightweight header/footer shell plugin.
-- Plugin source was uploaded to GitHub under `plugins/amaley-site-shell/`.
-- Auto Header Render and Auto Footer Render were intentionally kept OFF.
-- Current safe mode for Amaley Site Shell is shortcode/manual render only.
-
-### Rule Lock
-
-- Every future Amaley component must be conflict-safe, mobile-first, scoped, lightweight, non-coder manageable, documented, testable, and rollback-ready.
-- The fresh/staging build remains the development base.
-- GitHub and Google Drive will be maintained together with clear separation.
-- Amaley Core v1.0.2 was the tested data-backbone baseline before later v1.0.41 and v1.0.46 source syncs.
-
----
