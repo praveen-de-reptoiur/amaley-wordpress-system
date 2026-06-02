@@ -12,7 +12,7 @@ Locked rule:
 
 > Har section, har element ka non-coder-friendly Content + Show/Hide + Layout + Style + Responsive control, with scoped lightweight CSS and no conflict.
 
-This universal standard applies before project-specific Amaley rules. It is not limited to Amaley or Himalayan/formal design.
+This universal standard applies before project-specific Amaley rules.
 
 ---
 
@@ -50,7 +50,7 @@ Do not upload ZIPs, videos, screenshots, product image dumps, passwords, API key
 
 | Plugin / Module | Current GitHub source status | Drive ZIP status | Role |
 | --- | --- | --- | --- |
-| Amaley Core | v1.0.74 | v1.0.74 ZIP backup belongs in Drive | Data backbone, CPTs, product-origin mapping, explicit Cluster → SHG/Producer Group links, SHG archive/single widgets, rich story editor, gallery/media fields, approved card designs and section controls |
+| Amaley Core | v1.0.99.4 | ZIP backup belongs in Drive only | Data backbone, CPTs, product-origin mapping, explicit Cluster → SHG/Producer Group links, CPT archive/single widgets, universal OG card families, card selectors/controls, archive fixes and origin-led product/member/SHG/cluster sections |
 | Amaley Discovery Engine | v1.3.5 | `amaley-discovery-engine-v1.3.5-no-cpt.zip` | Discovery, filtering, search, sort and pagination |
 | Amaley Site Shell | v1.0.1 | `amaley-site-shell-v1.0.1.zip` | Header/footer shell; auto-render on hold |
 | Amaley UI Sections Kit | v0.6.1 | `amaley-ui-sections-kit-v0.6.1.zip` | Home Hero V6, Page Trust Strip, Pages Hero Other, UI foundation |
@@ -58,6 +58,16 @@ Do not upload ZIPs, videos, screenshots, product image dumps, passwords, API key
 | Amaley Templates | v1.2.7 | `amaley-templates-v1.2.7.zip` | WooCommerce/page template support modules |
 
 Current source code belongs in GitHub. Plugin ZIP backups stay in Google Drive.
+
+---
+
+## Elementor Stability Lock
+
+Elementor **Atomic Editor must remain inactive**.
+
+Reason: during the v1.0.97–v1.0.99.4 universal-card work, Atomic Editor caused repeated Elementor left-panel loading/spinner issues. After deactivation, controls started working again.
+
+Do not reactivate Atomic Editor unless a separate controlled test/rollback plan exists.
 
 ---
 
@@ -72,6 +82,9 @@ Start here in this exact order:
 - `docs/AMALEY_CPT_SINGLE_SECTION_STRUCTURE_LOCK.md`
 - `docs/AMALEY_SECTION_SPACING_RHYTHM_LOCK.md`
 - `docs/AMALEY_CARD_DESIGN_LOCK.md`
+- `docs/AMALEY_CORE_VERSION_HISTORY_v1.0.74_to_v1.0.99.4.md`
+- `docs/AMALEY_CORE_CURRENT_STATUS_v1.0.99.4.md`
+- `docs/AMALEY_CORE_SAFE_CLEANUP_PLAN_v1.0.99.4.md`
 - `docs/AMALEY_DESIGN_SYSTEM_LOCKED.md`
 - `docs/AMALEY_PRIMARY_BUILD_RULES.md`
 - `docs/AMALEY_PERFORMANCE_AND_NO_ELEMENTOR_LOCK.md`
@@ -127,7 +140,7 @@ Rule: Amaley Core must not become a broad frontend design plugin. It may own CPT
 
 Discovery Engine manages filtering, search, sorting, pagination, result grids, topbar filters and discovery layouts.
 
-Rule: Discovery Engine must stay separate from Core, Templates, UI Sections Kit and Compact Widgets.
+Later, product display in Discovery should reuse the locked Amaley Core Product Card renderer/style where practical rather than inventing a separate product card family.
 
 ### Amaley Site Shell
 
@@ -144,8 +157,6 @@ Rule: UI Sections Kit must not own CPT data cards, discovery filters, WooCommerc
 ### Amaley Compact Widgets
 
 Compact Widgets owns manual/static compact visual card and section widgets.
-
-Current source addition: `v0.4.3` adds Amaley Origin Map Path and `[amaley_cw_origin_map]` for the homepage.
 
 Rule: Compact Widgets must not own CPT/data logic, Discovery filters, WooCommerce template overrides, header/footer, Home Hero V6, Page Trust Strip or Pages Hero Other.
 
@@ -212,29 +223,44 @@ Locked card families:
 - Member / Producer card
 - Product card
 
+Universal OG card flow:
+
+```text
+image / initials placeholder → label → title → description → meta/stat boxes → tags/chips → full-width rounded button
+```
+
 Rules:
 
 - Same card type must look the same wherever it appears.
 - Cards should be reused across archive, single, related-item and later Discovery contexts.
 - Images must remain visible using cover center center image handling with practical height/ratio controls.
-- Description length, max tags/chips, CTA text, CTA link, button alignment, hover/transform and responsive layout must be controllable where relevant.
+- Description length, max tags/chips, CTA text, CTA link, button alignment and responsive layout must be controllable where relevant.
+- Avoid adding heavy OG full controls everywhere.
+- Avoid transform/motion controls unless specifically needed.
 - No random card redesign without explicit approval.
 
 ---
 
 ## Latest Source Sync
 
-### Amaley Core v1.0.74
+### Amaley Core v1.0.99.4
 
-The GitHub source under `plugins/amaley-core/` is synced to v1.0.74.
+The GitHub source under `plugins/amaley-core/` is synced to v1.0.99.4.
 
 Key locked changes preserved:
 
 - v1.0.41 explicit Cluster → SHG/Producer Group relation key: `_amaley_cluster_linked_group_ids`
 - v1.0.45 rich editor direction for Cluster Full Story
-- v1.0.74 current SHG archive/single, gallery/media field direction, button alignment controls, product-card correction and card-design lock checkpoint
-- Separate section widgets remain the final editing structure
-- Cluster, SHG, Member and Product card visual families are locked and must not be changed casually
+- v1.0.46 Cluster Single spacing rhythm polish
+- v1.0.74 SHG archive/single, gallery/media field direction, button alignment controls and card-design lock checkpoint
+- v1.0.82.2 accepted Cluster Single SHG/Producer/Product card visual direction
+- v1.0.89 accepted Cluster Single OG card visibility / controls
+- v1.0.91 accepted Cluster Single no-reload pagination
+- v1.0.92.4 accepted Member Single OG card controls
+- v1.0.97.5 Cluster Archive existing controls mapped to OG Cluster Card 1
+- v1.0.97.6 Product Card PRICE label/value readability fix
+- v1.0.98.1 SHG Archive OG controls selector fix
+- v1.0.99.4 Member Archive OG Member Card 1 hide/show and style-control bridge
 
 Safety note:
 
@@ -242,5 +268,14 @@ Safety note:
 - No header/footer override
 - No permalink rewrite
 - No ZIP/media committed to GitHub
+- Atomic Editor must stay inactive
+- Cleanup is pending before new widget development
 
 ---
+
+## Next Safe Work
+
+1. Test v1.0.99.4 across Single Cluster, Single SHG, Single Member, Cluster Archive, SHG Archive, Member Archive and product card contexts.
+2. Do not build a new widget before cleanup.
+3. Start a separate cleanup version after this source sync, preferably `v1.0.100 CLEANUP BASELINE` or `v1.1.0 CLEANUP BASELINE`.
+4. Remove unnecessary/duplicate code only after confirming references and rollback safety.
