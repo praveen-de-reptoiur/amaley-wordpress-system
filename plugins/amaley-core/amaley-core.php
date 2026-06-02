@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Amaley Core
  * Description: Cluster, SHG Group, Member/Producer and Product Origin Mapping backbone for the Amaley fresh WordPress build.
- * Version: 1.0.74
+ * Version: 1.0.99.4
  * Author: Praveen
  * Text Domain: amaley-core
  * Requires at least: 6.0
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! defined( 'AMALEY_CORE_VERSION' ) ) {
-    define( 'AMALEY_CORE_VERSION', '1.0.74' );
+    define( 'AMALEY_CORE_VERSION', '1.0.99.4' );
 }
 if ( ! defined( 'AMALEY_CORE_SCHEMA_VERSION' ) ) {
     define( 'AMALEY_CORE_SCHEMA_VERSION', '1' );
@@ -53,6 +53,8 @@ require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-cpts.php';
 require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-metaboxes.php';
 require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-product-origin.php';
 require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-import-export.php';
+require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-card-registry.php';
+require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-card-renderer.php';
 require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-admin.php';
 require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-cluster-cards.php';
 require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-shg-cards.php';
@@ -63,6 +65,8 @@ require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-cluster-archive-sect
 require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-cluster-single-sections.php';
 require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-shg-archive-sections.php';
 require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-shg-single-sections.php';
+require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-member-archive-sections.php';
+require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-member-single-sections.php';
 require_once AMALEY_CORE_PATH . 'includes/class-amaley-core.php';
 
 /**
