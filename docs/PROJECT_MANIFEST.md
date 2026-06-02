@@ -30,7 +30,7 @@ Google Drive is used for plugin ZIP backups, full website backups, Elementor exp
 
 | Plugin / Module | Current Source | Role |
 | --- | --- | --- |
-| Amaley Core | v1.0.74 | Data backbone, product-origin mapping, explicit Cluster → SHG/Producer Group links, rich story editors, gallery/media fields, SHG archive/single widgets, approved CPT cards and section controls |
+| Amaley Core | v1.0.99.4 | Data backbone, product-origin mapping, explicit Cluster → SHG/Producer Group links, rich story editors, gallery/media fields, CPT archive/single widgets, approved universal OG cards, card selectors/control bridges and origin-led section widgets |
 | Amaley Discovery Engine | v1.3.5 | Discovery, filters, listings, search, sort, pagination |
 | Amaley Site Shell | v1.0.1 | Header/footer shell and mobile drawer; auto-render on hold |
 | Amaley UI Sections Kit | v0.6.1 | Home Hero V6, Page Trust Strip, Pages Hero Other, UI foundation |
@@ -39,15 +39,35 @@ Google Drive is used for plugin ZIP backups, full website backups, Elementor exp
 
 ---
 
-## Latest Amaley Core Locks
-
-Current Amaley Core v1.0.74 includes:
+## Elementor Stability Lock
 
 ```text
-v1.0.41 — Explicit Cluster → SHG/Producer Group linking
-v1.0.45 — Cluster Full Story rich editor direction
-v1.0.46 — Cluster Single spacing rhythm polish
-v1.0.74 — SHG archive/single polish, gallery/media fields, section-level buttons, controls and card-design locks
+Elementor Atomic Editor must remain inactive.
+```
+
+Reason: Atomic Editor caused repeated Elementor left-panel loading/spinner issues during the universal-card work. After deactivation, controls started working again.
+
+---
+
+## Latest Amaley Core Locks
+
+Current Amaley Core v1.0.99.4 includes:
+
+```text
+v1.0.41   — Explicit Cluster → SHG/Producer Group linking
+v1.0.45   — Cluster Full Story rich editor direction
+v1.0.46   — Cluster Single spacing rhythm polish
+v1.0.74   — SHG archive/single polish, gallery/media fields, section-level buttons, controls and card-design locks
+v1.0.82.2 — Accepted Cluster Single card visual polish
+v1.0.89   — Accepted Cluster Single OG card visibility/control work
+v1.0.91   — Accepted Cluster Single no-reload pagination
+v1.0.92.4 — Accepted Member Single OG card controls
+v1.0.95   — SHG Single pagination clean safe
+v1.0.96   — Member Single Products pagination
+v1.0.97.5 — Cluster Archive existing controls mapped to OG Cluster Card 1
+v1.0.97.6 — Universal Product Card PRICE label/value readability fix
+v1.0.98.1 — SHG Archive OG controls selector fix
+v1.0.99.4 — Member Archive OG Member Card 1 hide/show and style-control bridge
 ```
 
 Relation source of truth meta key:
@@ -72,6 +92,7 @@ Expected frontend behaviour:
 - Mapped Products sections use WooCommerce product origin mapping.
 - CPT sections follow the approved compact spacing rhythm.
 - Card designs remain consistent across pages and contexts.
+- Archive/single widgets use universal OG card families where connected.
 
 ---
 
@@ -88,6 +109,16 @@ Locks `Amaley Section Spacing Rhythm 1` as the approved spacing density for futu
 ### `docs/AMALEY_CARD_DESIGN_LOCK.md`
 
 Locks the approved Cluster, SHG / Producer Group, Member / Producer and Product card families so the same card type stays visually consistent across the site.
+
+Universal OG card flow:
+
+```text
+image / initials placeholder → label → title → description → meta/stat boxes → tags/chips → full-width rounded button
+```
+
+### `docs/AMALEY_CORE_VERSION_HISTORY_v1.0.74_to_v1.0.99.4.md`
+
+Version-wise record of what was done, what worked, what failed, what gaps remain and which version should be used.
 
 ---
 
@@ -116,6 +147,30 @@ Whole-site section spacing rhythm lock based on approved v1.0.46 Cluster Single 
 ### `docs/AMALEY_CARD_DESIGN_LOCK.md`
 
 Approved card design lock for Cluster, SHG / Producer Group, Member / Producer and Product card families.
+
+### `docs/AMALEY_CORE_VERSION_HISTORY_v1.0.74_to_v1.0.99.4.md`
+
+Version-wise Amaley Core development record from v1.0.74 to v1.0.99.4.
+
+### `docs/AMALEY_CORE_CURRENT_STATUS_v1.0.99.4.md`
+
+Current v1.0.99.4 status, latest working notes and accepted/pending areas.
+
+### `docs/AMALEY_CORE_KNOWN_GAPS_AND_RISKS_v1.0.99.4.txt`
+
+Known remaining gaps, risk items and cleanup concerns.
+
+### `docs/AMALEY_CORE_SAFE_CLEANUP_PLAN_v1.0.99.4.txt`
+
+Safe cleanup strategy before building the next new widget/module.
+
+### `docs/AMALEY_CORE_NEXT_WORK_PLAN_v1.0.99.4.txt`
+
+Next work sequence after GitHub source sync.
+
+### `docs/AMALEY_CORE_INSTALL_AND_TEST_CHECKLIST_v1.0.99.4.txt`
+
+Testing checklist for the synced v1.0.99.4 source.
 
 ### `docs/AMALEY_DESIGN_SYSTEM_LOCKED.md`
 
@@ -181,6 +236,7 @@ plugins/
 - GitHub is source-only and documentation-only.
 - ZIPs, screenshots, videos, backups and media dumps belong in Google Drive.
 - Source files should be used for GitHub updates.
+- Elementor Atomic Editor must remain inactive unless a separate rollback-safe test is planned.
 - WooCommerce remains the commerce engine.
 - Discovery Engine owns discovery/filter/list/search/sort/pagination logic.
 - Core owns data backbone, origin mapping, explicit cluster group links, rich story support, gallery/media fields and CPT-driven sections.
@@ -189,4 +245,14 @@ plugins/
 - Compact Widgets owns manual/static compact visual widgets.
 - Templates supports WooCommerce/page template modules.
 - Site Shell owns header/footer shell only; auto-render remains on hold until safely tested.
+- Do not build the next new widget before cleanup.
 - Do not say done until verification is complete.
+
+---
+
+## Next Safe Work
+
+1. Test v1.0.99.4 across Single Cluster, Single SHG, Single Member, Cluster Archive, SHG Archive, Member Archive and product cards.
+2. Create a cleanup baseline version before new widget development.
+3. Suggested cleanup version name: `v1.0.100 CLEANUP BASELINE` or `v1.1.0 CLEANUP BASELINE`.
+4. Remove unnecessary/duplicate code only after reference checks and rollback safety.
