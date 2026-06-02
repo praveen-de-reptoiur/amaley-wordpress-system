@@ -1,0 +1,39 @@
+NEXT WORK PLAN AFTER GITHUB UPDATE
+
+Immediate next sequence:
+
+1. Confirm current installed plugin version on WordPress.
+2. Do not do new feature work immediately.
+3. Test v1.0.99.4 on:
+   - Member Archive editor
+   - Member Archive frontend
+   - Mobile view
+   - Card Template selector
+   - Hide/show controls
+   - Style controls
+4. Test Cluster Archive and SHG Archive once again after source sync.
+5. Confirm Elementor Atomic Editor remains inactive.
+
+After testing:
+
+6. Start cleanup version:
+   Suggested name:
+   v1.0.100 CLEANUP BASELINE
+   or
+   v1.1.0 CLEANUP BASELINE
+
+7. Cleanup target:
+   - Remove unnecessary card template options
+   - Remove duplicate dead code
+   - Remove old experimental CSS
+   - Keep only OG Card 1 options where accepted
+   - Preserve fallback/current card mode only where still needed
+   - Document every removal
+
+8. After cleanup:
+   - Build the next new widget as a separate small module.
+   - Do not mix cleanup and new widget in the same version.
+
+Important rule:
+
+Do not continue new widget work until v1.0.99.4 is tested and cleanup baseline is planned.
