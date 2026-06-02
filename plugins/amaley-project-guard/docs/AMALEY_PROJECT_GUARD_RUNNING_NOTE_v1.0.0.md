@@ -1,8 +1,8 @@
 # Amaley Project Guard — Running Note / Tracker
 
-Current locked plugin: Amaley Project Guard v1.0.0
+Current locked plugin: Amaley Project Guard v1.0.1.3
 Author: Praveen
-Status: Clean Separate Foundation Pass
+Status: Usage Map Stable Test Pass
 Main rule: Project Guard will stay separate from Amaley Core.
 
 ## 1. Placement Rule
@@ -35,7 +35,24 @@ Main rule: Project Guard will stay separate from Amaley Core.
 - [x] No auto-fix added
 - [x] No delete/deactivate action added
 
-## 3. Testing Done on Site
+## 3. v1.0.1 Usage Map Work
+
+- [x] Usage Map tab added
+- [x] Elementor widget usage scan added
+- [x] Shortcode usage scan added
+- [x] Used widgets list added
+- [x] Used shortcodes list added
+- [x] Unused widgets review-only list added
+- [x] Unused shortcodes review-only list added
+- [x] Responsive fix added in v1.0.1.1
+- [x] Layout fix added in v1.0.1.2
+- [x] Compact accordion fix added in v1.0.1.3
+- [x] No frontend change
+- [x] No cleanup action
+- [x] No auto-fix
+- [x] No delete/deactivate action
+
+## 4. Testing Done on Site
 
 - [x] Separate admin menu visible
 - [x] Quick Scan completed
@@ -49,19 +66,24 @@ Main rule: Project Guard will stay separate from Amaley Core.
 - [x] Elementor tab working
 - [x] WooCommerce tab working
 - [x] Reports tab working
+- [x] Usage Map working
+- [x] Usage Map responsive/compact enough after v1.0.1.3
+- [x] Frontend quick check normal
 
-## 4. Current Scan Snapshot
+## 5. Current Usage Map Snapshot
 
-- Total plugins detected: 27
-- Active plugins: 16
-- Inactive plugins: 11
-- Amaley plugins: 9
-- External plugins: 18
-- Total Elementor widgets: 303
-- Amaley Elementor widgets: 94
-- WooCommerce pages detected: Shop, Cart, Checkout, My Account
+- Known Amaley widgets: 94
+- Used Amaley widgets: 49
+- Unused Amaley widgets: 45
+- Known Amaley shortcodes: 86
+- Used Amaley shortcodes: 2
+- Unused Amaley shortcodes: 84
+- Elementor documents scanned: 8
+- Shortcode documents scanned: 1
 
-## 5. Watchlist — Do Not Touch Yet
+Important: Unused means review-only. Do not delete anything from this list without manual confirmation.
+
+## 6. Watchlist — Do Not Touch Yet
 
 - [ ] Amaley Inspector Temporary Read-Only
 - [ ] Amaley Relation Debug Tool
@@ -70,9 +92,9 @@ Main rule: Project Guard will stay separate from Amaley Core.
 - [ ] Old debug pages under Tools
 - [ ] Theme plugin-install notice
 
-Rule: No cleanup before Usage Map.
+Rule: No cleanup before manual review.
 
-## 6. GitHub Rule
+## 7. GitHub Rule
 
 Correct repository:
 
@@ -86,39 +108,24 @@ Do NOT upload Project Guard inside:
 
 plugins/amaley-core/
 
-## 7. Final Files Created
+## 8. Final Locked Version
 
 Installable plugin ZIP:
 
-amaley-project-guard-v1.0.0-clean-separate-author-praveen.zip
+amaley-project-guard-v1.0.1.3-usage-map-compact-fix.zip
 
 GitHub/source ZIP:
 
-AMALEY_PROJECT_GUARD_COMPLETE_SOURCE_FOR_GITHUB_v1.0.0_CLEAN_SEPARATE_AUTHOR_PRAVEEN.zip
+AMALEY_PROJECT_GUARD_COMPLETE_SOURCE_FOR_GITHUB_v1.0.1.3_USAGE_MAP_COMPACT_FIX.zip
 
-## 8. Next Step
+## 9. Next Step
 
-- [ ] Take fresh backup after v1.0.0 clean pass
-- [ ] Upload final source to GitHub path: plugins/amaley-project-guard/
-- [ ] Build v1.0.1 Usage Map
-
-## 9. v1.0.1 Usage Map Plan
-
-- [ ] Scan Elementor pages/templates
-- [ ] Show which widget is used where
-- [ ] Show widget usage count
-- [ ] Scan shortcodes in page content
-- [ ] Show shortcode usage page-wise
-- [ ] Mark unused widgets
-- [ ] Create cleanup candidate list
-- [ ] Keep everything read-only
-- [ ] No auto-fix
-- [ ] No delete
-- [ ] No frontend output
+- [ ] Take fresh backup after v1.0.1.3 stable pass
+- [ ] Later build v1.0.2 Deep Amaley Core Integrity only after confirmation
 
 ## 10. Future Roadmap
 
-- [ ] v1.0.1 — Usage Map
+- [x] v1.0.1 — Usage Map
 - [ ] v1.0.2 — Deep Amaley Core Integrity
 - [ ] v1.0.3 — External Plugin Conflict Scanner
 - [ ] v1.0.4 — Error/Fatal Log Scanner
