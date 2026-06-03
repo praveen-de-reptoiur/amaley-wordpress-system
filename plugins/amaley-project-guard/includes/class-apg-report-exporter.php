@@ -101,6 +101,16 @@ class APG_Report_Exporter {
             $lines[] = '- ' . $key . ': ' . $value;
         }
         $lines[] = '';
+        $lines[] = '## External Plugin Conflict Scanner Summary';
+        foreach ( (array) ( $report['external_risks']['summary'] ?? array() ) as $key => $value ) {
+            $lines[] = '- ' . $key . ': ' . $value;
+        }
+        $lines[] = '';
+        $lines[] = '### External Risk Category Hits';
+        foreach ( (array) ( $report['external_risks']['category_hits'] ?? array() ) as $key => $value ) {
+            $lines[] = '- ' . $key . ': ' . $value;
+        }
+        $lines[] = '';
         $lines[] = '## Amaley Core Target Separation';
         $lines[] = (string) ( $report['amaley_core']['separation'] ?? 'Not available' );
         $lines[] = '';

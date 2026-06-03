@@ -1,37 +1,12 @@
-# Amaley Project Guard v1.0.1 — Install/Test Checklist
+# Amaley Project Guard v1.0.3 — Install Test Checklist
 
-## Before Install
-
-- [ ] Backup completed.
-- [ ] Confirm plugin folder is `plugins/amaley-project-guard/`.
-- [ ] Confirm not inside `plugins/amaley-core/`.
-
-## After Install
-
-- [ ] Plugin activates without fatal error.
-- [ ] Separate admin menu appears: Amaley Project Guard.
-- [ ] Run Quick Scan manually.
-- [ ] Overview shows report.
-- [ ] Project Map opens.
-- [ ] Plugins tab opens.
-- [ ] Core Target Checks opens.
-- [ ] Elementor tab opens.
-- [ ] Usage Map tab opens.
-- [ ] WooCommerce tab opens.
-- [ ] Reports tab opens.
-
-## Usage Map Checks
-
-- [ ] Used Elementor widgets display page/template names.
-- [ ] Used shortcodes display page names.
-- [ ] Unused widgets are marked review-only.
-- [ ] Unused shortcodes are marked review-only.
-- [ ] No cleanup/delete action exists.
-
-## Safety Checks
-
-- [ ] Homepage frontend unchanged.
-- [ ] Shop page unchanged.
-- [ ] Product page unchanged.
-- [ ] Elementor editor opens.
-- [ ] No frontend CSS/JS from Project Guard.
+1. Upload and install `amaley-project-guard-v1.0.3-external-plugin-conflict-scanner-install.zip`.
+2. Confirm plugin activates without fatal error.
+3. Open WordPress Admin → Amaley Project Guard.
+4. Click Run Quick Scan.
+5. Confirm Overview shows Version 1.0.3.
+6. Open External Risks tab.
+7. Confirm External Plugin Conflict Scanner section loads.
+8. Confirm no auto-fix/delete/deactivate actions are visible.
+9. Check frontend page once to confirm no visual change.
+10. Export Markdown Report and send it back for lock decision.

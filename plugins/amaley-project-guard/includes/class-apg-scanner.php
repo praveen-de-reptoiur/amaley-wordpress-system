@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class APG_Scanner {
 
     /**
-     * Run v1.0.2 Quick Scan.
+     * Run v1.0.3 Quick Scan.
      *
      * @return array<string,mixed>
      */
@@ -48,6 +48,11 @@ class APG_Scanner {
         $issues = array_merge( $issues, (array) ( $core_integrity['issues'] ?? array() ) );
         $scanned_items += (int) ( $core_integrity['scanned_items'] ?? 0 );
 
+        $external_risk_scanner = new APG_External_Risk_Scanner();
+        $external_risks = $external_risk_scanner->scan( $plugins );
+        $issues = array_merge( $issues, (array) ( $external_risks['issues'] ?? array() ) );
+        $scanned_items += (int) ( $external_risks['scanned_items'] ?? 0 );
+
         $usage_scanner = new APG_Widget_Usage_Scanner();
         $usage_map = $usage_scanner->scan( $elementor, $shortcodes );
         $scanned_items += (int) ( $usage_map['counts']['elementor_documents_scanned'] ?? 0 );
@@ -62,9 +67,9 @@ class APG_Scanner {
             $issues[] = APG_Utils::issue(
                 'INFO',
                 'Project Guard',
-                'Quick Scan completed without critical/high findings from v1.0.2 checks',
+                'Quick Scan completed without critical/high findings from v1.0.3 checks',
                 'Amaley Project Guard → Overview',
-                'The foundation + usage map + deep Core integrity scan did not detect blocking issues in its limited v1.0.2 scope.',
+                'The foundation + usage map + deep Core integrity + external risk scan did not detect blocking issues in its limited v1.0.3 scope.',
                 'Continue with manual frontend/editor checks before making major changes.'
             );
         }
@@ -97,6 +102,7 @@ class APG_Scanner {
             'elementor'    => $elementor,
             'woocommerce'     => $woocommerce,
             'core_integrity'  => $core_integrity,
+            'external_risks'  => $external_risks,
             'usage_map'       => $usage_map,
             'project_map'  => $project_map,
         );

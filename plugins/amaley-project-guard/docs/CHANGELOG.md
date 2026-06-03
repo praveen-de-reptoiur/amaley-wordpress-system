@@ -53,3 +53,11 @@
 - Converted unused widget/shortcode review tables into responsive review cards.
 - Added horizontal scroll safety for long widget classes, shortcode callbacks and page lists.
 - No frontend output, no auto-fix and no Core changes.
+
+## 1.0.3 — External Plugin Conflict Scanner
+
+- Added External Risks tab.
+- Added read-only scanner for active external plugins.
+- Added risk categories for cache/performance, snippets/custom code, filters/search, security/firewall, image/CDN/lazy-load, page builder add-ons and WooCommerce add-ons.
+- Added External Plugin Conflict Scanner summary to Markdown report.
+- No frontend output, no auto-fix, no delete/deactivate.

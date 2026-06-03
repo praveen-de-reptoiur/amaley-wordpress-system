@@ -2,41 +2,57 @@
 
 Independent read-only admin control room for the Amaley WordPress ecosystem.
 
-## Version
+## Current Build
 
-1.0.2 — Deep Amaley Core Integrity checks added.
+**Version:** 1.0.3 — External Plugin Conflict Scanner
 
-## Author
+**Author:** Praveen
 
-Praveen
+## Correct GitHub Path
 
-## Safety
+`plugins/amaley-project-guard/`
+
+Do not place this plugin inside `plugins/amaley-core/`.
+
+## Safety Lock
 
 - Separate plugin.
 - Not inside Amaley Core.
+- Amaley Core remains a read-only scan target only.
 - No frontend output.
 - No frontend CSS/JS.
 - No auto-fix.
 - No deletion.
 - No plugin activation/deactivation.
 - Manual scan only.
-- Amaley Core is only a read-only scan target.
 
-## v1.0.2 Added
+## v1.0.3 Added
 
-- Deep Amaley Core Integrity section inside Core Target Checks.
-- Required Amaley Core class checks.
-- Required method checks for card renderer, card registry and key sections.
-- Basic asset file/handle checks.
-- Duplicate Amaley Elementor widget-name checks.
-- Version consistency check summary.
+- External Plugin Conflict Scanner tab.
+- Read-only scan of active external plugins.
+- Cache / performance risk signals.
+- Snippet / custom code risk signals.
+- Filter / search overlap risk signals.
+- Security / firewall risk signals.
+- Image / CDN / lazy-load risk signals.
+- Page builder add-on risk signals.
+- WooCommerce add-on risk signals.
+- Markdown report includes External Plugin Conflict Scanner summary.
 
-## Previous Stable Build
+## Previous Builds
 
-v1.0.1.3 — Usage Map compact accordion fix.
+### 1.0.2
 
-## GitHub Path
+Deep Amaley Core Integrity checks added and tested.
 
-`plugins/amaley-project-guard/`
+### 1.0.1.3
 
-Do not place this plugin inside `plugins/amaley-core/`.
+Usage Map compact accordion fix. Long usage lists became easier to review inside WordPress admin.
+
+### 1.0.1
+
+Usage Map base added.
+
+### 1.0.0
+
+Clean separate foundation build.

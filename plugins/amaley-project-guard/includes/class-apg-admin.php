@@ -31,6 +31,7 @@ class APG_Admin {
             'elementor'    => 'Elementor',
             'usage-map'    => 'Usage Map',
             'woocommerce'  => 'WooCommerce',
+            'external-risks' => 'External Risks',
             'reports'      => 'Reports',
         );
 
@@ -80,6 +81,9 @@ class APG_Admin {
                     break;
                 case 'woocommerce':
                     self::render_woocommerce( $report );
+                    break;
+                case 'external-risks':
+                    self::render_external_risks( $report );
                     break;
                 case 'reports':
                     self::render_reports( $report );
@@ -362,6 +366,33 @@ class APG_Admin {
             echo '<tr><td>' . esc_html( (string) $key ) . '</td><td>' . esc_html( (string) ( $page['id'] ?? '' ) ) . '</td><td>' . esc_html( (string) ( $page['title'] ?? '' ) ) . '</td><td>' . esc_html( (string) ( $page['status'] ?? '' ) ) . '</td></tr>';
         }
         echo '</tbody></table></div>';
+    }
+
+    /** External plugin risks. */
+    private static function render_external_risks( $report ) {
+        $risks = (array) ( $report['external_risks'] ?? array() );
+        echo '<div class="apg-card"><h2>External Plugin Conflict Scanner — v1.0.3</h2>';
+        echo '<p><strong>Safety:</strong> ' . esc_html( (string) ( $risks['safety'] ?? 'Read-only warning scanner.' ) ) . '</p>';
+        echo '<p class="description">This tab flags possible risk areas only. It does not prove a conflict and it must not be used to delete or deactivate plugins without manual review.</p>';
+        self::render_assoc_summary( (array) ( $risks['summary'] ?? array() ) );
+
+        echo '<h3>Risk Category Hits</h3>';
+        self::render_assoc_summary( (array) ( $risks['category_hits'] ?? array() ) );
+
+        echo '<h3>Review-Only Risk Rows</h3>';
+        self::render_simple_check_table(
+            (array) ( $risks['rows'] ?? array() ),
+            array(
+                'category'         => 'Category',
+                'risk_level'       => 'Risk',
+                'plugin'           => 'Plugin',
+                'file'             => 'File',
+                'signal'           => 'Signal',
+                'reason'           => 'Why It Matters',
+                'suggested_action' => 'Manual Next Step',
+            )
+        );
+        echo '</div>';
     }
 
     /** Reports. */
