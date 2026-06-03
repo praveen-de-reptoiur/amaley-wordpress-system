@@ -6,6 +6,7 @@
 - Mode: quick_scan
 - Generated: 2026-06-03 05:07:29
 - Result: PASS
+- GitHub source verification: PASS after manual source upload
 
 ## Safety Lock
 
@@ -16,6 +17,18 @@
 - Manual scan only.
 - Correct path: `plugins/amaley-project-guard/`
 - Do not place inside `plugins/amaley-core/`.
+
+## GitHub Source Verification
+
+- Main file: `plugins/amaley-project-guard/amaley-project-guard.php`
+- Plugin Name: Amaley Project Guard
+- Version: 1.0.2
+- Author: Praveen
+- `APG_VERSION`: 1.0.2
+- Frontend safety lock present: `if ( ! is_admin() ) { return; }`
+- Core folder check: no `plugins/amaley-core/amaley-project-guard.php` found
+- Separate menu remains: Amaley Project Guard
+- Deep scanner file present: `includes/class-apg-core-integrity-scanner.php`
 
 ## Report Metrics
 
@@ -58,16 +71,6 @@
 
 `Amaley Project Guard v1.0.2 — Deep Core Integrity Test Pass`
 
-## Manual Source Upload Note
+## Next Step
 
-The user will manually upload the v1.0.2 source files. After manual upload, verify:
-
-- `amaley-project-guard.php` version is `1.0.2`
-- Author is `Praveen`
-- Folder remains `plugins/amaley-project-guard/`
-- Project Guard is not inside Amaley Core
-- Frontend remains unaffected
-
-## Next Step After Manual Source Upload
-
-Run GitHub verification, then update the master tracker and master handoff ZIP only after confirmation.
+Update tracker and master handoff ZIP only after user confirmation.
