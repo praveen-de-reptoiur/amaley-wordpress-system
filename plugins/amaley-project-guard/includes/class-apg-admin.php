@@ -171,18 +171,47 @@ class APG_Admin {
 
     /** Core checks. */
     private static function render_core_checks( $report ) {
-        $core = (array) ( $report['amaley_core'] ?? array() );
+        $core      = (array) ( $report['amaley_core'] ?? array() );
+        $integrity = (array) ( $report['core_integrity'] ?? array() );
+
         echo '<div class="apg-card"><h2>Amaley Core Target Checks</h2>';
         echo '<p><strong>Separation:</strong> ' . esc_html( (string) ( $core['separation'] ?? '' ) ) . '</p>';
         echo '<p><strong>Detected:</strong> ' . esc_html( ! empty( $core['detected'] ) ? 'Yes' : 'No' ) . '</p>';
         if ( ! empty( $core['target'] ) ) {
             echo '<p><strong>Target:</strong> ' . esc_html( (string) ( $core['target']['name'] ?? '' ) ) . ' — <code>' . esc_html( (string) ( $core['target']['file'] ?? '' ) ) . '</code></p>';
         }
-        echo '<table class="widefat striped"><thead><tr><th>Check</th><th>Status</th><th>Detail</th></tr></thead><tbody>';
-        foreach ( (array) ( $core['checks'] ?? array() ) as $check ) {
-            echo '<tr><td>' . esc_html( (string) ( $check['label'] ?? '' ) ) . '</td><td>' . esc_html( (string) ( $check['status'] ?? '' ) ) . '</td><td>' . esc_html( (string) ( $check['detail'] ?? '' ) ) . '</td></tr>';
-        }
-        echo '</tbody></table></div>';
+        self::render_simple_check_table( (array) ( $core['checks'] ?? array() ), array( 'label' => 'Check', 'status' => 'Status', 'detail' => 'Detail' ) );
+        echo '</div>';
+
+        self::render_core_integrity( $integrity );
+    }
+
+    /**
+     * Render v1.0.2 core integrity checks.
+     *
+     * @param array<string,mixed> $integrity Integrity report.
+     * @return void
+     */
+    private static function render_core_integrity( $integrity ) {
+        echo '<div class="apg-card"><h2>Deep Amaley Core Integrity — v1.0.2</h2>';
+        echo '<p><strong>Safety:</strong> ' . esc_html( (string) ( $integrity['safety'] ?? 'Read-only checks only.' ) ) . '</p>';
+        self::render_assoc_summary( (array) ( $integrity['summary'] ?? array() ) );
+
+        echo '<h3>Version / Mode Checks</h3>';
+        self::render_simple_check_table( (array) ( $integrity['checks'] ?? array() ), array( 'label' => 'Check', 'status' => 'Status', 'detail' => 'Detail' ) );
+
+        echo '<h3>Required Class Checks</h3>';
+        self::render_simple_check_table( (array) ( $integrity['class_checks'] ?? array() ), array( 'label' => 'Area', 'class' => 'Class', 'file' => 'File', 'status' => 'Status', 'detail' => 'Detail' ) );
+
+        echo '<h3>Required Method Checks</h3>';
+        self::render_simple_check_table( (array) ( $integrity['method_checks'] ?? array() ), array( 'class' => 'Class', 'method' => 'Method', 'status' => 'Status', 'detail' => 'Detail' ) );
+
+        echo '<h3>Asset Checks</h3>';
+        self::render_simple_check_table( (array) ( $integrity['asset_checks'] ?? array() ), array( 'label' => 'Asset', 'file' => 'File', 'handle' => 'Handle', 'status' => 'File', 'registered' => 'Registered', 'enqueued' => 'Enqueued', 'detail' => 'Detail' ) );
+
+        echo '<h3>Widget Duplicate Checks</h3>';
+        self::render_simple_check_table( (array) ( $integrity['widget_checks'] ?? array() ), array( 'widget' => 'Widget', 'status' => 'Status', 'count' => 'Count', 'classes' => 'Classes' ) );
+        echo '</div>';
     }
 
     /** Elementor. */
@@ -359,6 +388,41 @@ class APG_Admin {
             echo '<td>' . esc_html( (string) ( $issue['location'] ?? '' ) ) . '</td>';
             echo '<td>' . esc_html( (string) ( $issue['impact'] ?? '' ) ) . '</td>';
             echo '<td>' . esc_html( (string) ( $issue['suggested_action'] ?? '' ) ) . '</td>';
+            echo '</tr>';
+        }
+        echo '</tbody></table></div>';
+    }
+
+    /**
+     * Render generic check table with wrapping safety.
+     *
+     * @param array<int,array<string,mixed>> $rows Rows.
+     * @param array<string,string>           $columns Column key to label map.
+     * @return void
+     */
+    private static function render_simple_check_table( $rows, $columns ) {
+        if ( empty( $rows ) ) {
+            echo '<p>No rows available for this check.</p>';
+            return;
+        }
+        echo '<div class="apg-table-scroll"><table class="widefat striped apg-check-table"><thead><tr>';
+        foreach ( $columns as $label ) {
+            echo '<th>' . esc_html( (string) $label ) . '</th>';
+        }
+        echo '</tr></thead><tbody>';
+        foreach ( $rows as $row ) {
+            echo '<tr>';
+            foreach ( $columns as $key => $label ) {
+                $value = isset( $row[ $key ] ) ? (string) $row[ $key ] : '';
+                $is_code = in_array( $key, array( 'class', 'file', 'handle', 'method', 'widget', 'classes' ), true );
+                echo '<td>';
+                if ( $is_code && '' !== $value ) {
+                    echo '<code>' . esc_html( $value ) . '</code>';
+                } else {
+                    echo esc_html( $value );
+                }
+                echo '</td>';
+            }
             echo '</tr>';
         }
         echo '</tbody></table></div>';

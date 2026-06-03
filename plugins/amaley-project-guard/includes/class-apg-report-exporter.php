@@ -96,6 +96,11 @@ class APG_Report_Exporter {
             $lines[] = '- ' . $key . ': ' . $value;
         }
         $lines[] = '';
+        $lines[] = '## Deep Amaley Core Integrity Summary';
+        foreach ( (array) ( $report['core_integrity']['summary'] ?? array() ) as $key => $value ) {
+            $lines[] = '- ' . $key . ': ' . $value;
+        }
+        $lines[] = '';
         $lines[] = '## Amaley Core Target Separation';
         $lines[] = (string) ( $report['amaley_core']['separation'] ?? 'Not available' );
         $lines[] = '';

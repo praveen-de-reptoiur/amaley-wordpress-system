@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.0.2
+
+- Added Deep Amaley Core Integrity checks.
+- Added required Core class availability checks without including Core files.
+- Added required card renderer and registry method checks.
+- Added basic section render method checks.
+- Added Core asset file/registered/enqueued signal checks.
+- Added duplicate Amaley Elementor widget-name checks.
+- Added integrity summary to Markdown export.
+- Kept Project Guard separate, read-only, admin-only, no frontend output, no auto-fix and no deletion.
+
 ## 1.0.1.3
 
 - Changed Usage Map into compact accordion layout.

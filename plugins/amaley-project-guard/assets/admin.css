@@ -47,3 +47,6 @@
 .apg-review-panel .apg-review-item{background:#fff}
 @media(max-width:1200px){.apg-review-panel .apg-review-list{grid-template-columns:1fr}.apg-usage-accordion summary{display:block}.apg-usage-accordion .apg-count-pill{display:inline-block;margin-top:8px}}
 @media(max-width:782px){.apg-usage-locations-compact{max-height:300px}.apg-review-panel .apg-review-list{max-height:320px}.apg-usage-accordion summary{padding:10px}.apg-usage-locations-compact{padding:9px}}
+
+/* v1.0.2 deep core integrity tables */
+.apg-check-table th,.apg-check-table td{vertical-align:top;word-break:break-word;overflow-wrap:anywhere}.apg-check-table code{white-space:normal;word-break:break-word;overflow-wrap:anywhere;display:inline-block;max-width:100%}.apg-card h3{margin-top:22px;margin-bottom:8px}.apg-table-scroll{margin:8px 0 16px}
