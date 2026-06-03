@@ -38,6 +38,7 @@ class APG_Plugin {
         require_once APG_DIR . 'includes/class-apg-woocommerce-scanner.php';
         require_once APG_DIR . 'includes/class-apg-widget-usage-scanner.php';
         require_once APG_DIR . 'includes/class-apg-core-integrity-scanner.php';
+        require_once APG_DIR . 'includes/class-apg-external-risk-scanner.php';
         require_once APG_DIR . 'includes/class-apg-project-map.php';
         require_once APG_DIR . 'includes/class-apg-scanner.php';
         require_once APG_DIR . 'includes/class-apg-report-exporter.php';
