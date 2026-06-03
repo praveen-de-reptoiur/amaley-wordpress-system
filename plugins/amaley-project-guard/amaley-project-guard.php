@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Amaley Project Guard
  * Description: Read-only admin control room for Amaley project mapping, safe scans, and conflict intelligence. Separate from Amaley Core.
- * Version: 1.0.2
+ * Version: 1.0.3
  * Author: Praveen
  * Text Domain: amaley-project-guard
  * Requires at least: 5.8
@@ -15,11 +15,11 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'APG_VERSION', '1.0.2' );
+define( 'APG_VERSION', '1.0.3' );
 define( 'APG_FILE', __FILE__ );
 define( 'APG_DIR', plugin_dir_path( __FILE__ ) );
 define( 'APG_URL', plugin_dir_url( __FILE__ ) );
-define( 'APG_OPTION_LAST_REPORT', 'apg_last_report_v102' );
+define( 'APG_OPTION_LAST_REPORT', 'apg_last_report_v103' );
 
 /**
  * Frontend safety lock.
