@@ -4,7 +4,7 @@ Independent read-only admin control room for the Amaley WordPress ecosystem.
 
 ## Current Build
 
-**Version:** 1.0.3 — External Plugin Conflict Scanner
+**Version:** 1.0.4 — Fatal / Error / Log Scanner
 
 **Author:** Praveen
 
@@ -25,21 +25,23 @@ Do not place this plugin inside `plugins/amaley-core/`.
 - No deletion.
 - No plugin activation/deactivation.
 - Manual scan only.
+- Error/log scanning is admin-only and reads only a recent safe tail of `wp-content/debug.log`.
+- Logs are not cleared, deleted, rotated, changed or exposed publicly.
 
-## v1.0.3 Added
+## v1.0.4 Added
 
-- External Plugin Conflict Scanner tab.
-- Read-only scan of active external plugins.
-- Cache / performance risk signals.
-- Snippet / custom code risk signals.
-- Filter / search overlap risk signals.
-- Security / firewall risk signals.
-- Image / CDN / lazy-load risk signals.
-- Page builder add-on risk signals.
-- WooCommerce add-on risk signals.
-- Markdown report includes External Plugin Conflict Scanner summary.
+- Fatal / Error / Log Scanner tab.
+- Safe recent-tail reader for `wp-content/debug.log`.
+- Error grouping for fatal, parse, warning, deprecated, notice and other PHP log findings.
+- Related-area hints for Amaley Project Guard, Amaley Core, WooCommerce, Elementor, theme and external sources.
+- Manual next-step guidance for each grouped log finding.
+- Markdown report includes Fatal / Error / Log Scanner summary and category hits.
 
 ## Previous Builds
+
+### 1.0.3
+
+External Plugin Conflict Scanner added and tested.
 
 ### 1.0.2
 

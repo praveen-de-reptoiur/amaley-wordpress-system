@@ -1,12 +1,36 @@
-# Amaley Project Guard v1.0.3 — Install Test Checklist
+# Amaley Project Guard Install Test Checklist
 
-1. Upload and install `amaley-project-guard-v1.0.3-external-plugin-conflict-scanner-install.zip`.
-2. Confirm plugin activates without fatal error.
-3. Open WordPress Admin → Amaley Project Guard.
-4. Click Run Quick Scan.
-5. Confirm Overview shows Version 1.0.3.
-6. Open External Risks tab.
-7. Confirm External Plugin Conflict Scanner section loads.
-8. Confirm no auto-fix/delete/deactivate actions are visible.
-9. Check frontend page once to confirm no visual change.
-10. Export Markdown Report and send it back for lock decision.
+## Current Build
+
+v1.0.4 — Fatal / Error / Log Scanner
+
+## Before Install
+
+- Take full site backup.
+- Confirm current stable version is backed up.
+- Do not delete older Project Guard ZIPs or master handoff ZIPs.
+
+## Install Test
+
+1. Upload `amaley-project-guard-v1.0.4-fatal-error-log-scanner-install.zip` in WordPress Plugins.
+2. Activate/update plugin.
+3. Open `Amaley Project Guard` top-level admin menu.
+4. Run `Quick Scan` manually.
+5. Confirm Overview loads.
+6. Confirm `External Risks` tab still loads.
+7. Open `Error Logs` tab.
+8. Confirm it shows one of:
+   - debug.log not found / empty / clean; or
+   - grouped recent findings with severity and manual next step.
+9. Export Markdown report.
+10. Confirm frontend has no visual/output change.
+
+## Must Not Happen
+
+- No frontend output.
+- No frontend CSS/JS.
+- No auto-fix.
+- No deletion.
+- No plugin deactivation.
+- No log clear/delete/rotate.
+- No Amaley Core edit.

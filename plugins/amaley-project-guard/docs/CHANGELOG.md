@@ -61,3 +61,12 @@
 - Added risk categories for cache/performance, snippets/custom code, filters/search, security/firewall, image/CDN/lazy-load, page builder add-ons and WooCommerce add-ons.
 - Added External Plugin Conflict Scanner summary to Markdown report.
 - No frontend output, no auto-fix, no delete/deactivate.
+
+## v1.0.4 — Fatal / Error / Log Scanner
+
+- Added Error Logs tab.
+- Added admin-only recent-tail `wp-content/debug.log` reader.
+- Added fatal/parse/warning/deprecated/notice grouping.
+- Added related-area hints and manual next-step guidance.
+- Added Markdown report summary for error logs.
+- Maintained read-only safety: no frontend output, no auto-fix, no deletion, no plugin deactivation, no log clearing.

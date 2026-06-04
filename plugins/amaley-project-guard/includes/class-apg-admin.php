@@ -32,6 +32,7 @@ class APG_Admin {
             'usage-map'    => 'Usage Map',
             'woocommerce'  => 'WooCommerce',
             'external-risks' => 'External Risks',
+            'error-logs'     => 'Error Logs',
             'reports'      => 'Reports',
         );
 
@@ -84,6 +85,9 @@ class APG_Admin {
                     break;
                 case 'external-risks':
                     self::render_external_risks( $report );
+                    break;
+                case 'error-logs':
+                    self::render_error_logs( $report );
                     break;
                 case 'reports':
                     self::render_reports( $report );
@@ -389,6 +393,36 @@ class APG_Admin {
                 'file'             => 'File',
                 'signal'           => 'Signal',
                 'reason'           => 'Why It Matters',
+                'suggested_action' => 'Manual Next Step',
+            )
+        );
+        echo '</div>';
+    }
+
+
+    /** Error logs. */
+    private static function render_error_logs( $report ) {
+        $logs = (array) ( $report['error_logs'] ?? array() );
+        echo '<div class="apg-card"><h2>Fatal / Error / Log Scanner — v1.0.4</h2>';
+        echo '<p><strong>Safety:</strong> ' . esc_html( (string) ( $logs['safety'] ?? 'Read-only recent log scanner.' ) ) . '</p>';
+        echo '<p class="description">This scanner reads only a small recent tail of <code>wp-content/debug.log</code>. It does not clear, delete, rotate, expose publicly or auto-fix logs.</p>';
+        self::render_assoc_summary( (array) ( $logs['summary'] ?? array() ) );
+
+        echo '<h3>Error Category Hits</h3>';
+        self::render_assoc_summary( (array) ( $logs['category_hits'] ?? array() ) );
+
+        echo '<h3>Grouped Recent Log Findings</h3>';
+        self::render_simple_check_table(
+            (array) ( $logs['rows'] ?? array() ),
+            array(
+                'severity'         => 'Severity',
+                'type'             => 'Type',
+                'count'            => 'Count',
+                'last_seen'        => 'Last Seen',
+                'file'             => 'File',
+                'line'             => 'Line',
+                'message'          => 'Message',
+                'related_to'       => 'Related To',
                 'suggested_action' => 'Manual Next Step',
             )
         );

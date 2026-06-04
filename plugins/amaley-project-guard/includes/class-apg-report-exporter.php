@@ -111,6 +111,16 @@ class APG_Report_Exporter {
             $lines[] = '- ' . $key . ': ' . $value;
         }
         $lines[] = '';
+        $lines[] = '## Fatal / Error / Log Scanner Summary';
+        foreach ( (array) ( $report['error_logs']['summary'] ?? array() ) as $key => $value ) {
+            $lines[] = '- ' . $key . ': ' . $value;
+        }
+        $lines[] = '';
+        $lines[] = '### Error Log Category Hits';
+        foreach ( (array) ( $report['error_logs']['category_hits'] ?? array() ) as $key => $value ) {
+            $lines[] = '- ' . $key . ': ' . $value;
+        }
+        $lines[] = '';
         $lines[] = '## Amaley Core Target Separation';
         $lines[] = (string) ( $report['amaley_core']['separation'] ?? 'Not available' );
         $lines[] = '';

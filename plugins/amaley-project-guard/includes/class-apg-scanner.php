@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class APG_Scanner {
 
     /**
-     * Run v1.0.3 Quick Scan.
+     * Run v1.0.4 Quick Scan.
      *
      * @return array<string,mixed>
      */
@@ -53,6 +53,11 @@ class APG_Scanner {
         $issues = array_merge( $issues, (array) ( $external_risks['issues'] ?? array() ) );
         $scanned_items += (int) ( $external_risks['scanned_items'] ?? 0 );
 
+        $error_log_scanner = new APG_Error_Log_Scanner();
+        $error_logs = $error_log_scanner->scan();
+        $issues = array_merge( $issues, (array) ( $error_logs['issues'] ?? array() ) );
+        $scanned_items += (int) ( $error_logs['scanned_items'] ?? 0 );
+
         $usage_scanner = new APG_Widget_Usage_Scanner();
         $usage_map = $usage_scanner->scan( $elementor, $shortcodes );
         $scanned_items += (int) ( $usage_map['counts']['elementor_documents_scanned'] ?? 0 );
@@ -67,9 +72,9 @@ class APG_Scanner {
             $issues[] = APG_Utils::issue(
                 'INFO',
                 'Project Guard',
-                'Quick Scan completed without critical/high findings from v1.0.3 checks',
+                'Quick Scan completed without critical/high findings from v1.0.4 checks',
                 'Amaley Project Guard → Overview',
-                'The foundation + usage map + deep Core integrity + external risk scan did not detect blocking issues in its limited v1.0.3 scope.',
+                'The foundation + usage map + deep Core integrity + external risk + error log scan did not detect blocking issues in its limited v1.0.4 scope.',
                 'Continue with manual frontend/editor checks before making major changes.'
             );
         }
@@ -103,6 +108,7 @@ class APG_Scanner {
             'woocommerce'     => $woocommerce,
             'core_integrity'  => $core_integrity,
             'external_risks'  => $external_risks,
+            'error_logs'      => $error_logs,
             'usage_map'       => $usage_map,
             'project_map'  => $project_map,
         );
