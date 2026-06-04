@@ -30,6 +30,7 @@ Google Drive is used for plugin ZIP backups, full website backups, Elementor exp
 
 | Plugin / Module | Current Source | Role |
 | --- | --- | --- |
+| Amaley Brand Site Kit | v1.0.4 future-safe lock | Global brand tokens, Elementor color/font sync, WordPress editor palette sync, CSS variables and optional scoped visual bridges |
 | Amaley Core | v1.0.99.4 | Data backbone, product-origin mapping, explicit Cluster → SHG/Producer Group links, rich story editors, gallery/media fields, CPT archive/single widgets, approved universal OG cards, card selectors/control bridges and origin-led section widgets |
 | Amaley Discovery Engine | v1.3.5 | Discovery, filters, listings, search, sort, pagination |
 | Amaley H/F Studio V2 | v2.0.15 pre-lock safety | Elementor-style header/footer templates, assignment rules, live-style header/footer widgets, mobile drawer and section-wise full-control workflow |
@@ -47,6 +48,42 @@ Elementor Atomic Editor must remain inactive.
 ```
 
 Reason: Atomic Editor caused repeated Elementor left-panel loading/spinner issues during the universal-card work. After deactivation, controls started working again.
+
+---
+
+## Amaley Brand Site Kit Current Lock
+
+Current source path:
+
+```text
+plugins/amaley-brand-site-kit/
+```
+
+Current version:
+
+```text
+v1.0.4 — Future-Safe Lock
+```
+
+Current accepted behaviour:
+
+- Elementor color/font sync remains manual and reversible.
+- Elementor Kit backup is created before sync.
+- WordPress editor palette sync is available.
+- Global frontend bridge is OFF by default.
+- WooCommerce visual bridge is OFF by default.
+- Elementor visual bridge is OFF by default.
+- Existing installs are migrated once to switch broad visual bridges OFF.
+- Admin CSS/fonts load only on the Amaley Brand Kit admin page.
+- No CPT, WooCommerce data, product price, product stock, order, cart, checkout, header/footer, template or page-content logic is changed.
+
+Rejected / unused:
+
+```text
+v1.0.3 — Elementor Force Sync Fix
+```
+
+Reason: v1.0.2 sync worked correctly after proper button use; v1.0.4 is the safer continuation.
 
 ---
 
@@ -76,11 +113,13 @@ Current accepted behaviour:
 - No output buffering should be used.
 - Rendering should stay hook-based and conflict-safe.
 
-Next H/F phase after lock:
+Important scope lock:
 
 ```text
-v2.1.0 — Amaley Global Colors Sync / Elementor Kit color sync
+H/F Studio is only for header and footer.
 ```
+
+Global colors, fonts, design tokens, Elementor Kit sync and WordPress editor palette sync belong to Amaley Brand Site Kit, not H/F Studio.
 
 ---
 
