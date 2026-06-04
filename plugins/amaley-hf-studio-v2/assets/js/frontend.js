@@ -1,20 +1,9 @@
 (function(){
-  function ready(fn){
-    if(document.readyState !== 'loading') fn();
-    else document.addEventListener('DOMContentLoaded', fn);
-  }
-  ready(function(){
-    document.querySelectorAll('[data-ahfs2-toggle]').forEach(function(btn){
-      btn.addEventListener('click', function(){
-        var target = document.querySelector(btn.getAttribute('data-ahfs2-toggle'));
-        if(target) target.hidden = !target.hidden;
-      });
-    });
-    document.querySelectorAll('[data-ahfs2-close]').forEach(function(btn){
-      btn.addEventListener('click', function(){
-        var target = btn.closest('.ahfs2-mobile-drawer');
-        if(target) target.hidden = true;
-      });
-    });
+  function closeAll(){document.querySelectorAll('.ahfs2-mobile-drawer').forEach(function(d){d.hidden=true;});}
+  document.addEventListener('click',function(e){
+    var toggle=e.target.closest('.ahfs2-menu-toggle');
+    if(toggle){var wrap=toggle.closest('.ahfs2-header-widget');var drawer=wrap?wrap.querySelector('.ahfs2-mobile-drawer'):null;if(drawer){drawer.hidden=false;}return;}
+    if(e.target.closest('.ahfs2-drawer-close')){closeAll();}
   });
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeAll();}});
 })();
