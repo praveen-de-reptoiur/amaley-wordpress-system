@@ -8,12 +8,6 @@
 - Restricts admin CSS/font loading to the Amaley Brand Kit admin page only.
 - Does not touch product data, orders, cart, checkout, CPTs, header/footer templates or page content.
 
-## v1.0.3 — Force Sync Fix
-
-- Built as an aggressive Elementor force-sync test.
-- Not selected as the approved baseline because v1.0.2 sync worked correctly after proper button use.
-- Treat as rejected/unused.
-
 ## v1.0.2 — Global Sync
 
 - Added Elementor Global Colors sync from Amaley brand tokens.
