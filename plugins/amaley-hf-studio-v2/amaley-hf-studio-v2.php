@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Amaley H/F Studio V2
  * Description: Conflict-safe Elementor-style header/footer studio for Amaley. Multiple H/F templates, assignment rules, and live-style widgets.
- * Version: 2.0.4
+ * Version: 2.0.15
  * Author: Praveen
  * Text Domain: amaley-hf-studio-v2
  */
@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 final class AHFS2_Plugin {
-    const VERSION = '2.0.4';
+    const VERSION = '2.0.15';
     const CPT = 'ahfs2_template';
     const OPTION = 'ahfs2_options';
     const RULES_OPTION = 'ahfs2_rules';
@@ -33,6 +33,8 @@ final class AHFS2_Plugin {
         add_action( 'wp_footer', array( __CLASS__, 'render_footer' ), 5 );
         add_action( 'wp_footer', array( __CLASS__, 'render_header_fallback_if_needed' ), 1 );
         add_filter( 'body_class', array( __CLASS__, 'body_classes' ) );
+        add_action( 'template_redirect', array( __CLASS__, 'guard_template_direct_access' ), 1 );
+        add_filter( 'wp_robots', array( __CLASS__, 'template_robots_noindex' ) );
 
         add_action( 'elementor/elements/categories_registered', array( __CLASS__, 'register_elementor_category' ) );
         add_action( 'elementor/widgets/register', array( __CLASS__, 'register_elementor_widgets' ) );
@@ -144,6 +146,7 @@ final class AHFS2_Plugin {
         );
         echo '<div class="wrap ahfs2-admin"><h1>Amaley H/F Studio V2 <span style="font-size:13px;color:#777">v' . esc_html( self::VERSION ) . '</span></h1>';
         self::admin_notice();
+        self::conflict_notice();
         echo '<nav class="nav-tab-wrapper">';
         foreach ( $tabs as $key => $label ) {
             echo '<a class="nav-tab ' . esc_attr( $tab === $key ? 'nav-tab-active' : '' ) . '" href="' . esc_url( self::admin_url( $key ) ) . '">' . esc_html( $label ) . '</a>';
@@ -335,6 +338,30 @@ final class AHFS2_Plugin {
         echo '</select>';
     }
 
+    public static function old_conflict_active() {
+        return defined( 'AMALEY_HF_VERSION' ) || defined( 'AMALEY_SHELL_VERSION' );
+    }
+
+    public static function conflict_notice() {
+        if ( ! self::old_conflict_active() ) { return; }
+        echo '<div class="notice notice-error"><p><strong>Amaley H/F Studio V2 warning:</strong> Old Amaley H/F or Amaley Site Shell appears active. Keep only one header/footer plugin active to avoid duplicate output/conflict.</p></div>';
+    }
+
+    public static function guard_template_direct_access() {
+        if ( is_singular( self::CPT ) && ! is_admin() && ! current_user_can( 'edit_posts' ) ) {
+            wp_safe_redirect( home_url( '/' ) );
+            exit;
+        }
+    }
+
+    public static function template_robots_noindex( $robots ) {
+        if ( is_singular( self::CPT ) ) {
+            $robots['noindex'] = true;
+            $robots['nofollow'] = true;
+        }
+        return $robots;
+    }
+
     public static function render_debug_tab() {
         $options = self::options();
         $rules = self::rules();
@@ -348,6 +375,10 @@ final class AHFS2_Plugin {
         echo '<li>Rules count: <strong>' . count( $rules ) . '</strong></li>';
         echo '<li>Old Amaley H/F active: <strong>' . ( defined( 'AMALEY_HF_VERSION' ) ? 'Yes - deactivate old plugin' : 'No' ) . '</strong></li>';
         echo '<li>Old Site Shell active: <strong>' . ( defined( 'AMALEY_SHELL_VERSION' ) ? 'Yes - deactivate old plugin' : 'No' ) . '</strong></li>';
+        echo '<li>Render method: <strong>Hook based only — no output buffering</strong></li>';
+        echo '<li>Header fallback: <strong>wp_footer fallback moves header to top if wp_body_open is missing</strong></li>';
+        echo '<li>Template direct access guard: <strong>Enabled for public visitors + noindex</strong></li>';
+        echo '<li>Theme hiding default: <strong>OFF</strong></li>';
         echo '</ul>';
         echo '<p>This plugin does not use output buffering. It renders with wp_body_open and wp_footer only.</p>';
         echo '</div>';
@@ -476,6 +507,11 @@ final class AHFS2_Plugin {
     public static function register_frontend_assets() {
         wp_register_style( 'ahfs2-frontend', plugin_dir_url( __FILE__ ) . 'assets/css/frontend.css', array(), self::VERSION );
         wp_register_script( 'ahfs2-frontend', plugin_dir_url( __FILE__ ) . 'assets/js/frontend.js', array(), self::VERSION, true );
+
+        if ( ! self::should_skip_frontend_render() && ( self::resolve_template_id( 'header' ) || self::resolve_template_id( 'footer' ) ) ) {
+            wp_enqueue_style( 'ahfs2-frontend' );
+            wp_enqueue_script( 'ahfs2-frontend' );
+        }
     }
 
     private static function enqueue_frontend() {
@@ -505,7 +541,7 @@ final class AHFS2_Plugin {
         echo '<div class="ahfs2-zone ahfs2-zone-header ahfs2-zone-header--fallback" data-ahfs2-zone="header-fallback">';
         echo self::render_template_content( $id ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         echo '</div>';
-        echo '<script>document.documentElement.classList.add("ahfs2-header-fallback-used");</script>';
+        echo '<script>(function(){var f=document.querySelector(".ahfs2-zone-header--fallback");if(f&&document.body&&document.body.firstChild!==f){document.body.insertBefore(f,document.body.firstChild);}document.documentElement.classList.add("ahfs2-header-fallback-used");})();</script>';
     }
 
     public static function render_footer() {
