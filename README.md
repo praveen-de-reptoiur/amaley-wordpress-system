@@ -28,12 +28,52 @@ Drive/backups are used separately for install ZIPs, full site backups, media, sc
 | Plugin / Module | Current GitHub source status | Role |
 | --- | --- | --- |
 | Amaley Core | v1.1.0 | Data backbone, CPTs, product-origin mapping, Cluster to SHG/Producer Group links, archive/single widgets, OG card systems and the new Universal Showcase Widget |
-| Amaley Discovery Engine | v1.3.5 | Discovery, filtering, search, sort and pagination |
+| Amaley Discovery Engine | v1.4.4 stable OG card controls | Discovery, filtering, search, sort, pagination, source-level Amaley Core OG Product Card 1 renderer and approved selected OG product-card controls |
 | Amaley H/F Studio V2 | v2.0.15 pre-lock safety | Current active header/footer builder: Elementor H/F templates, assignment rules, live-style widgets, mobile drawer and section-wise full controls |
 | Amaley Site Shell | v1.0.1 retired/on hold | Old header/footer shell. Do not activate together with Amaley H/F Studio V2 |
 | Amaley UI Sections Kit | v0.6.1 | Home Hero V6, Page Trust Strip, Pages Hero Other and UI foundation |
 | Amaley Compact Widgets | v0.4.3 source | Manual/static compact visual widgets |
 | Amaley Templates | v1.2.7 | WooCommerce/page template support modules |
+
+## Amaley Discovery Engine Lock Note
+
+Current discovery/filter system:
+
+```text
+Amaley Discovery Engine — v1.4.4 stable OG card controls
+```
+
+Source path:
+
+```text
+plugins/amaley-discovery-engine/
+```
+
+Current accepted behaviour:
+
+- Product Discovery uses the source-level `Amaley Core Product Card — Select Template` renderer.
+- Accepted template is `OG Product Card 1`.
+- Pagination, filtering, sorting and reset continue to return the selected OG product card.
+- Approved card-control structure is section-wise: Content tab for selected OG product-card content controls; Style tab for section/heading, filters/toolbar, grid/spacing, selected OG card layout/text/meta/tags/button, and pagination.
+- Product data, product images/gallery, product-origin mappings, WooCommerce templates, header and footer were not changed by the v1.4.4 update.
+
+Previous working base:
+
+```text
+v1.3.6 — Core card source fix
+```
+
+Do not use rejected experimental versions for future work:
+
+```text
+v1.3.7, v1.3.8, v1.3.9, v1.4.0, v1.4.1, v1.4.2, v1.4.3 rollback packages
+```
+
+Next pending Discovery work:
+
+```text
+Cluster / SHG-Collective / Producer-Member filters, added source-level and tested one by one.
+```
 
 ## Amaley Universal Showcase Lock Note
 
@@ -105,6 +145,7 @@ Reason: Atomic Editor caused repeated Elementor panel loading issues during earl
 Start here:
 
 - `docs/PROJECT_MANIFEST.md`
+- `docs/AMALEY_DISCOVERY_ENGINE_CURRENT_STATUS_v1.4.4.md`
 - `docs/AMALEY_UNIVERSAL_SHOWCASE_WIDGET_LOCK.md`
 - `docs/AMALEY_HF_STUDIO_V2_CURRENT_STATUS_v2.0.15.md`
 - `docs/AMALEY_PLUGIN_WIDGET_REGISTRY_AND_CONFLICT_RULES.md`
