@@ -9,6 +9,7 @@ Before any planning, design, Elementor widget, plugin, template, archive/single 
 1. `000_READ_FIRST_BEFORE_ANY_WORK.md`
 2. `docs/UNIVERSAL_FULL_CONTROL_WEBSITE_STANDARD.md`
 3. `docs/READ_FIRST_AMALEY.md`
+4. `docs/AMALEY_DISCOVERY_ENGINE_CURRENT_STATUS_v1.4.4.md`
 
 Universal rule:
 
@@ -21,6 +22,7 @@ Every section and every element must have non-coder friendly controls for conten
 - Root read-first: `000_READ_FIRST_BEFORE_ANY_WORK.md`
 - Universal standard: `docs/UNIVERSAL_FULL_CONTROL_WEBSITE_STANDARD.md`
 - Amaley read-first: `docs/READ_FIRST_AMALEY.md`
+- Discovery Engine current status: `docs/AMALEY_DISCOVERY_ENGINE_CURRENT_STATUS_v1.4.4.md`
 - Plugin/widget registry: `docs/AMALEY_PLUGIN_WIDGET_REGISTRY_AND_CONFLICT_RULES.md`
 - CPT structure lock: `docs/AMALEY_CPT_SINGLE_SECTION_STRUCTURE_LOCK.md`
 - Section spacing rhythm lock: `docs/AMALEY_SECTION_SPACING_RHYTHM_LOCK.md`
@@ -50,15 +52,73 @@ Every section and every element must have non-coder friendly controls for conten
 | Plugin / Module | GitHub source | Notes |
 | --- | --- | --- |
 | Amaley Core | v1.0.99.4 | Data backbone, product-origin mapping, explicit Cluster → SHG/Producer Group links, CPT archive/single sections, gallery/media fields, rich story direction, universal OG card families, archive/single card selectors and control bridges |
-| Amaley Discovery Engine | v1.3.5 | Discovery/filter/listing engine |
+| Amaley Discovery Engine | v1.4.4 stable OG card controls | Discovery/filter/listing engine with source-level Amaley Core OG Product Card 1 renderer, accepted full selected OG product-card controls, pagination/filter/sort working |
 | Amaley Site Shell | v1.0.1 | Header/footer shell; auto-render on hold |
 | Amaley UI Sections Kit | v0.6.1 | Home Hero V6, Page Trust Strip, Pages Hero Other |
 | Amaley Compact Widgets | v0.4.3 source | Manual/static compact widgets; v0.4.2 ZIP may remain active until v0.4.3 staging test |
 | Amaley Templates | v1.2.7 | WooCommerce/page template support |
 
+## Current Discovery Engine continuation point
+
+Amaley Discovery Engine v1.4.4 is the current accepted GitHub source.
+
+Accepted render flow:
+
+```text
+Product Discovery widget
+→ Card Renderer: Amaley Core Product Card — Select Template
+→ Template: OG Product Card 1
+```
+
+Accepted behaviour:
+
+- OG Product Card 1 appears in product discovery grid.
+- Pagination keeps OG Product Card 1.
+- Filter, reset and sort keep OG Product Card 1.
+- Card renderer remains selectable for future approved Core product-card templates.
+- Product data, photos/gallery, origin mapping, WooCommerce templates, header and footer are untouched.
+
+Approved control structure:
+
+```text
+Content tab:
+- Product Card Renderer
+- Selected OG Product Card — Content
+
+Style tab:
+- Section / Heading
+- Filters / Toolbar
+- Grid / Spacing
+- Selected OG Product Card — Layout
+- Selected OG Product Card — Text
+- Selected OG Product Card — Meta & Tags
+- Selected OG Product Card — Button
+- Pagination
+```
+
+Do not use / revive these rejected attempts:
+
+```text
+v1.3.7, v1.3.8, v1.3.9, v1.4.0, v1.4.1, v1.4.2, v1.4.3 rollback packages
+```
+
+Next Discovery work must be source-level and one-by-one:
+
+```text
+1. Cluster filter
+2. SHG / Collective filter
+3. Producer / Member filter
+```
+
+After each filter addition, test:
+
+```text
+Page 1, page 2, sort, filter apply, reset
+```
+
 ## Current Amaley Core continuation point
 
-Amaley Core v1.0.99.4 is now the current GitHub source.
+Amaley Core v1.0.99.4 is the current GitHub source.
 
 Important relation key:
 
@@ -127,10 +187,9 @@ Rules:
 
 - Same card type must keep the same design wherever it appears.
 - Do not redesign card families casually.
-- Product card design should be reused later in Discovery where practical.
+- Product card design is now reused in Discovery Engine v1.4.4.
 - Images should use cover center center and practical image-height / ratio controls.
 - Description words, max tags, section buttons, button alignment and responsive behaviour need controls where relevant.
-- Avoid adding heavy OG full controls everywhere.
 - Avoid transform/motion controls unless specifically required and tested.
 
 ## Current architecture lock
@@ -147,22 +206,20 @@ Do not turn Cluster, SHG or Member pages into one hardcoded all-in-one widget as
 
 ## Current known gaps
 
-- Cleanup is pending before new widget development.
-- Some older widgets may still contain unnecessary/duplicate controls.
+- Discovery Engine Cluster / SHG / Producer filters are pending.
 - Archive pagination strategy still needs cross-archive review.
-- Discovery Engine is not yet fully connected to the central Amaley Core Product Card renderer.
 - Product archive/shop-loop consistency still needs a separate phase.
+- Cleanup is still needed before broad new module development.
 
 ## Next safe work sequence
 
-1. Verify Amaley Core v1.0.99.4 source after GitHub upload.
-2. Test Single Cluster, Single SHG, Single Member, Cluster Archive, SHG Archive, Member Archive and Product card contexts.
-3. Keep card designs locked.
-4. Do not alter locked Cluster/SHG/Member/Product card designs unless Praveen explicitly unlocks them.
-5. Do not build the next new widget yet.
-6. First create a cleanup baseline version, preferably `v1.0.100 CLEANUP BASELINE` or `v1.1.0 CLEANUP BASELINE`.
-7. Remove unnecessary/duplicate code only after reference checks and rollback safety.
-8. Later integrate locked Product card style into Discovery where practical.
+1. Keep Amaley Discovery Engine v1.4.4 as the stable baseline.
+2. Do not revisit old card-render patch plugins.
+3. Add Cluster filter source-level first.
+4. Test page 1, page 2, sort, filter apply, reset.
+5. Only then add SHG / Collective filter.
+6. Only then add Producer / Member filter.
+7. Keep card controls structure unchanged unless Praveen explicitly asks.
 
 ## Working style
 
