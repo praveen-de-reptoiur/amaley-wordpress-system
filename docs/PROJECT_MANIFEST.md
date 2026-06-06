@@ -33,11 +33,12 @@ Google Drive is used for plugin ZIP backups, full website backups, Elementor exp
 | Amaley Brand Site Kit | v1.0.4 future-safe lock | Global brand tokens, Elementor color/font sync, WordPress editor palette sync, CSS variables and optional scoped visual bridges |
 | Amaley Core | v1.0.99.5 | Data backbone, product-origin mapping, explicit Cluster → SHG/Producer Group links, rich story editors, gallery/media fields, CPT archive/single widgets, approved universal OG cards, card selectors/control bridges, origin-led section widgets and accepted OG Product Card price stack fix |
 | Amaley Discovery Engine | v1.4.4 stable OG card controls | Discovery, filters, listings, search, sort, pagination, source-level OG Product Card 1 renderer, selected OG product-card controls and collection-grid workflow |
+| Amaley Page Assignment Bridge | v1.4.1 final single product bridge | Safe Elementor page-assignment bridge for WooCommerce single product pages; active/tested on All Products; owns single product page assignment and Bridge widgets only |
 | Amaley H/F Studio V2 | v2.0.15 pre-lock safety | Elementor-style header/footer templates, assignment rules, live-style header/footer widgets, mobile drawer and section-wise full-control workflow |
 | Amaley Site Shell | v1.0.1 retired/on hold | Old header/footer shell; do not activate alongside Amaley H/F Studio V2 |
 | Amaley UI Sections Kit | v0.6.1 | Home Hero V6, Page Trust Strip, Pages Hero Other, UI foundation |
 | Amaley Compact Widgets | v0.4.3 source | Manual/static compact visual widgets; v0.4.2 active ZIP may remain until v0.4.3 staging test |
-| Amaley Templates | v1.2.7 | WooCommerce/page template support |
+| Amaley Templates | v1.2.7 | WooCommerce/page template support; not edited for the Page Assignment Bridge |
 
 ---
 
@@ -48,6 +49,54 @@ Elementor Atomic Editor must remain inactive.
 ```
 
 Reason: Atomic Editor caused repeated Elementor left-panel loading/spinner issues during the universal-card work. After deactivation, controls started working again.
+
+---
+
+## Amaley Page Assignment Bridge Current Lock
+
+Current source path:
+
+```text
+plugins/amaley-page-assignment-bridge/
+```
+
+Current version:
+
+```text
+v1.4.1 — Single Product Final / Member Value Controls Fix
+```
+
+Current accepted behaviour:
+
+- Assigns a normal Elementor page as the WooCommerce single product layout.
+- Accepted assigned page: `Amaley Single Product`.
+- Final page order: Product Hero, Trust Strip, Info Tabs, Member Value Strip.
+- Editor preview product context works for the assigned Elementor page.
+- Bridge mode has been tested on All Products.
+- Origin details are shown inside Info Tabs → Origin.
+- Member Value Strip uses Elementor repeater tiles for add/remove/reorder.
+- WooCommerce remains the source for product data, price, stock, cart, checkout and reviews.
+
+Safety scope:
+
+```text
+No product data changes.
+No product image/gallery changes.
+No origin mapping changes.
+No WooCommerce cart/checkout/order logic changes.
+No Amaley Core source changes.
+No Amaley Templates source changes.
+No Amaley Discovery Engine source changes.
+No header/footer source changes.
+```
+
+Rollback:
+
+```text
+Amaley Bridge → Single Product Assignment → Enable Single Product Bridge: Off
+```
+
+or deactivate `Amaley Page Assignment Bridge`.
 
 ---
 
