@@ -1,37 +1,86 @@
-Version: 1.3.6
-
 # Amaley Page Assignment Bridge
 
-A separate bridge plugin for assigning a normal Elementor page as the WooCommerce single product layout without editing Amaley Core, Amaley Templates, Amaley Discovery Engine, product data, cart, checkout, header, or footer.
+Separate, safe bridge plugin for assigning a normal Elementor page as the WooCommerce single product layout without editing Amaley Core, Amaley Templates, Amaley Discovery Engine, product data, cart, checkout, header, or footer.
 
-## Current version
-v1.3.5 — Product Hero controls upgrade only. Adds show/hide, layout, alignment, style and responsive spacing controls for Amaley Bridge Product Hero.
+## Current locked source
 
-## Widgets
+```text
+v1.4.1 — Single Product Final / Member Value Controls Fix
+```
+
+## Status
+
+```text
+Final tested on All Products
+```
+
+## Main purpose
+
+```text
+WooCommerce single product URL
+→ assigned Elementor page
+→ current product context passed into Bridge Elementor widgets
+→ custom Amaley single product layout rendered safely
+```
+
+## Final Elementor page widget order
+
 Use these widgets on the assigned Elementor page:
 
+```text
 1. Amaley Bridge Product Hero
 2. Amaley Bridge Trust Strip
-3. Amaley Bridge Origin Panel
-4. Amaley Bridge Info Tabs
-5. Amaley Bridge Member Value Strip
+3. Amaley Bridge Info Tabs
+4. Amaley Bridge Member Value Strip
+```
 
-## Safety
-- Keep bridge mode on Test Product Only until the layout is approved.
-- Rollback by deactivating this plugin or setting Enable Single Product Bridge to Off.
-- This plugin does not update GitHub/repository source.
+The separate Origin Panel widget may remain available, but the accepted final single product layout uses the Origin tab inside Info Tabs instead.
 
-## v1.4.1 Scope
+## Current accepted behaviour
 
-This version adds Elementor controls for the `Amaley Bridge Info Tabs` widget only. It keeps the existing data flow and design direction stable while exposing show/hide, labels, layout, alignment, style, and responsive spacing controls.
+- Product Hero renders product image/gallery, title, price, short description, badges, add-to-cart, buy-now, wishlist placeholder, and compact product meta.
+- Trust Strip renders trust/value items below the hero.
+- Info Tabs renders Details, Origin, How To Use, and Reviews.
+- Origin data is displayed inside the Info Tabs Origin tab using product-origin mapping.
+- Member Value Strip uses editable Elementor repeater tiles for add/remove/reorder.
+- Editor preview context works for the assigned Elementor page.
+- All Products rollout has been tested by Praveen.
 
-Safety: no product data, images, cart, checkout, Amaley Core, Amaley Templates, Discovery Engine, header, or footer source is changed.
+## Admin assignment
 
+```text
+Amaley Bridge → Single Product Assignment
+Enable Single Product Bridge: All Products
+Assigned Elementor Page: Amaley Single Product
+Preview Product Context on Assigned Page: Yes
+```
 
-## v1.4.1 Note
-Member Value Strip now uses editable Elementor value tiles. Use the Value Tiles repeater to add, remove, reorder or edit each tile separately.
+## Safety scope
 
+```text
+No product data changes.
+No product image/gallery changes.
+No origin mapping changes.
+No WooCommerce cart/checkout/order logic changes.
+No Amaley Core source changes.
+No Amaley Templates source changes.
+No Amaley Discovery Engine source changes.
+No header/footer source changes.
+```
 
-## v1.4.1
+## Rollback
 
-Fixes Member Value Strip Elementor control reliability. Repeater tiles remain the source for add/remove/reorder. Legacy textarea editing is removed from the panel to avoid confusion.
+Set:
+
+```text
+Enable Single Product Bridge: Off
+```
+
+or deactivate this plugin. Default WooCommerce single product pages return immediately.
+
+## Notes
+
+- Keep Elementor Atomic Editor inactive.
+- Do not upload plugin ZIP files into GitHub.
+- Use GitHub for clean source only; ZIP backups belong in Drive/local backup.
+- Do not update this plugin source without explicit approval from Praveen.
