@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Amaley Core
  * Description: Cluster, SHG Group, Member/Producer and Product Origin Mapping backbone for the Amaley fresh WordPress build.
- * Version: 1.1.0
+ * Version: 1.1.1
  * Author: Praveen
  * Text Domain: amaley-core
  * Requires at least: 6.0
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! defined( 'AMALEY_CORE_VERSION' ) ) {
-    define( 'AMALEY_CORE_VERSION', '1.1.0' );
+    define( 'AMALEY_CORE_VERSION', '1.1.1' );
 }
 if ( ! defined( 'AMALEY_CORE_SCHEMA_VERSION' ) ) {
     define( 'AMALEY_CORE_SCHEMA_VERSION', '1' );
@@ -36,10 +36,6 @@ if ( ! defined( 'AMALEY_CORE_BASENAME' ) ) {
 
 /**
  * Declare compatibility with WooCommerce features used on modern stores.
- *
- * Amaley Core does not create, modify, or replace WooCommerce orders. The plugin
- * only registers Amaley data CPTs and adds product-origin metadata, so it is
- * compatible with WooCommerce High-Performance Order Storage (custom order tables).
  */
 function amaley_core_declare_woocommerce_compatibility() {
     if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
@@ -70,41 +66,28 @@ require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-member-single-sectio
 require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-universal-showcase.php';
 require_once AMALEY_CORE_PATH . 'includes/class-amaley-core.php';
 
-/**
- * Return the main plugin instance.
- *
- * @return Amaley_Core
- */
+/** Return the main plugin instance. */
 function amaley_core() {
     static $instance = null;
-
     if ( null === $instance ) {
         $instance = new Amaley_Core();
     }
-
     return $instance;
 }
-
 add_action( 'plugins_loaded', 'amaley_core' );
 
-/**
- * Activation routine.
- */
+/** Activation routine. */
 function amaley_core_activate() {
     update_option( 'amaley_core_version', AMALEY_CORE_VERSION );
     update_option( 'amaley_core_schema_version', AMALEY_CORE_SCHEMA_VERSION );
-
     require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-cpts.php';
     $cpts = new Amaley_Core_CPTs();
     $cpts->register_post_types();
-
     flush_rewrite_rules();
 }
 register_activation_hook( __FILE__, 'amaley_core_activate' );
 
-/**
- * Deactivation routine.
- */
+/** Deactivation routine. */
 function amaley_core_deactivate() {
     flush_rewrite_rules();
 }
