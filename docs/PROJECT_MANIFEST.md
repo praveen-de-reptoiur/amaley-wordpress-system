@@ -31,7 +31,7 @@ Google Drive is used for plugin ZIP backups, full website backups, Elementor exp
 | Plugin / Module | Current Source | Role |
 | --- | --- | --- |
 | Amaley Brand Site Kit | v1.0.4 future-safe lock | Global brand tokens, Elementor color/font sync, WordPress editor palette sync, CSS variables and optional scoped visual bridges |
-| Amaley Core | v1.0.99.4 | Data backbone, product-origin mapping, explicit Cluster → SHG/Producer Group links, rich story editors, gallery/media fields, CPT archive/single widgets, approved universal OG cards, card selectors/control bridges and origin-led section widgets |
+| Amaley Core | v1.0.99.5 | Data backbone, product-origin mapping, explicit Cluster → SHG/Producer Group links, rich story editors, gallery/media fields, CPT archive/single widgets, approved universal OG cards, card selectors/control bridges, origin-led section widgets and accepted OG Product Card price stack fix |
 | Amaley Discovery Engine | v1.4.4 stable OG card controls | Discovery, filters, listings, search, sort, pagination, source-level OG Product Card 1 renderer, selected OG product-card controls and collection-grid workflow |
 | Amaley H/F Studio V2 | v2.0.15 pre-lock safety | Elementor-style header/footer templates, assignment rules, live-style header/footer widgets, mobile drawer and section-wise full-control workflow |
 | Amaley Site Shell | v1.0.1 retired/on hold | Old header/footer shell; do not activate alongside Amaley H/F Studio V2 |
@@ -48,6 +48,37 @@ Elementor Atomic Editor must remain inactive.
 ```
 
 Reason: Atomic Editor caused repeated Elementor left-panel loading/spinner issues during the universal-card work. After deactivation, controls started working again.
+
+---
+
+## Amaley Core Current Lock
+
+Current source path:
+
+```text
+plugins/amaley-core/
+```
+
+Current version:
+
+```text
+v1.0.99.5 — OG Product Card Price Stack Fix Merged
+```
+
+Current accepted behaviour:
+
+- OG Product Card price layout belongs to Amaley Core, not Discovery Engine.
+- Old price is displayed smaller with strikethrough.
+- Sale price is displayed on the next line, bold and readable.
+- Temporary helper plugin `Amaley Core OG Product Price Stack Fix` can remain deactivated after confirming Core v1.0.99.5 is active.
+- Product data, product images/gallery, product-origin mappings, Discovery Engine filters/pagination/sort, WooCommerce templates, header and footer were not changed.
+
+Important rejection / do-not-use note:
+
+```text
+Discovery Engine v1.4.5 price-layout fix should not be used as the final solution.
+Price/card visual fixes must remain in Amaley Core.
+```
 
 ---
 
@@ -78,7 +109,7 @@ Current accepted behaviour:
 Rejected / not-to-use versions:
 
 ```text
-v1.3.7, v1.3.8, v1.3.9, v1.4.0, v1.4.1, v1.4.2, v1.4.3 rollback packages
+v1.3.7, v1.3.8, v1.3.9, v1.4.0, v1.4.1, v1.4.2, v1.4.3 rollback packages, v1.4.5 price-layout fix
 ```
 
 Previous working base:
@@ -118,118 +149,3 @@ Current accepted behaviour:
 - WooCommerce visual bridge is OFF by default.
 - Elementor visual bridge is OFF by default.
 - Existing installs are migrated once to switch broad visual bridges OFF.
-- Admin CSS/fonts load only on the Amaley Brand Kit admin page.
-- No CPT, WooCommerce data, product price, product stock, order, cart, checkout, header/footer, template or page-content logic is changed.
-
-Rejected / unused:
-
-```text
-v1.0.3 — Elementor Force Sync Fix
-```
-
-Reason: v1.0.2 sync worked correctly after proper button use; v1.0.4 is the safer continuation.
-
----
-
-## Amaley H/F Studio V2 Current Lock
-
-Current source path:
-
-```text
-plugins/amaley-hf-studio-v2/
-```
-
-Current pre-lock version:
-
-```text
-v2.0.15 — Pre-Lock Safety
-```
-
-Current accepted behaviour:
-
-- Header and footer render on staging without old H/F plugins active.
-- Old `Amaley H/F` and `Amaley Site Shell` must remain inactive/deleted to avoid double-render conflicts.
-- Header/footer templates are created through the plugin and edited with Elementor.
-- Header and footer can be assigned as default templates.
-- Header widget includes WordPress menu selection, top strip repeater, hide/show controls, layout/style controls, typography controls, phone controls, live-style mobile drawer, and header layout/spacing controls.
-- Footer widget includes section-wise brand/shop/ecosystem/contact/bottom-bar content controls, repeaters, hide/show controls, layout/style controls, typography controls, and mobile two-column controls.
-- Theme hiding remains OFF by default and should only be tested after baseline is stable.
-- No output buffering should be used.
-- Rendering should stay hook-based and conflict-safe.
-
-Important scope lock:
-
-```text
-H/F Studio is only for header and footer.
-```
-
-Global colors, fonts, design tokens, Elementor Kit sync and WordPress editor palette sync belong to Amaley Brand Site Kit, not H/F Studio.
-
----
-
-## Latest Amaley Core Locks
-
-Current Amaley Core v1.0.99.4 includes:
-
-```text
-v1.0.41   — Explicit Cluster → SHG/Producer Group linking
-v1.0.45   — Cluster Full Story rich editor direction
-v1.0.46   — Cluster Single spacing rhythm polish
-v1.0.74   — SHG archive/single polish, gallery/media fields, section-level buttons, controls and card-design locks
-v1.0.82.2 — Accepted Cluster Single card visual polish
-v1.0.89   — Accepted Cluster Single OG card visibility/control work
-v1.0.91   — Accepted Cluster Single no-reload pagination
-v1.0.92.4 — Accepted Member Single OG card controls
-v1.0.95   — SHG Single pagination clean safe
-v1.0.96   — Member Single Products pagination
-v1.0.97.5 — Cluster Archive existing controls mapped to OG Cluster Card 1
-v1.0.97.6 — Universal Product Card PRICE label/value readability fix
-v1.0.98.1 — SHG Archive OG controls selector fix
-v1.0.99.4 — Member Archive OG Member Card 1 hide/show and style-control bridge
-```
-
-Relation source of truth meta key:
-
-```text
-_amaley_cluster_linked_group_ids
-```
-
-Admin edit box:
-
-```text
-Amaley Linked Producer Groups / SHGs
-```
-
-Expected frontend behaviour:
-
-- Quick Details → SHGs count follows selected groups.
-- SHG cards follow selected groups.
-- People / Producer sections follow linked SHGs/producers.
-- Story sections read rich story content from CPT records where implemented.
-- Gallery sections use media/gallery fields where implemented.
-- Mapped Products sections use WooCommerce product origin mapping.
-- CPT sections follow the approved compact spacing rhythm.
-- Card designs remain consistent across pages and contexts.
-- Archive/single widgets use universal OG card families where connected.
-
----
-
-## Current Architecture / Visual Locks
-
-### `docs/AMALEY_CPT_SINGLE_SECTION_STRUCTURE_LOCK.md`
-
-Locks archive/single pages as section-wise systems using multiple Amaley Core section widgets.
-
-### `docs/AMALEY_SECTION_SPACING_RHYTHM_LOCK.md`
-
-Locks `Amaley Section Spacing Rhythm 1` as the approved spacing density for future Amaley sections and later updates to existing loose sections.
-
-### `docs/AMALEY_CARD_DESIGN_LOCK.md`
-
-Locks the approved Cluster, SHG / Producer Group, Member / Producer and Product card families so the same card type stays visually consistent across the site.
-
-Universal OG card flow:
-
-```text
-image / initials placeholder → label → title → description → meta/stat boxes → tags/chips → full-width rounded button
-```
