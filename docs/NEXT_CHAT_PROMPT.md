@@ -13,6 +13,7 @@ Before any planning, design, Elementor widget, plugin, template, archive/single 
 5. `docs/AMALEY_DISCOVERY_ENGINE_CURRENT_STATUS_v1.4.4.md`
 6. `docs/AMALEY_CORE_CURRENT_STATUS_v1.0.99.5.md`
 7. `plugins/amaley-core/OG_PRODUCT_PRICE_STACK_FIX_v1.0.99.5.md`
+8. `plugins/amaley-page-assignment-bridge/README.md`
 
 ## Current locked source status
 
@@ -20,11 +21,12 @@ Before any planning, design, Elementor widget, plugin, template, archive/single 
 | --- | --- | --- |
 | Amaley Core | v1.0.99.5 | Data backbone, product-origin mapping, CPT archive/single sections, universal OG cards, and accepted OG Product Card price stack fix |
 | Amaley Discovery Engine | v1.4.4 | Discovery/filter/listing engine with source-level Amaley Core OG Product Card 1 renderer; pagination/filter/sort tested |
+| Amaley Page Assignment Bridge | v1.4.1 | Final tested single product page assignment bridge; active on All Products; Elementor bridge widgets and editor preview context working |
 | Amaley Brand Site Kit | v1.0.4 | Global brand tokens and safe Elementor color/font support |
 | Amaley H/F Studio V2 | v2.0.15 | Header/footer template workflow |
 | Amaley UI Sections Kit | v0.6.1 | Home Hero V6, Page Trust Strip, Pages Hero Other |
 | Amaley Compact Widgets | v0.4.3 source | Manual/static compact widgets |
-| Amaley Templates | v1.2.7 | WooCommerce/page template support |
+| Amaley Templates | v1.2.7 | WooCommerce/page template support; not edited for the bridge |
 
 ## Final card architecture lock
 
@@ -39,6 +41,59 @@ Amaley Core v1.0.99.5 contains the accepted OG Product Card price stack fix:
 Old price = smaller + strikethrough
 Sale price = next line + bold/readable
 ```
+
+## Single Product lock
+
+Amaley Page Assignment Bridge v1.4.1 is the accepted source for Single Product layout assignment.
+
+Accepted flow:
+
+```text
+WooCommerce product URL
+→ Amaley Page Assignment Bridge
+→ Assigned Elementor page: Amaley Single Product
+→ Bridge widgets render with current product context
+```
+
+Final assigned Elementor page widget order:
+
+```text
+1. Amaley Bridge Product Hero
+2. Amaley Bridge Trust Strip
+3. Amaley Bridge Info Tabs
+4. Amaley Bridge Member Value Strip
+```
+
+Accepted behaviour:
+
+- Bridge mode has been tested on All Products.
+- Editor preview product context works on the assigned Elementor page.
+- Product Hero, Trust Strip, Info Tabs and Member Value Strip are Elementor-native Bridge widgets.
+- Origin details are shown inside Info Tabs → Origin.
+- Separate Origin Panel widget is optional and not part of the final single product page order.
+- Member Value Strip uses repeater tiles for add/remove/reorder.
+- WooCommerce remains the source for product data, price, stock, cart, checkout and reviews.
+
+Safety:
+
+```text
+No product data changes.
+No product image/gallery changes.
+No origin mapping changes.
+No WooCommerce cart/checkout/order logic changes.
+No Amaley Core source changes.
+No Amaley Templates source changes.
+No Amaley Discovery Engine source changes.
+No header/footer source changes.
+```
+
+Rollback:
+
+```text
+Amaley Bridge → Single Product Assignment → Enable Single Product Bridge: Off
+```
+
+or deactivate Amaley Page Assignment Bridge.
 
 ## Current Discovery Engine lock
 
@@ -108,8 +163,8 @@ Rules:
 ## Current known gaps
 
 - Discovery Engine Cluster / SHG / Producer filters are pending.
-- Archive pagination strategy still needs cross-archive review.
-- Product archive/shop-loop consistency still needs a separate phase.
+- Product archive/shop-loop consistency should be reviewed later, but the current Amaley Shop page is accepted.
+- Single Product is accepted through Amaley Page Assignment Bridge v1.4.1.
 - Cleanup is still needed before broad new module development.
 
 ## Working style
@@ -119,3 +174,4 @@ Rules:
 - Never upload ZIPs/media/screenshots/videos to GitHub.
 - Keep steps small and sequential.
 - Do not say done without verification.
+- Do not update GitHub/repo without Praveen's approval.
