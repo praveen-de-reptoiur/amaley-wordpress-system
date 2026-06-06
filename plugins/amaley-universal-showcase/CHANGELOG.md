@@ -1,22 +1,16 @@
 # Changelog — Amaley Universal Showcase
 
-## v1.0.20 — Stable Lock
+## v1.0.19 — Active Stable Standalone
 
 Date: 2026-06-06
-Status: Stable working checkpoint
+Status: Active stable standalone plugin
 
-- Locked v1.0.19 responsive-polished build as stable source.
-- Updated plugin version and testing notes.
-- Added repository README and changelog.
-- No new frontend feature change.
-
-## v1.0.19 — Responsive Final Polish
-
-- Added phone compact polish.
-- Added phone navigation layout control.
-- Improved phone/tablet card, meta, arrows, dots and bottom CTA spacing.
-- Added title line limit control.
-- Added auto-hide navigation when slider movement is not needed.
+- Locked responsive final polish as current source-of-truth.
+- Separate plugin decision confirmed.
+- Core merge cancelled / not required.
+- Bottom View All placement retained.
+- Heading alignment, card meta controls and relation-by-cluster flow retained.
+- Phone/tablet polish retained.
 
 ## v1.0.18 — Header Alignment + Bottom CTA
 
