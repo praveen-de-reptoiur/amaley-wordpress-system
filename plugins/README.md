@@ -30,13 +30,66 @@ Some future folders may remain planning-only until a real source module is appro
 | Plugin / Module | GitHub source status | Drive ZIP backup status |
 | --- | --- | --- |
 | Amaley Core | v1.0.99.4 | ZIP backup belongs in Drive only |
-| Amaley Discovery Engine | v1.3.5 | `amaley-discovery-engine-v1.3.5-no-cpt.zip` |
+| Amaley Discovery Engine | v1.4.4 stable OG card controls | `amaley-discovery-engine-v1.4.4-full-og-card-controls-tested.zip` in Drive/local backup only |
 | Amaley Site Shell | v1.0.1 | `amaley-site-shell-v1.0.1.zip` |
 | Amaley UI Sections Kit | v0.6.1 | `amaley-ui-sections-kit-v0.6.1.zip` |
 | Amaley Compact Widgets | v0.4.3 source | v0.4.2 active ZIP until v0.4.3 ZIP/staging test |
 | Amaley Templates | v1.2.7 | `amaley-templates-v1.2.7.zip` |
 
 ZIPs are backups and must not be uploaded into this GitHub folder.
+
+---
+
+## Current Amaley Discovery Engine v1.4.4 Lock
+
+`plugins/amaley-discovery-engine/` is now synced to v1.4.4.
+
+Accepted behaviour:
+
+- Product Discovery widget renders products using source-level Amaley Core OG Product Card 1 support.
+- Card renderer selector is preserved instead of hardcoding one card forever.
+- Pagination, filters, reset and sort continue using the same selected OG product card.
+- Full selected OG product-card controls are approved in the Elementor widget.
+- Control structure is section-wise and must remain clean:
+
+```text
+Content tab:
+- Product Card Renderer
+- Selected OG Product Card — Content
+
+Style tab:
+- Section / Heading
+- Filters / Toolbar
+- Grid / Spacing
+- Selected OG Product Card — Layout
+- Selected OG Product Card — Text
+- Selected OG Product Card — Meta & Tags
+- Selected OG Product Card — Button
+- Pagination
+```
+
+Safety scope:
+
+```text
+No product data change.
+No product image/gallery change.
+No origin mapping change.
+No WooCommerce cart/checkout/template override.
+No header/footer change.
+No frontend replacement/stabilizer patch layer.
+```
+
+Rejected / archived attempts:
+
+```text
+v1.3.7, v1.3.8, v1.3.9, v1.4.0, v1.4.1, v1.4.2, v1.4.3 rollback packages
+```
+
+Next Discovery work:
+
+```text
+Add Cluster / SHG-Collective / Producer-Member filters source-level, one by one, after v1.4.4 remains stable.
+```
 
 ---
 
@@ -182,10 +235,11 @@ Owns:
 - Mobile filter drawer
 - Cluster / SHG / Member discovery
 - Safe empty states
+- Source-level use of the locked Amaley Core product-card family for product discovery grids
 
 Does not own static compact card libraries or generic page heroes.
 
-When Discovery later displays Amaley products, it should reuse the locked Amaley Core product-card style where practical rather than inventing a new card family.
+When Discovery displays Amaley products, it must reuse the locked Amaley Core product-card style where practical rather than inventing a new product card family.
 
 ---
 
@@ -198,109 +252,3 @@ Owns:
 - Header
 - Footer
 - Mobile header
-- Mobile drawer
-- Navigation shell
-- Announcement strip
-- Shell-level CTA controls
-
-Current safety rule: auto-render stays on hold until header/footer source is fully confirmed on staging.
-
----
-
-### amaley-ui-sections-kit
-
-Generic page/home visual section system.
-
-Currently locked source: v0.6.1.
-
-Owns:
-
-- Home Hero V6
-- Page Trust Strip
-- Pages Hero Other
-- Foundation UI helpers
-- Generic static page visual sections where they are not compact widget libraries
-
-Does not own:
-
-- CPT/data logic
-- Discovery filters
-- WooCommerce template overrides
-- Header/footer
-- Compact card libraries
-
----
-
-### amaley-compact-widgets
-
-Manual/static compact visual widgets.
-
-Current GitHub source: v0.4.3.  
-Current active ZIP backup may remain v0.4.2 until v0.4.3 is zipped and tested on staging.
-
-Owns:
-
-- Info Cards Grid
-- Split Editorial Section
-- Traceability Journey as static visual section
-- Origin Map Path as static homepage visual section
-- Gifting / Bulk Band
-- Feature / Value Strip
-- Process Steps
-- Origin Story Cards where manual/static
-- Purpose Cards
-- Collection Cards where manual/static
-- Two Panel Info
-- Dark Chain Cards
-- Image Flip Cards
-- Image Cards
-- Image Info Cards
-- Image Overlay Cards
-- Quote Cards
-- CTA Tiles
-- Metric Tiles
-
-Does not own:
-
-- ACF/CPT data fetching
-- Discovery filters
-- WooCommerce template overrides
-- Header/footer
-- Home Hero V6
-- Page Trust Strip
-- Pages Hero Other
-
----
-
-### amaley-templates
-
-Template-level support module.
-
-Owns:
-
-- Existing or transitional template-level WooCommerce/page sections
-- Single product support modules
-- Shop page support modules
-- Product hero / info tabs / trust strip / origin display where template-specific
-
-Rule: Amaley Templates supports WooCommerce. It does not replace WooCommerce.
-
----
-
-### amaley-project-guard
-
-Future safety and project protection plugin.
-
-Purpose:
-
-- Diagnostics
-- Compatibility checks
-- Version notes
-- Rollback support notes
-- Safe cleanup validation
-
----
-
-## Next Safe Step
-
-Before building the next new widget, create a cleanup baseline for Amaley Core and remove unnecessary code only after testing references and rollback safety.
