@@ -395,3 +395,135 @@
     font-size:12px;
   }
 }
+
+/* v1.0.99.5 — OG Product Card price stack fix
+   Source: tested helper plugin, now merged into Amaley Core.
+   Scope: product-card price only. Discovery Engine, filters, product data, mappings and WooCommerce templates remain untouched. */
+.amaley-card--product .amaley-card__meta-item strong.amaley-card__price,
+.amaley-card--og_product_card_1 .amaley-card__meta-item strong.amaley-card__price,
+.amaley-card--shg-single-product .amaley-card__meta-item strong.amaley-card__price,
+.amaley-card--cluster-single-product .amaley-card__meta-item strong.amaley-card__price,
+.amaley-card--member-single-product .amaley-card__meta-item strong.amaley-card__price,
+.amaley-card--product-archive .amaley-card__meta-item strong.amaley-card__price{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  justify-content:center!important;
+  gap:3px!important;
+  min-width:0!important;
+  width:100%!important;
+  max-width:100%!important;
+  overflow:visible!important;
+  white-space:normal!important;
+  -webkit-line-clamp:unset!important;
+  -webkit-box-orient:initial!important;
+  line-clamp:unset!important;
+}
+
+.amaley-card--product .amaley-card__price del,
+.amaley-card--og_product_card_1 .amaley-card__price del,
+.amaley-card--shg-single-product .amaley-card__price del,
+.amaley-card--cluster-single-product .amaley-card__price del,
+.amaley-card--member-single-product .amaley-card__price del,
+.amaley-card--product-archive .amaley-card__price del{
+  display:block!important;
+  margin:0!important;
+  padding:0!important;
+  color:#7b5c46!important;
+  opacity:.72!important;
+  font-size:11px!important;
+  line-height:1.08!important;
+  font-weight:750!important;
+  text-decoration:line-through!important;
+  text-decoration-thickness:1.25px!important;
+  text-decoration-color:rgba(123,92,70,.86)!important;
+  white-space:nowrap!important;
+}
+
+.amaley-card--product .amaley-card__price ins,
+.amaley-card--og_product_card_1 .amaley-card__price ins,
+.amaley-card--shg-single-product .amaley-card__price ins,
+.amaley-card--cluster-single-product .amaley-card__price ins,
+.amaley-card--member-single-product .amaley-card__price ins,
+.amaley-card--product-archive .amaley-card__price ins{
+  display:block!important;
+  margin:0!important;
+  padding:0!important;
+  color:#2f1507!important;
+  font-size:14px!important;
+  line-height:1.08!important;
+  font-weight:950!important;
+  text-decoration:none!important;
+  white-space:nowrap!important;
+}
+
+.amaley-card--product .amaley-card__price .amount,
+.amaley-card--og_product_card_1 .amaley-card__price .amount,
+.amaley-card--shg-single-product .amaley-card__price .amount,
+.amaley-card--cluster-single-product .amaley-card__price .amount,
+.amaley-card--member-single-product .amaley-card__price .amount,
+.amaley-card--product-archive .amaley-card__price .amount,
+.amaley-card--product .amaley-card__price .woocommerce-Price-amount,
+.amaley-card--og_product_card_1 .amaley-card__price .woocommerce-Price-amount,
+.amaley-card--shg-single-product .amaley-card__price .woocommerce-Price-amount,
+.amaley-card--cluster-single-product .amaley-card__price .woocommerce-Price-amount,
+.amaley-card--member-single-product .amaley-card__price .woocommerce-Price-amount,
+.amaley-card--product-archive .amaley-card__price .woocommerce-Price-amount,
+.amaley-card--product .amaley-card__price bdi,
+.amaley-card--og_product_card_1 .amaley-card__price bdi,
+.amaley-card--shg-single-product .amaley-card__price bdi,
+.amaley-card--cluster-single-product .amaley-card__price bdi,
+.amaley-card--member-single-product .amaley-card__price bdi,
+.amaley-card--product-archive .amaley-card__price bdi{
+  display:inline!important;
+  white-space:nowrap!important;
+  color:inherit!important;
+  font-size:inherit!important;
+  font-weight:inherit!important;
+  line-height:inherit!important;
+}
+
+.amaley-card--product .amaley-card__price > .amount,
+.amaley-card--og_product_card_1 .amaley-card__price > .amount,
+.amaley-card--shg-single-product .amaley-card__price > .amount,
+.amaley-card--cluster-single-product .amaley-card__price > .amount,
+.amaley-card--member-single-product .amaley-card__price > .amount,
+.amaley-card--product-archive .amaley-card__price > .amount{
+  color:#2f1507!important;
+  font-size:14px!important;
+  line-height:1.08!important;
+  font-weight:950!important;
+}
+
+@media(max-width:640px){
+  .amaley-card--product .amaley-card__meta-item strong.amaley-card__price,
+  .amaley-card--og_product_card_1 .amaley-card__meta-item strong.amaley-card__price,
+  .amaley-card--shg-single-product .amaley-card__meta-item strong.amaley-card__price,
+  .amaley-card--cluster-single-product .amaley-card__meta-item strong.amaley-card__price,
+  .amaley-card--member-single-product .amaley-card__meta-item strong.amaley-card__price,
+  .amaley-card--product-archive .amaley-card__meta-item strong.amaley-card__price{
+    gap:2px!important;
+  }
+  .amaley-card--product .amaley-card__price del,
+  .amaley-card--og_product_card_1 .amaley-card__price del,
+  .amaley-card--shg-single-product .amaley-card__price del,
+  .amaley-card--cluster-single-product .amaley-card__price del,
+  .amaley-card--member-single-product .amaley-card__price del,
+  .amaley-card--product-archive .amaley-card__price del{
+    font-size:10.5px!important;
+  }
+  .amaley-card--product .amaley-card__price ins,
+  .amaley-card--og_product_card_1 .amaley-card__price ins,
+  .amaley-card--shg-single-product .amaley-card__price ins,
+  .amaley-card--cluster-single-product .amaley-card__price ins,
+  .amaley-card--member-single-product .amaley-card__price ins,
+  .amaley-card--product-archive .amaley-card__price ins,
+  .amaley-card--product .amaley-card__price > .amount,
+  .amaley-card--og_product_card_1 .amaley-card__price > .amount,
+  .amaley-card--shg-single-product .amaley-card__price > .amount,
+  .amaley-card--cluster-single-product .amaley-card__price > .amount,
+  .amaley-card--member-single-product .amaley-card__price > .amount,
+  .amaley-card--product-archive .amaley-card__price > .amount{
+    font-size:13px!important;
+  }
+}
