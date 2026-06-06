@@ -2,8 +2,8 @@
 /**
  * Plugin Name: Amaley Discovery Engine
  * Plugin URI: https://amaley.in
- * Description: Elementor-native discovery, filtering, pagination, and listing engine for Amaley products and existing mapped content types. Does not register default CPTs.
- * Version: 1.3.5
+ * Description: Elementor-native discovery, filtering, pagination, and listing engine for Amaley products and mapped content types. Does not register default CPTs.
+ * Version: 1.4.4
  * Author: Praveen
  * Text Domain: amaley-discovery-engine
  * Requires at least: 6.0
@@ -17,7 +17,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('AMALEY_DE_VERSION', '1.3.5');
+define('AMALEY_DE_VERSION', '1.4.4');
 define('AMALEY_DE_FILE', __FILE__);
 define('AMALEY_DE_PATH', plugin_dir_path(__FILE__));
 define('AMALEY_DE_URL', plugin_dir_url(__FILE__));

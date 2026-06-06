@@ -1,18 +1,10 @@
 (function () {
   'use strict';
 
-  function qs(root, selector) {
-    return root.querySelector(selector);
-  }
+  function qs(root, selector) { return root.querySelector(selector); }
+  function qsa(root, selector) { return Array.prototype.slice.call(root.querySelectorAll(selector)); }
 
-  function qsa(root, selector) {
-    return Array.prototype.slice.call(root.querySelectorAll(selector));
-  }
-
-  function formToData(form) {
-    var data = new FormData(form);
-    return data;
-  }
+  function formToData(form) { return new FormData(form); }
 
   function updateUrlFromForm(form) {
     if (!window.history || !window.history.replaceState) return;
@@ -21,11 +13,7 @@
     var managedKeys = ['ade_search', 'ade_category', 'ade_tag', 'ade_stock', 'ade_min_price', 'ade_max_price', 'ade_sort', 'ade_page', 'ade_attr_cluster', 'ade_attr_collection_type', 'ade_attr_core_ingredient', 'ade_attr_producer_maker', 'ade_attr_region_cluster', 'ade_attr_shg', 'ade_attr_use_case', 'ade_attr_village_source_location'];
     managedKeys.forEach(function (key) {
       var value = data.get(key);
-      if (value) {
-        params.set(key, value);
-      } else {
-        params.delete(key);
-      }
+      if (value) { params.set(key, value); } else { params.delete(key); }
     });
     var newUrl = window.location.pathname + (params.toString() ? '?' + params.toString() : '') + window.location.hash;
     window.history.replaceState({}, '', newUrl);
@@ -33,11 +21,8 @@
 
   function syncQuickPills(root, value) {
     qsa(root, '[data-ade-quick-category]').forEach(function (pill) {
-      if ((pill.getAttribute('data-ade-quick-category') || '') === (value || '')) {
-        pill.classList.add('is-active');
-      } else {
-        pill.classList.remove('is-active');
-      }
+      if ((pill.getAttribute('data-ade-quick-category') || '') === (value || '')) { pill.classList.add('is-active'); }
+      else { pill.classList.remove('is-active'); }
     });
   }
 
@@ -49,15 +34,10 @@
   function updateMobileBar(root) {
     var resultCount = qs(root, '[data-ade-count]');
     var mobileCount = qs(root, '[data-ade-mobile-count]');
-    if (resultCount && mobileCount) {
-      mobileCount.textContent = resultCount.textContent;
-    }
-
+    if (resultCount && mobileCount) { mobileCount.textContent = resultCount.textContent; }
     var chips = qs(root, '[data-ade-results-wrap] .amaley-discovery-engine-v1__chips');
     var mobileChips = qs(root, '[data-ade-mobile-chips]');
-    if (mobileChips) {
-      mobileChips.innerHTML = chips ? chips.outerHTML : '';
-    }
+    if (mobileChips) { mobileChips.innerHTML = chips ? chips.outerHTML : ''; }
   }
 
   function runAjax(root, form) {
@@ -66,35 +46,22 @@
     data.append('action', 'amaley_de_filter');
     data.append('nonce', (window.amaleyDiscoveryEngine && window.amaleyDiscoveryEngine.nonce) || '');
     data.append('settings', settings);
-
     root.classList.add('is-loading');
-
     fetch((window.amaleyDiscoveryEngine && window.amaleyDiscoveryEngine.ajaxUrl) || '', {
-      method: 'POST',
-      credentials: 'same-origin',
-      body: data
-    })
-      .then(function (res) { return res.json(); })
-      .then(function (json) {
-        if (!json || !json.success || !json.data || !json.data.html) {
-          form.submit();
-          return;
-        }
-        var wrap = qs(root, '[data-ade-results-wrap]');
-        if (wrap) wrap.innerHTML = json.data.html;
-        updateMobileBar(root);
-        updateUrlFromForm(form);
-        root.classList.remove('is-filter-open');
-      })
-      .catch(function () {
-        form.submit();
-      })
-      .finally(function () {
-        root.classList.remove('is-loading');
-      });
+      method: 'POST', credentials: 'same-origin', body: data
+    }).then(function (res) { return res.json(); }).then(function (json) {
+      if (!json || !json.success || !json.data || !json.data.html) { form.submit(); return; }
+      var wrap = qs(root, '[data-ade-results-wrap]');
+      if (wrap) wrap.innerHTML = json.data.html;
+      updateMobileBar(root);
+      updateUrlFromForm(form);
+      root.classList.remove('is-filter-open');
+    }).catch(function () { form.submit(); }).finally(function () { root.classList.remove('is-loading'); });
   }
 
   function initRoot(root) {
+    if (root.__amaleyDiscoveryReady) return;
+    root.__amaleyDiscoveryReady = true;
     var form = qs(root, '[data-ade-form]');
     if (!form) return;
 
@@ -120,18 +87,14 @@
       }
     });
 
-    updateMobileBar(root);
-
     root.addEventListener('click', function (event) {
       var pageLink = event.target.closest('[data-ade-page]');
       if (pageLink && root.contains(pageLink)) {
         event.preventDefault();
         var pageField = qs(form, '[data-ade-page-field]');
         if (pageField) pageField.value = pageLink.getAttribute('data-ade-page') || '1';
-        runAjax(root, form);
-        return;
+        runAjax(root, form); return;
       }
-
       var quickCategory = event.target.closest('[data-ade-quick-category]');
       if (quickCategory && root.contains(quickCategory)) {
         event.preventDefault();
@@ -140,45 +103,24 @@
         if (categoryField) categoryField.value = quickValue;
         var quickPageField = qs(form, '[data-ade-page-field]');
         if (quickPageField) quickPageField.value = '1';
-        syncQuickPills(root, quickValue);
-        runAjax(root, form);
-        return;
+        syncQuickPills(root, quickValue); runAjax(root, form); return;
       }
-
       var reset = event.target.closest('[data-ade-reset]');
       if (reset && root.contains(reset)) {
-        event.preventDefault();
-        form.reset();
+        event.preventDefault(); form.reset();
         var resetPage = qs(form, '[data-ade-page-field]');
         if (resetPage) resetPage.value = '1';
-        syncQuickPills(root, '');
-        syncMobileSort(root, 'latest');
-        runAjax(root, form);
-        return;
+        syncQuickPills(root, ''); syncMobileSort(root, 'latest'); runAjax(root, form); return;
       }
-
       var open = event.target.closest('[data-ade-open-filter]');
-      if (open && root.contains(open)) {
-        event.preventDefault();
-        root.classList.add('is-filter-open');
-        return;
-      }
-
+      if (open && root.contains(open)) { event.preventDefault(); root.classList.add('is-filter-open'); return; }
       var close = event.target.closest('[data-ade-close-filter], [data-ade-backdrop]');
-      if (close && root.contains(close)) {
-        event.preventDefault();
-        root.classList.remove('is-filter-open');
-      }
+      if (close && root.contains(close)) { event.preventDefault(); root.classList.remove('is-filter-open'); }
     });
+
+    updateMobileBar(root);
   }
 
-  function init() {
-    qsa(document, '[data-ade-root]').forEach(initRoot);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
+  function init() { qsa(document, '[data-ade-root]').forEach(initRoot); }
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); } else { init(); }
 })();
