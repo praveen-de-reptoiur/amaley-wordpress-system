@@ -1,0 +1,272 @@
+/*
+ * Amaley Core Universal Showcase
+ * Scoped styles only. No global theme, WooCommerce, header or footer overrides.
+ */
+
+.amaley-universal-showcase {
+    --amaley-usw-gap: 22px;
+    --amaley-usw-ink: #2f2119;
+    --amaley-usw-muted: rgba(47, 33, 25, 0.68);
+    --amaley-usw-line: rgba(47, 33, 25, 0.12);
+    --amaley-usw-surface: #fffaf2;
+    --amaley-usw-accent: #a95f2b;
+    width: 100%;
+    padding: 56px 18px;
+    background: transparent;
+    color: var(--amaley-usw-ink);
+}
+
+.amaley-universal-showcase * {
+    box-sizing: border-box;
+}
+
+.amaley-usw__inner {
+    width: min(100%, 1240px);
+    margin: 0 auto;
+}
+
+.amaley-usw__header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 26px;
+}
+
+.amaley-usw__heading {
+    max-width: 760px;
+}
+
+.amaley-usw__label {
+    margin: 0 0 8px;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--amaley-usw-accent);
+}
+
+.amaley-usw__title {
+    margin: 0;
+    font-size: clamp(28px, 4vw, 46px);
+    line-height: 1.04;
+    letter-spacing: -0.04em;
+    color: var(--amaley-usw-ink);
+}
+
+.amaley-usw__description {
+    margin: 12px 0 0;
+    max-width: 680px;
+    font-size: 16px;
+    line-height: 1.72;
+    color: var(--amaley-usw-muted);
+}
+
+.amaley-usw__section-button {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 12px 18px;
+    border: 1px solid var(--amaley-usw-line);
+    border-radius: 999px;
+    background: #ffffff;
+    color: var(--amaley-usw-ink);
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1;
+    text-decoration: none;
+}
+
+.amaley-usw__viewport {
+    width: 100%;
+    overflow: hidden;
+}
+
+.amaley-usw__track {
+    display: grid;
+    grid-template-columns: repeat(var(--amaley-usw-cols-desktop, 4), minmax(0, 1fr));
+    gap: var(--amaley-usw-gap);
+}
+
+.amaley-usw__item {
+    min-width: 0;
+}
+
+.amaley-usw__item > .amaley-card {
+    height: 100%;
+}
+
+.amaley-usw--desktop-slider .amaley-usw__track,
+.amaley-usw--desktop-card-row .amaley-usw__track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+}
+
+.amaley-usw--desktop-slider .amaley-usw__track::-webkit-scrollbar,
+.amaley-usw--desktop-card-row .amaley-usw__track::-webkit-scrollbar {
+    display: none;
+}
+
+.amaley-usw--desktop-slider .amaley-usw__item,
+.amaley-usw--desktop-card-row .amaley-usw__item {
+    flex: 0 0 calc((100% - (var(--amaley-usw-gap) * (var(--amaley-usw-cols-desktop, 4) - 1))) / var(--amaley-usw-cols-desktop, 4));
+    scroll-snap-align: start;
+}
+
+.amaley-usw--desktop-list .amaley-usw__track {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.amaley-usw__nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 22px;
+}
+
+.amaley-usw__arrow {
+    width: 42px;
+    height: 42px;
+    border: 1px solid var(--amaley-usw-line);
+    border-radius: 999px;
+    background: #ffffff;
+    color: var(--amaley-usw-ink);
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.amaley-usw__arrow:disabled {
+    opacity: 0.36;
+    cursor: not-allowed;
+}
+
+.amaley-usw__counter {
+    min-width: 52px;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--amaley-usw-muted);
+    text-align: center;
+}
+
+.amaley-usw__dots {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+}
+
+.amaley-usw__dot {
+    width: 7px;
+    height: 7px;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(47, 33, 25, 0.22);
+    padding: 0;
+    cursor: pointer;
+}
+
+.amaley-usw__dot.is-active {
+    width: 20px;
+    background: var(--amaley-usw-accent);
+}
+
+.amaley-usw__empty {
+    border: 1px dashed var(--amaley-usw-line);
+    border-radius: 18px;
+    padding: 24px;
+    background: var(--amaley-usw-surface);
+    color: var(--amaley-usw-muted);
+    text-align: center;
+}
+
+@media (max-width: 1024px) {
+    .amaley-usw__track {
+        grid-template-columns: repeat(var(--amaley-usw-cols-tablet, 2), minmax(0, 1fr));
+    }
+
+    .amaley-usw--tablet-slider .amaley-usw__track,
+    .amaley-usw--tablet-card-row .amaley-usw__track {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+    }
+
+    .amaley-usw--tablet-slider .amaley-usw__track::-webkit-scrollbar,
+    .amaley-usw--tablet-card-row .amaley-usw__track::-webkit-scrollbar {
+        display: none;
+    }
+
+    .amaley-usw--tablet-slider .amaley-usw__item,
+    .amaley-usw--tablet-card-row .amaley-usw__item {
+        flex: 0 0 calc((100% - (var(--amaley-usw-gap) * (var(--amaley-usw-cols-tablet, 2) - 1))) / var(--amaley-usw-cols-tablet, 2));
+        scroll-snap-align: start;
+    }
+}
+
+@media (max-width: 767px) {
+    .amaley-universal-showcase {
+        padding: 38px 14px;
+    }
+
+    .amaley-usw__header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 16px;
+        margin-bottom: 18px;
+    }
+
+    .amaley-usw__section-button {
+        width: 100%;
+    }
+
+    .amaley-usw__track {
+        grid-template-columns: repeat(var(--amaley-usw-cols-phone, 1), minmax(0, 1fr));
+    }
+
+    .amaley-usw--phone-slider .amaley-usw__track,
+    .amaley-usw--phone-card-row .amaley-usw__track {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+        padding-right: 6px;
+    }
+
+    .amaley-usw--phone-slider .amaley-usw__track::-webkit-scrollbar,
+    .amaley-usw--phone-card-row .amaley-usw__track::-webkit-scrollbar {
+        display: none;
+    }
+
+    .amaley-usw--phone-slider .amaley-usw__item,
+    .amaley-usw--phone-card-row .amaley-usw__item {
+        flex: 0 0 calc(100% / var(--amaley-usw-mobile-cards-view, 1.12));
+        scroll-snap-align: start;
+    }
+
+    .amaley-usw--phone-list .amaley-usw__track {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .amaley-usw__nav {
+        justify-content: space-between;
+        margin-top: 16px;
+    }
+
+    .amaley-usw__dots {
+        flex: 1;
+    }
+}
