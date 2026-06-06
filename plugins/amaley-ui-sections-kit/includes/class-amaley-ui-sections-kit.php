@@ -276,7 +276,7 @@ final class Amaley_UI_Sections_Kit {
 		}
 
 		if ( class_exists( '\\Elementor\\Plugin' ) ) {
-			$elementor = \\Elementor\\Plugin::$instance;
+			$elementor = \Elementor\Plugin::$instance;
 
 			if ( isset( $elementor->editor ) && method_exists( $elementor->editor, 'is_edit_mode' ) && $elementor->editor->is_edit_mode() ) {
 				return true;
