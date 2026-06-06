@@ -70,6 +70,31 @@ The user confirmed:
 
 ---
 
+## Pending Origin Filters — Not Implemented Yet
+
+The following filters are **pending only**. They are **not implemented in v1.4.4** and must not be treated as completed work:
+
+```text
+PENDING — Cluster filter
+PENDING — SHG / Collective filter
+PENDING — Producer / Member filter
+```
+
+Implementation rule for later:
+
+```text
+1. Add Cluster filter first.
+2. Test page 1, page 2, sort, filter apply, reset.
+3. Add SHG / Collective filter only after Cluster filter is stable.
+4. Test page 1, page 2, sort, filter apply, reset.
+5. Add Producer / Member filter only after SHG / Collective filter is stable.
+6. Test page 1, page 2, sort, filter apply, reset.
+```
+
+Do not combine all three filters in one update.
+
+---
+
 ## Approved Elementor Control Structure
 
 ### Content tab
@@ -152,6 +177,16 @@ v1.4.3 — rollback package only, not final accepted version
 ## Next Safe Work
 
 Next Discovery work must be source-level and one-by-one.
+
+Current status:
+
+```text
+NOT IMPLEMENTED — Cluster filter
+NOT IMPLEMENTED — SHG / Collective filter
+NOT IMPLEMENTED — Producer / Member filter
+```
+
+Future sequence:
 
 ```text
 1. Add Cluster filter.
