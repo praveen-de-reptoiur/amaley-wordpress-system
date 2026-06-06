@@ -2,7 +2,7 @@
 
 This folder contains clean source code for Amaley custom WordPress plugins and future Amaley component modules.
 
-Plugin ZIP backups stay in Google Drive. Clean source code and documentation belong in GitHub.
+Plugin ZIP backups stay in Google Drive/local backup. Clean source code and documentation belong in GitHub.
 
 ---
 
@@ -13,6 +13,7 @@ plugins/
   README.md
   amaley-core/
   amaley-discovery-engine/
+  amaley-page-assignment-bridge/
   amaley-site-shell/
   amaley-ui-sections-kit/
   amaley-compact-widgets/
@@ -29,9 +30,10 @@ Some future folders may remain planning-only until a real source module is appro
 
 | Plugin / Module | GitHub source status | Drive ZIP backup status |
 | --- | --- | --- |
-| Amaley Core | v1.0.99.4 | ZIP backup belongs in Drive only |
+| Amaley Core | v1.0.99.5 | ZIP backup belongs in Drive/local backup only |
 | Amaley Discovery Engine | v1.4.4 stable OG card controls | `amaley-discovery-engine-v1.4.4-full-og-card-controls-tested.zip` in Drive/local backup only |
-| Amaley Site Shell | v1.0.1 | `amaley-site-shell-v1.0.1.zip` |
+| Amaley Page Assignment Bridge | v1.4.1 final single product bridge | `AMALLEY_PAGE_ASSIGNMENT_BRIDGE_v1.4.1_SINGLE_PRODUCT_FINAL.zip` backup should be kept in Drive/local backup only |
+| Amaley Site Shell | v1.0.1 retired/on hold | `amaley-site-shell-v1.0.1.zip` |
 | Amaley UI Sections Kit | v0.6.1 | `amaley-ui-sections-kit-v0.6.1.zip` |
 | Amaley Compact Widgets | v0.4.3 source | v0.4.2 active ZIP until v0.4.3 ZIP/staging test |
 | Amaley Templates | v1.2.7 | `amaley-templates-v1.2.7.zip` |
@@ -40,9 +42,54 @@ ZIPs are backups and must not be uploaded into this GitHub folder.
 
 ---
 
+## Current Amaley Page Assignment Bridge v1.4.1 Lock
+
+`plugins/amaley-page-assignment-bridge/` is synced to the final tested v1.4.1 source.
+
+Accepted behaviour:
+
+- Assigns a normal Elementor page as the WooCommerce single product layout.
+- Final assigned Elementor page order:
+
+```text
+1. Amaley Bridge Product Hero
+2. Amaley Bridge Trust Strip
+3. Amaley Bridge Info Tabs
+4. Amaley Bridge Member Value Strip
+```
+
+- Bridge mode has been tested on All Products.
+- Editor preview product context works.
+- Origin details are shown inside Info Tabs → Origin.
+- Member Value Strip uses editable Elementor repeater tiles.
+- WooCommerce remains the source for product data, price, stock, cart, checkout and reviews.
+
+Safety scope:
+
+```text
+No product data change.
+No product image/gallery change.
+No origin mapping change.
+No WooCommerce cart/checkout/order logic change.
+No Amaley Core source change.
+No Amaley Templates source change.
+No Amaley Discovery Engine source change.
+No header/footer source change.
+```
+
+Rollback:
+
+```text
+Amaley Bridge → Single Product Assignment → Enable Single Product Bridge: Off
+```
+
+or deactivate the plugin.
+
+---
+
 ## Current Amaley Discovery Engine v1.4.4 Lock
 
-`plugins/amaley-discovery-engine/` is now synced to v1.4.4.
+`plugins/amaley-discovery-engine/` is synced to v1.4.4.
 
 Accepted behaviour:
 
@@ -82,7 +129,7 @@ No frontend replacement/stabilizer patch layer.
 Rejected / archived attempts:
 
 ```text
-v1.3.7, v1.3.8, v1.3.9, v1.4.0, v1.4.1, v1.4.2, v1.4.3 rollback packages
+v1.3.7, v1.3.8, v1.3.9, v1.4.0, v1.4.1, v1.4.2, v1.4.3 rollback packages, v1.4.5 price-layout fix
 ```
 
 Next Discovery work:
@@ -93,9 +140,9 @@ Add Cluster / SHG-Collective / Producer-Member filters source-level, one by one,
 
 ---
 
-## Current Amaley Core v1.0.99.4 Lock
+## Current Amaley Core v1.0.99.5 Lock
 
-`plugins/amaley-core/` is now synced to v1.0.99.4.
+`plugins/amaley-core/` is synced to v1.0.99.5.
 
 Important included work:
 
@@ -105,7 +152,7 @@ Important included work:
 - Single SHG card controls and pagination work from the current plugin chain.
 - Cluster Archive OG Cluster Card 1 selector and existing controls bridge.
 - SHG Archive OG SHG Card 1 selector and control selector fix.
-- Product Card PRICE label/value readability fix.
+- Product Card price stack fix belongs to Amaley Core, not Discovery Engine.
 - Member Archive OG Member Card 1 hide/show and style-control bridge.
 
 Editor stability lock:
@@ -119,7 +166,7 @@ Reason: Atomic Editor caused repeated Elementor left-panel loading/spinner issue
 Cleanup status:
 
 ```text
-Cleanup is pending before the next new widget/module.
+Cleanup is pending before the next broad widget/module.
 ```
 
 ---
@@ -132,6 +179,7 @@ Target direction:
 
 - Amaley Core manages data structures, origin mapping, explicit Cluster → SHG/Producer Group links, rich story content, gallery/media fields, locked CPT card families and CPT-driven section widgets.
 - Amaley Discovery Engine manages discovery, filters, listings, pagination, sorting and search.
+- Amaley Page Assignment Bridge manages page assignment for WooCommerce single product layouts and related bridge widgets.
 - Amaley Site Shell manages header/footer/mobile drawer only when approved.
 - Amaley UI Sections Kit manages locked generic page/home visual sections and foundation UI components.
 - Amaley Compact Widgets manages manual/static compact card and section widgets.
@@ -218,37 +266,3 @@ docs/AMALEY_CARD_DESIGN_LOCK.md
 ```
 
 Does not own broad generic frontend design sections.
-
----
-
-### amaley-discovery-engine
-
-Discovery and listing system.
-
-Owns:
-
-- Product filtering
-- Product grids where discovery logic is required
-- Search
-- Sorting
-- Pagination
-- Mobile filter drawer
-- Cluster / SHG / Member discovery
-- Safe empty states
-- Source-level use of the locked Amaley Core product-card family for product discovery grids
-
-Does not own static compact card libraries or generic page heroes.
-
-When Discovery displays Amaley products, it must reuse the locked Amaley Core product-card style where practical rather than inventing a new product card family.
-
----
-
-### amaley-site-shell
-
-Header/footer shell system.
-
-Owns:
-
-- Header
-- Footer
-- Mobile header
