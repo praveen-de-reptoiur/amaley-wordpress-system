@@ -1,0 +1,40 @@
+Amaley Universal Showcase v1.0.20 Stable Lock
+
+Status: Stable working checkpoint after Elementor testing.
+Date: 2026-06-06
+Author: Praveen
+
+What is locked:
+- Standalone Elementor widget for Cluster, SHG / Producer Group, Member / Producer and Product showcases.
+- Source modes including latest, manual, featured, relation-based SHG by Cluster and product/category modes.
+- Relation by Cluster tested on SHG / Producer cards.
+- Member count display confirmed through SHG data mapping.
+- Section heading alignment controls added.
+- View All button moved below cards/navigation.
+- Bottom CTA alignment and spacing controls added.
+- Card meta controls preserved.
+- Phone/tablet responsive polish completed.
+
+Important installation rule for the current WordPress test site:
+1. Deactivate old Amaley Universal Showcase plugin.
+2. Delete old Amaley Universal Showcase plugin.
+3. Upload the v1.0.20 ZIP.
+4. Activate.
+5. Hard refresh Elementor with Ctrl+F5.
+
+Safety boundaries:
+- No WooCommerce product data changed.
+- No product images/gallery changed.
+- No origin mapping changed.
+- No Discovery Engine filter/search/sort logic changed.
+- No header/footer logic changed.
+- No theme template override.
+
+QA checklist before production use:
+- Test Cluster: grid + slider.
+- Test SHG / Producer: relation by Cluster + slider.
+- Test Member / Producer: latest/manual.
+- Test Product: latest/category/manual.
+- Test desktop, tablet and phone.
+- Test two showcase widgets on the same page.
+- Confirm no horizontal overflow on phone.
