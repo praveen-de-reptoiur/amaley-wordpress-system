@@ -64,6 +64,13 @@ final class Amaley_UI_Sections_Kit {
 		);
 
 		wp_register_style(
+			'amaley-ui-page-trust-strip',
+			AMALEY_UI_SECTIONS_KIT_URL . 'assets/css/amaley-ui-page-trust-strip.css',
+			array( 'amaley-ui-sections-kit' ),
+			AMALEY_UI_SECTIONS_KIT_VERSION
+		);
+
+		wp_register_style(
 			'amaley-ui-home-hero-v6',
 			AMALEY_UI_SECTIONS_KIT_URL . 'assets/css/amaley-ui-home-hero-v6.css',
 			array( 'amaley-ui-sections-kit' ),
@@ -89,8 +96,9 @@ final class Amaley_UI_Sections_Kit {
 	/**
 	 * Enqueues scoped frontend assets only when the current page uses them.
 	 *
-	 * v0.6.1 performance rule:
+	 * v0.6.2 performance rule:
 	 * - Base CSS loads only on pages using Amaley UI shortcodes/widgets.
+	 * - Page Trust Strip CSS loads only when Page Trust Strip is present.
 	 * - Home Hero CSS/JS loads only when Home Hero V6 is present.
 	 * - Pages Hero CSS loads only when Pages Hero Other is present.
 	 * - Elementor editor/preview loads all registered assets for safe editing.
@@ -126,6 +134,7 @@ final class Amaley_UI_Sections_Kit {
 	/** Enqueues all registered assets for Elementor edit/preview safety. */
 	private function enqueue_all_frontend_assets() {
 		$this->enqueue_asset_handle( 'amaley-ui-sections-kit' );
+		$this->enqueue_asset_handle( 'amaley-ui-page-trust-strip' );
 		$this->enqueue_asset_handle( 'amaley-ui-home-hero-v6' );
 		$this->enqueue_asset_handle( 'amaley-ui-pages-hero-other' );
 	}
@@ -139,6 +148,7 @@ final class Amaley_UI_Sections_Kit {
 	private function enqueue_asset_handle( $handle ) {
 		switch ( $handle ) {
 			case 'amaley-ui-sections-kit':
+			case 'amaley-ui-page-trust-strip':
 			case 'amaley-ui-home-hero-v6':
 			case 'amaley-ui-pages-hero-other':
 				wp_enqueue_style( $handle );
@@ -194,6 +204,10 @@ final class Amaley_UI_Sections_Kit {
 
 		if ( $this->string_contains_any( $content, $base_needles ) ) {
 			$handles[] = 'amaley-ui-sections-kit';
+		}
+
+		if ( $this->string_contains_any( $content, array( '[amaley_page_trust_strip', '[amaley_trust_strip', 'amaley_ui_page_trust_strip' ) ) ) {
+			$handles[] = 'amaley-ui-page-trust-strip';
 		}
 
 		if ( $this->string_contains_any( $content, array( '[amaley_home_hero_v6', 'amaley_ui_home_hero_v6' ) ) ) {
@@ -262,7 +276,7 @@ final class Amaley_UI_Sections_Kit {
 		}
 
 		if ( class_exists( '\\Elementor\\Plugin' ) ) {
-			$elementor = \Elementor\Plugin::$instance;
+			$elementor = \\Elementor\\Plugin::$instance;
 
 			if ( isset( $elementor->editor ) && method_exists( $elementor->editor, 'is_edit_mode' ) && $elementor->editor->is_edit_mode() ) {
 				return true;
