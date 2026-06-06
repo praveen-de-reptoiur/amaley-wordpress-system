@@ -32,7 +32,7 @@ Google Drive is used for plugin ZIP backups, full website backups, Elementor exp
 | --- | --- | --- |
 | Amaley Brand Site Kit | v1.0.4 future-safe lock | Global brand tokens, Elementor color/font sync, WordPress editor palette sync, CSS variables and optional scoped visual bridges |
 | Amaley Core | v1.0.99.4 | Data backbone, product-origin mapping, explicit Cluster → SHG/Producer Group links, rich story editors, gallery/media fields, CPT archive/single widgets, approved universal OG cards, card selectors/control bridges and origin-led section widgets |
-| Amaley Discovery Engine | v1.3.5 | Discovery, filters, listings, search, sort, pagination |
+| Amaley Discovery Engine | v1.4.4 stable OG card controls | Discovery, filters, listings, search, sort, pagination, source-level OG Product Card 1 renderer, selected OG product-card controls and collection-grid workflow |
 | Amaley H/F Studio V2 | v2.0.15 pre-lock safety | Elementor-style header/footer templates, assignment rules, live-style header/footer widgets, mobile drawer and section-wise full-control workflow |
 | Amaley Site Shell | v1.0.1 retired/on hold | Old header/footer shell; do not activate alongside Amaley H/F Studio V2 |
 | Amaley UI Sections Kit | v0.6.1 | Home Hero V6, Page Trust Strip, Pages Hero Other, UI foundation |
@@ -48,6 +48,50 @@ Elementor Atomic Editor must remain inactive.
 ```
 
 Reason: Atomic Editor caused repeated Elementor left-panel loading/spinner issues during the universal-card work. After deactivation, controls started working again.
+
+---
+
+## Amaley Discovery Engine Current Lock
+
+Current source path:
+
+```text
+plugins/amaley-discovery-engine/
+```
+
+Current version:
+
+```text
+v1.4.4 — Full OG Product Card Controls Tested
+```
+
+Current accepted behaviour:
+
+- Product Discovery uses source-level `Amaley Core Product Card — Select Template` support.
+- Accepted card template is `OG Product Card 1` from Amaley Core.
+- Product grid, filters, sorting, reset and pagination return the selected OG product card consistently.
+- Elementor controls are section-wise and non-coder-friendly.
+- Content tab owns the selected OG product-card content controls.
+- Style tab owns section/heading, filters/toolbar, grid/spacing, selected OG product-card layout/text/meta/tags/button and pagination controls.
+- Product data, product photos/gallery, product-origin mappings, WooCommerce templates, header and footer were not changed.
+
+Rejected / not-to-use versions:
+
+```text
+v1.3.7, v1.3.8, v1.3.9, v1.4.0, v1.4.1, v1.4.2, v1.4.3 rollback packages
+```
+
+Previous working base:
+
+```text
+v1.3.6 — Core card source fix
+```
+
+Next pending source-level Discovery work:
+
+```text
+Cluster / SHG-Collective / Producer-Member filters, added one by one after v1.4.4 remains stable.
+```
 
 ---
 
