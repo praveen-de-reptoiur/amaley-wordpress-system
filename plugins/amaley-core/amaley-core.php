@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Amaley Core
  * Description: Cluster, SHG Group, Member/Producer and Product Origin Mapping backbone for the Amaley fresh WordPress build.
- * Version: 1.0.99.4
+ * Version: 1.1.0
  * Author: Praveen
  * Text Domain: amaley-core
  * Requires at least: 6.0
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! defined( 'AMALEY_CORE_VERSION' ) ) {
-    define( 'AMALEY_CORE_VERSION', '1.0.99.4' );
+    define( 'AMALEY_CORE_VERSION', '1.1.0' );
 }
 if ( ! defined( 'AMALEY_CORE_SCHEMA_VERSION' ) ) {
     define( 'AMALEY_CORE_SCHEMA_VERSION', '1' );
@@ -67,6 +67,7 @@ require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-shg-archive-sections
 require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-shg-single-sections.php';
 require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-member-archive-sections.php';
 require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-member-single-sections.php';
+require_once AMALEY_CORE_PATH . 'includes/class-amaley-core-universal-showcase.php';
 require_once AMALEY_CORE_PATH . 'includes/class-amaley-core.php';
 
 /**
