@@ -45,6 +45,7 @@ require_once AMALEY_UI_SECTIONS_KIT_PATH . 'includes/renderers/class-amaley-ui-c
 require_once AMALEY_UI_SECTIONS_KIT_PATH . 'includes/renderers/class-amaley-ui-empty-state.php';
 require_once AMALEY_UI_SECTIONS_KIT_PATH . 'includes/renderers/class-amaley-ui-product-card.php';
 require_once AMALEY_UI_SECTIONS_KIT_PATH . 'includes/renderers/class-amaley-ui-product-grid.php';
+require_once AMALEY_UI_SECTIONS_KIT_PATH . 'includes/elementor/class-amaley-ui-page-trust-strip-control-bridge.php';
 require_once AMALEY_UI_SECTIONS_KIT_PATH . 'includes/elementor/class-amaley-ui-elementor-loader.php';
 require_once AMALEY_UI_SECTIONS_KIT_PATH . 'includes/class-amaley-ui-shortcodes.php';
 require_once AMALEY_UI_SECTIONS_KIT_PATH . 'includes/class-amaley-ui-sections-kit.php';
