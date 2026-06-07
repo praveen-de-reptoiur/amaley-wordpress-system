@@ -2,8 +2,8 @@
 /**
  * Plugin Name: Amaley Compact Widgets
  * Plugin URI: https://amaleycollective.com/
- * Description: Professional, compact, mobile-first Elementor widgets and shortcodes for Amaley page sections. Includes a dedicated Dual Section Heading widget with clean heading-only controls.
- * Version: 0.4.18
+ * Description: Professional, compact, mobile-first Elementor widgets and shortcodes for Amaley page sections. Merged safe home-section widgets from Compact Spacing Controls v1.0.23: Mission/Vision Visual Statement, Process Journey, Origin Pillars, Livelihood Chain Band, Gifting Feature Split, and extra Split/Origin controls.
+ * Version: 0.4.19
  * Author: Praveen
  * Text Domain: amaley-compact-widgets
  * Requires at least: 6.0
@@ -15,7 +15,7 @@
 defined( 'ABSPATH' ) || exit;
 
 if ( ! defined( 'AMALEY_CW_VERSION' ) ) {
-    define( 'AMALEY_CW_VERSION', '0.4.18' );
+    define( 'AMALEY_CW_VERSION', '0.4.19' );
 }
 if ( ! defined( 'AMALEY_CW_FILE' ) ) {
     define( 'AMALEY_CW_FILE', __FILE__ );

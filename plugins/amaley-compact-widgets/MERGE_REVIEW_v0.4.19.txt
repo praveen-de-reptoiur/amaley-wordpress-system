@@ -1,0 +1,25 @@
+MERGE REVIEW — Amaley Compact Widgets v0.4.19
+
+Merged from user-uploaded live/fresh compact plugin ZIP: amaley-compact-widgets.zip
+Merged add-on source: Amaley Compact Spacing Controls v1.0.23 ICON COLOR FIX
+
+Changed files:
+- amaley-compact-widgets.php
+- includes/class-amaley-cw-plugin.php
+- README.txt
+
+Added files:
+- assets/css/reference-visual-statement.css
+- assets/css/process-journey.css
+- assets/css/three-sections.css
+- includes/class-acwsc109-compact-control-injector.php
+- includes/widgets/class-acwsc109-reference-visual-statement-base-widget.php
+- includes/widgets/class-acwsc109-mission-visual-statement-widget.php
+- includes/widgets/class-acwsc109-vision-visual-statement-widget.php
+- includes/widgets/class-acwsc109-process-journey-widget.php
+- includes/widgets/class-acwsc109-origin-pillars-widget.php
+- includes/widgets/class-acwsc109-livelihood-chain-band-widget.php
+- includes/widgets/class-acwsc109-gifting-feature-split-widget.php
+
+Compatibility guard:
+If the old spacing-controls add-on is still active, the merged widgets and control injector skip registration to avoid duplicate widget IDs and duplicate controls. Still, for final use, deactivate/delete the old add-on after installing merged Compact Widgets.

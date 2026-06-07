@@ -1,0 +1,90 @@
+/* Amaley Compact Spacing Controls v1.0.19 Final Stable
+ * Mission/Vision Visual Statement: no-blank three-image responsive collage with full image fit controls.
+ * Scoped only to .amaley-mvr-section.
+ */
+.amaley-mvr-section{
+  --amvr-ivory:#fff8ed;--amvr-paper:#f6ead4;--amvr-cream:#fffdf6;--amvr-sand:#ead8b8;--amvr-choco:#2e1203;--amvr-brown:#5f3218;--amvr-muted:#73523a;--amvr-gold:#c2880a;--amvr-rust:#b5502a;--amvr-border:rgba(194,136,10,.26);--amvr-border-strong:rgba(194,136,10,.42);--amvr-shadow:0 22px 60px rgba(46,18,3,.11);--amvr-soft-shadow:0 10px 28px rgba(46,18,3,.075);--amvr-heading:"Playfair Display",Georgia,serif;--amvr-body:"Lato",Arial,sans-serif;
+  width:100%;max-width:100%;overflow:hidden;background:var(--amvr-ivory);color:var(--amvr-choco);font-family:var(--amvr-body);padding:54px 22px;box-sizing:border-box;isolation:isolate;
+}
+.amaley-mvr-section,.amaley-mvr-section *,.amaley-mvr-section *:before,.amaley-mvr-section *:after{box-sizing:border-box}
+.amaley-mvr-inner{width:100%;max-width:1120px;margin:0 auto}
+.amaley-mvr-shell{display:grid;grid-template-columns:minmax(300px,var(--amvr-visual-width,42%)) minmax(0,1fr);gap:42px;align-items:center;min-width:0}
+.amaley-mvr-visual-right .amaley-mvr-shell{grid-template-columns:minmax(0,1fr) minmax(300px,var(--amvr-visual-width,42%))}
+.amaley-mvr-content{position:relative;min-width:0;width:100%;max-width:590px;padding:0;align-self:center}
+.amaley-mvr-visual-left .amaley-mvr-content{margin-left:auto}.amaley-mvr-visual-right .amaley-mvr-content{margin-right:auto}
+.amaley-mvr-badge{display:inline-flex;align-items:center;max-width:100%;margin:0 0 11px;padding:7px 13px;border-radius:999px;background:#f3dfbc;color:#9a5b1c;font-size:10px;line-height:1;text-transform:uppercase;letter-spacing:.18em;font-weight:900;white-space:normal}
+.amaley-mvr-kicker{margin:0 0 8px;color:var(--amvr-gold);font-size:10.5px;line-height:1.25;text-transform:uppercase;letter-spacing:.22em;font-weight:900}
+.amaley-mvr-title{margin:0 0 12px;color:var(--amvr-choco);font-family:var(--amvr-heading);font-weight:400;font-size:clamp(32px,3.4vw,48px);line-height:1.04;letter-spacing:-.026em;text-wrap:balance;max-width:620px}
+.amaley-mvr-title em{font-style:italic;color:var(--amvr-rust)}
+.amaley-mvr-desc{margin:0 0 22px;max-width:590px;color:var(--amvr-muted);font-size:14.5px;line-height:1.64}
+.amaley-mvr-points{display:grid;gap:13px;margin:0;max-width:590px}
+.amaley-mvr-point{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:flex-start;padding:11px 0;border:0;background:transparent;border-radius:0;box-shadow:none;transition:transform .22s ease,background .22s ease,border-color .22s ease}
+.amaley-mvr-point:hover{transform:translateX(3px)}
+.amaley-mvr-point-icon{width:30px;height:30px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;border-radius:999px;background:#f0dbb3;color:#7c4708;font-size:9px;line-height:1;font-weight:900;letter-spacing:.04em;margin-top:1px}
+.amaley-mvr-point-title{margin:0 0 4px;color:var(--amvr-choco);font-family:var(--amvr-heading);font-size:clamp(17px,1.35vw,22px);line-height:1.16;font-weight:400;text-wrap:balance}
+.amaley-mvr-point-text{margin:0;color:#72513a;font-size:13px;line-height:1.54}
+.amaley-mvr-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:22px}
+.amaley-mvr-btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border:1px solid transparent;padding:12px 19px;border-radius:999px;font-size:10px;line-height:1;text-transform:uppercase;letter-spacing:.15em;font-weight:900;transition:background .22s ease,color .22s ease,border-color .22s ease,transform .22s ease;white-space:normal;text-align:center;min-height:42px}
+.amaley-mvr-btn:hover{transform:translateY(-2px)}.amaley-mvr-btn--primary{background:var(--amvr-choco);border-color:var(--amvr-choco);color:var(--amvr-ivory)}.amaley-mvr-btn--primary:hover{background:var(--amvr-rust);border-color:var(--amvr-rust);color:var(--amvr-ivory)}.amaley-mvr-btn--secondary{background:transparent;border-color:rgba(46,18,3,.34);color:var(--amvr-choco)}.amaley-mvr-btn--secondary:hover{background:var(--amvr-choco);border-color:var(--amvr-choco);color:var(--amvr-ivory)}
+
+/* Three-image collage stage: tall image + support image + wide image + center circle. */
+.amaley-mvr-visual-wrap{
+  --amvr-collage-height:400px;
+  --amvr-tall-w:41%;--amvr-tall-h:74%;--amvr-tall-left:0%;--amvr-tall-top:3%;
+  --amvr-support-w:46%;--amvr-support-h:36%;--amvr-support-right:0%;--amvr-support-top:2%;
+  --amvr-wide-w:78%;--amvr-wide-h:61%;--amvr-wide-right:0%;--amvr-wide-bottom:0%;
+  position:relative;min-width:0;width:100%;max-width:560px;height:var(--amvr-collage-height);min-height:var(--amvr-collage-height);align-self:center;overflow:visible;margin-inline:auto;
+}
+.amaley-mvr-visual-left .amaley-mvr-visual-wrap{margin-left:0;margin-right:auto}.amaley-mvr-visual-right .amaley-mvr-visual-wrap{margin-left:auto;margin-right:0}
+.amaley-mvr-collage-stage{position:relative;width:100%;height:100%;min-height:inherit;overflow:hidden;background:linear-gradient(135deg,#f7ecd8 0%,#fff8ed 48%,#f1dfbd 100%);border-radius:30px;isolation:isolate}
+.amaley-mvr-collage-stage:before{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(135deg,rgba(255,248,237,.44),rgba(246,234,212,.18));z-index:1;pointer-events:none}
+.amaley-mvr-backdrop-visual{position:absolute;inset:0;display:block;margin:0;overflow:hidden;border-radius:inherit;z-index:0;opacity:.18;pointer-events:none}
+.amaley-mvr-backdrop-visual img{position:absolute;inset:-5%;width:110%;height:110%;object-fit:cover;object-position:center center;filter:blur(6px) saturate(1.04);transform:scale(1.06);display:block}
+.amaley-mvr-main-visual,.amaley-mvr-floating-visual,.amaley-mvr-support-visual{position:absolute;display:block;margin:0;overflow:hidden;background:var(--amvr-sand);box-shadow:var(--amvr-soft-shadow);border:1px solid rgba(194,136,10,.22);max-width:100%;z-index:2}
+.amaley-mvr-floating-visual{left:var(--amvr-tall-left);top:var(--amvr-tall-top);width:var(--amvr-tall-w);height:var(--amvr-tall-h);border-radius:24px;z-index:2;box-shadow:0 18px 42px rgba(46,18,3,.15)}
+.amaley-mvr-support-visual{right:var(--amvr-support-right);top:var(--amvr-support-top);width:var(--amvr-support-w);height:var(--amvr-support-h);border-radius:22px;z-index:3;box-shadow:0 14px 32px rgba(46,18,3,.11)}
+.amaley-mvr-main-visual{right:var(--amvr-wide-right);bottom:var(--amvr-wide-bottom);width:var(--amvr-wide-w);height:var(--amvr-wide-h);border-radius:24px;z-index:4;box-shadow:0 20px 48px rgba(46,18,3,.16)}
+.amaley-mvr-main-visual img,.amaley-mvr-floating-visual img,.amaley-mvr-support-visual img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center;display:block;transform:translateZ(0)}
+.amaley-mvr-main-visual:before,.amaley-mvr-floating-visual:before,.amaley-mvr-support-visual:before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(46,18,3,0) 48%,rgba(46,18,3,.22) 100%);pointer-events:none}
+.amaley-mvr-visual-placeholder{background:radial-gradient(circle at 16% 18%,rgba(194,136,10,.28),transparent 28%),radial-gradient(circle at 76% 22%,rgba(181,80,42,.20),transparent 32%),linear-gradient(135deg,#f4e4c8 0%,#dec48e 45%,#fff8ed 100%)}
+.amaley-mvr-visual-placeholder:after{content:"";position:absolute;left:-14%;right:-14%;bottom:-18%;height:55%;background:linear-gradient(135deg,rgba(46,18,3,.42),rgba(46,18,3,.05));clip-path:polygon(0 68%,16% 48%,33% 61%,48% 30%,63% 55%,80% 36%,100% 62%,100% 100%,0 100%);z-index:1}
+.amaley-mvr-visual-placeholder span{position:absolute;left:22px;bottom:22px;z-index:2;display:inline-flex;max-width:74%;padding:9px 12px;border-radius:999px;background:rgba(46,18,3,.78);color:var(--amvr-ivory);font-size:9px;line-height:1.2;text-transform:uppercase;letter-spacing:.14em;font-weight:900}.amaley-mvr-visual-placeholder--small span{left:14px;bottom:14px;max-width:82%;font-size:8px;padding:7px 9px}
+.amaley-mvr-circle-badge{position:absolute;left:43%;top:49%;transform:translate(-50%,-50%);z-index:5;width:106px;height:106px;border-radius:999px;background:#fff8ed;color:var(--amvr-choco);border:1px solid rgba(194,136,10,.45);box-shadow:0 16px 42px rgba(46,18,3,.17);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12px;line-height:1.1;text-transform:uppercase;pointer-events:none}
+.amaley-mvr-circle-main{font-family:var(--amvr-heading);font-size:15px;letter-spacing:.12em;font-weight:600}.amaley-mvr-circle-sub{display:block;margin-top:5px;font-size:7.5px;line-height:1.25;letter-spacing:.12em;font-weight:900;color:var(--amvr-gold)}
+.amaley-mvr-visual-caption{position:absolute;right:8%;bottom:8%;z-index:6;display:inline-flex;max-width:calc(100% - 48px);padding:9px 14px;border-radius:999px;background:var(--amvr-choco);color:var(--amvr-ivory);font-size:8.5px;line-height:1.2;text-transform:uppercase;letter-spacing:.14em;font-weight:900;box-shadow:var(--amvr-soft-shadow)}
+.amaley-mvr-visual-right .amaley-mvr-visual-caption{right:8%;left:auto}
+
+@media (max-width:1100px){
+  .amaley-mvr-inner{max-width:980px}.amaley-mvr-shell,.amaley-mvr-visual-right .amaley-mvr-shell{gap:32px}.amaley-mvr-title{font-size:clamp(30px,4vw,44px)}
+  .amaley-mvr-visual-wrap{--amvr-collage-height:350px;--amvr-tall-w:42%;--amvr-tall-h:72%;--amvr-support-w:45%;--amvr-support-h:34%;--amvr-wide-w:78%;--amvr-wide-h:60%;max-width:520px}
+  .amaley-mvr-circle-badge{width:92px;height:92px}.amaley-mvr-circle-main{font-size:13px}.amaley-mvr-desc{font-size:14px}.amaley-mvr-point-text{font-size:12.8px}
+}
+@media (max-width:920px){
+  .amaley-mvr-shell,.amaley-mvr-visual-right .amaley-mvr-shell{grid-template-columns:1fr;gap:26px;align-items:start}
+  .amaley-mvr-content{max-width:100%;margin:0}.amaley-mvr-visual-wrap{max-width:600px;width:100%;--amvr-collage-height:340px;--amvr-tall-w:42%;--amvr-tall-h:72%;--amvr-support-w:45%;--amvr-support-h:34%;--amvr-wide-w:78%;--amvr-wide-h:60%;margin-inline:auto!important}
+  .amaley-mvr-mobile-visual_first .amaley-mvr-visual-wrap{order:1}.amaley-mvr-mobile-visual_first .amaley-mvr-content{order:2}.amaley-mvr-mobile-text_first .amaley-mvr-content{order:1}.amaley-mvr-mobile-text_first .amaley-mvr-visual-wrap{order:2}
+  .amaley-mvr-points{grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.amaley-mvr-point{grid-template-columns:1fr;gap:8px;padding:14px;border:1px solid var(--amvr-border);border-radius:18px;background:rgba(255,253,246,.72)}
+}
+@media (max-width:767px){
+  .amaley-mvr-section{padding:34px 14px}.amaley-mvr-shell,.amaley-mvr-visual-right .amaley-mvr-shell{gap:20px}.amaley-mvr-content{padding:0}.amaley-mvr-title{font-size:clamp(27px,8.3vw,38px);line-height:1.06}.amaley-mvr-desc{font-size:13.8px;line-height:1.58;margin-bottom:18px}
+  .amaley-mvr-visual-wrap{--amvr-collage-height:clamp(250px,72vw,318px);--amvr-tall-w:42%;--amvr-tall-h:62%;--amvr-tall-left:0%;--amvr-tall-top:0%;--amvr-support-w:38%;--amvr-support-h:30%;--amvr-support-right:0%;--amvr-support-top:2%;--amvr-wide-w:76%;--amvr-wide-h:54%;--amvr-wide-right:0%;--amvr-wide-bottom:0%;max-width:100%;overflow:visible}
+  .amaley-mvr-collage-stage{border-radius:22px}.amaley-mvr-main-visual,.amaley-mvr-floating-visual,.amaley-mvr-support-visual{border-radius:18px}.amaley-mvr-circle-badge{width:78px;height:78px;padding:8px;left:43%;top:48%}.amaley-mvr-circle-main{font-size:10.8px;letter-spacing:.08em}.amaley-mvr-circle-sub{font-size:6.6px;margin-top:3px;display:none}
+  .amaley-mvr-visual-caption{right:6%;bottom:7%;max-width:76%;font-size:7.4px;padding:7px 10px;letter-spacing:.1em}.amaley-mvr-points{grid-template-columns:1fr;gap:9px}.amaley-mvr-point{grid-template-columns:auto minmax(0,1fr);gap:10px;padding:11px;border:1px solid var(--amvr-border);border-radius:15px;background:rgba(255,253,246,.76)}.amaley-mvr-actions{gap:10px}.amaley-mvr-btn{width:100%;text-align:center}
+}
+@media (max-width:420px){
+  .amaley-mvr-section{padding-left:12px;padding-right:12px}.amaley-mvr-visual-wrap{--amvr-collage-height:clamp(232px,74vw,292px);--amvr-tall-w:43%;--amvr-tall-h:61%;--amvr-support-w:39%;--amvr-support-h:30%;--amvr-wide-w:78%;--amvr-wide-h:54%}.amaley-mvr-circle-badge{width:68px;height:68px}.amaley-mvr-circle-main{font-size:9.5px}.amaley-mvr-title{font-size:30px}.amaley-mvr-visual-caption{font-size:7px;padding:6px 9px}.amaley-mvr-point-icon{width:28px;height:28px;font-size:8px}
+}
+
+/* v1.0.19 final: point heading/description controls retained; image/collage controls retained. */
+.amaley-mvr-point-copy{display:grid;row-gap:4px;min-width:0}
+.amaley-mvr-point-title,.amaley-mvr-point-text{overflow-wrap:anywhere}
+.amaley-mvr-point-title[style*="-webkit-line-clamp: 0"],.amaley-mvr-point-text[style*="-webkit-line-clamp: 0"]{display:block;overflow:visible}
+.amaley-mvr-point-title[style*="-webkit-line-clamp: 1"],.amaley-mvr-point-title[style*="-webkit-line-clamp: 2"],.amaley-mvr-point-title[style*="-webkit-line-clamp: 3"],.amaley-mvr-point-title[style*="-webkit-line-clamp: 4"],.amaley-mvr-point-title[style*="-webkit-line-clamp: 5"],.amaley-mvr-point-title[style*="-webkit-line-clamp: 6"],.amaley-mvr-point-text[style*="-webkit-line-clamp: 1"],.amaley-mvr-point-text[style*="-webkit-line-clamp: 2"],.amaley-mvr-point-text[style*="-webkit-line-clamp: 3"],.amaley-mvr-point-text[style*="-webkit-line-clamp: 4"],.amaley-mvr-point-text[style*="-webkit-line-clamp: 5"],.amaley-mvr-point-text[style*="-webkit-line-clamp: 6"],.amaley-mvr-point-text[style*="-webkit-line-clamp: 7"],.amaley-mvr-point-text[style*="-webkit-line-clamp: 8"]{display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden}
+.amaley-mvr-points--title_only .amaley-mvr-point{align-items:center}
+.amaley-mvr-points--title_only .amaley-mvr-point-title{margin-bottom:0}
+.amaley-mvr-point--no-description .amaley-mvr-point-title{margin-bottom:0}
+.amaley-mvr-point--no-title .amaley-mvr-point-text{margin-top:0}
+
+/* v1.0.23 icon color reliability for mission/vision point icons. */
+.amaley-mvr-point-icon i,.amaley-mvr-point-icon svg{color:inherit;fill:currentColor;stroke:currentColor}
+.amaley-mvr-point-icon svg *{fill:currentColor;stroke:currentColor}

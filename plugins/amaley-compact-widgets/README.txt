@@ -1,14 +1,32 @@
-Amaley Compact Widgets v0.4.18
+Amaley Compact Widgets v0.4.19 — Merged Home Sections Safe Build
 
-Final alignment system reset. Dual Heading remains unchanged from approved v0.4.13/v0.4.12 visual direction.
+Base: current live/fresh Hostinger compact plugin supplied by user.
+Merged from: Amaley Compact Spacing Controls v1.0.23 icon color fix.
 
-Important:
-- Legacy Overall Alignment control has been removed from old compact widgets.
-- Header Alignment controls only section heading.
-- Card Text Alignment controls only cards/items.
-- Section Button Alignment controls only section buttons.
-- No WooCommerce/header/footer/theme override.
-- No database migration/write/delete functions.
+Included merged widgets:
+- Amaley Mission Visual Statement
+- Amaley Vision Visual Statement
+- Amaley Process Journey
+- Amaley Origin Pillars
+- Amaley Livelihood Chain Band
+- Amaley Gifting Feature Split
 
+Included merged control additions:
+- Split Editorial spacing / card / mobile text-first controls
+- Origin Map Path extra visibility, layout, panel, map and step controls
+- SVG/icon color fix through widget CSS
 
-0.4.18 note: Header Alignment Elementor live selector now controls both text-align and header/description margins, so center/right alignment previews immediately without relying only on renderer classes. Dual Heading unchanged.
+Important install rule:
+After installing this merged Compact Widgets plugin, deactivate/delete the separate plugin:
+Amaley Compact Spacing Controls v1.0.23
+
+Safety notes:
+- No WooCommerce product changes.
+- No Cluster / SHG / Member / Origin mapping changes.
+- No import/export/migration code.
+- No database write/delete functions added.
+- No header/footer/theme override.
+- CSS remains scoped to Amaley widget wrappers.
+
+Version note:
+v0.4.19 keeps the old compact widgets and adds the approved final home-section widgets into the main compact plugin.
