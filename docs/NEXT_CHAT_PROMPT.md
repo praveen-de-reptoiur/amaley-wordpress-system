@@ -12,8 +12,9 @@ Before any planning, design, Elementor widget, plugin, template, archive/single 
 4. `docs/PROJECT_MANIFEST.md`
 5. `docs/AMALEY_DISCOVERY_ENGINE_CURRENT_STATUS_v1.4.4.md`
 6. `docs/AMALEY_CORE_CURRENT_STATUS_v1.0.99.5.md`
-7. `plugins/amaley-core/OG_PRODUCT_PRICE_STACK_FIX_v1.0.99.5.md`
-8. `plugins/amaley-page-assignment-bridge/README.md`
+7. `docs/AMALEY_COMPACT_WIDGETS_CURRENT_STATUS_v0.4.18.md`
+8. `plugins/amaley-core/OG_PRODUCT_PRICE_STACK_FIX_v1.0.99.5.md`
+9. `plugins/amaley-page-assignment-bridge/README.md`
 
 ## Current locked source status
 
@@ -25,8 +26,29 @@ Before any planning, design, Elementor widget, plugin, template, archive/single 
 | Amaley Brand Site Kit | v1.0.4 | Global brand tokens and safe Elementor color/font support |
 | Amaley H/F Studio V2 | v2.0.15 | Header/footer template workflow |
 | Amaley UI Sections Kit | v0.6.1 | Home Hero V6, Page Trust Strip, Pages Hero Other |
-| Amaley Compact Widgets | v0.4.3 source | Manual/static compact widgets |
+| Amaley Compact Widgets | v0.4.18 final tested | Manual/static compact widgets; approved Dual Section Heading and fixed non-dual alignment system |
 | Amaley Templates | v1.2.7 | WooCommerce/page template support; not edited for the bridge |
+
+## Compact Widgets lock
+
+Amaley Compact Widgets v0.4.18 is the accepted source baseline.
+
+Accepted behaviour:
+
+- `Amaley Dual Section Heading` is approved for reusable site-wide section headings.
+- Dual Heading must remain a dedicated heading-only widget.
+- Do not add card/grid/repeater controls to Dual Heading.
+- Old non-dual compact widgets use separate Header Alignment, Card Text Alignment and Button Alignment controls.
+- Do not bring back the old broad Overall Alignment control.
+- Do not use `v0.4.14`, `v0.4.15`, `v0.4.16` or `v0.4.17` as final.
+- Compact Widgets must not change WooCommerce, product data/photos/mapping, header/footer, cart/checkout or templates.
+
+Reference docs:
+
+```text
+docs/AMALEY_COMPACT_WIDGETS_CURRENT_STATUS_v0.4.18.md
+docs/AMALEY_COMPACT_WIDGETS_VERSION_HISTORY.md
+```
 
 ## Final card architecture lock
 
