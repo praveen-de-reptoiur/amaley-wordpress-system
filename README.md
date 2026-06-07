@@ -32,7 +32,7 @@ Drive/backups are used separately for install ZIPs, full site backups, media, sc
 | Amaley H/F Studio V2 | v2.0.15 pre-lock safety | Current active header/footer builder: Elementor H/F templates, assignment rules, live-style widgets, mobile drawer and section-wise full controls |
 | Amaley Site Shell | v1.0.1 retired/on hold | Old header/footer shell. Do not activate together with Amaley H/F Studio V2 |
 | Amaley UI Sections Kit | v0.6.1 | Home Hero V6, Page Trust Strip, Pages Hero Other and UI foundation |
-| Amaley Compact Widgets | v0.4.3 source | Manual/static compact visual widgets |
+| Amaley Compact Widgets | v0.4.18 final tested | Manual/static compact visual widgets; includes approved Dual Section Heading and fixed non-dual widget alignment system |
 | Amaley Templates | v1.2.7 | WooCommerce/page template support modules |
 
 ## Amaley Discovery Engine Lock Note
@@ -132,6 +132,35 @@ Next planned phase:
 v2.1.0 — Amaley Global Colors Sync / Elementor Kit color sync
 ```
 
+## Amaley Compact Widgets Lock Note
+
+Current compact widget system:
+
+```text
+Amaley Compact Widgets — v0.4.18 final tested
+```
+
+Source path:
+
+```text
+plugins/amaley-compact-widgets/
+```
+
+Current accepted behaviour:
+
+- Dedicated `Amaley Dual Section Heading` widget is approved for reusable section headings.
+- Dual Heading has clean heading-only controls and must not inherit card/grid/widget controls.
+- Old non-dual compact widgets use a separated alignment system: Header Alignment, Card Text Alignment and Button Alignment.
+- The old broad Overall Alignment control was removed from non-dual compact widgets to avoid alignment conflicts.
+- Elementor live-preview alignment was tested for key non-dual widgets after the v0.4.18 reset.
+- No WooCommerce, header/footer, product data, product images, product-origin mappings, cart/checkout, template overrides or global CSS were intentionally changed.
+
+Do not use rejected/archived compact widget builds as final:
+
+```text
+v0.4.14, v0.4.15, v0.4.16, v0.4.17
+```
+
 ## Elementor Stability Lock
 
 ```text
@@ -146,6 +175,8 @@ Start here:
 
 - `docs/PROJECT_MANIFEST.md`
 - `docs/AMALEY_DISCOVERY_ENGINE_CURRENT_STATUS_v1.4.4.md`
+- `docs/AMALEY_COMPACT_WIDGETS_CURRENT_STATUS_v0.4.18.md`
+- `docs/AMALEY_COMPACT_WIDGETS_VERSION_HISTORY.md`
 - `docs/AMALEY_UNIVERSAL_SHOWCASE_WIDGET_LOCK.md`
 - `docs/AMALEY_HF_STUDIO_V2_CURRENT_STATUS_v2.0.15.md`
 - `docs/AMALEY_PLUGIN_WIDGET_REGISTRY_AND_CONFLICT_RULES.md`
