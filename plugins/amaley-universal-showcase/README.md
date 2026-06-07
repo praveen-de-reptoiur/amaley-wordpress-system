@@ -2,7 +2,7 @@
 
 Standalone Elementor showcase widget for the Amaley WordPress ecosystem.
 
-Version: 1.0.19  
+Version: 1.0.20  
 Status: Active stable standalone plugin  
 Author: Praveen
 
@@ -10,7 +10,7 @@ Author: Praveen
 
 - This plugin remains a **separate plugin**.
 - **Do not merge into Amaley Core** unless separately approved later.
-- Current source-of-truth version is **v1.0.19**.
+- Current source-of-truth version is **v1.0.20**.
 
 ## Purpose
 
@@ -32,6 +32,24 @@ This plugin provides a reusable Elementor widget for showing Amaley ecosystem co
 - Card meta controls
 - Phone/tablet responsive polish
 
+## v1.0.20 Member / Producer URL Fix
+
+v1.0.20 adds a dedicated member detail link resolver:
+
+`includes/class-aus-member-detail-links.php`
+
+The fix routes Universal Showcase Member / Producer cards to the assigned Producers Details page.
+
+Expected card URL format:
+
+`/producers-details/?member_slug=member-slug`
+
+Resolution priority:
+
+1. Amaley Core Settings -> Producer Single Template Page
+2. WordPress page slug -> producers-details
+3. Original WordPress permalink fallback if no valid page is found
+
 ## Safety Boundaries
 
 This plugin should not modify or override:
@@ -46,8 +64,16 @@ This plugin should not modify or override:
 
 ## Install Rule on Current Test Site
 
-1. Deactivate old Amaley Universal Showcase.
-2. Delete old Amaley Universal Showcase.
-3. Upload the new ZIP.
-4. Activate.
+1. Backup before replacing the plugin.
+2. Upload the new ZIP.
+3. Activate.
+4. Purge cache after update.
 5. Hard refresh Elementor.
+
+## Post-Fix Test
+
+After installing v1.0.20, test a Universal Showcase section where **What to Show** is set to **Member / Producer**.
+
+Expected card URL format:
+
+`/producers-details/?member_slug=dechen-wangmo`
