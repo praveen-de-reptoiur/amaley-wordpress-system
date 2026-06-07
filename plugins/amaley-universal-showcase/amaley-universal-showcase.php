@@ -19,6 +19,7 @@ if ( ! defined( 'AUS_PATH' ) ) { define( 'AUS_PATH', plugin_dir_path( __FILE__ )
 if ( ! defined( 'AUS_URL' ) ) { define( 'AUS_URL', plugin_dir_url( __FILE__ ) ); }
 
 require_once AUS_PATH . 'includes/class-aus-plugin.php';
+require_once AUS_PATH . 'includes/class-aus-member-detail-links.php';
 
 if ( ! function_exists( 'aus_plugin' ) ) {
 function aus_plugin() {
