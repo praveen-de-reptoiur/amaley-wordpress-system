@@ -2,8 +2,8 @@
 /**
  * Plugin Name: Amaley Compact Widgets
  * Plugin URI: https://amaleycollective.com/
- * Description: Professional, compact, mobile-first Elementor widgets and shortcodes for Amaley page sections. Scoped, lightweight, scoped interactive JavaScript for the Origin Map Path widget.
- * Version: 0.4.5
+ * Description: Professional, compact, mobile-first Elementor widgets and shortcodes for Amaley page sections. Includes a dedicated Dual Section Heading widget with clean heading-only controls.
+ * Version: 0.4.18
  * Author: Praveen
  * Text Domain: amaley-compact-widgets
  * Requires at least: 6.0
@@ -15,16 +15,16 @@
 defined( 'ABSPATH' ) || exit;
 
 if ( ! defined( 'AMALEY_CW_VERSION' ) ) {
-	define( 'AMALEY_CW_VERSION', '0.4.5' );
+    define( 'AMALEY_CW_VERSION', '0.4.18' );
 }
 if ( ! defined( 'AMALEY_CW_FILE' ) ) {
-	define( 'AMALEY_CW_FILE', __FILE__ );
+    define( 'AMALEY_CW_FILE', __FILE__ );
 }
 if ( ! defined( 'AMALEY_CW_PATH' ) ) {
-	define( 'AMALEY_CW_PATH', plugin_dir_path( __FILE__ ) );
+    define( 'AMALEY_CW_PATH', plugin_dir_path( __FILE__ ) );
 }
 if ( ! defined( 'AMALEY_CW_URL' ) ) {
-	define( 'AMALEY_CW_URL', plugin_dir_url( __FILE__ ) );
+    define( 'AMALEY_CW_URL', plugin_dir_url( __FILE__ ) );
 }
 
 require_once AMALEY_CW_PATH . 'includes/class-amaley-cw-renderer.php';
