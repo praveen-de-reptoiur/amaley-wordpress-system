@@ -35,10 +35,53 @@ Some future folders may remain planning-only until a real source module is appro
 | Amaley Page Assignment Bridge | v1.4.1 final single product bridge | `AMALLEY_PAGE_ASSIGNMENT_BRIDGE_v1.4.1_SINGLE_PRODUCT_FINAL.zip` backup should be kept in Drive/local backup only |
 | Amaley Site Shell | v1.0.1 retired/on hold | `amaley-site-shell-v1.0.1.zip` |
 | Amaley UI Sections Kit | v0.6.1 | `amaley-ui-sections-kit-v0.6.1.zip` |
-| Amaley Compact Widgets | v0.4.3 source | v0.4.2 active ZIP until v0.4.3 ZIP/staging test |
+| Amaley Compact Widgets | v0.4.18 final tested | `amaley-compact-widgets-v0.4.18-header-alignment-live-preview-tested.zip` backup should be kept in Drive/local backup only |
 | Amaley Templates | v1.2.7 | `amaley-templates-v1.2.7.zip` |
 
 ZIPs are backups and must not be uploaded into this GitHub folder.
+
+---
+
+## Current Amaley Compact Widgets v0.4.18 Lock
+
+`plugins/amaley-compact-widgets/` is synced to v0.4.18.
+
+Accepted behaviour:
+
+- Adds and keeps the approved `Amaley Dual Section Heading` widget.
+- Dual Heading is a dedicated heading-only widget, not a card/grid widget.
+- Dual Heading supports kicker, dual heading text, accent text, description, HTML tag, alignment, spacing, typography and show/hide controls.
+- Existing non-dual compact widgets keep their compact visual role.
+- Non-dual widgets use separate controls for Header Alignment, Card Text Alignment and Button Alignment.
+- Old broad Overall Alignment was removed from non-dual widgets to avoid alignment conflicts.
+- Header Alignment now affects the heading block in Elementor live preview with both text alignment and block margin behaviour.
+- Columns no longer depend on inline `--acw4-cols` output that blocks responsive Elementor controls.
+
+Safety scope:
+
+```text
+No WooCommerce cart/checkout/template override.
+No product data change.
+No product image/gallery change.
+No product-origin mapping change.
+No header/footer change.
+No broad global CSS.
+No filesystem/database write/delete routine.
+No Dual Heading regression after v0.4.18 lock.
+```
+
+Do not use as final:
+
+```text
+v0.4.14, v0.4.15, v0.4.16, v0.4.17
+```
+
+Reference docs:
+
+```text
+docs/AMALEY_COMPACT_WIDGETS_CURRENT_STATUS_v0.4.18.md
+docs/AMALEY_COMPACT_WIDGETS_VERSION_HISTORY.md
+```
 
 ---
 
@@ -218,51 +261,3 @@ Locked principles:
 ### amaley-core
 
 Core data and system backbone.
-
-Owns:
-
-- Clusters
-- SHG Groups
-- SHG Members / Producers
-- Product Origin Mapping
-- Explicit Cluster → SHG/Producer Group links
-- Rich story editor support
-- Gallery/media fields where implemented
-- Cluster Single spacing rhythm polish
-- SHG archive and SHG single section widgets
-- Member archive and Member single section widgets where CPT data is involved
-- CPT-driven cards, archive sections and single sections
-- Locked Cluster, SHG, Member and Product card families used in CPT contexts
-- Universal OG card selectors/bridges for CPT contexts
-- Section-level CTA controls where sections show limited cards
-- Producer / maker profiles
-- Traceability fields
-- System health checks
-
-Current relation source of truth:
-
-```text
-_amaley_cluster_linked_group_ids
-```
-
-Admin box:
-
-```text
-Amaley Linked Producer Groups / SHGs
-```
-
-This field is edited on the Cluster edit screen and read first by single cluster frontend sections.
-
-Current approved spacing reference:
-
-```text
-Amaley Section Spacing Rhythm 1
-```
-
-Current approved card reference:
-
-```text
-docs/AMALEY_CARD_DESIGN_LOCK.md
-```
-
-Does not own broad generic frontend design sections.
