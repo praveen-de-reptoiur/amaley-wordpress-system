@@ -6,6 +6,75 @@ Every entry should clearly explain what changed, why it changed, which file/plug
 
 ---
 
+## 2026-06-07
+
+### Amaley Compact Widgets v0.4.18 — Dual Heading and Non-Dual Alignment System Reset
+
+- Synced `plugins/amaley-compact-widgets/` source to Amaley Compact Widgets v0.4.18.
+- Confirmed plugin header and `AMALEY_CW_VERSION` are set to `0.4.18`.
+- Added and locked the approved `Amaley Dual Section Heading` widget.
+- Kept Dual Heading as a dedicated heading-only widget with no card/grid/repeater controls.
+- Cleaned non-dual compact widget alignment by removing the old broad `Overall Alignment` control.
+- Accepted alignment model for non-dual widgets:
+
+```text
+Header Alignment      → heading / kicker / title / description only
+Card Text Alignment   → cards / items only
+Button Alignment      → action rows / buttons only, where applicable
+```
+
+- Confirmed the compact widget update is limited to compact visual widgets only.
+- Product data, product images/gallery, product-origin mapping, WooCommerce templates, cart/checkout, header/footer, Amaley Core and Discovery Engine were not intentionally changed.
+
+Rejected / archived compact widget attempts:
+
+```text
+v0.4.14 — broad alignment over-correction, rejected
+v0.4.15 — incomplete rollback/root fix, archived
+v0.4.16 — incomplete live-preview alignment fix, archived
+v0.4.17 — improved reset but still needed live-preview correction, archived
+```
+
+Affected source / docs:
+
+```text
+plugins/amaley-compact-widgets/
+plugins/amaley-compact-widgets/amaley-compact-widgets.php
+docs/AMALEY_COMPACT_WIDGETS_CURRENT_STATUS_v0.4.18.md
+docs/AMALEY_COMPACT_WIDGETS_VERSION_HISTORY.md
+README.md
+plugins/README.md
+docs/CHANGELOG.md
+docs/PROJECT_MANIFEST.md
+docs/NEXT_CHAT_PROMPT.md
+000_READ_FIRST_BEFORE_ANY_WORK.md
+```
+
+Safety decision:
+
+```text
+No WooCommerce cart/checkout/template override.
+No product data change.
+No product image/gallery change.
+No product-origin mapping change.
+No header/footer change.
+No Amaley Core source change.
+No Amaley Discovery Engine source change.
+No broad global CSS.
+No ZIP/media/screenshots/videos committed to GitHub.
+```
+
+Next safe work:
+
+```text
+1. Install final v0.4.18 ZIP on the WordPress site.
+2. Clear cache and hard-refresh Elementor.
+3. Check Dual Heading, Info Cards, Purpose Cards, Quote Cards and Metric Tiles.
+4. Do not change compact widgets again without isolating the exact widget and testing it individually.
+```
+
+---
+
 ## 2026-06-06
 
 ### Amaley Discovery Engine v1.4.4 — Stable OG Product Card Source Renderer and Full Card Controls
@@ -238,39 +307,4 @@ No WooCommerce cart/checkout override.
 No header/footer override.
 No permalink rewrite intentionally documented.
 No ZIP/media committed to GitHub.
-No global CSS dump approved.
-No random card redesign allowed after this lock.
-```
-
-### Amaley Core v1.0.46 — Cluster Single Spacing Rhythm Polish Source Sync
-
-- Synced `plugins/amaley-core/` source to Amaley Core v1.0.46.
-- Confirmed plugin header and `AMALEY_CORE_VERSION` are set to `1.0.46`.
-- Added/confirmed Cluster Single spacing rhythm polish after user-approved frontend review.
-- Preserved separate section widgets as the final editing workflow.
-- Tightened Hero → Quick Details → Story → Women Collectives → Producers → Products → CTA rhythm.
-- Preserved v1.0.41 explicit relation key:
-
-```text
-_amaley_cluster_linked_group_ids
-```
-
-- Preserved v1.0.45 Cluster Full Story rich editor direction.
-- Confirmed source sync did not include ZIP/media files.
-
-Affected source:
-
-```text
-plugins/amaley-core/
-plugins/amaley-core/amaley-core.php
-plugins/amaley-core/CHANGELOG.md
-plugins/amaley-core/CLUSTER_SINGLE_SPACING_RHYTHM_POLISH_v1.0.46.md
-plugins/amaley-core/RICH_TEXT_CLUSTER_STORY_FIELD_v1.0.45.md
-plugins/amaley-core/RELATION_EXPLICIT_LINKS_FIX_v1.0.41.md
-```
-
-Safety decision:
-
-```text
-No WooCommerce cart/checkout override.
 ```
