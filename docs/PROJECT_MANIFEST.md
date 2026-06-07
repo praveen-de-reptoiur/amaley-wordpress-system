@@ -37,7 +37,7 @@ Google Drive is used for plugin ZIP backups, full website backups, Elementor exp
 | Amaley H/F Studio V2 | v2.0.15 pre-lock safety | Elementor-style header/footer templates, assignment rules, live-style header/footer widgets, mobile drawer and section-wise full-control workflow |
 | Amaley Site Shell | v1.0.1 retired/on hold | Old header/footer shell; do not activate alongside Amaley H/F Studio V2 |
 | Amaley UI Sections Kit | v0.6.1 | Home Hero V6, Page Trust Strip, Pages Hero Other, UI foundation |
-| Amaley Compact Widgets | v0.4.3 source | Manual/static compact visual widgets; v0.4.2 active ZIP may remain until v0.4.3 staging test |
+| Amaley Compact Widgets | v0.4.18 final tested | Manual/static compact visual widgets; includes approved Dual Section Heading and fixed non-dual widget alignment controls |
 | Amaley Templates | v1.2.7 | WooCommerce/page template support; not edited for the Page Assignment Bridge |
 
 ---
@@ -49,6 +49,63 @@ Elementor Atomic Editor must remain inactive.
 ```
 
 Reason: Atomic Editor caused repeated Elementor left-panel loading/spinner issues during the universal-card work. After deactivation, controls started working again.
+
+---
+
+## Amaley Compact Widgets Current Lock
+
+Current source path:
+
+```text
+plugins/amaley-compact-widgets/
+```
+
+Current version:
+
+```text
+v0.4.18 — Dual Heading + Non-Dual Alignment System Reset
+```
+
+Current accepted behaviour:
+
+- `Amaley Dual Section Heading` is the approved reusable section-heading widget.
+- Dual Heading is a dedicated heading-only widget with no card/grid/repeater controls.
+- Dual Heading supports kicker, dual heading text, accent text, description, HTML tag, alignment, spacing, typography and show/hide controls.
+- Existing compact widgets remain manual/static visual widgets.
+- Non-dual compact widgets now separate alignment behaviour clearly:
+  - Header Alignment controls only heading/kicker/title/description.
+  - Card Text Alignment controls cards/items.
+  - Button Alignment controls section/card action rows where applicable.
+- Old broad Overall Alignment was removed from non-dual widgets because it caused cross-control alignment conflicts.
+- Elementor live-preview alignment was retested after the v0.4.18 fix.
+- Columns responsive control no longer depends on inline column variables that override Elementor responsive selectors.
+
+Safety scope:
+
+```text
+No WooCommerce cart/checkout/template override.
+No product data changes.
+No product image/gallery changes.
+No product-origin mapping changes.
+No header/footer changes.
+No Amaley Core changes.
+No Amaley Discovery Engine changes.
+No global CSS.
+No database/filesystem write-delete routines.
+```
+
+Rejected / not-to-use versions:
+
+```text
+v0.4.14, v0.4.15, v0.4.16, v0.4.17
+```
+
+Reference docs:
+
+```text
+docs/AMALEY_COMPACT_WIDGETS_CURRENT_STATUS_v0.4.18.md
+docs/AMALEY_COMPACT_WIDGETS_VERSION_HISTORY.md
+```
 
 ---
 
