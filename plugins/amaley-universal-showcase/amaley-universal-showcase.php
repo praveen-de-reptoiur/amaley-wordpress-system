@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Amaley Universal Showcase
  * Description: Standalone Elementor showcase widget for Amaley Core content: Cluster, SHG, Member and Product grid/slider/list sections.
- * Version: 1.0.19
+ * Version: 1.0.20
  * Author: Praveen
  * Text Domain: amaley-universal-showcase
  * Requires at least: 6.0
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-if ( ! defined( 'AUS_VERSION' ) ) { define( 'AUS_VERSION', '1.0.19' ); }
+if ( ! defined( 'AUS_VERSION' ) ) { define( 'AUS_VERSION', '1.0.20' ); }
 if ( ! defined( 'AUS_FILE' ) ) { define( 'AUS_FILE', __FILE__ ); }
 if ( ! defined( 'AUS_PATH' ) ) { define( 'AUS_PATH', plugin_dir_path( __FILE__ ) ); }
 if ( ! defined( 'AUS_URL' ) ) { define( 'AUS_URL', plugin_dir_url( __FILE__ ) ); }
