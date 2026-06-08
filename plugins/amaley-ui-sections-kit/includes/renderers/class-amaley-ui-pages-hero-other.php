@@ -9,6 +9,12 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Renders reusable inner-page hero variations for Amaley non-home pages.
+ *
+ * v0.6.3-staging:
+ * - Adds control-friendly inner classes for stats, editorial note, side card,
+ *   intent card and statement pills.
+ * - Keeps existing frontend structure and design behaviour unchanged.
+ * - No WooCommerce, Discovery, Core, Templates, header/footer or global CSS changes.
  */
 final class Amaley_UI_Pages_Hero_Other {
 
@@ -37,39 +43,47 @@ final class Amaley_UI_Pages_Hero_Other {
 			case 'style-2':
 				$html .= self::render_cluster( $atts, $stats );
 				break;
+
 			case 'style-3':
 				$html .= self::render_intent( $atts, $stats );
 				break;
+
 			case 'style-6':
 				$html .= self::render_image_split( $atts );
 				break;
+
 			case 'style-7':
 			case 'style-9':
 			case 'style-10':
 			case 'style-11':
 				$html .= self::render_editorial_image( $atts, $stats );
 				break;
+
 			case 'style-8':
 			case 'style-12':
 			case 'style-13':
 				$html .= self::render_statement( $atts, $features, $stats );
 				break;
+
 			default:
 				$html .= self::render_text_split( $atts );
 				break;
 		}
 
 		$html .= '</div></section>';
+
 		return $html;
 	}
 
 	/** Normalize attributes. */
 	private static function normalize_atts( $atts ) {
-		$allowed = self::allowed_styles();
+		$allowed        = self::allowed_styles();
 		$incoming_style = '';
+
 		if ( is_array( $atts ) ) {
 			$incoming_style = isset( $atts['hero_style'] ) ? $atts['hero_style'] : ( isset( $atts['style'] ) ? $atts['style'] : '' );
 		}
+
 		$style    = self::safe_choice( $incoming_style, $allowed, 'style-1' );
 		$defaults = self::preset_defaults( $style );
 
@@ -98,11 +112,14 @@ final class Amaley_UI_Pages_Hero_Other {
 		foreach ( array( 'kicker', 'title', 'accent', 'description', 'side_kicker', 'side_title', 'side_text', 'primary_text', 'secondary_text', 'image_alt', 'aria_label' ) as $key ) {
 			$atts[ $key ] = isset( $atts[ $key ] ) ? wp_strip_all_tags( (string) $atts[ $key ] ) : '';
 		}
+
 		foreach ( array( 'primary_url', 'secondary_url', 'image' ) as $key ) {
 			$atts[ $key ] = esc_url_raw( (string) $atts[ $key ] );
 		}
+
 		$atts['stats']    = wp_strip_all_tags( (string) $atts['stats'] );
 		$atts['features'] = wp_strip_all_tags( (string) $atts['features'] );
+
 		return $atts;
 	}
 
@@ -132,7 +149,7 @@ final class Amaley_UI_Pages_Hero_Other {
 		);
 
 		$presets = array(
-			'style-1' => array(
+			'style-1'  => array(
 				'aria_label'   => 'About Amaley hero',
 				'kicker'       => 'Our Story',
 				'title'        => 'About, {Amaley}',
@@ -142,7 +159,7 @@ final class Amaley_UI_Pages_Hero_Other {
 				'side_title'   => 'Rooted in the Himalayas',
 				'side_text'    => 'Pure. Honest. Traceable.',
 			),
-			'style-2' => array(
+			'style-2'  => array(
 				'aria_label'  => 'Amaley clusters hero',
 				'kicker'      => 'Traceable by place, group, and maker',
 				'title'       => 'Clusters that hold the {Amaley story together.}',
@@ -150,7 +167,7 @@ final class Amaley_UI_Pages_Hero_Other {
 				'description' => 'This is where Amaley becomes visible as an ecosystem — products linked to landscapes, SHGs, women producers, seasonality, and village-level enterprise.',
 				'stats'       => '05::Clusters|05::SHG Groups|Traceable::Place to Product',
 			),
-			'style-3' => array(
+			'style-3'  => array(
 				'aria_label'     => 'Amaley collections hero',
 				'kicker'         => 'Amaley Collections',
 				'title'          => 'Explore {Collections.}',
@@ -163,7 +180,7 @@ final class Amaley_UI_Pages_Hero_Other {
 				'side_text'      => 'Gift, breakfast, wellness, hospitality, retail placement, or everyday pantry — this page helps buyers choose the right Amaley line.',
 				'stats'          => '12+::Curated Lines|3::Buying Routes|100%::Place-led Story',
 			),
-			'style-5' => array(
+			'style-5'  => array(
 				'aria_label'     => 'Contact Amaley hero',
 				'kicker'         => 'Contact',
 				'title'          => 'Start a Conversation {with Amaley}',
@@ -172,7 +189,7 @@ final class Amaley_UI_Pages_Hero_Other {
 				'primary_text'   => 'Send an Enquiry',
 				'secondary_text' => 'Explore Collections',
 			),
-			'style-6' => array(
+			'style-6'  => array(
 				'aria_label'   => 'Amaley gifting hero',
 				'kicker'       => 'Gifts that come from the Himalayas',
 				'title'        => 'Gifting with {Meaning}',
@@ -181,7 +198,7 @@ final class Amaley_UI_Pages_Hero_Other {
 				'primary_text' => 'Explore Gift Collections →',
 				'image_alt'    => 'Amaley curated gifting box',
 			),
-			'style-7' => array(
+			'style-7'  => array(
 				'aria_label'     => 'Amaley premium editorial hero',
 				'kicker'         => 'Crafted for thoughtful homes',
 				'title'          => 'Small-batch food with a {Himalayan soul}',
@@ -195,7 +212,7 @@ final class Amaley_UI_Pages_Hero_Other {
 				'stats'          => 'Natural::Ingredients|Small::Batches|Traceable::Origins',
 				'image_alt'      => 'Amaley premium Himalayan product story',
 			),
-			'style-8' => array(
+			'style-8'  => array(
 				'aria_label'  => 'Amaley centered statement hero',
 				'kicker'      => 'Amaley Collective',
 				'title'       => 'Rooted in {Himalayan care}',
@@ -203,7 +220,7 @@ final class Amaley_UI_Pages_Hero_Other {
 				'description' => 'A calm, centered hero for simple pages where the message matters more than imagery.',
 				'features'    => 'Pure Ingredients::Thoughtfully sourced and prepared|Women Collectives::Community-rooted production|Small Batch::Made with discipline and care',
 			),
-			'style-9' => array(
+			'style-9'  => array(
 				'aria_label'     => 'Amaley framed editorial hero',
 				'kicker'         => 'From place to plate',
 				'title'          => 'Every batch begins with a {Himalayan place}',
@@ -254,7 +271,7 @@ final class Amaley_UI_Pages_Hero_Other {
 				'title'       => 'A calm page start for {focused actions}',
 				'accent'      => 'focused actions',
 				'description' => 'A very clean centered statement hero for contact, partner enquiry, terms, policies, or pages that should not feel image-heavy.',
-				'primary_text'=> 'Start Here',
+				'primary_text' => 'Start Here',
 				'features'    => 'Clear Message::No visual clutter|Fast Loading::No image required|Easy Edit::Simple controls',
 			),
 		);
@@ -265,12 +282,16 @@ final class Amaley_UI_Pages_Hero_Other {
 	private static function render_text_split( $atts ) {
 		$html  = '<div class="amaley-pages-hero-other__text-grid">';
 		$html .= self::render_content( $atts );
+
 		if ( 'style-1' === $atts['style'] && '' !== $atts['side_title'] ) {
-			$html .= '<div class="amaley-pages-hero-other__side-text"><h2>' . self::title_html( $atts['side_title'], '' ) . '</h2>';
-			$html .= '' !== $atts['side_text'] ? '<p>' . esc_html( $atts['side_text'] ) . '</p>' : '';
+			$html .= '<div class="amaley-pages-hero-other__side-text">';
+			$html .= '<h2 class="amaley-pages-hero-other__side-title">' . self::title_html( $atts['side_title'], '' ) . '</h2>';
+			$html .= '' !== $atts['side_text'] ? '<p class="amaley-pages-hero-other__side-description">' . esc_html( $atts['side_text'] ) . '</p>' : '';
 			$html .= '</div>';
 		}
+
 		$html .= '</div>';
+
 		return $html;
 	}
 
@@ -282,11 +303,12 @@ final class Amaley_UI_Pages_Hero_Other {
 		$html  = '<div class="amaley-pages-hero-other__collections-grid">';
 		$html .= self::render_content( $atts );
 		$html .= '<aside class="amaley-pages-hero-other__intent-card">';
-		$html .= '' !== $atts['side_kicker'] ? '<span class="amaley-pages-hero-other__kicker">' . esc_html( $atts['side_kicker'] ) . '</span>' : '';
-		$html .= '' !== $atts['side_title'] ? '<h2>' . self::title_html( $atts['side_title'], '' ) . '</h2>' : '';
-		$html .= '' !== $atts['side_text'] ? '<p>' . esc_html( $atts['side_text'] ) . '</p>' : '';
+		$html .= '' !== $atts['side_kicker'] ? '<span class="amaley-pages-hero-other__kicker amaley-pages-hero-other__intent-kicker">' . esc_html( $atts['side_kicker'] ) . '</span>' : '';
+		$html .= '' !== $atts['side_title'] ? '<h2 class="amaley-pages-hero-other__intent-title">' . self::title_html( $atts['side_title'], '' ) . '</h2>' : '';
+		$html .= '' !== $atts['side_text'] ? '<p class="amaley-pages-hero-other__intent-description">' . esc_html( $atts['side_text'] ) . '</p>' : '';
 		$html .= self::render_stats( $stats );
 		$html .= '</aside></div>';
+
 		return $html;
 	}
 
@@ -294,6 +316,7 @@ final class Amaley_UI_Pages_Hero_Other {
 		$html  = '<div class="amaley-pages-hero-other__image-grid">';
 		$html .= 'left' === $atts['image_position'] ? self::render_media( $atts ) . self::render_content( $atts ) : self::render_content( $atts ) . self::render_media( $atts );
 		$html .= '</div>';
+
 		return $html;
 	}
 
@@ -301,32 +324,43 @@ final class Amaley_UI_Pages_Hero_Other {
 		$copy  = '<div class="amaley-pages-hero-other__editorial-copy">' . self::render_content( $atts, $stats ) . '</div>';
 		$media = '<div class="amaley-pages-hero-other__editorial-media-wrap">';
 		$media .= self::render_media( $atts );
+
 		if ( '' !== $atts['side_title'] || '' !== $atts['side_text'] ) {
 			$media .= '<aside class="amaley-pages-hero-other__editorial-note">';
-			$media .= '' !== $atts['side_kicker'] ? '<span>' . esc_html( $atts['side_kicker'] ) . '</span>' : '';
-			$media .= '' !== $atts['side_title'] ? '<strong>' . esc_html( $atts['side_title'] ) . '</strong>' : '';
-			$media .= '' !== $atts['side_text'] ? '<p>' . esc_html( $atts['side_text'] ) . '</p>' : '';
+			$media .= '' !== $atts['side_kicker'] ? '<span class="amaley-pages-hero-other__note-kicker">' . esc_html( $atts['side_kicker'] ) . '</span>' : '';
+			$media .= '' !== $atts['side_title'] ? '<strong class="amaley-pages-hero-other__note-title">' . esc_html( $atts['side_title'] ) . '</strong>' : '';
+			$media .= '' !== $atts['side_text'] ? '<p class="amaley-pages-hero-other__note-text">' . esc_html( $atts['side_text'] ) . '</p>' : '';
 			$media .= '</aside>';
 		}
+
 		$media .= '</div>';
 
 		$html  = '<div class="amaley-pages-hero-other__editorial-grid">';
 		$html .= 'left' === $atts['image_position'] ? $media . $copy : $copy . $media;
 		$html .= '</div>';
+
 		return $html;
 	}
 
 	private static function render_statement( $atts, $features, $stats ) {
 		$html  = '<div class="amaley-pages-hero-other__statement-wrap">';
 		$html .= '<div class="amaley-pages-hero-other__statement-content">' . self::render_content( $atts, $stats ) . '</div>';
+
 		if ( ! empty( $features ) ) {
 			$html .= '<div class="amaley-pages-hero-other__statement-pills">';
+
 			foreach ( $features as $feature ) {
-				$html .= '<div class="amaley-pages-hero-other__statement-pill"><strong>' . esc_html( $feature['value'] ) . '</strong><span>' . esc_html( $feature['label'] ) . '</span></div>';
+				$html .= '<div class="amaley-pages-hero-other__statement-pill">';
+				$html .= '<strong class="amaley-pages-hero-other__statement-pill-title">' . esc_html( $feature['value'] ) . '</strong>';
+				$html .= '<span class="amaley-pages-hero-other__statement-pill-text">' . esc_html( $feature['label'] ) . '</span>';
+				$html .= '</div>';
 			}
+
 			$html .= '</div>';
 		}
+
 		$html .= '</div>';
+
 		return $html;
 	}
 
@@ -338,6 +372,7 @@ final class Amaley_UI_Pages_Hero_Other {
 		$html .= self::render_buttons( $atts );
 		$html .= self::render_stats( $stats );
 		$html .= '</div>';
+
 		return $html;
 	}
 
@@ -345,6 +380,7 @@ final class Amaley_UI_Pages_Hero_Other {
 		if ( '' === $atts['image'] ) {
 			return '<div class="amaley-pages-hero-other__media amaley-pages-hero-other__media--empty" aria-hidden="true"></div>';
 		}
+
 		return '<figure class="amaley-pages-hero-other__media"><img src="' . esc_url( $atts['image'] ) . '" alt="' . esc_attr( $atts['image_alt'] ) . '"></figure>';
 	}
 
@@ -352,14 +388,19 @@ final class Amaley_UI_Pages_Hero_Other {
 		if ( '' === $atts['primary_text'] && '' === $atts['secondary_text'] ) {
 			return '';
 		}
+
 		$html = '<div class="amaley-pages-hero-other__actions">';
+
 		if ( '' !== $atts['primary_text'] ) {
 			$html .= '<a class="amaley-pages-hero-other__btn amaley-pages-hero-other__btn--primary" href="' . esc_url( $atts['primary_url'] ) . '">' . esc_html( $atts['primary_text'] ) . '</a>';
 		}
+
 		if ( '' !== $atts['secondary_text'] ) {
 			$html .= '<a class="amaley-pages-hero-other__btn amaley-pages-hero-other__btn--secondary" href="' . esc_url( $atts['secondary_url'] ) . '">' . esc_html( $atts['secondary_text'] ) . '</a>';
 		}
+
 		$html .= '</div>';
+
 		return $html;
 	}
 
@@ -367,44 +408,69 @@ final class Amaley_UI_Pages_Hero_Other {
 		if ( empty( $stats ) ) {
 			return '';
 		}
+
 		$html = '<div class="amaley-pages-hero-other__stats">';
+
 		foreach ( $stats as $stat ) {
-			$html .= '<div class="amaley-pages-hero-other__stat"><strong>' . esc_html( $stat['value'] ) . '</strong><span>' . esc_html( $stat['label'] ) . '</span></div>';
+			$html .= '<div class="amaley-pages-hero-other__stat">';
+			$html .= '<strong class="amaley-pages-hero-other__stat-value">' . esc_html( $stat['value'] ) . '</strong>';
+			$html .= '<span class="amaley-pages-hero-other__stat-label">' . esc_html( $stat['label'] ) . '</span>';
+			$html .= '</div>';
 		}
+
 		$html .= '</div>';
+
 		return $html;
 	}
 
 	private static function title_html( $title, $accent ) {
 		$title  = (string) $title;
 		$accent = (string) $accent;
+
 		if ( '' !== $accent && false !== strpos( $title, '{' . $accent . '}' ) ) {
 			return str_replace( '{' . $accent . '}', '<em>' . esc_html( $accent ) . '</em>', esc_html( $title ) );
 		}
+
 		if ( false !== strpos( $title, '{' ) && false !== strpos( $title, '}' ) ) {
-			return preg_replace_callback( '/\{([^}]+)\}/', function( $matches ) { return '<em>' . esc_html( $matches[1] ) . '</em>'; }, esc_html( $title ) );
+			return preg_replace_callback(
+				'/\{([^}]+)\}/',
+				function( $matches ) {
+					return '<em>' . esc_html( $matches[1] ) . '</em>';
+				},
+				esc_html( $title )
+			);
 		}
+
 		return esc_html( $title );
 	}
 
 	private static function parse_pairs( $raw ) {
 		$items = array();
 		$raw   = trim( (string) $raw );
+
 		if ( '' === $raw ) {
 			return $items;
 		}
+
 		foreach ( explode( '|', $raw ) as $piece ) {
 			$parts = array_map( 'trim', explode( '::', $piece, 2 ) );
+
 			if ( '' === $parts[0] ) {
 				continue;
 			}
-			$items[] = array( 'value' => wp_strip_all_tags( $parts[0] ), 'label' => isset( $parts[1] ) ? wp_strip_all_tags( $parts[1] ) : '' );
+
+			$items[] = array(
+				'value' => wp_strip_all_tags( $parts[0] ),
+				'label' => isset( $parts[1] ) ? wp_strip_all_tags( $parts[1] ) : '',
+			);
 		}
+
 		return $items;
 	}
 
 	private static function safe_choice( $value, $allowed, $default ) {
 		$value = sanitize_key( (string) $value );
+
 		return in_array( $value, $allowed, true ) ? $value : $default;
 	}
 }

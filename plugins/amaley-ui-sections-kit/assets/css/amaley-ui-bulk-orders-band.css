@@ -1,0 +1,234 @@
+/**
+ * Amaley Bulk Orders Band.
+ * Scoped styles for bulk orders / institutional enquiry CTA section.
+ */
+
+.amaley-bulk-orders-band {
+	--abob-bg: #2b0d00;
+	--abob-card: rgba(255, 245, 222, 0.055);
+	--abob-ink: #fff5de;
+	--abob-muted: rgba(255, 245, 222, 0.78);
+	--abob-soft: rgba(255, 245, 222, 0.62);
+	--abob-line: rgba(255, 218, 142, 0.24);
+	--abob-gold: #c79000;
+	--abob-gold-2: #e5b94a;
+	background: var(--abob-bg);
+	color: var(--abob-ink);
+	font-family: inherit;
+	overflow: hidden;
+}
+
+.amaley-bulk-orders-band--green {
+	--abob-bg: #637a46;
+	--abob-card: rgba(255, 245, 222, 0.075);
+	--abob-line: rgba(255, 245, 222, 0.23);
+	--abob-gold: #d9a300;
+}
+
+.amaley-bulk-orders-band--cream {
+	--abob-bg: #f3e7d2;
+	--abob-card: rgba(255, 252, 245, 0.82);
+	--abob-ink: #301100;
+	--abob-muted: rgba(48, 17, 0, 0.72);
+	--abob-soft: rgba(48, 17, 0, 0.62);
+	--abob-line: rgba(48, 17, 0, 0.14);
+	--abob-gold: #b98400;
+	--abob-gold-2: #8d3a18;
+}
+
+.amaley-bulk-orders-band__inner {
+	width: min(100%, 1180px);
+	max-width: 1180px;
+	margin-inline: auto;
+	padding: clamp(62px, 8vw, 104px) clamp(18px, 4vw, 48px);
+}
+
+.amaley-bulk-orders-band--full .amaley-bulk-orders-band__inner {
+	width: 100%;
+	max-width: none;
+}
+
+.amaley-bulk-orders-band__content,
+.amaley-bulk-orders-band__features,
+.amaley-bulk-orders-band__feature,
+.amaley-bulk-orders-band__actions {
+	min-width: 0;
+}
+
+.amaley-bulk-orders-band__content {
+	max-width: 760px;
+	margin-bottom: clamp(30px, 4.5vw, 52px);
+}
+
+.amaley-bulk-orders-band__eyebrow {
+	margin-bottom: 16px;
+	color: var(--abob-gold-2);
+	font-size: 11px;
+	font-weight: 800;
+	letter-spacing: 0.28em;
+	line-height: 1.25;
+	text-transform: uppercase;
+}
+
+.amaley-bulk-orders-band__title {
+	max-width: 740px;
+	margin: 0;
+	color: var(--abob-ink);
+	font-family: Georgia, 'Times New Roman', serif;
+	font-size: clamp(34px, 4.35vw, 62px);
+	font-weight: 400;
+	letter-spacing: -0.048em;
+	line-height: 1.04;
+}
+
+.amaley-bulk-orders-band__title em {
+	color: var(--abob-gold-2);
+	font-style: italic;
+	font-weight: 400;
+}
+
+.amaley-bulk-orders-band__description {
+	max-width: 730px;
+	margin: 22px 0 0;
+	color: var(--abob-muted);
+	font-size: clamp(14px, 1.25vw, 17px);
+	font-weight: 400;
+	line-height: 1.78;
+}
+
+.amaley-bulk-orders-band__features {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: clamp(18px, 2vw, 28px);
+}
+
+.amaley-bulk-orders-band__feature {
+	display: flex;
+	min-height: 150px;
+	flex-direction: column;
+	justify-content: flex-start;
+	gap: 18px;
+	padding: clamp(24px, 2.6vw, 34px);
+	background: var(--abob-card);
+	border: 1px solid var(--abob-line);
+	border-radius: 0;
+	box-shadow: none;
+	transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.amaley-bulk-orders-band__feature:hover {
+	border-color: rgba(229, 185, 74, 0.48);
+}
+
+.amaley-bulk-orders-band__feature-title {
+	margin: 0;
+	color: var(--abob-ink);
+	font-family: Georgia, 'Times New Roman', serif;
+	font-size: clamp(21px, 2vw, 30px);
+	font-weight: 400;
+	letter-spacing: -0.035em;
+	line-height: 1.08;
+}
+
+.amaley-bulk-orders-band__feature-text {
+	max-width: 95%;
+	margin: 0;
+	color: var(--abob-muted);
+	font-size: 14px;
+	line-height: 1.72;
+}
+
+.amaley-bulk-orders-band__actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 16px 22px;
+	align-items: center;
+	justify-content: flex-start;
+	margin-top: clamp(30px, 4vw, 52px);
+}
+
+.amaley-bulk-orders-band__button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 44px;
+	padding: 14px 28px;
+	font-size: 10px;
+	font-weight: 800;
+	letter-spacing: 0.16em;
+	line-height: 1;
+	text-align: center;
+	text-decoration: none;
+	text-transform: uppercase;
+	border: 1px solid currentColor;
+	border-radius: 2px;
+	transition: background 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+.amaley-bulk-orders-band__button--primary {
+	background: var(--abob-gold);
+	border-color: var(--abob-gold);
+	color: #fff8e9;
+}
+
+.amaley-bulk-orders-band__button--secondary {
+	background: transparent;
+	border-color: rgba(255, 218, 142, 0.5);
+	color: var(--abob-ink);
+}
+
+.amaley-bulk-orders-band--cream .amaley-bulk-orders-band__button--secondary {
+	border-color: rgba(48, 17, 0, 0.42);
+	color: var(--abob-ink);
+}
+
+.amaley-bulk-orders-band__button:hover,
+.amaley-bulk-orders-band__button:focus {
+	transform: translateY(-1px);
+}
+
+.amaley-bulk-orders-band__button--primary:hover,
+.amaley-bulk-orders-band__button--primary:focus {
+	background: #fff5de;
+	border-color: #fff5de;
+	color: #2b0d00;
+}
+
+.amaley-bulk-orders-band--cream .amaley-bulk-orders-band__button--primary:hover,
+.amaley-bulk-orders-band--cream .amaley-bulk-orders-band__button--primary:focus {
+	background: #301100;
+	border-color: #301100;
+	color: #fff5de;
+}
+
+.amaley-bulk-orders-band__button--secondary:hover,
+.amaley-bulk-orders-band__button--secondary:focus {
+	background: var(--abob-ink);
+	border-color: var(--abob-ink);
+	color: var(--abob-bg);
+}
+
+@media (max-width: 920px) {
+	.amaley-bulk-orders-band__features {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 680px) {
+	.amaley-bulk-orders-band__inner {
+		padding: 46px 18px;
+	}
+
+	.amaley-bulk-orders-band__features {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.amaley-bulk-orders-band__feature {
+		min-height: 0;
+	}
+
+	.amaley-bulk-orders-band__actions,
+	.amaley-bulk-orders-band__button {
+		width: 100%;
+	}
+}

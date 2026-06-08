@@ -1,0 +1,262 @@
+/**
+ * Amaley Featured Collection Cards.
+ * Scoped styles for the collection-page featured cards section.
+ */
+
+.amaley-featured-collection-cards {
+	--afcc-bg: #f3e7d2;
+	--afcc-paper: rgba(255, 252, 245, 0.82);
+	--afcc-ink: #301100;
+	--afcc-muted: rgba(48, 17, 0, 0.72);
+	--afcc-gold: #b98400;
+	--afcc-rust: #8d3a18;
+	--afcc-line: rgba(48, 17, 0, 0.14);
+	--afcc-deep: #2b0d00;
+	--afcc-deep-ink: #fff5de;
+	--afcc-deep-muted: rgba(255, 245, 222, 0.78);
+	background: var(--afcc-bg);
+	color: var(--afcc-ink);
+	font-family: inherit;
+	overflow: hidden;
+}
+
+.amaley-featured-collection-cards--white {
+	--afcc-bg: #fbf7ef;
+	--afcc-paper: #fffdf8;
+}
+
+.amaley-featured-collection-cards--deep {
+	--afcc-bg: #2b0d00;
+	--afcc-paper: rgba(68, 31, 14, 0.76);
+	--afcc-ink: #fff5de;
+	--afcc-muted: rgba(255, 245, 222, 0.76);
+	--afcc-line: rgba(255, 218, 142, 0.24);
+}
+
+.amaley-featured-collection-cards__inner {
+	width: min(100%, 1180px);
+	max-width: 1180px;
+	margin-inline: auto;
+	padding: clamp(54px, 7vw, 90px) clamp(18px, 4vw, 42px);
+}
+
+.amaley-featured-collection-cards--full .amaley-featured-collection-cards__inner {
+	width: 100%;
+	max-width: none;
+}
+
+.amaley-featured-collection-cards__header {
+	display: grid;
+	grid-template-columns: minmax(240px, 0.58fr) minmax(320px, 0.72fr);
+	gap: clamp(28px, 7vw, 96px);
+	align-items: start;
+	margin-bottom: clamp(28px, 4.8vw, 52px);
+}
+
+.amaley-featured-collection-cards__heading,
+.amaley-featured-collection-cards__description,
+.amaley-featured-collection-cards__grid,
+.amaley-featured-collection-cards__card {
+	min-width: 0;
+}
+
+.amaley-featured-collection-cards__eyebrow,
+.amaley-featured-collection-cards__card-kicker,
+.amaley-featured-collection-cards__card-meta {
+	color: var(--afcc-gold);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.28em;
+	line-height: 1.25;
+	text-transform: uppercase;
+}
+
+.amaley-featured-collection-cards__eyebrow {
+	margin-bottom: 14px;
+}
+
+.amaley-featured-collection-cards__title {
+	max-width: 620px;
+	margin: 0;
+	color: var(--afcc-ink);
+	font-family: Georgia, 'Times New Roman', serif;
+	font-size: clamp(38px, 5vw, 68px);
+	font-weight: 400;
+	letter-spacing: -0.055em;
+	line-height: 0.94;
+}
+
+.amaley-featured-collection-cards__title em {
+	color: var(--afcc-rust);
+	font-style: italic;
+	font-weight: 400;
+}
+
+.amaley-featured-collection-cards--deep .amaley-featured-collection-cards__title em {
+	color: #f0b75d;
+}
+
+.amaley-featured-collection-cards__description {
+	max-width: 570px;
+	margin: 10px 0 0;
+	color: var(--afcc-muted);
+	font-size: clamp(15px, 1.4vw, 18px);
+	font-weight: 400;
+	line-height: 1.75;
+}
+
+.amaley-featured-collection-cards__grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 26px;
+}
+
+.amaley-featured-collection-cards__card {
+	display: flex;
+	min-height: 310px;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: 28px;
+	padding: clamp(26px, 2.8vw, 38px);
+	background: var(--afcc-paper);
+	border: 1px solid var(--afcc-line);
+	border-radius: 0;
+	box-shadow: none;
+	transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.amaley-featured-collection-cards__card:hover {
+	border-color: rgba(185, 132, 0, 0.42);
+}
+
+.amaley-featured-collection-cards__card--deep {
+	background: var(--afcc-deep);
+	border-color: rgba(255, 218, 142, 0.24);
+	color: var(--afcc-deep-ink);
+}
+
+.amaley-featured-collection-cards__card--accent {
+	background: #8d3a18;
+	border-color: rgba(255, 218, 142, 0.26);
+	color: #fff5de;
+}
+
+.amaley-featured-collection-cards__card-body {
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+}
+
+.amaley-featured-collection-cards__card-footer {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 14px 18px;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: auto;
+}
+
+.amaley-featured-collection-cards__card-title {
+	margin: 0;
+	color: var(--afcc-ink);
+	font-family: Georgia, 'Times New Roman', serif;
+	font-size: clamp(25px, 2.25vw, 34px);
+	font-weight: 400;
+	letter-spacing: -0.04em;
+	line-height: 1.02;
+}
+
+.amaley-featured-collection-cards__card-description {
+	margin: 0;
+	color: var(--afcc-muted);
+	font-size: 14px;
+	line-height: 1.72;
+}
+
+.amaley-featured-collection-cards__card--deep .amaley-featured-collection-cards__card-title,
+.amaley-featured-collection-cards__card--accent .amaley-featured-collection-cards__card-title {
+	color: var(--afcc-deep-ink);
+}
+
+.amaley-featured-collection-cards__card--deep .amaley-featured-collection-cards__card-description,
+.amaley-featured-collection-cards__card--deep .amaley-featured-collection-cards__card-meta,
+.amaley-featured-collection-cards__card--accent .amaley-featured-collection-cards__card-description,
+.amaley-featured-collection-cards__card--accent .amaley-featured-collection-cards__card-meta {
+	color: var(--afcc-deep-muted);
+}
+
+.amaley-featured-collection-cards__card-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 38px;
+	padding: 11px 20px;
+	color: var(--afcc-gold);
+	font-size: 10px;
+	font-weight: 800;
+	letter-spacing: 0.16em;
+	line-height: 1;
+	text-decoration: none;
+	text-transform: uppercase;
+	background: transparent;
+	border: 1px solid currentColor;
+	border-radius: 2px;
+	transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+
+.amaley-featured-collection-cards__card-button:hover,
+.amaley-featured-collection-cards__card-button:focus {
+	background: var(--afcc-gold);
+	border-color: var(--afcc-gold);
+	color: #fff9eb;
+}
+
+.amaley-featured-collection-cards__card--deep .amaley-featured-collection-cards__card-button,
+.amaley-featured-collection-cards__card--accent .amaley-featured-collection-cards__card-button {
+	color: #fff5de;
+	border-color: rgba(255, 245, 222, 0.72);
+}
+
+.amaley-featured-collection-cards__card--deep .amaley-featured-collection-cards__card-button:hover,
+.amaley-featured-collection-cards__card--deep .amaley-featured-collection-cards__card-button:focus,
+.amaley-featured-collection-cards__card--accent .amaley-featured-collection-cards__card-button:hover,
+.amaley-featured-collection-cards__card--accent .amaley-featured-collection-cards__card-button:focus {
+	background: #fff5de;
+	border-color: #fff5de;
+	color: #2b0d00;
+}
+
+@media (max-width: 1024px) {
+	.amaley-featured-collection-cards__header {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 18px;
+	}
+
+	.amaley-featured-collection-cards__grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 767px) {
+	.amaley-featured-collection-cards__inner {
+		padding: 42px 18px;
+	}
+
+	.amaley-featured-collection-cards__title {
+		font-size: clamp(34px, 13vw, 48px);
+	}
+
+	.amaley-featured-collection-cards__grid {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 18px;
+	}
+
+	.amaley-featured-collection-cards__card {
+		min-height: 0;
+	}
+
+	.amaley-featured-collection-cards__card-footer {
+		align-items: flex-start;
+		flex-direction: column;
+	}
+}

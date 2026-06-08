@@ -1,50 +1,76 @@
-# Rollback Notes — Amaley UI Sections Kit v0.2.5
+# Rollback Notes — Amaley UI Sections Kit v0.6.4.1
 
-## Rollback Target
-
-If v0.2.5 causes any issue, roll back to:
+## Current checkpoint
 
 ```text
-amaley-ui-sections-kit-v0.1.3.zip
+Amaley UI Sections Kit v0.6.4.1
+Pages Hero Other — All Variations Controls
+Staging Working + ZIP Audit Passed
 ```
 
-## What v0.2.5 Adds
+## Rollback target
 
-- Product card shortcode
-- Product grid shortcode
-- Product display CSS
-- Product shortcode examples and testing documentation
+If v0.6.4.1 causes a visual/editor issue, roll back to the previous confirmed backup created before the all-variation update:
 
-## What v0.2.5 Does Not Change
+```text
+amaley-ui-sections-kit-v0.6.3-style10-controls-working-staging-backup.zip
+```
 
-- No database schema changes
-- No CPT creation
-- No WooCommerce template override
-- No cart or checkout replacement
-- No Elementor widget registration
-- No JavaScript added
-- No origin/SHG/producer data added
+If that exact file name is not available, use the latest safe ZIP created immediately after Style 10 was confirmed working.
 
-## Rollback Steps
+## What v0.6.4.1 changes
 
-1. Deactivate Amaley UI Sections Kit v0.2.5.
-2. Delete v0.2.5 plugin from staging/local WordPress.
-3. Upload `amaley-ui-sections-kit-v0.1.3.zip`.
-4. Activate v0.1.3.
-5. Remove or ignore product shortcodes because v0.1.3 does not include product card/grid.
-6. Clear cache if the site uses cache.
-7. Re-test foundation shortcodes.
+- `amaley-ui-sections-kit.php` version bump to 0.6.4.1.
+- `includes/elementor/widgets/class-amaley-elementor-pages-hero-other-widget.php` all-variation Elementor controls.
+- `assets/css/amaley-ui-pages-hero-other.css` scoped support CSS for all Pages Hero Other variations.
+- Documentation updated for final handoff.
 
-## Expected Rollback Impact
+## What v0.6.4.1 does not change
 
-Foundation shortcodes continue working in v0.1.3.
-Product shortcodes will stop rendering because they do not exist in v0.1.3.
+- No database schema changes.
+- No CPT creation or deletion.
+- No WooCommerce template override.
+- No cart or checkout replacement.
+- No product data update.
+- No origin mapping update.
+- No uploaded photo/gallery overwrite.
+- No Discovery Engine filter/query change.
+- No Amaley Core card/CPT change.
+- No Amaley Templates change.
+- No header/footer change.
+- No global CSS reset.
 
+## Rollback steps — manual file manager method
 
-## v0.2.5 rollback note
+1. Take a fresh backup of the current plugin folder before rollback.
+2. In WordPress, deactivate `Amaley UI Sections Kit` only if file replacement through File Manager is not safe while active.
+3. Replace the plugin folder contents with the previous safe backup.
+4. Reactivate `Amaley UI Sections Kit` if it was deactivated.
+5. Clear Elementor cache:
 
-If the product card polish causes visual issues, roll back to v0.2.5. v0.2.5 changes are CSS/metadata polish only and do not change WooCommerce query logic, database, cart, checkout or shortcode names.
+```text
+Elementor → Tools → Regenerate CSS & Data
+Elementor → Tools → Sync Library
+```
 
+6. Clear site cache if a cache plugin/server cache is used.
+7. Reopen Elementor and test Style 10.
+8. Test one non-Style-10 page hero.
 
-## v0.2.5 rollback note
-If the product grid alignment fix causes image cropping issues, roll back to v0.2.4. v0.2.5 changes CSS layout only.
+## Rollback steps — WordPress plugin upload method
+
+Use this only if the ZIP structure is prepared for WordPress plugin upload.
+
+1. Download the previous safe backup ZIP.
+2. Deactivate and delete the current plugin.
+3. Upload the previous safe ZIP.
+4. Activate the plugin.
+5. Clear Elementor and site cache.
+6. Re-test affected pages.
+
+## Expected rollback impact
+
+- Style 10 accepted controls should remain available if rolling back to v0.6.3 Style 10 backup.
+- All-variation controls added in v0.6.4.1 will no longer be available after rollback.
+- Pages already using v0.6.4.1-specific settings may lose those newly added control values until v0.6.4.1 is restored.
+- WooCommerce, Discovery Engine, Core, Templates and header/footer should remain unaffected because v0.6.4.1 does not modify them.

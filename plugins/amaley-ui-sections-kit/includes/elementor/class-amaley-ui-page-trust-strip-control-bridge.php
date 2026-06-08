@@ -7,18 +7,10 @@
 
 defined( 'ABSPATH' ) || exit;
 
-/**
- * Adds section-wise controls and strong responsive column controls to the existing Page Trust Strip widget.
- *
- * Scope: only Elementor widget `amaley_ui_page_trust_strip`.
- */
 final class Amaley_UI_Page_Trust_Strip_Control_Bridge {
-
-	/** @var bool */
 	private static $hooked = false;
 
-	/** Registers hooks once. */
-	public static function hooks() {
+	public static function init() {
 		if ( self::$hooked ) {
 			return;
 		}
@@ -28,12 +20,12 @@ final class Amaley_UI_Page_Trust_Strip_Control_Bridge {
 		add_action( 'elementor/element/amaley_ui_page_trust_strip/layout_section/before_section_end', array( __CLASS__, 'add_layout_controls' ), 20, 2 );
 		add_action( 'elementor/element/amaley_ui_page_trust_strip/layout_section/after_section_end', array( __CLASS__, 'add_style_sections' ), 20, 2 );
 
+		// Strong override CSS for desktop / tablet / phone columns.
 		add_action( 'wp_head', array( __CLASS__, 'print_forced_column_css' ), 99 );
 		add_action( 'elementor/preview/enqueue_styles', array( __CLASS__, 'print_forced_column_css' ), 99 );
 		add_action( 'elementor/editor/after_enqueue_styles', array( __CLASS__, 'print_forced_column_css' ), 99 );
 	}
 
-	/** Adds forced responsive column controls inside Content > Layout & Style. */
 	public static function add_layout_controls( $element, $args ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
 		if ( ! self::ready( $element ) ) {
 			return;
@@ -48,37 +40,52 @@ final class Amaley_UI_Page_Trust_Strip_Control_Bridge {
 			)
 		);
 
-		self::select(
-			$element,
+		$element->add_control(
 			'amaley_pts_desktop_cols_class',
-			'Desktop Columns',
-			self::column_options(),
-			'4',
-			array( 'prefix_class' => 'amaley-pts-desktop-cols-' )
-		);
-
-		self::select(
-			$element,
-			'amaley_pts_tablet_cols_class',
-			'Tablet Columns',
-			self::column_options(),
-			'2',
-			array( 'prefix_class' => 'amaley-pts-tablet-cols-' )
-		);
-
-		self::select(
-			$element,
-			'amaley_pts_phone_cols_class',
-			'Phone Columns',
-			self::column_options(),
-			'2',
 			array(
-				'prefix_class' => 'amaley-pts-phone-cols-',
-				'description'  => esc_html__( 'Uses a wrapper-class override so it can beat the original mobile 1-column CSS.', 'amaley-ui-sections-kit' ),
+				'label'        => esc_html__( 'Desktop Columns', 'amaley-ui-sections-kit' ),
+				'type'         => \Elementor\Controls_Manager::SELECT,
+				'default'      => '4',
+				'options'      => self::column_options(),
+				'prefix_class' => 'amaley-pts-desktop-cols-',
 			)
 		);
 
-		self::slider( $element, 'amaley_pts_items_gap_force', 'Items Gap', '{{WRAPPER}} .amaley-ui-trust-strip__items', 'gap', 0, 44 );
+		$element->add_control(
+			'amaley_pts_tablet_cols_class',
+			array(
+				'label'        => esc_html__( 'Tablet Columns', 'amaley-ui-sections-kit' ),
+				'type'         => \Elementor\Controls_Manager::SELECT,
+				'default'      => '2',
+				'options'      => self::column_options(),
+				'prefix_class' => 'amaley-pts-tablet-cols-',
+			)
+		);
+
+		$element->add_control(
+			'amaley_pts_phone_cols_class',
+			array(
+				'label'        => esc_html__( 'Phone Columns', 'amaley-ui-sections-kit' ),
+				'type'         => \Elementor\Controls_Manager::SELECT,
+				'default'      => '2',
+				'options'      => self::column_options(),
+				'prefix_class' => 'amaley-pts-phone-cols-',
+				'description'  => esc_html__( 'This uses a strong wrapper-class override so it can beat the original mobile 1-column CSS.', 'amaley-ui-sections-kit' ),
+			)
+		);
+
+		$element->add_responsive_control(
+			'amaley_pts_items_gap_force',
+			array(
+				'label'      => esc_html__( 'Items Gap', 'amaley-ui-sections-kit' ),
+				'type'       => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => array( 'px' ),
+				'range'      => array( 'px' => array( 'min' => 0, 'max' => 44 ) ),
+				'selectors'  => array(
+					'{{WRAPPER}} .amaley-ui-trust-strip__items' => 'gap: {{SIZE}}{{UNIT}} !important;',
+				),
+			)
+		);
 
 		$element->add_responsive_control(
 			'amaley_pts_card_direction_force',
@@ -113,7 +120,6 @@ final class Amaley_UI_Page_Trust_Strip_Control_Bridge {
 		);
 	}
 
-	/** Adds section-wise Elementor Style tab controls. */
 	public static function add_style_sections( $element, $args ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
 		if ( ! self::ready( $element ) ) {
 			return;
@@ -127,18 +133,16 @@ final class Amaley_UI_Page_Trust_Strip_Control_Bridge {
 		self::responsive_style( $element );
 	}
 
-	/** Prints strong scoped CSS for forced desktop/tablet/phone columns. */
 	public static function print_forced_column_css() {
 		static $printed = false;
 
 		if ( $printed ) {
 			return;
 		}
-
 		$printed = true;
 
 		$base = '.elementor-widget-amaley_ui_page_trust_strip.amaley-pts-%1$s-cols-%2$d .amaley-ui-trust-strip.amaley-ui-trust-strip .amaley-ui-trust-strip__items';
-		$css  = "/* Amaley UI Sections Kit — Page Trust Strip responsive controls v0.6.2 */\n";
+		$css  = "/* Amaley UI Sections Kit Page Trust Strip Controls v0.6.2 */\n";
 
 		foreach ( array( 1, 2, 3, 4 ) as $cols ) {
 			$css .= sprintf( $base, 'desktop', $cols ) . '{grid-template-columns:repeat(' . $cols . ',minmax(0,1fr)) !important;}' . "\n";
@@ -156,19 +160,11 @@ final class Amaley_UI_Page_Trust_Strip_Control_Bridge {
 		}
 		$css .= "}\n";
 
-		echo '<style id="amaley-ui-page-trust-strip-controls-css">' . wp_strip_all_tags( $css ) . '</style>' . "\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo '<style id="amaley-ui-sections-kit-css">' . wp_strip_all_tags( $css ) . '</style>' . "\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
-	/** Section / Frame controls. */
 	private static function section_frame( $e ) {
-		$e->start_controls_section(
-			'amaley_pts_frame_section',
-			array(
-				'label' => esc_html__( 'Section / Frame', 'amaley-ui-sections-kit' ),
-				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
-			)
-		);
-
+		$e->start_controls_section( 'amaley_pts_frame_section', array( 'label' => esc_html__( 'Section / Frame', 'amaley-ui-sections-kit' ), 'tab' => \Elementor\Controls_Manager::TAB_STYLE ) );
 		self::dimensions( $e, 'amaley_pts_outer_margin', 'Outer Margin', '{{WRAPPER}} .amaley-ui-trust-strip', 'margin' );
 		self::slider( $e, 'amaley_pts_inner_width', 'Inner Max Width', '{{WRAPPER}} .amaley-ui-trust-strip--width-contained .amaley-ui-trust-strip__inner', 'max-width', 720, 1600, array( 'px', '%' ) );
 		self::slider( $e, 'amaley_pts_min_height', 'Frame Min Height', '{{WRAPPER}} .amaley-ui-trust-strip__inner', 'min-height', 60, 260 );
@@ -176,20 +172,11 @@ final class Amaley_UI_Page_Trust_Strip_Control_Bridge {
 		self::border( $e, 'amaley_pts_frame_border', '{{WRAPPER}} .amaley-ui-trust-strip__inner' );
 		self::dimensions( $e, 'amaley_pts_frame_radius', 'Frame Radius', '{{WRAPPER}} .amaley-ui-trust-strip__inner', 'border-radius' );
 		self::shadow( $e, 'amaley_pts_frame_shadow', '{{WRAPPER}} .amaley-ui-trust-strip__inner' );
-
 		$e->end_controls_section();
 	}
 
-	/** Intro Panel controls. */
 	private static function intro_panel( $e ) {
-		$e->start_controls_section(
-			'amaley_pts_intro_section',
-			array(
-				'label' => esc_html__( 'Intro Panel', 'amaley-ui-sections-kit' ),
-				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
-			)
-		);
-
+		$e->start_controls_section( 'amaley_pts_intro_section', array( 'label' => esc_html__( 'Intro Panel', 'amaley-ui-sections-kit' ), 'tab' => \Elementor\Controls_Manager::TAB_STYLE ) );
 		$e->add_responsive_control(
 			'amaley_pts_intro_width',
 			array(
@@ -202,32 +189,20 @@ final class Amaley_UI_Page_Trust_Strip_Control_Bridge {
 				),
 			)
 		);
-
 		self::dimensions( $e, 'amaley_pts_intro_padding', 'Panel Padding', '{{WRAPPER}} .amaley-ui-trust-strip__intro', 'padding' );
 		self::color( $e, 'amaley_pts_intro_bg', 'Panel Background', '{{WRAPPER}} .amaley-ui-trust-strip__intro', 'background' );
 		self::color( $e, 'amaley_pts_intro_accent', 'Left Accent Color', '{{WRAPPER}} .amaley-ui-trust-strip__intro::after', 'background' );
-
 		$e->add_control( 'amaley_pts_label_heading', array( 'label' => esc_html__( 'Small Label', 'amaley-ui-sections-kit' ), 'type' => \Elementor\Controls_Manager::HEADING, 'separator' => 'before' ) );
 		self::typography( $e, 'amaley_pts_label_typography', '{{WRAPPER}} .amaley-ui-trust-strip__label' );
 		self::color( $e, 'amaley_pts_label_color', 'Label Color', '{{WRAPPER}} .amaley-ui-trust-strip__label', 'color' );
-
 		$e->add_control( 'amaley_pts_main_text_heading', array( 'label' => esc_html__( 'Main Text', 'amaley-ui-sections-kit' ), 'type' => \Elementor\Controls_Manager::HEADING, 'separator' => 'before' ) );
 		self::typography( $e, 'amaley_pts_main_text_typography', '{{WRAPPER}} .amaley-ui-trust-strip__heading' );
 		self::color( $e, 'amaley_pts_main_text_color', 'Main Text Color', '{{WRAPPER}} .amaley-ui-trust-strip__heading', 'color' );
-
 		$e->end_controls_section();
 	}
 
-	/** Items / Cards controls. */
 	private static function items_cards( $e ) {
-		$e->start_controls_section(
-			'amaley_pts_cards_section',
-			array(
-				'label' => esc_html__( 'Items / Cards', 'amaley-ui-sections-kit' ),
-				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
-			)
-		);
-
+		$e->start_controls_section( 'amaley_pts_cards_section', array( 'label' => esc_html__( 'Items / Cards', 'amaley-ui-sections-kit' ), 'tab' => \Elementor\Controls_Manager::TAB_STYLE ) );
 		self::dimensions( $e, 'amaley_pts_items_padding', 'Items Area Padding', '{{WRAPPER}} .amaley-ui-trust-strip__items', 'padding' );
 		self::slider( $e, 'amaley_pts_items_gap_style', 'Items Gap', '{{WRAPPER}} .amaley-ui-trust-strip__items', 'gap', 0, 50 );
 		self::dimensions( $e, 'amaley_pts_card_padding', 'Card Padding', '{{WRAPPER}} .amaley-ui-trust-strip__item', 'padding' );
@@ -238,22 +213,12 @@ final class Amaley_UI_Page_Trust_Strip_Control_Bridge {
 		self::border( $e, 'amaley_pts_card_border', '{{WRAPPER}} .amaley-ui-trust-strip__item' );
 		self::dimensions( $e, 'amaley_pts_card_radius', 'Card Radius', '{{WRAPPER}} .amaley-ui-trust-strip__item', 'border-radius' );
 		self::shadow( $e, 'amaley_pts_card_shadow', '{{WRAPPER}} .amaley-ui-trust-strip__item' );
-
 		$e->end_controls_section();
 	}
 
-	/** Item Icon controls. */
 	private static function item_icon( $e ) {
-		$e->start_controls_section(
-			'amaley_pts_icon_section',
-			array(
-				'label' => esc_html__( 'Item Icon', 'amaley-ui-sections-kit' ),
-				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
-			)
-		);
-
+		$e->start_controls_section( 'amaley_pts_icon_section', array( 'label' => esc_html__( 'Item Icon', 'amaley-ui-sections-kit' ), 'tab' => \Elementor\Controls_Manager::TAB_STYLE ) );
 		self::box_size( $e, 'amaley_pts_icon_box_size', 'Icon Box Size', '{{WRAPPER}} .amaley-ui-trust-strip__icon', 22, 90 );
-
 		$e->add_responsive_control(
 			'amaley_pts_icon_svg_size',
 			array(
@@ -266,183 +231,32 @@ final class Amaley_UI_Page_Trust_Strip_Control_Bridge {
 				),
 			)
 		);
-
 		self::color( $e, 'amaley_pts_icon_color', 'Icon Color', '{{WRAPPER}} .amaley-ui-trust-strip__icon', 'color' );
 		self::color( $e, 'amaley_pts_icon_bg', 'Icon Background', '{{WRAPPER}} .amaley-ui-trust-strip__icon', 'background' );
 		self::border( $e, 'amaley_pts_icon_border', '{{WRAPPER}} .amaley-ui-trust-strip__icon' );
 		self::dimensions( $e, 'amaley_pts_icon_radius', 'Icon Radius', '{{WRAPPER}} .amaley-ui-trust-strip__icon', 'border-radius' );
-
 		$e->end_controls_section();
 	}
 
-	/** Item Title & Text controls. */
 	private static function item_text( $e ) {
-		$e->start_controls_section(
-			'amaley_pts_text_section',
-			array(
-				'label' => esc_html__( 'Item Title & Text', 'amaley-ui-sections-kit' ),
-				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
-			)
-		);
-
+		$e->start_controls_section( 'amaley_pts_text_section', array( 'label' => esc_html__( 'Item Title & Text', 'amaley-ui-sections-kit' ), 'tab' => \Elementor\Controls_Manager::TAB_STYLE ) );
 		$e->add_control( 'amaley_pts_item_title_heading', array( 'label' => esc_html__( 'Title', 'amaley-ui-sections-kit' ), 'type' => \Elementor\Controls_Manager::HEADING ) );
 		self::typography( $e, 'amaley_pts_item_title_typography', '{{WRAPPER}} .amaley-ui-trust-strip__item-title' );
 		self::color( $e, 'amaley_pts_item_title_color', 'Title Color', '{{WRAPPER}} .amaley-ui-trust-strip__item-title', 'color' );
-
 		$e->add_control( 'amaley_pts_item_copy_heading', array( 'label' => esc_html__( 'Short Text', 'amaley-ui-sections-kit' ), 'type' => \Elementor\Controls_Manager::HEADING, 'separator' => 'before' ) );
 		self::typography( $e, 'amaley_pts_item_copy_typography', '{{WRAPPER}} .amaley-ui-trust-strip__item-text' );
 		self::color( $e, 'amaley_pts_item_copy_color', 'Text Color', '{{WRAPPER}} .amaley-ui-trust-strip__item-text', 'color' );
 		self::slider( $e, 'amaley_pts_item_copy_gap', 'Text Top Spacing', '{{WRAPPER}} .amaley-ui-trust-strip__item-text', 'margin-top', 0, 40 );
-
 		$e->end_controls_section();
 	}
 
-	/** Responsive / Device Polish controls. */
 	private static function responsive_style( $e ) {
-		$e->start_controls_section(
-			'amaley_pts_responsive_style',
-			array(
-				'label' => esc_html__( 'Responsive / Device Polish', 'amaley-ui-sections-kit' ),
-				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
-			)
-		);
-
+		$e->start_controls_section( 'amaley_pts_responsive_style', array( 'label' => esc_html__( 'Responsive / Device Polish', 'amaley-ui-sections-kit' ), 'tab' => \Elementor\Controls_Manager::TAB_STYLE ) );
 		self::slider( $e, 'amaley_pts_mobile_icon_gap', 'Card Gap', '{{WRAPPER}} .amaley-ui-trust-strip__item', 'gap', 0, 40 );
-		self::slider( $e, 'amaley_pts_mobile_copy_space', 'Text Top Spacing', '{{WRAPPER}} .amaley-ui-trust-strip__item-text', 'margin-top', 0, 32 );
-
+		self::slider( $e, 'amaley_pts_mobile_copy_size', 'Text Top Spacing', '{{WRAPPER}} .amaley-ui-trust-strip__item-text', 'margin-top', 0, 32 );
 		$e->end_controls_section();
 	}
 
-	/** Add select control. */
-	private static function select( $e, $name, $label, $options, $default = '', $extra = array() ) {
-		$args = array_merge(
-			array(
-				'label'   => esc_html__( $label, 'amaley-ui-sections-kit' ),
-				'type'    => \Elementor\Controls_Manager::SELECT,
-				'default' => $default,
-				'options' => $options,
-			),
-			$extra
-		);
-
-		$e->add_control( $name, $args );
-	}
-
-	/** Add color control. */
-	private static function color( $e, $name, $label, $selector, $property ) {
-		$e->add_control(
-			$name,
-			array(
-				'label'     => esc_html__( $label, 'amaley-ui-sections-kit' ),
-				'type'      => \Elementor\Controls_Manager::COLOR,
-				'selectors' => array(
-					$selector => $property . ': {{VALUE}};',
-				),
-			)
-		);
-	}
-
-	/** Add responsive slider control. */
-	private static function slider( $e, $name, $label, $selector, $property, $min, $max, $units = array( 'px' ) ) {
-		$e->add_responsive_control(
-			$name,
-			array(
-				'label'      => esc_html__( $label, 'amaley-ui-sections-kit' ),
-				'type'       => \Elementor\Controls_Manager::SLIDER,
-				'size_units' => $units,
-				'range'      => array(
-					'px' => array(
-						'min' => $min,
-						'max' => $max,
-					),
-				),
-				'selectors'  => array(
-					$selector => $property . ': {{SIZE}}{{UNIT}};',
-				),
-			)
-		);
-	}
-
-	/** Add square box-size control. */
-	private static function box_size( $e, $name, $label, $selector, $min, $max ) {
-		$e->add_responsive_control(
-			$name,
-			array(
-				'label'      => esc_html__( $label, 'amaley-ui-sections-kit' ),
-				'type'       => \Elementor\Controls_Manager::SLIDER,
-				'size_units' => array( 'px' ),
-				'range'      => array(
-					'px' => array(
-						'min' => $min,
-						'max' => $max,
-					),
-				),
-				'selectors'  => array(
-					$selector => 'width: {{SIZE}}{{UNIT}}; min-width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
-				),
-			)
-		);
-	}
-
-	/** Add responsive dimensions control. */
-	private static function dimensions( $e, $name, $label, $selector, $property ) {
-		$template = 'border-radius' === $property
-			? 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};'
-			: $property . ': {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};';
-
-		$e->add_responsive_control(
-			$name,
-			array(
-				'label'      => esc_html__( $label, 'amaley-ui-sections-kit' ),
-				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em', 'rem' ),
-				'selectors'  => array(
-					$selector => $template,
-				),
-			)
-		);
-	}
-
-	/** Add border group control. */
-	private static function border( $e, $name, $selector ) {
-		if ( class_exists( '\\Elementor\\Group_Control_Border' ) ) {
-			$e->add_group_control(
-				\Elementor\Group_Control_Border::get_type(),
-				array(
-					'name'     => $name,
-					'selector' => $selector,
-				)
-			);
-		}
-	}
-
-	/** Add shadow group control. */
-	private static function shadow( $e, $name, $selector ) {
-		if ( class_exists( '\\Elementor\\Group_Control_Box_Shadow' ) ) {
-			$e->add_group_control(
-				\Elementor\Group_Control_Box_Shadow::get_type(),
-				array(
-					'name'     => $name,
-					'selector' => $selector,
-				)
-			);
-		}
-	}
-
-	/** Add typography group control. */
-	private static function typography( $e, $name, $selector ) {
-		if ( class_exists( '\\Elementor\\Group_Control_Typography' ) ) {
-			$e->add_group_control(
-				\Elementor\Group_Control_Typography::get_type(),
-				array(
-					'name'     => $name,
-					'selector' => $selector,
-				)
-			);
-		}
-	}
-
-	/** Column options. */
 	private static function column_options() {
 		return array(
 			'1' => '1',
@@ -452,10 +266,62 @@ final class Amaley_UI_Page_Trust_Strip_Control_Bridge {
 		);
 	}
 
-	/** Checks Elementor control availability. */
 	private static function ready( $element ) {
 		return class_exists( '\\Elementor\\Controls_Manager' ) && is_object( $element );
 	}
+
+	private static function color( $e, $name, $label, $selector, $property ) {
+		$e->add_control( $name, array( 'label' => esc_html__( $label, 'amaley-ui-sections-kit' ), 'type' => \Elementor\Controls_Manager::COLOR, 'selectors' => array( $selector => $property . ': {{VALUE}};' ) ) );
+	}
+
+	private static function slider( $e, $name, $label, $selector, $property, $min, $max, $units = array( 'px' ) ) {
+		$e->add_responsive_control(
+			$name,
+			array(
+				'label'      => esc_html__( $label, 'amaley-ui-sections-kit' ),
+				'type'       => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => $units,
+				'range'      => array( 'px' => array( 'min' => $min, 'max' => $max ) ),
+				'selectors'  => array( $selector => $property . ': {{SIZE}}{{UNIT}};' ),
+			)
+		);
+	}
+
+	private static function box_size( $e, $name, $label, $selector, $min, $max ) {
+		$e->add_responsive_control(
+			$name,
+			array(
+				'label'      => esc_html__( $label, 'amaley-ui-sections-kit' ),
+				'type'       => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => array( 'px' ),
+				'range'      => array( 'px' => array( 'min' => $min, 'max' => $max ) ),
+				'selectors'  => array( $selector => 'width: {{SIZE}}{{UNIT}}; min-width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};' ),
+			)
+		);
+	}
+
+	private static function dimensions( $e, $name, $label, $selector, $property ) {
+		$template = 'border-radius' === $property ? 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' : $property . ': {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};';
+		$e->add_responsive_control( $name, array( 'label' => esc_html__( $label, 'amaley-ui-sections-kit' ), 'type' => \Elementor\Controls_Manager::DIMENSIONS, 'size_units' => array( 'px', '%', 'em', 'rem' ), 'selectors' => array( $selector => $template ) ) );
+	}
+
+	private static function border( $e, $name, $selector ) {
+		if ( class_exists( '\\Elementor\\Group_Control_Border' ) ) {
+			$e->add_group_control( \Elementor\Group_Control_Border::get_type(), array( 'name' => $name, 'selector' => $selector ) );
+		}
+	}
+
+	private static function shadow( $e, $name, $selector ) {
+		if ( class_exists( '\\Elementor\\Group_Control_Box_Shadow' ) ) {
+			$e->add_group_control( \Elementor\Group_Control_Box_Shadow::get_type(), array( 'name' => $name, 'selector' => $selector ) );
+		}
+	}
+
+	private static function typography( $e, $name, $selector ) {
+		if ( class_exists( '\\Elementor\\Group_Control_Typography' ) ) {
+			$e->add_group_control( \Elementor\Group_Control_Typography::get_type(), array( 'name' => $name, 'selector' => $selector ) );
+		}
+	}
 }
 
-Amaley_UI_Page_Trust_Strip_Control_Bridge::hooks();
+Amaley_UI_Page_Trust_Strip_Control_Bridge::init();

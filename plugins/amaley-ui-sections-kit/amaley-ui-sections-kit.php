@@ -3,7 +3,7 @@
  * Plugin Name: Amaley UI Sections Kit
  * Plugin URI:  https://amaleycollective.com/
  * Description: Lightweight, scoped UI foundation components for Amaley. Adds lightweight Amaley UI foundation components, safe product display shortcodes, and an Elementor-native page trust strip widget.
- * Version: 0.6.2
+ * Version: 0.6.9.3
  * Author:      Praveen
  * Text Domain: amaley-ui-sections-kit
  * Requires at least: 6.0
@@ -15,7 +15,7 @@
 defined( 'ABSPATH' ) || exit;
 
 if ( ! defined( 'AMALEY_UI_SECTIONS_KIT_VERSION' ) ) {
-	define( 'AMALEY_UI_SECTIONS_KIT_VERSION', '0.6.2' );
+	define( 'AMALEY_UI_SECTIONS_KIT_VERSION', '0.6.9.3' );
 }
 
 if ( ! defined( 'AMALEY_UI_SECTIONS_KIT_FILE' ) ) {
@@ -40,6 +40,9 @@ require_once AMALEY_UI_SECTIONS_KIT_PATH . 'includes/renderers/class-amaley-ui-t
 require_once AMALEY_UI_SECTIONS_KIT_PATH . 'includes/renderers/class-amaley-ui-trust-strip.php';
 require_once AMALEY_UI_SECTIONS_KIT_PATH . 'includes/renderers/class-amaley-ui-home-hero-v6.php';
 require_once AMALEY_UI_SECTIONS_KIT_PATH . 'includes/renderers/class-amaley-ui-pages-hero-other.php';
+require_once AMALEY_UI_SECTIONS_KIT_PATH . 'includes/renderers/class-amaley-ui-collection-purpose-routes.php';
+require_once AMALEY_UI_SECTIONS_KIT_PATH . 'includes/renderers/class-amaley-ui-featured-collection-cards.php';
+require_once AMALEY_UI_SECTIONS_KIT_PATH . 'includes/renderers/class-amaley-ui-collection-detail-split.php';
 require_once AMALEY_UI_SECTIONS_KIT_PATH . 'includes/renderers/class-amaley-ui-brand-promise.php';
 require_once AMALEY_UI_SECTIONS_KIT_PATH . 'includes/renderers/class-amaley-ui-cta-band.php';
 require_once AMALEY_UI_SECTIONS_KIT_PATH . 'includes/renderers/class-amaley-ui-empty-state.php';
