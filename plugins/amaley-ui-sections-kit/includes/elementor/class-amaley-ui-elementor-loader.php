@@ -53,6 +53,11 @@ final class Amaley_UI_Elementor_Loader {
 			AMALEY_UI_SECTIONS_KIT_PATH . 'includes/elementor/widgets/class-amaley-elementor-page-trust-strip-widget.php',
 			AMALEY_UI_SECTIONS_KIT_PATH . 'includes/elementor/widgets/class-amaley-elementor-home-hero-v6-widget.php',
 			AMALEY_UI_SECTIONS_KIT_PATH . 'includes/elementor/widgets/class-amaley-elementor-pages-hero-other-widget.php',
+			AMALEY_UI_SECTIONS_KIT_PATH . 'includes/elementor/widgets/class-amaley-elementor-collection-purpose-routes-widget.php',
+			AMALEY_UI_SECTIONS_KIT_PATH . 'includes/elementor/widgets/class-amaley-elementor-featured-collection-cards-widget.php',
+			AMALEY_UI_SECTIONS_KIT_PATH . 'includes/elementor/widgets/class-amaley-elementor-collection-detail-split-widget.php',
+			AMALEY_UI_SECTIONS_KIT_PATH . 'includes/elementor/widgets/class-amaley-elementor-bulk-orders-band-widget.php',
+			AMALEY_UI_SECTIONS_KIT_PATH . 'includes/elementor/widgets/class-amaley-elementor-gifting-enquiry-section-widget.php',
 		);
 
 		foreach ( $widget_files as $widget_file ) {
@@ -71,6 +76,26 @@ final class Amaley_UI_Elementor_Loader {
 
 		if ( class_exists( 'Amaley_Elementor_Pages_Hero_Other_Widget' ) && method_exists( $widgets_manager, 'register' ) ) {
 			$widgets_manager->register( new Amaley_Elementor_Pages_Hero_Other_Widget() );
+		}
+
+		if ( class_exists( 'Amaley_Elementor_Collection_Purpose_Routes_Widget' ) && method_exists( $widgets_manager, 'register' ) ) {
+			$widgets_manager->register( new Amaley_Elementor_Collection_Purpose_Routes_Widget() );
+		}
+
+		if ( class_exists( 'Amaley_Elementor_Featured_Collection_Cards_Widget' ) && method_exists( $widgets_manager, 'register' ) ) {
+			$widgets_manager->register( new Amaley_Elementor_Featured_Collection_Cards_Widget() );
+		}
+
+		if ( class_exists( 'Amaley_Elementor_Collection_Detail_Split_Widget' ) && method_exists( $widgets_manager, 'register' ) ) {
+			$widgets_manager->register( new Amaley_Elementor_Collection_Detail_Split_Widget() );
+		}
+
+		if ( class_exists( 'Amaley_Elementor_Bulk_Orders_Band_Widget' ) && method_exists( $widgets_manager, 'register' ) ) {
+			$widgets_manager->register( new Amaley_Elementor_Bulk_Orders_Band_Widget() );
+		}
+
+		if ( class_exists( 'Amaley_Elementor_Gifting_Enquiry_Section_Widget' ) && method_exists( $widgets_manager, 'register' ) ) {
+			$widgets_manager->register( new Amaley_Elementor_Gifting_Enquiry_Section_Widget() );
 		}
 	}
 }

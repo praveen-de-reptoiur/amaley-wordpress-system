@@ -1,48 +1,23 @@
 # Amaley UI Sections Kit
 
-Version: 0.6.1  
-Status: Performance + conditional asset loading cleanup. No visual redesign.
+Version: 0.6.9.3  
+Status: Pages Hero Other all-variation Elementor controls completed and staging-tested. No live update yet.
+
+## New in v0.6.9.3
+
+- Gifting Enquiry real form embed mode now keeps Contact Form 7 / WPForms / Elementor form markup usable.
+- Safe allow-list added for form, input, select, textarea, label, button, fieldset and option tags.
+- Dummy form remains fillable and non-submitting for preview/testing.
 
 ## Purpose
 
-Amaley UI Sections Kit is a lightweight WordPress-native UI foundation for Amaley. It provides reusable, scoped shortcodes and Elementor widgets for generic homepage/page visual sections.
+Amaley UI Sections Kit is a lightweight WordPress-native UI foundation for Amaley. It provides reusable, scoped shortcodes and Elementor widgets for generic homepage and inner-page visual sections.
 
+This plugin owns generic UI sections only. It must not own or replace WooCommerce templates, Amaley Core CPT/card logic, Discovery Engine filters, Amaley Templates, header/footer, product data, origin mapping, uploaded photos, cart or checkout.
 
+## Current release — v0.6.4.1
 
-## New in v0.6.1
-
-### Performance + Asset Loading Cleanup
-
-This release does not add a new visual widget and does not redesign any accepted section. It changes how assets load.
-
-- Base UI CSS loads only when Amaley UI shortcodes/widgets are detected.
-- Home Hero V6 CSS and counter JS load only when Home Hero V6 is used.
-- Pages Hero Other CSS loads only when Pages Hero Other is used.
-- Elementor editor/preview loads all assets for safe editing.
-- Elementor widgets declare their own asset dependencies.
-- A force-load filter is available for rare late-rendered dynamic builder content.
-
-Developer force-load example:
-
-```php
-add_filter( 'amaley_ui_sections_kit_force_asset_handles', function( $handles ) {
-    $handles[] = 'amaley-ui-pages-hero-other';
-    return $handles;
-} );
-```
-
-Allowed handles:
-
-```text
-amaley-ui-sections-kit
-amaley-ui-home-hero-v6
-amaley-ui-home-hero-v6-js
-amaley-ui-pages-hero-other
-```
-
-## New in v0.6.0
-
-### Amaley Pages Hero Other
+### Pages Hero Other — all variation controls
 
 Elementor widget:
 
@@ -56,33 +31,89 @@ Shortcode:
 [amaley_pages_hero_other style="style-1"]
 ```
 
-Fixes:
+v0.6.4.1 completes the Elementor control system for `Amaley Pages Hero Other` across all active variations.
 
-- Style numbers are visible in the Elementor dropdown.
-- Image/media side can be switched left or right for image-based styles.
-- Image gaps at browser zoom are fixed by no-gap media wrappers.
-- Image fit/focus controls remain in Style tab.
-- No Discovery Engine, Core, Templates, Site Shell or WooCommerce changes.
+Covered styles:
 
+```text
+Style 1  — Story Split
+Style 2  — Cluster / Traceability
+Style 3  — Collections / Intent Card
+Style 5  — Contact / Minimal
+Style 6  — Gifting / Image Split
+Style 7  — Premium Editorial Ribbon
+Style 8  — Centered Statement
+Style 9  — Framed Origin Editorial
+Style 10 — Product Story Editorial
+Style 11 — Warm Story Editorial
+Style 12 — Centered Trust Board
+Style 13 — Quiet Minimal Statement
+```
 
-## New in v0.5.4
+Style 4 remains intentionally removed.
 
-- No-gap absolute right-image mosaic lock for Home Hero V6.
-- Main, top-right and bottom-right images now fill their slots without bottom/middle beige gaps.
-- Image fit/focus controls remain available in Elementor Style tab.
+### Control system
 
-## Previous v0.5.3
+Each selected style now shows its own relevant Elementor panels instead of confusing shared panels.
 
-- Home Hero V6 right image collage hard-lock: images default to center center + cover.
-- Added all-images fit/focus controls and per-image fit/focus controls in Elementor Style tab.
-- Connected crop preset controls to rendered image classes.
-- No Discovery Engine, Core, Templates, Site Shell or WooCommerce changes.
+Common control families include:
 
-## New in v0.5.1
+- Device-wise visibility controls
+- Layout and spacing controls
+- Typography controls
+- Button controls
+- Stats / proof controls where applicable
+- Image / media controls where applicable
+- Editorial note card controls where applicable
+- Intent card controls for Style 3
+- Right text panel controls for Style 1
+- Statement pill controls for Styles 8, 12 and 13
+
+### Stats gap fix
+
+v0.6.4.1 adds specific controls for spacing between stat value and stat label:
+
+```text
+Value and Label Gap
+Label Top Spacing Fallback
+```
+
+These controls apply to stats-based styles such as Style 2, Style 3, Style 7, Style 9 and Style 11.
+
+### Style 10 lock
+
+Style 10 was already accepted during staging testing. v0.6.4.1 keeps Style 10 as the approved base and does not redesign it.
+
+Style 10 includes:
+
+- `Style 10 — Visibility (Device Wise)`
+- Layout controls
+- Typography controls
+- Image / media controls
+- Editorial note card controls
+- Stats / proof controls
+- Button controls
+
+### CSS scope
+
+Pages Hero Other CSS remains scoped under:
+
+```text
+.amaley-pages-hero-other
+```
+
+Style-specific safety CSS uses classes such as:
+
+```text
+.amaley-pages-hero-other--style-1
+.amaley-pages-hero-other--style-10
+```
+
+No global CSS reset, theme override, WooCommerce override, header/footer override or Discovery filter CSS is added.
+
+## Other active widgets / shortcodes
 
 ### Amaley Home Hero V6
-
-This is the clean plugin conversion of the accepted live HTML widget hero.
 
 Shortcode:
 
@@ -96,18 +127,9 @@ Elementor widget:
 Amaley UI > Amaley Home Hero V6
 ```
 
-The hero uses:
+### Amaley Page Trust Strip
 
-- Locked desktop grid: left content panel + right 3-image mosaic
-- Scoped class prefix: `.amaley-home-hero-v6`
-- Live counter script scoped only to `[data-amaley-home-hero-v6]`
-- No external library
-- No jQuery
-- No WooCommerce, Elementor, Freshen, Apus or Discovery Engine overrides
-
-## Page Trust Strip
-
-Locked shortcode:
+Shortcode:
 
 ```text
 [amaley_page_trust_strip tone="cream" style="cards" columns="4" mobile="stack" motion="glow" width="contained"]
@@ -128,6 +150,7 @@ Amaley UI > Amaley Page Trust Strip
 [amaley_trust_item]
 [amaley_page_trust_strip]
 [amaley_home_hero_v6]
+[amaley_pages_hero_other]
 [amaley_brand_promise]
 [amaley_cta_band]
 [amaley_empty_state]
@@ -135,54 +158,51 @@ Amaley UI > Amaley Page Trust Strip
 [amaley_product_grid]
 ```
 
-## Safety
+## Asset loading
 
-- GitHub source only; do not commit plugin ZIPs.
-- CSS remains scoped to `.amaley-ui-*` and `.amaley-home-hero-v6`.
-- Discovery Engine remains untouched.
-- Amaley Core remains untouched.
-- Amaley Templates remains untouched.
-- Site Shell remains untouched.
-- WooCommerce cart/checkout remains untouched.
+The plugin keeps the v0.6.1 conditional asset-loading approach:
 
+- Base UI CSS loads only when Amaley UI shortcodes/widgets are detected.
+- Home Hero V6 CSS and counter JS load only when Home Hero V6 is used.
+- Pages Hero Other CSS loads only when Pages Hero Other is used.
+- Elementor editor/preview loads assets for safe editing.
+- Elementor widgets declare their own asset dependencies.
 
-## v0.5.4 Home Hero V6 style controls
+Developer force-load example:
 
-The Elementor widget `Amaley UI > Amaley Home Hero V6` now includes section-wise Style tab controls:
-
-- Section / Background
-- Left Content Panel
-- Label / Heading / Text
-- Buttons
-- Counter / Proof Row
-- Image Collage / Fit Controls
-- Center Medallion / Badge
-
-Image fit controls include per-image fit mode and horizontal/vertical focal sliders, so product and producer images can be adjusted inside the fixed live-style mosaic without changing the code.
-
-
-## Pages Hero Other v0.5.7
-
-Adds 8 selectable inner-page hero styles under `Amaley UI > Amaley Pages Hero Other`, including Style 7 Premium Editorial Ribbon and Style 8 Centered Statement / Minimal.
-
-Shortcode examples:
-
-```text
-[amaley_pages_hero_other style="style-7"]
-[amaley_pages_hero_other style="style-8"]
+```php
+add_filter( 'amaley_ui_sections_kit_force_asset_handles', function( $handles ) {
+    $handles[] = 'amaley-ui-pages-hero-other';
+    return $handles;
+} );
 ```
 
+Allowed handles:
 
-## v0.5.9 note
+```text
+amaley-ui-sections-kit
+amaley-ui-home-hero-v6
+amaley-ui-home-hero-v6-js
+amaley-ui-pages-hero-other
+```
 
-Pages Hero Other controls audit: typography controls, image fit/focus/radius/border/shadow controls, and style-specific control visibility improved. Home Hero V6 and Page Trust Strip remain untouched.
+## Safety
 
+- No database schema changes.
+- No WooCommerce template override.
+- No cart or checkout replacement.
+- No product data, origin mapping or photo update.
+- No Discovery Engine filter or query logic change.
+- No Amaley Core CPT/card-library change.
+- No Amaley Templates change.
+- No header/footer change.
+- No global CSS selectors added.
+- GitHub source must not be updated unless explicitly approved.
 
-## v0.5.9 Pages Hero Other
+## Staging checkpoint
 
-- Removed Style 4 Journal / Image Split.
-- Removed the bottom feature strip from Style 2.
-- Added Style 9, Style 10 and Style 11 as distinct premium editorial image variations inspired by Style 7.
-- Added Style 12 and Style 13 as centered statement variations inspired by Style 8.
-- Kept controls style-specific so unrelated style controls stay hidden.
-- No Discovery Engine, Amaley Core, Templates, Site Shell or WooCommerce cart/checkout changes.
+```text
+Amaley UI Sections Kit v0.6.4.1
+Pages Hero Other — All Variations Controls
+Staging Working + ZIP Audit Passed
+```

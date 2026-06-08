@@ -84,6 +84,41 @@ final class Amaley_UI_Sections_Kit {
 			AMALEY_UI_SECTIONS_KIT_VERSION
 		);
 
+		wp_register_style(
+			'amaley-ui-collection-purpose-routes',
+			AMALEY_UI_SECTIONS_KIT_URL . 'assets/css/amaley-ui-collection-purpose-routes.css',
+			array( 'amaley-ui-sections-kit' ),
+			AMALEY_UI_SECTIONS_KIT_VERSION
+		);
+
+		wp_register_style(
+			'amaley-ui-featured-collection-cards',
+			AMALEY_UI_SECTIONS_KIT_URL . 'assets/css/amaley-ui-featured-collection-cards.css',
+			array( 'amaley-ui-sections-kit' ),
+			AMALEY_UI_SECTIONS_KIT_VERSION
+		);
+
+		wp_register_style(
+			'amaley-ui-collection-detail-split',
+			AMALEY_UI_SECTIONS_KIT_URL . 'assets/css/amaley-ui-collection-detail-split.css',
+			array( 'amaley-ui-sections-kit' ),
+			AMALEY_UI_SECTIONS_KIT_VERSION
+		);
+
+		wp_register_style(
+			'amaley-ui-bulk-orders-band',
+			AMALEY_UI_SECTIONS_KIT_URL . 'assets/css/amaley-ui-bulk-orders-band.css',
+			array( 'amaley-ui-sections-kit' ),
+			AMALEY_UI_SECTIONS_KIT_VERSION
+		);
+
+		wp_register_style(
+			'amaley-ui-gifting-enquiry-section',
+			AMALEY_UI_SECTIONS_KIT_URL . 'assets/css/amaley-ui-gifting-enquiry-section.css',
+			array( 'amaley-ui-sections-kit' ),
+			AMALEY_UI_SECTIONS_KIT_VERSION
+		);
+
 		wp_register_script(
 			'amaley-ui-home-hero-v6',
 			AMALEY_UI_SECTIONS_KIT_URL . 'assets/js/amaley-ui-home-hero-v6.js',
@@ -137,6 +172,11 @@ final class Amaley_UI_Sections_Kit {
 		$this->enqueue_asset_handle( 'amaley-ui-page-trust-strip' );
 		$this->enqueue_asset_handle( 'amaley-ui-home-hero-v6' );
 		$this->enqueue_asset_handle( 'amaley-ui-pages-hero-other' );
+		$this->enqueue_asset_handle( 'amaley-ui-collection-purpose-routes' );
+		$this->enqueue_asset_handle( 'amaley-ui-featured-collection-cards' );
+		$this->enqueue_asset_handle( 'amaley-ui-collection-detail-split' );
+		$this->enqueue_asset_handle( 'amaley-ui-bulk-orders-band' );
+		$this->enqueue_asset_handle( 'amaley-ui-gifting-enquiry-section' );
 	}
 
 	/**
@@ -151,6 +191,11 @@ final class Amaley_UI_Sections_Kit {
 			case 'amaley-ui-page-trust-strip':
 			case 'amaley-ui-home-hero-v6':
 			case 'amaley-ui-pages-hero-other':
+			case 'amaley-ui-collection-purpose-routes':
+			case 'amaley-ui-featured-collection-cards':
+			case 'amaley-ui-collection-detail-split':
+			case 'amaley-ui-bulk-orders-band':
+			case 'amaley-ui-gifting-enquiry-section':
 				wp_enqueue_style( $handle );
 				break;
 
@@ -197,9 +242,19 @@ final class Amaley_UI_Sections_Kit {
 			'[amaley_product_grid',
 			'[amaley_home_hero_v6',
 			'[amaley_pages_hero_other',
+			'[amaley_collection_purpose_routes',
+			'[amaley_featured_collection_cards',
+			'[amaley_collection_detail_split',
+			'[amaley_bulk_orders_band',
+			'[amaley_gifting_enquiry_section',
 			'amaley_ui_page_trust_strip',
 			'amaley_ui_home_hero_v6',
 			'amaley_ui_pages_hero_other',
+			'amaley_ui_collection_purpose_routes',
+			'amaley_ui_featured_collection_cards',
+			'amaley_ui_collection_detail_split',
+			'amaley_ui_bulk_orders_band',
+			'amaley_ui_gifting_enquiry_section',
 		);
 
 		if ( $this->string_contains_any( $content, $base_needles ) ) {
@@ -217,6 +272,27 @@ final class Amaley_UI_Sections_Kit {
 
 		if ( $this->string_contains_any( $content, array( '[amaley_pages_hero_other', 'amaley_ui_pages_hero_other' ) ) ) {
 			$handles[] = 'amaley-ui-pages-hero-other';
+		}
+
+
+		if ( $this->string_contains_any( $content, array( '[amaley_collection_purpose_routes', 'amaley_ui_collection_purpose_routes' ) ) ) {
+			$handles[] = 'amaley-ui-collection-purpose-routes';
+		}
+
+		if ( $this->string_contains_any( $content, array( '[amaley_featured_collection_cards', 'amaley_ui_featured_collection_cards' ) ) ) {
+			$handles[] = 'amaley-ui-featured-collection-cards';
+		}
+
+		if ( $this->string_contains_any( $content, array( '[amaley_collection_detail_split', 'amaley_ui_collection_detail_split' ) ) ) {
+			$handles[] = 'amaley-ui-collection-detail-split';
+		}
+
+		if ( $this->string_contains_any( $content, array( '[amaley_bulk_orders_band', 'amaley_ui_bulk_orders_band' ) ) ) {
+			$handles[] = 'amaley-ui-bulk-orders-band';
+		}
+
+		if ( $this->string_contains_any( $content, array( '[amaley_gifting_enquiry_section', 'amaley_ui_gifting_enquiry_section' ) ) ) {
+			$handles[] = 'amaley-ui-gifting-enquiry-section';
 		}
 
 		return apply_filters( 'amaley_ui_sections_kit_detected_asset_handles', $handles, $content );

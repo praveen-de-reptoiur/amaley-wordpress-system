@@ -1,0 +1,350 @@
+/**
+ * Amaley Gifting Enquiry Section.
+ * Scoped styles for gifting / bulk enquiry form section.
+ */
+
+.amaley-gifting-enquiry-section {
+	--ages-bg: #667f49;
+	--ages-ink: #fff8ec;
+	--ages-muted: rgba(255, 248, 236, 0.82);
+	--ages-soft: rgba(255, 248, 236, 0.68);
+	--ages-line: rgba(255, 248, 236, 0.22);
+	--ages-card: rgba(255, 248, 236, 0.06);
+	--ages-field: rgba(255, 248, 236, 0.07);
+	--ages-gold: #c79000;
+	--ages-gold-2: #efc45d;
+	background: var(--ages-bg);
+	color: var(--ages-ink);
+	font-family: inherit;
+	overflow: hidden;
+}
+
+.amaley-gifting-enquiry-section--deep {
+	--ages-bg: #2b0d00;
+	--ages-card: rgba(255, 245, 222, 0.055);
+	--ages-line: rgba(255, 218, 142, 0.24);
+}
+
+.amaley-gifting-enquiry-section--cream {
+	--ages-bg: #f3e7d2;
+	--ages-ink: #301100;
+	--ages-muted: rgba(48, 17, 0, 0.74);
+	--ages-soft: rgba(48, 17, 0, 0.62);
+	--ages-line: rgba(48, 17, 0, 0.16);
+	--ages-card: rgba(255, 252, 245, 0.74);
+	--ages-field: rgba(255, 252, 245, 0.92);
+	--ages-gold: #b98400;
+	--ages-gold-2: #8d3a18;
+}
+
+.amaley-gifting-enquiry-section__inner {
+	width: min(100%, 1180px);
+	max-width: 1180px;
+	margin-inline: auto;
+	padding: clamp(66px, 8vw, 112px) clamp(18px, 4vw, 48px);
+}
+
+.amaley-gifting-enquiry-section--full .amaley-gifting-enquiry-section__inner {
+	width: 100%;
+	max-width: none;
+}
+
+.amaley-gifting-enquiry-section__grid,
+.amaley-gifting-enquiry-section__content,
+.amaley-gifting-enquiry-section__points,
+.amaley-gifting-enquiry-section__point,
+.amaley-gifting-enquiry-section__form-card,
+.amaley-gifting-enquiry-section__form-embed {
+	min-width: 0;
+}
+
+.amaley-gifting-enquiry-section__grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(340px, 0.86fr);
+	gap: clamp(38px, 6vw, 88px);
+	align-items: center;
+}
+
+.amaley-gifting-enquiry-section__content {
+	max-width: 700px;
+}
+
+.amaley-gifting-enquiry-section__eyebrow,
+.amaley-gifting-enquiry-section__form-eyebrow {
+	margin-bottom: 18px;
+	color: var(--ages-gold-2);
+	font-size: 11px;
+	font-weight: 800;
+	letter-spacing: 0.28em;
+	line-height: 1.25;
+	text-transform: uppercase;
+}
+
+.amaley-gifting-enquiry-section__title {
+	max-width: 680px;
+	margin: 0;
+	color: var(--ages-ink);
+	font-family: Georgia, 'Times New Roman', serif;
+	font-size: clamp(40px, 5vw, 74px);
+	font-weight: 400;
+	letter-spacing: -0.052em;
+	line-height: 1.02;
+}
+
+.amaley-gifting-enquiry-section__title em {
+	color: var(--ages-gold-2);
+	font-style: italic;
+	font-weight: 400;
+}
+
+.amaley-gifting-enquiry-section__description {
+	max-width: 670px;
+	margin: 22px 0 0;
+	color: var(--ages-muted);
+	font-size: clamp(14px, 1.25vw, 17px);
+	line-height: 1.78;
+}
+
+.amaley-gifting-enquiry-section__points {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	margin-top: clamp(34px, 4.5vw, 54px);
+}
+
+.amaley-gifting-enquiry-section__point {
+	display: flex;
+	gap: 16px;
+	align-items: center;
+	padding: 18px 0;
+	border-bottom: 1px solid var(--ages-line);
+}
+
+.amaley-gifting-enquiry-section__point:first-child {
+	border-top: 1px solid var(--ages-line);
+}
+
+.amaley-gifting-enquiry-section__point-icon {
+	width: 22px;
+	flex: 0 0 22px;
+	color: var(--ages-gold-2);
+	font-size: 18px;
+	line-height: 1;
+	text-align: center;
+}
+
+.amaley-gifting-enquiry-section__point-text {
+	color: var(--ages-ink);
+	font-size: 15px;
+	font-weight: 600;
+	line-height: 1.45;
+}
+
+.amaley-gifting-enquiry-section__actions {
+	margin-top: clamp(34px, 4vw, 54px);
+}
+
+.amaley-gifting-enquiry-section__button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 48px;
+	padding: 15px 32px;
+	background: var(--ages-gold);
+	border: 1px solid var(--ages-gold);
+	border-radius: 2px;
+	color: #fff8ec;
+	font-size: 10px;
+	font-weight: 800;
+	letter-spacing: 0.16em;
+	line-height: 1;
+	text-align: center;
+	text-decoration: none;
+	text-transform: uppercase;
+	transition: background 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+.amaley-gifting-enquiry-section__button:hover,
+.amaley-gifting-enquiry-section__button:focus {
+	background: var(--ages-ink);
+	border-color: var(--ages-ink);
+	color: var(--ages-bg);
+	transform: translateY(-1px);
+}
+
+.amaley-gifting-enquiry-section__form-card {
+	padding: clamp(26px, 3vw, 42px);
+	background: var(--ages-card);
+	border: 1px solid var(--ages-line);
+	border-radius: 0;
+	box-shadow: none;
+}
+
+.amaley-gifting-enquiry-section__form-title {
+	margin: 0;
+	color: var(--ages-ink);
+	font-family: Georgia, 'Times New Roman', serif;
+	font-size: clamp(26px, 2.7vw, 42px);
+	font-weight: 400;
+	letter-spacing: -0.04em;
+	line-height: 1.08;
+}
+
+.amaley-gifting-enquiry-section__form-description {
+	margin: 14px 0 26px;
+	color: var(--ages-muted);
+	font-size: 14px;
+	line-height: 1.68;
+}
+
+.amaley-gifting-enquiry-section__fallback-form,
+.amaley-gifting-enquiry-section__form-embed form {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.amaley-gifting-enquiry-section__form-row {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 14px;
+}
+
+.amaley-gifting-enquiry-section__fake-field,
+.amaley-gifting-enquiry-section__form-embed input:not([type='hidden']):not([type='submit']):not([type='button']):not([type='checkbox']):not([type='radio']):not([type='file']),
+.amaley-gifting-enquiry-section__form-embed select,
+.amaley-gifting-enquiry-section__form-embed textarea {
+	display: block;
+	width: 100%;
+	min-height: 46px;
+	padding: 13px 14px;
+	background: var(--ages-field);
+	border: 1px solid var(--ages-line);
+	border-radius: 0;
+	color: var(--ages-ink);
+	font: inherit;
+	font-size: 13px;
+	line-height: 1.4;
+	box-sizing: border-box;
+}
+
+.amaley-gifting-enquiry-section__fake-field {
+	color: var(--ages-soft);
+}
+
+.amaley-gifting-enquiry-section__fake-field--message,
+.amaley-gifting-enquiry-section__form-embed textarea {
+	min-height: 100px;
+}
+
+.amaley-gifting-enquiry-section__fake-submit,
+.amaley-gifting-enquiry-section__form-embed button,
+.amaley-gifting-enquiry-section__form-embed input[type='submit'] {
+	align-self: center;
+	min-height: 46px;
+	margin-top: 8px;
+	padding: 14px 34px;
+	background: var(--ages-gold);
+	border: 1px solid var(--ages-gold);
+	border-radius: 2px;
+	color: #fff8ec;
+	font-size: 10px;
+	font-weight: 800;
+	letter-spacing: 0.14em;
+	line-height: 1;
+	text-transform: uppercase;
+	cursor: pointer;
+}
+
+@media (max-width: 980px) {
+	.amaley-gifting-enquiry-section__grid {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.amaley-gifting-enquiry-section__content,
+	.amaley-gifting-enquiry-section__title,
+	.amaley-gifting-enquiry-section__description {
+		max-width: none;
+	}
+}
+
+@media (max-width: 680px) {
+	.amaley-gifting-enquiry-section__inner {
+		padding: 48px 18px;
+	}
+
+	.amaley-gifting-enquiry-section__form-row {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.amaley-gifting-enquiry-section__button,
+	.amaley-gifting-enquiry-section__fake-submit,
+	.amaley-gifting-enquiry-section__form-embed button,
+	.amaley-gifting-enquiry-section__form-embed input[type='submit'] {
+		width: 100%;
+	}
+}
+
+/* v0.6.9.3: fillable dummy form + safer future shortcode/HTML form support */
+.amaley-gifting-enquiry-section__dummy-form {
+	pointer-events: auto;
+}
+
+.amaley-gifting-enquiry-section__dummy-input {
+	opacity: 1;
+	cursor: text;
+}
+
+.amaley-gifting-enquiry-section__dummy-input::placeholder {
+	color: var(--ages-soft);
+	opacity: 1;
+}
+
+.amaley-gifting-enquiry-section__dummy-submit {
+	pointer-events: auto;
+	cursor: pointer;
+}
+
+.amaley-gifting-enquiry-section__form-embed .wpcf7,
+.amaley-gifting-enquiry-section__form-embed .wpforms-container,
+.amaley-gifting-enquiry-section__form-embed .elementor-form {
+	width: 100%;
+	max-width: 100%;
+}
+
+.amaley-gifting-enquiry-section__form-embed label {
+	display: block;
+	margin-bottom: 7px;
+	color: var(--ages-muted);
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+.amaley-gifting-enquiry-section__form-embed .wpcf7-form-control-wrap,
+.amaley-gifting-enquiry-section__form-embed .wpforms-field {
+	display: block;
+	width: 100%;
+}
+
+
+/* v0.6.9.3: keep native real-form controls usable and avoid oversized checkboxes/radios/files. */
+.amaley-gifting-enquiry-section__form-embed input[type='checkbox'],
+.amaley-gifting-enquiry-section__form-embed input[type='radio'] {
+	width: auto;
+	min-height: 0;
+	margin-right: 8px;
+	vertical-align: middle;
+}
+
+.amaley-gifting-enquiry-section__form-embed input[type='file'] {
+	width: 100%;
+	padding: 10px 0;
+	background: transparent;
+	border: 0;
+}
+
+.amaley-gifting-enquiry-section__form-embed input[type='hidden'] {
+	display: none !important;
+}

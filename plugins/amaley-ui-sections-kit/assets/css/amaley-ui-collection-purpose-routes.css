@@ -1,0 +1,210 @@
+/**
+ * Amaley Collection Purpose Routes.
+ * Scoped Elementor/shortcode styles for collection buying-purpose cards.
+ */
+
+.amaley-collection-purpose-routes {
+	--acpr-bg: #f3e7d2;
+	--acpr-paper: rgba(255, 252, 245, 0.78);
+	--acpr-ink: #301100;
+	--acpr-muted: rgba(48, 17, 0, 0.74);
+	--acpr-gold: #b98400;
+	--acpr-line: rgba(48, 17, 0, 0.16);
+	background: var(--acpr-bg);
+	color: var(--acpr-ink);
+	font-family: inherit;
+	overflow: hidden;
+}
+
+.amaley-collection-purpose-routes--white {
+	--acpr-bg: #fbf7ef;
+	--acpr-paper: #fffdf8;
+}
+
+.amaley-collection-purpose-routes--deep {
+	--acpr-bg: #2b0d00;
+	--acpr-paper: rgba(68, 31, 14, 0.82);
+	--acpr-ink: #fff5de;
+	--acpr-muted: rgba(255, 245, 222, 0.78);
+	--acpr-line: rgba(255, 218, 142, 0.28);
+}
+
+.amaley-collection-purpose-routes__inner {
+	width: min(100%, 1180px);
+	max-width: 1180px;
+	margin-inline: auto;
+	padding: clamp(56px, 7vw, 92px) clamp(18px, 4vw, 42px);
+}
+
+.amaley-collection-purpose-routes--full .amaley-collection-purpose-routes__inner {
+	width: 100%;
+	max-width: none;
+}
+
+.amaley-collection-purpose-routes__header {
+	display: grid;
+	grid-template-columns: minmax(240px, 0.55fr) minmax(320px, 0.75fr);
+	gap: clamp(28px, 8vw, 110px);
+	align-items: start;
+	margin-bottom: clamp(30px, 5vw, 56px);
+}
+
+.amaley-collection-purpose-routes__heading,
+.amaley-collection-purpose-routes__description {
+	min-width: 0;
+}
+
+.amaley-collection-purpose-routes__eyebrow,
+.amaley-collection-purpose-routes__card-kicker {
+	color: var(--acpr-gold);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.32em;
+	line-height: 1.2;
+	text-transform: uppercase;
+}
+
+.amaley-collection-purpose-routes__eyebrow {
+	margin-bottom: 14px;
+}
+
+.amaley-collection-purpose-routes__title {
+	max-width: 520px;
+	margin: 0;
+	color: var(--acpr-ink);
+	font-family: Georgia, 'Times New Roman', serif;
+	font-size: clamp(38px, 5vw, 70px);
+	font-weight: 400;
+	letter-spacing: -0.055em;
+	line-height: 0.92;
+}
+
+.amaley-collection-purpose-routes__title em {
+	color: #8d3a18;
+	font-style: italic;
+	font-weight: 400;
+}
+
+.amaley-collection-purpose-routes--deep .amaley-collection-purpose-routes__title em {
+	color: #f0b75d;
+}
+
+.amaley-collection-purpose-routes__description {
+	max-width: 560px;
+	margin: 10px 0 0;
+	color: var(--acpr-muted);
+	font-size: clamp(15px, 1.4vw, 18px);
+	font-weight: 400;
+	line-height: 1.75;
+}
+
+.amaley-collection-purpose-routes__grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 28px 28px;
+}
+
+.amaley-collection-purpose-routes__card {
+	display: flex;
+	min-width: 0;
+	min-height: 238px;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 18px;
+	padding: clamp(24px, 2.6vw, 34px);
+	background: var(--acpr-paper);
+	border: 1px solid var(--acpr-line);
+	border-radius: 0;
+	box-shadow: none;
+	transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.amaley-collection-purpose-routes__card:hover {
+	border-color: rgba(185, 132, 0, 0.42);
+}
+
+.amaley-collection-purpose-routes__card-kicker {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	align-items: center;
+}
+
+.amaley-collection-purpose-routes__card-number::after {
+	content: '·';
+	margin-left: 8px;
+}
+
+.amaley-collection-purpose-routes__card-title {
+	margin: 0;
+	color: var(--acpr-ink);
+	font-family: Georgia, 'Times New Roman', serif;
+	font-size: clamp(23px, 2vw, 31px);
+	font-weight: 400;
+	letter-spacing: -0.035em;
+	line-height: 1.04;
+}
+
+.amaley-collection-purpose-routes__card-description {
+	margin: 0;
+	color: var(--acpr-muted);
+	font-size: 14px;
+	line-height: 1.7;
+}
+
+.amaley-collection-purpose-routes__card-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 38px;
+	margin-top: auto;
+	padding: 11px 22px;
+	color: var(--acpr-gold);
+	font-size: 10px;
+	font-weight: 800;
+	letter-spacing: 0.18em;
+	line-height: 1;
+	text-decoration: none;
+	text-transform: uppercase;
+	background: transparent;
+	border: 1px solid currentColor;
+	border-radius: 2px;
+	transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+
+.amaley-collection-purpose-routes__card-button:hover,
+.amaley-collection-purpose-routes__card-button:focus {
+	background: var(--acpr-gold);
+	border-color: var(--acpr-gold);
+	color: #fff9eb;
+}
+
+@media (max-width: 1024px) {
+	.amaley-collection-purpose-routes__header {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 18px;
+	}
+
+	.amaley-collection-purpose-routes__grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 767px) {
+	.amaley-collection-purpose-routes__inner {
+		padding: 42px 18px;
+	}
+
+	.amaley-collection-purpose-routes__title {
+		font-size: clamp(34px, 13vw, 48px);
+	}
+
+	.amaley-collection-purpose-routes__grid {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 18px;
+	}
+
+	.amaley-collection-purpose-routes__card {
+		min-height: 0;
+	}
+}
