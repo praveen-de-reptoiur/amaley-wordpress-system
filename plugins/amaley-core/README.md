@@ -1,55 +1,50 @@
-# Amaley Core v1.0.46 — Cluster Single Spacing Rhythm Polish
+# Amaley Core
 
-Current build focus:
+Amaley Core is the backend and Elementor widget layer for the Amaley fresh WordPress build. It manages Cluster, SHG Group, Member / Producer, WooCommerce product-origin mapping, archive sections, single profile sections, and universal Amaley card rendering.
 
-- Tightens Cluster Single section spacing rhythm.
-- Keeps separate section widgets as the final workflow.
-- Preserves v1.0.45 rich editor story fix.
-- Preserves v1.0.41 explicit Cluster → SHG/Producer Group relation fix.
-- No WooCommerce/header/footer/permalink override.
+## Current locked version
 
+- Plugin version: `1.0.144`
+- Constant version: `1.0.144`
+- Status: Working live checkpoint
+- Source base: File Manager export checked after live fixes
 
-Installable WordPress test plugin ZIP.
+## Current working scope
 
-Changes:
-- Keeps Cluster Cards Grid and SHG Group Cards Grid.
-- Restores full Import CSV form with dry-run preview mode.
-- Import order: Clusters → SHG Groups → Members / Producers → Product Origin Mapping.
+- Cluster archive and single cluster sections
+- SHG archive and single SHG sections
+- Member / Producer archive sections
+- Member / Producer single page sections
+- Product-origin mapping cards and related product rendering
+- Single Member Products section locked with OG product card and responsive grid final
+- Single Member Gallery controls cleaned
+- Single Member Contact CTA controls cleaned
 
-Shortcodes:
-- [amaley_cluster_cards]
-- [amaley_shg_cards]
+## Production safety notes
 
+- No header/footer overrides
+- No WooCommerce template overrides
+- No order/payment logic
+- No product data mutation during frontend rendering
+- No global unscoped frontend CSS beyond Amaley Core plugin selectors
+- Elementor widgets use scoped selectors and renderer fallbacks
 
-## Frontend shortcodes
-- [amaley_cluster_cards]
-- [amaley_shg_cards]
-- [amaley_member_cards]
+## Installation
 
+For WordPress installation, use the separate clean installable ZIP:
 
-### Product Origin Panel quick examples
+`amaley-core-v1.0.144-clean-installable.zip`
 
-Use on a normal Elementor page when you know the WooCommerce product name:
+For GitHub, upload this extracted source folder to the repository root.
 
-```text
-[amaley_product_origin_panel product_name="Amaley Ladakh Apricot Jam"]
+## Recommended Git workflow
+
+```bash
+git add .
+git commit -m "chore: lock Amaley Core working source v1.0.144"
+git tag v1.0.144-working-lock
 ```
 
-Use on a product template or single product page:
+## Important
 
-```text
-[amaley_product_origin_panel]
-```
-
-Use direct ID/SKU/slug when needed:
-
-```text
-[amaley_product_origin_panel product_id="1234"]
-[amaley_product_origin_panel product_sku="ACTUAL-SKU"]
-[amaley_product_origin_panel product_slug="product-slug"]
-```
-
-
-## v1.0.24
-
-Cluster Archive hero redesigned into a distinct directory/browse hero, separate from Cluster Single hero.
+Do not upload old scattered patch files or temporary replacement files to GitHub. This source pack is the clean locked source.

@@ -1,5 +1,13 @@
 <?php
-/** Amaley Member Single Snapshot Elementor widget — full-control safe version. */
+/**
+ * Amaley Member Single Snapshot Elementor widget.
+ * v1.0.119 — Single Snapshot scoped full controls.
+ *
+ * Live-site safe scope:
+ * - Only Single Member / Producer Snapshot widget controls are changed.
+ * - No producer data, SHG mapping, cluster mapping, products, gallery, pages or render logic is changed.
+ * - Controls are section-wise and only for actual snapshot elements.
+ */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 if ( ! class_exists( '\\Elementor\\Widget_Base' ) ) { return; }
 
@@ -14,13 +22,14 @@ class Amaley_Core_Member_Single_Snapshot_Widget extends \Elementor\Widget_Base {
     protected function register_controls() {
         $defaults = $this->defaults_for( 'snapshot_defaults' );
         $this->register_source_controls( $defaults );
-        $this->register_content_controls( $defaults );
-        $this->register_common_style_controls( '.amms-snapshot' );
-        $this->register_specific_style_controls( '.amms-snapshot' );
+        $this->register_snapshot_content_controls( $defaults );
+        $this->register_snapshot_style_controls();
     }
 
     private function renderer_instance() {
-        return isset( $GLOBALS['amaley_core_member_single_sections'] ) && $GLOBALS['amaley_core_member_single_sections'] instanceof Amaley_Core_Member_Single_Sections ? $GLOBALS['amaley_core_member_single_sections'] : new Amaley_Core_Member_Single_Sections();
+        return isset( $GLOBALS['amaley_core_member_single_sections'] ) && $GLOBALS['amaley_core_member_single_sections'] instanceof Amaley_Core_Member_Single_Sections
+            ? $GLOBALS['amaley_core_member_single_sections']
+            : new Amaley_Core_Member_Single_Sections();
     }
 
     private function defaults_for( $method ) {
@@ -28,236 +37,547 @@ class Amaley_Core_Member_Single_Snapshot_Widget extends \Elementor\Widget_Base {
         return method_exists( $renderer, $method ) ? $renderer->$method() : $renderer->base_defaults();
     }
 
-    private function add_switch_if( $defaults, $key, $label ) {
-        if ( array_key_exists( $key, $defaults ) ) {
-            $this->add_control( $key, array(
-                'label' => esc_html__( $label, 'amaley-core' ),
-                'type' => \Elementor\Controls_Manager::SWITCHER,
-                'label_on' => esc_html__( 'Show', 'amaley-core' ),
-                'label_off' => esc_html__( 'Hide', 'amaley-core' ),
-                'return_value' => '1',
-                'default' => $defaults[ $key ],
-            ) );
-        }
+    private function val( $defaults, $key, $fallback = '' ) {
+        return array_key_exists( $key, $defaults ) ? $defaults[ $key ] : $fallback;
     }
 
-    private function add_text_if( $defaults, $key, $label, $type = 'TEXT' ) {
-        if ( array_key_exists( $key, $defaults ) ) {
-            $control_type = ( 'TEXTAREA' === $type ) ? \Elementor\Controls_Manager::TEXTAREA : \Elementor\Controls_Manager::TEXT;
-            $this->add_control( $key, array(
-                'label' => esc_html__( $label, 'amaley-core' ),
-                'type' => $control_type,
-                'default' => $defaults[ $key ],
-            ) );
-        }
-    }
-
-    private function add_number_if( $defaults, $key, $label, $min = 1, $max = 24 ) {
-        if ( array_key_exists( $key, $defaults ) ) {
-            $this->add_control( $key, array(
-                'label' => esc_html__( $label, 'amaley-core' ),
-                'type' => \Elementor\Controls_Manager::NUMBER,
-                'default' => $defaults[ $key ],
-                'min' => $min,
-                'max' => $max,
-            ) );
-        }
+    private function add_switch_if( $defaults, $key, $label, $fallback = '1' ) {
+        $this->add_control( $key, array(
+            'label'        => esc_html__( $label, 'amaley-core' ),
+            'type'         => \Elementor\Controls_Manager::SWITCHER,
+            'label_on'     => esc_html__( 'Show', 'amaley-core' ),
+            'label_off'    => esc_html__( 'Hide', 'amaley-core' ),
+            'return_value' => '1',
+            'default'      => $this->val( $defaults, $key, $fallback ),
+        ) );
     }
 
     private function register_source_controls( $defaults ) {
-        $this->start_controls_section( 'source_section', array( 'label' => esc_html__( 'Data / Preview Source', 'amaley-core' ) ) );
-        $this->add_control( 'auto_detect', array( 'label' => esc_html__( 'Auto Detect from URL', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::SWITCHER, 'label_on' => 'Yes', 'label_off' => 'No', 'return_value' => '1', 'default' => isset( $defaults['auto_detect'] ) ? $defaults['auto_detect'] : '1' ) );
-        $this->add_control( 'preview_member_id', array( 'label' => esc_html__( 'Preview Member ID', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::NUMBER, 'default' => '', 'description' => esc_html__( 'Use in Elementor editor if URL auto-detect is empty.', 'amaley-core' ) ) );
-        $this->add_control( 'member_id', array( 'label' => esc_html__( 'Fixed Member ID', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::NUMBER, 'default' => '' ) );
-        $this->add_control( 'member_slug', array( 'label' => esc_html__( 'Fixed Member Slug', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::TEXT, 'default' => '' ) );
-        $this->add_control( 'empty_message', array( 'label' => esc_html__( 'Fallback / Empty Message', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::TEXTAREA, 'default' => isset( $defaults['empty_message'] ) ? $defaults['empty_message'] : '' ) );
-        $this->end_controls_section();
-    }
-
-    private function register_content_controls( $defaults ) {
-        $this->start_controls_section( 'content_section', array( 'label' => esc_html__( 'Content / Show-Hide', 'amaley-core' ) ) );
-        $this->add_switch_if( $defaults, 'show_section', 'Show Full Section' );
-        $this->add_switch_if( $defaults, 'show_breadcrumb', 'Show Breadcrumb' );
-        $this->add_text_if( $defaults, 'breadcrumb', 'Breadcrumb Text' );
-        $this->add_switch_if( $defaults, 'show_label', 'Show Label / Eyebrow' );
-        $this->add_text_if( $defaults, 'label', 'Label / Eyebrow Text' );
-        $this->add_switch_if( $defaults, 'show_title', 'Show Heading' );
-        $this->add_text_if( $defaults, 'title', 'Heading Text' );
-        $this->add_switch_if( $defaults, 'show_description', 'Show Description' );
-        $this->add_text_if( $defaults, 'description', 'Description Text', 'TEXTAREA' );
-        $this->add_switch_if( $defaults, 'show_image', 'Show Main Image' );
-        $this->add_switch_if( $defaults, 'show_pills', 'Show Hero Tags / Chips' );
-        $this->add_switch_if( $defaults, 'show_buttons', 'Show Buttons' );
-        $this->add_text_if( $defaults, 'primary_text', 'Primary Button Text' );
-        $this->add_text_if( $defaults, 'primary_url', 'Primary Button URL' );
-        $this->add_text_if( $defaults, 'secondary_text', 'Secondary Button Text' );
-        $this->add_text_if( $defaults, 'secondary_url', 'Secondary Button URL' );
-        $this->add_number_if( $defaults, 'columns_desktop', 'Columns Desktop', 1, 8 );
-        $this->add_number_if( $defaults, 'columns_tablet', 'Columns Tablet', 1, 4 );
-        $this->add_number_if( $defaults, 'columns_mobile', 'Columns Mobile', 1, 2 );
-        $this->add_switch_if( $defaults, 'show_role_stat', 'Show Role Stat' );
-        $this->add_switch_if( $defaults, 'show_village_stat', 'Show Village Stat' );
-        $this->add_switch_if( $defaults, 'show_shg_stat', 'Show SHG Stat' );
-        $this->add_switch_if( $defaults, 'show_cluster_stat', 'Show Cluster Stat' );
-        $this->add_switch_if( $defaults, 'show_skills', 'Show Skill Tags' );
-        $this->add_switch_if( $defaults, 'show_products', 'Show Product Tags' );
-        $this->add_number_if( $defaults, 'max_tags', 'Maximum Tags', 1, 24 );
-        $this->add_switch_if( $defaults, 'show_card_media', 'Show Card Image / Icon Area' );
-        $this->add_switch_if( $defaults, 'show_card_badge', 'Show Card Badge' );
-        $this->add_switch_if( $defaults, 'show_card_label', 'Show Card Label' );
-        $this->add_switch_if( $defaults, 'show_card_excerpt', 'Show Card Description' );
-        $this->add_switch_if( $defaults, 'show_card_meta', 'Show Card Stat Boxes' );
-        $this->add_switch_if( $defaults, 'show_button', 'Show Card Button' );
-        $this->add_text_if( $defaults, 'button_text', 'Card Button Text' );
-        $this->add_text_if( $defaults, 'detail_url_pattern', 'Detail URL Pattern' );
-        $this->add_number_if( $defaults, 'limit', 'Product Limit', 1, 24 );
-        $this->add_switch_if( $defaults, 'show_product_image', 'Show Product Image' );
-        $this->add_switch_if( $defaults, 'show_product_label', 'Show Product Label' );
-        $this->add_switch_if( $defaults, 'show_product_meta', 'Show Product Price / Origin Boxes' );
-        $this->add_switch_if( $defaults, 'show_product_chips', 'Show Product Traceability Chips' );
-        $this->add_switch_if( $defaults, 'show_product_button', 'Show Product Button' );
-        $this->add_switch_if( $defaults, 'show_fallback_tags', 'Show Fallback Product Tags' );
-        $this->add_switch_if( $defaults, 'show_section_button', 'Show Section Button' );
-        $this->add_text_if( $defaults, 'section_button_text', 'Section Button Text' );
-        $this->add_text_if( $defaults, 'section_button_url', 'Section Button URL' );
-        $this->add_number_if( $defaults, 'max_images', 'Maximum Gallery Images', 1, 30 );
-        $this->add_switch_if( $defaults, 'show_caption', 'Show Gallery Caption' );
-        $this->add_switch_if( $defaults, 'show_phone', 'Show Phone / WhatsApp' );
-        $this->end_controls_section();
-    }
-
-    private function register_common_style_controls( $section_selector ) {
-        $s = '{{WRAPPER}} ' . $section_selector;
-
-        $this->start_controls_section( 'style_section_shell', array(
-            'label' => esc_html__( 'Section: Background & Layout', 'amaley-core' ),
-            'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+        $this->start_controls_section( 'source_section', array(
+            'label' => esc_html__( 'Snapshot Data / Preview Source', 'amaley-core' ),
         ) );
-        $this->add_group_control( \Elementor\Group_Control_Background::get_type(), array( 'name' => 'section_background', 'selector' => $s ) );
-        $this->add_responsive_control( 'section_padding', array(
-            'label' => esc_html__( 'Section Padding', 'amaley-core' ),
-            'type' => \Elementor\Controls_Manager::DIMENSIONS,
+
+        $this->add_control( 'auto_detect', array(
+            'label'        => esc_html__( 'Auto Detect Producer from URL', 'amaley-core' ),
+            'type'         => \Elementor\Controls_Manager::SWITCHER,
+            'label_on'     => esc_html__( 'Yes', 'amaley-core' ),
+            'label_off'    => esc_html__( 'No', 'amaley-core' ),
+            'return_value' => '1',
+            'default'      => $this->val( $defaults, 'auto_detect', '1' ),
+        ) );
+
+        $this->add_control( 'preview_member_id', array(
+            'label'       => esc_html__( 'Preview Producer / Member ID', 'amaley-core' ),
+            'type'        => \Elementor\Controls_Manager::NUMBER,
+            'default'     => '',
+            'description' => esc_html__( 'Use only inside Elementor editor when URL auto-detect is empty.', 'amaley-core' ),
+        ) );
+
+        $this->add_control( 'member_id', array(
+            'label'       => esc_html__( 'Fixed Producer / Member ID', 'amaley-core' ),
+            'type'        => \Elementor\Controls_Manager::NUMBER,
+            'default'     => '',
+            'description' => esc_html__( 'Optional. Leave blank for dynamic single producer pages.', 'amaley-core' ),
+        ) );
+
+        $this->add_control( 'member_slug', array(
+            'label'       => esc_html__( 'Fixed Producer / Member Slug', 'amaley-core' ),
+            'type'        => \Elementor\Controls_Manager::TEXT,
+            'default'     => '',
+            'description' => esc_html__( 'Optional. Leave blank for dynamic single producer pages.', 'amaley-core' ),
+        ) );
+
+        $this->add_control( 'empty_message', array(
+            'label'   => esc_html__( 'Fallback / Empty Message', 'amaley-core' ),
+            'type'    => \Elementor\Controls_Manager::TEXTAREA,
+            'rows'    => 3,
+            'default' => $this->val( $defaults, 'empty_message', 'Producer details are not available yet.' ),
+        ) );
+
+        $this->end_controls_section();
+    }
+
+    private function register_snapshot_content_controls( $defaults ) {
+        $this->start_controls_section( 'snapshot_content_section', array(
+            'label' => esc_html__( 'Snapshot Content / Display', 'amaley-core' ),
+        ) );
+
+        $this->add_switch_if( $defaults, 'show_section', 'Show Snapshot Section', '1' );
+
+        $this->add_control( 'content_heading', array(
+            'label'     => esc_html__( 'Section Heading', 'amaley-core' ),
+            'type'      => \Elementor\Controls_Manager::HEADING,
+            'separator' => 'before',
+        ) );
+
+        $this->add_switch_if( $defaults, 'show_label', 'Show Small Label', '1' );
+        $this->add_control( 'label', array(
+            'label'     => esc_html__( 'Small Label Text', 'amaley-core' ),
+            'type'      => \Elementor\Controls_Manager::TEXT,
+            'default'   => $this->val( $defaults, 'label', 'Producer Snapshot' ),
+            'condition' => array( 'show_label' => '1' ),
+        ) );
+
+        $this->add_switch_if( $defaults, 'show_title', 'Show Heading', '1' );
+        $this->add_control( 'title', array(
+            'label'     => esc_html__( 'Heading Text', 'amaley-core' ),
+            'type'      => \Elementor\Controls_Manager::TEXT,
+            'default'   => $this->val( $defaults, 'title', 'Quick details' ),
+            'condition' => array( 'show_title' => '1' ),
+        ) );
+
+        $this->add_switch_if( $defaults, 'show_description', 'Show Description', '1' );
+        $this->add_control( 'description', array(
+            'label'     => esc_html__( 'Description Text', 'amaley-core' ),
+            'type'      => \Elementor\Controls_Manager::TEXTAREA,
+            'rows'      => 4,
+            'default'   => $this->val( $defaults, 'description', 'Key information about this producer, their SHG group, village role and linked origin story.' ),
+            'condition' => array( 'show_description' => '1' ),
+        ) );
+
+        $this->add_control( 'stats_heading', array(
+            'label'     => esc_html__( 'Snapshot Stat Boxes', 'amaley-core' ),
+            'type'      => \Elementor\Controls_Manager::HEADING,
+            'separator' => 'before',
+        ) );
+
+        $this->add_switch_if( $defaults, 'show_role_stat', 'Show Role Box', '1' );
+        $this->add_switch_if( $defaults, 'show_village_stat', 'Show Village Box', '1' );
+        $this->add_switch_if( $defaults, 'show_shg_stat', 'Show SHG Group Box', '1' );
+        $this->add_switch_if( $defaults, 'show_cluster_stat', 'Show Cluster Box', '1' );
+
+        $this->add_control( 'columns_heading', array(
+            'label'     => esc_html__( 'Responsive Columns', 'amaley-core' ),
+            'type'      => \Elementor\Controls_Manager::HEADING,
+            'separator' => 'before',
+        ) );
+
+        $this->add_control( 'columns_desktop', array(
+            'label'   => esc_html__( 'Columns Desktop', 'amaley-core' ),
+            'type'    => \Elementor\Controls_Manager::NUMBER,
+            'default' => $this->val( $defaults, 'columns_desktop', 4 ),
+            'min'     => 1,
+            'max'     => 6,
+        ) );
+
+        $this->add_control( 'columns_tablet', array(
+            'label'   => esc_html__( 'Columns Tablet', 'amaley-core' ),
+            'type'    => \Elementor\Controls_Manager::NUMBER,
+            'default' => $this->val( $defaults, 'columns_tablet', 2 ),
+            'min'     => 1,
+            'max'     => 4,
+        ) );
+
+        $this->add_control( 'columns_mobile', array(
+            'label'   => esc_html__( 'Columns Mobile', 'amaley-core' ),
+            'type'    => \Elementor\Controls_Manager::NUMBER,
+            'default' => $this->val( $defaults, 'columns_mobile', 2 ),
+            'min'     => 1,
+            'max'     => 2,
+        ) );
+
+        $this->end_controls_section();
+    }
+
+    private function register_snapshot_style_controls() {
+        $s = '{{WRAPPER}} .amms-section.amms-snapshot';
+
+        $this->start_controls_section( 'snapshot_section_style', array(
+            'label' => esc_html__( 'Snapshot Section / Background', 'amaley-core' ),
+            'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Background::get_type(), array(
+            'name'     => 'snapshot_section_background',
+            'selector' => $s,
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Border::get_type(), array(
+            'name'     => 'snapshot_section_border',
+            'selector' => $s,
+        ) );
+
+        $this->add_responsive_control( 'snapshot_section_radius', array(
+            'label'      => esc_html__( 'Section Radius', 'amaley-core' ),
+            'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', '%' ),
+            'selectors'  => array( $s => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ),
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Box_Shadow::get_type(), array(
+            'name'     => 'snapshot_section_shadow',
+            'selector' => $s,
+        ) );
+
+        $this->end_controls_section();
+
+        $this->start_controls_section( 'snapshot_layout_style', array(
+            'label' => esc_html__( 'Snapshot Layout / Spacing', 'amaley-core' ),
+            'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+        ) );
+
+        $this->add_responsive_control( 'snapshot_section_padding', array(
+            'label'      => esc_html__( 'Section Padding', 'amaley-core' ),
+            'type'       => \Elementor\Controls_Manager::DIMENSIONS,
             'size_units' => array( 'px', '%', 'em' ),
-            'selectors' => array( $s => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ),
+            'selectors'  => array( $s => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ),
         ) );
-        $this->add_responsive_control( 'section_min_height', array(
-            'label' => esc_html__( 'Minimum Height', 'amaley-core' ),
-            'type' => \Elementor\Controls_Manager::SLIDER,
-            'size_units' => array( 'px', 'vh' ),
-            'range' => array( 'px' => array( 'min' => 0, 'max' => 900 ), 'vh' => array( 'min' => 0, 'max' => 100 ) ),
-            'selectors' => array( $s => 'min-height: {{SIZE}}{{UNIT}};' ),
+
+        $this->add_responsive_control( 'snapshot_section_margin', array(
+            'label'      => esc_html__( 'Section Margin', 'amaley-core' ),
+            'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', '%', 'em' ),
+            'selectors'  => array( $s => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ),
         ) );
-        $this->add_responsive_control( 'wrap_width', array(
-            'label' => esc_html__( 'Content Width', 'amaley-core' ),
-            'type' => \Elementor\Controls_Manager::SLIDER,
+
+        $this->add_responsive_control( 'snapshot_wrap_width', array(
+            'label'      => esc_html__( 'Content Max Width', 'amaley-core' ),
+            'type'       => \Elementor\Controls_Manager::SLIDER,
             'size_units' => array( 'px', '%' ),
-            'range' => array( 'px' => array( 'min' => 320, 'max' => 1600 ), '%' => array( 'min' => 40, 'max' => 100 ) ),
-            'selectors' => array( $s . ' .amms-wrap' => 'width: min({{SIZE}}{{UNIT}}, 100%);' ),
-        ) );
-        $this->add_responsive_control( 'section_align', array(
-            'label' => esc_html__( 'Text Alignment', 'amaley-core' ),
-            'type' => \Elementor\Controls_Manager::CHOOSE,
-            'options' => array(
-                'left' => array( 'title' => esc_html__( 'Left', 'amaley-core' ), 'icon' => 'eicon-text-align-left' ),
-                'center' => array( 'title' => esc_html__( 'Center', 'amaley-core' ), 'icon' => 'eicon-text-align-center' ),
-                'right' => array( 'title' => esc_html__( 'Right', 'amaley-core' ), 'icon' => 'eicon-text-align-right' ),
+            'range'      => array(
+                'px' => array( 'min' => 600, 'max' => 1500 ),
+                '%'  => array( 'min' => 40, 'max' => 100 ),
             ),
-            'selectors' => array( $s => 'text-align: {{VALUE}};' ),
+            'selectors' => array( $s . ' .amms-wrap' => 'max-width: {{SIZE}}{{UNIT}};' ),
         ) );
-        $this->end_controls_section();
 
-        $this->start_controls_section( 'style_heading_block', array(
-            'label' => esc_html__( 'Section Head: Label / Heading / Description', 'amaley-core' ),
-            'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+        $this->add_responsive_control( 'snapshot_wrap_padding', array(
+            'label'      => esc_html__( 'Inner Side Padding', 'amaley-core' ),
+            'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', '%', 'em' ),
+            'selectors'  => array( $s . ' .amms-wrap' => 'padding-left: {{LEFT}}{{UNIT}}; padding-right: {{RIGHT}}{{UNIT}};' ),
         ) );
-        $this->add_responsive_control( 'head_width', array(
-            'label' => esc_html__( 'Heading Block Width', 'amaley-core' ),
-            'type' => \Elementor\Controls_Manager::SLIDER,
-            'size_units' => array( 'px', '%' ),
-            'range' => array( 'px' => array( 'min' => 220, 'max' => 1200 ), '%' => array( 'min' => 30, 'max' => 100 ) ),
-            'selectors' => array( $s . ' .amms-section-head' => 'max-width: {{SIZE}}{{UNIT}};' ),
-        ) );
-        $this->add_responsive_control( 'head_margin', array(
-            'label' => esc_html__( 'Heading Block Margin', 'amaley-core' ),
-            'type' => \Elementor\Controls_Manager::DIMENSIONS,
-            'size_units' => array( 'px', 'em', '%' ),
-            'selectors' => array( $s . ' .amms-section-head' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ),
-        ) );
-        $this->add_control( 'divider_color', array(
-            'label' => esc_html__( 'Divider Color', 'amaley-core' ),
-            'type' => \Elementor\Controls_Manager::COLOR,
-            'selectors' => array( $s . ' .amms-section-head:after, ' . $s . ' .amms-story-card:before' => 'background: {{VALUE}};' ),
-        ) );
-        $this->add_responsive_control( 'divider_width', array(
-            'label' => esc_html__( 'Divider / Accent Width', 'amaley-core' ),
-            'type' => \Elementor\Controls_Manager::SLIDER,
+
+        $this->add_responsive_control( 'snapshot_head_gap', array(
+            'label'      => esc_html__( 'Heading to Stats Gap', 'amaley-core' ),
+            'type'       => \Elementor\Controls_Manager::SLIDER,
             'size_units' => array( 'px' ),
-            'range' => array( 'px' => array( 'min' => 0, 'max' => 220 ) ),
-            'selectors' => array( $s . ' .amms-section-head:after, ' . $s . ' .amms-story-card:before' => 'width: {{SIZE}}{{UNIT}};' ),
+            'range'      => array( 'px' => array( 'min' => 0, 'max' => 120 ) ),
+            'selectors'  => array( $s . ' .amms-snapshot-grid' => 'margin-top: {{SIZE}}{{UNIT}};' ),
         ) );
-        $this->add_control( 'label_heading', array( 'label' => esc_html__( 'Label / Eyebrow', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::HEADING, 'separator' => 'before' ) );
-        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array( 'name' => 'label_typography', 'selector' => $s . ' .amms-kicker, ' . $s . ' .amms-card-label' ) );
-        $this->add_control( 'label_color', array( 'label' => esc_html__( 'Label Color', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::COLOR, 'selectors' => array( $s . ' .amms-kicker, ' . $s . ' .amms-card-label' => 'color: {{VALUE}};' ) ) );
-        $this->add_responsive_control( 'label_spacing', array( 'label' => esc_html__( 'Label Bottom Spacing', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::SLIDER, 'size_units' => array( 'px' ), 'range' => array( 'px' => array( 'min' => 0, 'max' => 80 ) ), 'selectors' => array( $s . ' .amms-kicker, ' . $s . ' .amms-card-label' => 'margin-bottom: {{SIZE}}{{UNIT}};' ) ) );
-        $this->add_responsive_control( 'label_margin_box', array( 'label' => esc_html__( 'Label Margin', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::DIMENSIONS, 'size_units' => array( 'px', 'em' ), 'selectors' => array( $s . ' .amms-kicker, ' . $s . ' .amms-card-label' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ) ) );
-        $this->add_control( 'title_heading', array( 'label' => esc_html__( 'Heading', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::HEADING, 'separator' => 'before' ) );
-        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array( 'name' => 'title_typography', 'selector' => $s . ' .amms-title, ' . $s . ' .amms-section-title' ) );
-        $this->add_control( 'title_color', array( 'label' => esc_html__( 'Heading Color', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::COLOR, 'selectors' => array( $s . ' .amms-title, ' . $s . ' .amms-section-title' => 'color: {{VALUE}};' ) ) );
-        $this->add_responsive_control( 'title_width', array( 'label' => esc_html__( 'Heading Width', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::SLIDER, 'size_units' => array( 'px', '%' ), 'range' => array( 'px' => array( 'min' => 220, 'max' => 1200 ), '%' => array( 'min' => 30, 'max' => 100 ) ), 'selectors' => array( $s . ' .amms-title, ' . $s . ' .amms-section-title' => 'max-width: {{SIZE}}{{UNIT}};' ) ) );
-        $this->add_responsive_control( 'title_margin_box', array( 'label' => esc_html__( 'Heading Margin', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::DIMENSIONS, 'size_units' => array( 'px', 'em' ), 'selectors' => array( $s . ' .amms-title, ' . $s . ' .amms-section-title' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ) ) );
-        $this->add_control( 'desc_heading', array( 'label' => esc_html__( 'Description', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::HEADING, 'separator' => 'before' ) );
-        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array( 'name' => 'desc_typography', 'selector' => $s . ' .amms-description, ' . $s . ' .amms-section-desc' ) );
-        $this->add_control( 'desc_color', array( 'label' => esc_html__( 'Description Color', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::COLOR, 'selectors' => array( $s . ' .amms-description, ' . $s . ' .amms-section-desc' => 'color: {{VALUE}};' ) ) );
-        $this->add_responsive_control( 'desc_width', array( 'label' => esc_html__( 'Description Width', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::SLIDER, 'size_units' => array( 'px', '%' ), 'range' => array( 'px' => array( 'min' => 220, 'max' => 1200 ), '%' => array( 'min' => 30, 'max' => 100 ) ), 'selectors' => array( $s . ' .amms-description, ' . $s . ' .amms-section-desc' => 'max-width: {{SIZE}}{{UNIT}};' ) ) );
-        $this->add_responsive_control( 'desc_margin_box', array( 'label' => esc_html__( 'Description Margin', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::DIMENSIONS, 'size_units' => array( 'px', 'em' ), 'selectors' => array( $s . ' .amms-description, ' . $s . ' .amms-section-desc' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ) ) );
+
+        $this->add_responsive_control( 'snapshot_text_align', array(
+            'label'     => esc_html__( 'Heading Alignment', 'amaley-core' ),
+            'type'      => \Elementor\Controls_Manager::CHOOSE,
+            'options'   => array(
+                'left'   => array( 'title' => esc_html__( 'Left', 'amaley-core' ), 'icon' => 'eicon-text-align-left' ),
+                'center' => array( 'title' => esc_html__( 'Center', 'amaley-core' ), 'icon' => 'eicon-text-align-center' ),
+                'right'  => array( 'title' => esc_html__( 'Right', 'amaley-core' ), 'icon' => 'eicon-text-align-right' ),
+            ),
+            'selectors' => array( $s . ' .amms-section-head' => 'text-align: {{VALUE}};' ),
+        ) );
+
         $this->end_controls_section();
 
-        $this->start_controls_section( 'style_buttons', array(
-            'label' => esc_html__( 'Buttons / CTA Buttons', 'amaley-core' ),
-            'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+        $this->start_controls_section( 'snapshot_heading_style', array(
+            'label' => esc_html__( 'Snapshot Heading / Text', 'amaley-core' ),
+            'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
         ) );
-        $this->add_responsive_control( 'button_row_gap', array( 'label' => esc_html__( 'Button Gap', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::SLIDER, 'size_units' => array( 'px' ), 'range' => array( 'px' => array( 'min' => 0, 'max' => 80 ) ), 'selectors' => array( $s . ' .amms-button-row' => 'gap: {{SIZE}}{{UNIT}};' ) ) );
-        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array( 'name' => 'button_typography', 'selector' => $s . ' .amms-btn, ' . $s . ' .amms-card-button, ' . $s . ' .amms-product-button, ' . $s . ' .amms-section-button' ) );
-        $this->add_responsive_control( 'button_padding', array( 'label' => esc_html__( 'Button Padding', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::DIMENSIONS, 'size_units' => array( 'px', 'em' ), 'selectors' => array( $s . ' .amms-btn, ' . $s . ' .amms-card-button, ' . $s . ' .amms-product-button, ' . $s . ' .amms-section-button' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ) ) );
-        $this->add_responsive_control( 'button_radius', array( 'label' => esc_html__( 'Button Radius', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::DIMENSIONS, 'size_units' => array( 'px', '%' ), 'selectors' => array( $s . ' .amms-btn, ' . $s . ' .amms-card-button, ' . $s . ' .amms-product-button, ' . $s . ' .amms-section-button' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ) ) );
-        $this->add_control( 'primary_button_color', array( 'label' => esc_html__( 'Primary Button Text', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::COLOR, 'selectors' => array( $s . ' .amms-btn-primary, ' . $s . ' .amms-product-button' => 'color: {{VALUE}};' ) ) );
-        $this->add_control( 'primary_button_bg', array( 'label' => esc_html__( 'Primary Button Background', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::COLOR, 'selectors' => array( $s . ' .amms-btn-primary, ' . $s . ' .amms-product-button' => 'background: {{VALUE}}; border-color: {{VALUE}};' ) ) );
-        $this->add_control( 'outline_button_color', array( 'label' => esc_html__( 'Outline Button Text', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::COLOR, 'selectors' => array( $s . ' .amms-btn-secondary, ' . $s . ' .amms-card-button, ' . $s . ' .amms-section-button' => 'color: {{VALUE}};' ) ) );
-        $this->add_control( 'outline_button_border', array( 'label' => esc_html__( 'Outline Button Border', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::COLOR, 'selectors' => array( $s . ' .amms-btn-secondary, ' . $s . ' .amms-card-button, ' . $s . ' .amms-section-button' => 'border-color: {{VALUE}};' ) ) );
+
+        $this->add_control( 'snapshot_label_heading', array(
+            'label'     => esc_html__( 'Small Label', 'amaley-core' ),
+            'type'      => \Elementor\Controls_Manager::HEADING,
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array(
+            'name'     => 'snapshot_label_typography',
+            'selector' => $s . ' .amms-section-label, ' . $s . ' .amms-kicker',
+        ) );
+
+        $this->add_control( 'snapshot_label_color', array(
+            'label'     => esc_html__( 'Label Color', 'amaley-core' ),
+            'type'      => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $s . ' .amms-section-label, ' . $s . ' .amms-kicker' => 'color: {{VALUE}};' ),
+        ) );
+
+        $this->add_responsive_control( 'snapshot_label_margin', array(
+            'label'      => esc_html__( 'Label Margin', 'amaley-core' ),
+            'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', 'em' ),
+            'selectors'  => array( $s . ' .amms-section-label, ' . $s . ' .amms-kicker' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ),
+        ) );
+
+        $this->add_control( 'snapshot_title_heading', array(
+            'label'     => esc_html__( 'Heading', 'amaley-core' ),
+            'type'      => \Elementor\Controls_Manager::HEADING,
+            'separator' => 'before',
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array(
+            'name'     => 'snapshot_title_typography',
+            'selector' => $s . ' .amms-section-title, ' . $s . ' .amms-title',
+        ) );
+
+        $this->add_control( 'snapshot_title_color', array(
+            'label'     => esc_html__( 'Heading Color', 'amaley-core' ),
+            'type'      => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $s . ' .amms-section-title, ' . $s . ' .amms-title' => 'color: {{VALUE}};' ),
+        ) );
+
+        $this->add_responsive_control( 'snapshot_title_margin', array(
+            'label'      => esc_html__( 'Heading Margin', 'amaley-core' ),
+            'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', 'em' ),
+            'selectors'  => array( $s . ' .amms-section-title, ' . $s . ' .amms-title' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ),
+        ) );
+
+        $this->add_control( 'snapshot_desc_heading', array(
+            'label'     => esc_html__( 'Description', 'amaley-core' ),
+            'type'      => \Elementor\Controls_Manager::HEADING,
+            'separator' => 'before',
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array(
+            'name'     => 'snapshot_desc_typography',
+            'selector' => $s . ' .amms-section-desc, ' . $s . ' .amms-description',
+        ) );
+
+        $this->add_control( 'snapshot_desc_color', array(
+            'label'     => esc_html__( 'Description Color', 'amaley-core' ),
+            'type'      => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $s . ' .amms-section-desc, ' . $s . ' .amms-description' => 'color: {{VALUE}};' ),
+        ) );
+
+        $this->add_responsive_control( 'snapshot_desc_width', array(
+            'label'      => esc_html__( 'Description Width', 'amaley-core' ),
+            'type'       => \Elementor\Controls_Manager::SLIDER,
+            'size_units' => array( 'px', '%' ),
+            'range'      => array(
+                'px' => array( 'min' => 220, 'max' => 1200 ),
+                '%'  => array( 'min' => 30, 'max' => 100 ),
+            ),
+            'selectors' => array( $s . ' .amms-section-desc, ' . $s . ' .amms-description' => 'max-width: {{SIZE}}{{UNIT}};' ),
+        ) );
+
+        $this->add_responsive_control( 'snapshot_desc_margin', array(
+            'label'      => esc_html__( 'Description Margin', 'amaley-core' ),
+            'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', 'em' ),
+            'selectors'  => array( $s . ' .amms-section-desc, ' . $s . ' .amms-description' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ),
+        ) );
+
         $this->end_controls_section();
 
-        $this->start_controls_section( 'style_fallback', array(
-            'label' => esc_html__( 'Fallback / Empty Message', 'amaley-core' ),
-            'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+        $this->start_controls_section( 'snapshot_grid_style', array(
+            'label' => esc_html__( 'Snapshot Stat Grid', 'amaley-core' ),
+            'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
         ) );
-        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array( 'name' => 'empty_typography', 'selector' => $s . ' .amms-empty' ) );
-        $this->add_control( 'empty_color', array( 'label' => esc_html__( 'Message Color', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::COLOR, 'selectors' => array( $s . ' .amms-empty' => 'color: {{VALUE}};' ) ) );
-        $this->add_group_control( \Elementor\Group_Control_Background::get_type(), array( 'name' => 'empty_background', 'selector' => $s . ' .amms-empty' ) );
-        $this->add_group_control( \Elementor\Group_Control_Border::get_type(), array( 'name' => 'empty_border', 'selector' => $s . ' .amms-empty' ) );
-        $this->add_responsive_control( 'empty_padding', array( 'label' => esc_html__( 'Message Padding', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::DIMENSIONS, 'size_units' => array( 'px', 'em' ), 'selectors' => array( $s . ' .amms-empty' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ) ) );
+
+        $this->add_responsive_control( 'snapshot_grid_gap', array(
+            'label'      => esc_html__( 'Grid Gap', 'amaley-core' ),
+            'type'       => \Elementor\Controls_Manager::SLIDER,
+            'size_units' => array( 'px' ),
+            'range'      => array( 'px' => array( 'min' => 0, 'max' => 100 ) ),
+            'selectors'  => array( $s . ' .amms-snapshot-grid' => 'gap: {{SIZE}}{{UNIT}};' ),
+        ) );
+
+        $this->add_responsive_control( 'snapshot_grid_align', array(
+            'label'     => esc_html__( 'Box Text Alignment', 'amaley-core' ),
+            'type'      => \Elementor\Controls_Manager::CHOOSE,
+            'options'   => array(
+                'left'   => array( 'title' => esc_html__( 'Left', 'amaley-core' ), 'icon' => 'eicon-text-align-left' ),
+                'center' => array( 'title' => esc_html__( 'Center', 'amaley-core' ), 'icon' => 'eicon-text-align-center' ),
+                'right'  => array( 'title' => esc_html__( 'Right', 'amaley-core' ), 'icon' => 'eicon-text-align-right' ),
+            ),
+            'selectors' => array( $s . ' .amms-stat' => 'text-align: {{VALUE}};' ),
+        ) );
+
         $this->end_controls_section();
-    }
 
+        $this->start_controls_section( 'snapshot_stat_box_style', array(
+            'label' => esc_html__( 'Snapshot Stat Boxes', 'amaley-core' ),
+            'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+        ) );
 
-    private function register_specific_style_controls( $section_selector ) {
-        $s = '{{WRAPPER}} ' . $section_selector;
-        $this->start_controls_section( 'style_snapshot_boxes', array( 'label' => esc_html__( 'Snapshot: Grid / Stat Boxes', 'amaley-core' ), 'tab' => \Elementor\Controls_Manager::TAB_STYLE ) );
-        $this->add_responsive_control( 'snapshot_grid_gap', array( 'label' => esc_html__( 'Grid Gap', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::SLIDER, 'size_units' => array( 'px' ), 'range' => array( 'px' => array( 'min' => 0, 'max' => 80 ) ), 'selectors' => array( $s . ' .amms-snapshot-grid' => 'gap: {{SIZE}}{{UNIT}};' ) ) );
-        $this->add_group_control( \Elementor\Group_Control_Background::get_type(), array( 'name' => 'stat_background', 'selector' => $s . ' .amms-stat' ) );
-        $this->add_group_control( \Elementor\Group_Control_Border::get_type(), array( 'name' => 'stat_border', 'selector' => $s . ' .amms-stat' ) );
-        $this->add_group_control( \Elementor\Group_Control_Box_Shadow::get_type(), array( 'name' => 'stat_shadow', 'selector' => $s . ' .amms-stat' ) );
-        $this->add_responsive_control( 'stat_padding', array( 'label' => esc_html__( 'Box Padding', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::DIMENSIONS, 'size_units' => array( 'px', 'em' ), 'selectors' => array( $s . ' .amms-stat' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ) ) );
-        $this->add_responsive_control( 'stat_margin', array( 'label' => esc_html__( 'Box Margin', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::DIMENSIONS, 'size_units' => array( 'px', 'em' ), 'selectors' => array( $s . ' .amms-stat' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ) ) );
-        $this->add_responsive_control( 'stat_min_height', array( 'label' => esc_html__( 'Box Min Height', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::SLIDER, 'size_units' => array( 'px' ), 'range' => array( 'px' => array( 'min' => 0, 'max' => 280 ) ), 'selectors' => array( $s . ' .amms-stat' => 'min-height: {{SIZE}}{{UNIT}};' ) ) );
-        $this->add_responsive_control( 'stat_radius', array( 'label' => esc_html__( 'Box Radius', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::DIMENSIONS, 'size_units' => array( 'px', '%' ), 'selectors' => array( $s . ' .amms-stat' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ) ) );
-        $this->add_control( 'stat_label_heading', array( 'label' => esc_html__( 'Stat Label', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::HEADING, 'separator' => 'before' ) );
-        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array( 'name' => 'stat_label_typography', 'selector' => $s . ' .amms-stat span' ) );
-        $this->add_control( 'stat_label_color', array( 'label' => esc_html__( 'Label Color', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::COLOR, 'selectors' => array( $s . ' .amms-stat span' => 'color: {{VALUE}};' ) ) );
-        $this->add_responsive_control( 'stat_label_margin', array( 'label' => esc_html__( 'Label Margin', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::DIMENSIONS, 'size_units' => array( 'px', 'em' ), 'selectors' => array( $s . ' .amms-stat span' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ) ) );
-        $this->add_control( 'stat_value_heading', array( 'label' => esc_html__( 'Stat Value', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::HEADING, 'separator' => 'before' ) );
-        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array( 'name' => 'stat_value_typography', 'selector' => $s . ' .amms-stat strong' ) );
-        $this->add_control( 'stat_value_color', array( 'label' => esc_html__( 'Value Color', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::COLOR, 'selectors' => array( $s . ' .amms-stat strong' => 'color: {{VALUE}};' ) ) );
-        $this->add_responsive_control( 'stat_value_margin', array( 'label' => esc_html__( 'Value Margin', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::DIMENSIONS, 'size_units' => array( 'px', 'em' ), 'selectors' => array( $s . ' .amms-stat strong' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ) ) );
+        $this->add_responsive_control( 'stat_padding', array(
+            'label'      => esc_html__( 'Box Padding', 'amaley-core' ),
+            'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', 'em' ),
+            'selectors'  => array( $s . ' .amms-stat' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ),
+        ) );
+
+        $this->add_responsive_control( 'stat_min_height', array(
+            'label'      => esc_html__( 'Box Min Height', 'amaley-core' ),
+            'type'       => \Elementor\Controls_Manager::SLIDER,
+            'size_units' => array( 'px' ),
+            'range'      => array( 'px' => array( 'min' => 0, 'max' => 320 ) ),
+            'selectors'  => array( $s . ' .amms-stat' => 'min-height: {{SIZE}}{{UNIT}};' ),
+        ) );
+
+        $this->add_responsive_control( 'stat_radius', array(
+            'label'      => esc_html__( 'Box Radius', 'amaley-core' ),
+            'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', '%' ),
+            'selectors'  => array( $s . ' .amms-stat' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ),
+        ) );
+
+        $this->start_controls_tabs( 'stat_box_state_tabs' );
+
+        $this->start_controls_tab( 'stat_box_normal_tab', array(
+            'label' => esc_html__( 'Normal', 'amaley-core' ),
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Background::get_type(), array(
+            'name'     => 'stat_background',
+            'selector' => $s . ' .amms-stat',
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Border::get_type(), array(
+            'name'     => 'stat_border',
+            'selector' => $s . ' .amms-stat',
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Box_Shadow::get_type(), array(
+            'name'     => 'stat_shadow',
+            'selector' => $s . ' .amms-stat',
+        ) );
+
+        $this->end_controls_tab();
+
+        $this->start_controls_tab( 'stat_box_hover_tab', array(
+            'label' => esc_html__( 'Hover', 'amaley-core' ),
+        ) );
+
+        $this->add_control( 'stat_hover_background', array(
+            'label'     => esc_html__( 'Hover Background', 'amaley-core' ),
+            'type'      => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $s . ' .amms-stat:hover' => 'background: {{VALUE}};' ),
+        ) );
+
+        $this->add_control( 'stat_hover_border_color', array(
+            'label'     => esc_html__( 'Hover Border Color', 'amaley-core' ),
+            'type'      => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $s . ' .amms-stat:hover' => 'border-color: {{VALUE}};' ),
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Box_Shadow::get_type(), array(
+            'name'     => 'stat_hover_shadow',
+            'selector' => $s . ' .amms-stat:hover',
+        ) );
+
+        $this->end_controls_tab();
+        $this->end_controls_tabs();
+
+        $this->end_controls_section();
+
+        $this->start_controls_section( 'snapshot_stat_text_style', array(
+            'label' => esc_html__( 'Snapshot Stat Text', 'amaley-core' ),
+            'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+        ) );
+
+        $this->add_control( 'stat_label_heading', array(
+            'label' => esc_html__( 'Stat Label', 'amaley-core' ),
+            'type'  => \Elementor\Controls_Manager::HEADING,
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array(
+            'name'     => 'stat_label_typography',
+            'selector' => $s . ' .amms-stat span',
+        ) );
+
+        $this->add_control( 'stat_label_color', array(
+            'label'     => esc_html__( 'Label Color', 'amaley-core' ),
+            'type'      => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $s . ' .amms-stat span' => 'color: {{VALUE}};' ),
+        ) );
+
+        $this->add_responsive_control( 'stat_label_margin', array(
+            'label'      => esc_html__( 'Label Margin', 'amaley-core' ),
+            'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', 'em' ),
+            'selectors'  => array( $s . ' .amms-stat span' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ),
+        ) );
+
+        $this->add_control( 'stat_value_heading', array(
+            'label'     => esc_html__( 'Stat Value', 'amaley-core' ),
+            'type'      => \Elementor\Controls_Manager::HEADING,
+            'separator' => 'before',
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array(
+            'name'     => 'stat_value_typography',
+            'selector' => $s . ' .amms-stat strong',
+        ) );
+
+        $this->add_control( 'stat_value_color', array(
+            'label'     => esc_html__( 'Value Color', 'amaley-core' ),
+            'type'      => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $s . ' .amms-stat strong' => 'color: {{VALUE}};' ),
+        ) );
+
+        $this->add_responsive_control( 'stat_value_margin', array(
+            'label'      => esc_html__( 'Value Margin', 'amaley-core' ),
+            'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', 'em' ),
+            'selectors'  => array( $s . ' .amms-stat strong' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ),
+        ) );
+
+        $this->end_controls_section();
+
+        $this->start_controls_section( 'snapshot_motion_style', array(
+            'label' => esc_html__( 'Snapshot Motion / Transform', 'amaley-core' ),
+            'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+        ) );
+
+        $this->add_responsive_control( 'stat_hover_lift', array(
+            'label'      => esc_html__( 'Box Hover Lift', 'amaley-core' ),
+            'type'       => \Elementor\Controls_Manager::SLIDER,
+            'size_units' => array( 'px' ),
+            'range'      => array( 'px' => array( 'min' => -30, 'max' => 30 ) ),
+            'selectors'  => array( $s . ' .amms-stat:hover' => 'transform: translateY({{SIZE}}{{UNIT}});' ),
+        ) );
+
+        $this->add_control( 'stat_transition_duration', array(
+            'label'     => esc_html__( 'Transition Duration (ms)', 'amaley-core' ),
+            'type'      => \Elementor\Controls_Manager::NUMBER,
+            'min'       => 0,
+            'max'       => 2000,
+            'step'      => 50,
+            'selectors' => array( $s . ' .amms-stat' => 'transition-duration: {{VALUE}}ms;' ),
+        ) );
+
+        $this->end_controls_section();
+
+        $this->start_controls_section( 'snapshot_fallback_style', array(
+            'label' => esc_html__( 'Snapshot Empty / Fallback', 'amaley-core' ),
+            'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array(
+            'name'     => 'empty_typography',
+            'selector' => $s . ' .amms-empty',
+        ) );
+
+        $this->add_control( 'empty_color', array(
+            'label'     => esc_html__( 'Message Color', 'amaley-core' ),
+            'type'      => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $s . ' .amms-empty' => 'color: {{VALUE}};' ),
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Background::get_type(), array(
+            'name'     => 'empty_background',
+            'selector' => $s . ' .amms-empty',
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Border::get_type(), array(
+            'name'     => 'empty_border',
+            'selector' => $s . ' .amms-empty',
+        ) );
+
+        $this->add_responsive_control( 'empty_padding', array(
+            'label'      => esc_html__( 'Message Padding', 'amaley-core' ),
+            'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', 'em' ),
+            'selectors'  => array( $s . ' .amms-empty' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ),
+        ) );
+
+        $this->add_responsive_control( 'empty_radius', array(
+            'label'      => esc_html__( 'Message Radius', 'amaley-core' ),
+            'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', '%' ),
+            'selectors'  => array( $s . ' .amms-empty' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ),
+        ) );
+
         $this->end_controls_section();
     }
 

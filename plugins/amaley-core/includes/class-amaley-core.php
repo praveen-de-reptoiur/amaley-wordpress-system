@@ -39,7 +39,6 @@ class Amaley_Core {
         new Amaley_Core_SHG_Single_Sections();
         new Amaley_Core_Member_Archive_Sections();
         new Amaley_Core_Member_Single_Sections();
-        new Amaley_Core_Universal_Showcase();
 
         add_action( 'wp_enqueue_scripts', array( $this, 'register_card_assets' ) );
         add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_assets' ) );

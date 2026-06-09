@@ -1,5 +1,14 @@
 <?php
-/** Amaley Member Single Products Elementor widget — full-control safe version. */
+/**
+ * Amaley Member Single Products Elementor widget — clean scoped controls.
+ *
+ * v1.0.140-clean-og-product-card-controls
+ * - Single Member / Producer detail page: Related Products section only.
+ * - Keeps product query, mapping, pagination and render logic unchanged.
+ * - Cleans Elementor panel labels so only product-section controls appear here.
+ * - Splits Section Button from Product Card Button to avoid selector bleed.
+ * - Keeps OG Product Card 1 controls separate from Current Product Card controls.
+ */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 if ( ! class_exists( '\\Elementor\\Widget_Base' ) ) { return; }
 
@@ -13,11 +22,19 @@ class Amaley_Core_Member_Single_Products_Widget extends \Elementor\Widget_Base {
 
     protected function register_controls() {
         $defaults = $this->defaults_for( 'products_defaults' );
+
         $this->register_source_controls( $defaults );
         $this->register_content_controls( $defaults );
+
         $this->register_common_style_controls( '.amms-products' );
-        $this->register_specific_style_controls( '.amms-products' );
-        $this->register_og_card_fine_controls( '.amms-products' );
+        $this->register_product_grid_layout_controls( '.amms-products' );
+
+        /*
+         * v1.0.140: Clean controls only for the real rendered OG product card.
+         * The old Current/Legacy card controls are intentionally not registered.
+         */
+        $this->register_og_card_clean_controls( '.amms-products' );
+
         $this->register_pagination_style_controls( '.amms-products' );
     }
 
@@ -55,7 +72,6 @@ class Amaley_Core_Member_Single_Products_Widget extends \Elementor\Widget_Base {
                 'label_off' => esc_html__( 'Hide', 'amaley-core' ),
                 'return_value' => '1',
                 'default' => $defaults[ $key ],
-                'render_type' => 'none',
             ) );
         }
     }
@@ -67,7 +83,6 @@ class Amaley_Core_Member_Single_Products_Widget extends \Elementor\Widget_Base {
                 'label' => esc_html__( $label, 'amaley-core' ),
                 'type' => $control_type,
                 'default' => $defaults[ $key ],
-                'render_type' => 'none',
             ) );
         }
     }
@@ -80,99 +95,79 @@ class Amaley_Core_Member_Single_Products_Widget extends \Elementor\Widget_Base {
                 'default' => $defaults[ $key ],
                 'min' => $min,
                 'max' => $max,
-                'render_type' => 'none',
             ) );
         }
     }
 
     private function register_source_controls( $defaults ) {
-        $this->start_controls_section( 'source_section', array( 'label' => esc_html__( 'Data / Preview Source', 'amaley-core' ) ) );
+        $this->start_controls_section( 'source_section', array( 'label' => esc_html__( 'Product Data / Preview Source', 'amaley-core' ) ) );
         $this->add_control( 'auto_detect', array( 'label' => esc_html__( 'Auto Detect from URL', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::SWITCHER, 'label_on' => 'Yes', 'label_off' => 'No', 'return_value' => '1', 'default' => isset( $defaults['auto_detect'] ) ? $defaults['auto_detect'] : '1' ) );
         $this->add_control( 'preview_member_id', array( 'label' => esc_html__( 'Preview Member ID', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::NUMBER, 'default' => '', 'description' => esc_html__( 'Use in Elementor editor if URL auto-detect is empty.', 'amaley-core' ) ) );
         $this->add_control( 'member_id', array( 'label' => esc_html__( 'Fixed Member ID', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::NUMBER, 'default' => '' ) );
         $this->add_control( 'member_slug', array( 'label' => esc_html__( 'Fixed Member Slug', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::TEXT, 'default' => '' ) );
-        $this->add_control( 'empty_message', array( 'label' => esc_html__( 'Fallback / Empty Message', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::TEXTAREA, 'default' => isset( $defaults['empty_message'] ) ? $defaults['empty_message'] : '' ) );
+        $this->add_control( 'empty_message', array( 'label' => esc_html__( 'Product Fallback / Empty Message', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::TEXTAREA, 'default' => isset( $defaults['empty_message'] ) ? $defaults['empty_message'] : '' ) );
         $this->end_controls_section();
     }
 
     private function register_content_controls( $defaults ) {
-        $this->start_controls_section( 'content_section', array( 'label' => esc_html__( 'Content / Show-Hide', 'amaley-core' ) ) );
+        $this->start_controls_section( 'content_section', array(
+            'label' => esc_html__( 'Product Content / Display', 'amaley-core' ),
+        ) );
+
+        $this->add_control( 'product_card_locked_note', array(
+            'type' => \Elementor\Controls_Manager::RAW_HTML,
+            'raw'  => esc_html__( 'Product cards use the existing Amaley OG Product Card renderer. This keeps the card design stable; controls below only show/hide content and adjust real OG card styling.', 'amaley-core' ),
+            'content_classes' => 'elementor-panel-alert elementor-panel-alert-info',
+        ) );
+
         $this->add_switch_if( $defaults, 'show_section', 'Show Full Section' );
-        $this->add_switch_if( $defaults, 'show_breadcrumb', 'Show Breadcrumb' );
-        $this->add_text_if( $defaults, 'breadcrumb', 'Breadcrumb Text' );
-        $this->add_switch_if( $defaults, 'show_label', 'Show Label / Eyebrow' );
-        $this->add_text_if( $defaults, 'label', 'Label / Eyebrow Text' );
-        $this->add_switch_if( $defaults, 'show_title', 'Show Heading' );
-        $this->add_text_if( $defaults, 'title', 'Heading Text' );
-        $this->add_switch_if( $defaults, 'show_description', 'Show Description' );
-        $this->add_text_if( $defaults, 'description', 'Description Text', 'TEXTAREA' );
-        $this->add_switch_if( $defaults, 'show_image', 'Show Main Image' );
-        $this->add_switch_if( $defaults, 'show_pills', 'Show Hero Tags / Chips' );
-        $this->add_switch_if( $defaults, 'show_buttons', 'Show Buttons' );
-        $this->add_text_if( $defaults, 'primary_text', 'Primary Button Text' );
-        $this->add_text_if( $defaults, 'primary_url', 'Primary Button URL' );
-        $this->add_text_if( $defaults, 'secondary_text', 'Secondary Button Text' );
-        $this->add_text_if( $defaults, 'secondary_url', 'Secondary Button URL' );
-        $this->add_number_if( $defaults, 'columns_desktop', 'Columns Desktop', 1, 8 );
-        $this->add_number_if( $defaults, 'columns_tablet', 'Columns Tablet', 1, 4 );
-        $this->add_number_if( $defaults, 'columns_mobile', 'Columns Mobile', 1, 2 );
-        $this->add_switch_if( $defaults, 'show_role_stat', 'Show Role Stat' );
-        $this->add_switch_if( $defaults, 'show_village_stat', 'Show Village Stat' );
-        $this->add_switch_if( $defaults, 'show_shg_stat', 'Show SHG Stat' );
-        $this->add_switch_if( $defaults, 'show_cluster_stat', 'Show Cluster Stat' );
-        $this->add_switch_if( $defaults, 'show_skills', 'Show Skill Tags' );
-        $this->add_switch_if( $defaults, 'show_products', 'Show Product Tags' );
-        $this->add_number_if( $defaults, 'max_tags', 'Maximum Tags', 1, 24 );
-        $this->add_switch_if( $defaults, 'show_card_media', 'Show Card Image / Icon Area' );
-        $this->add_switch_if( $defaults, 'show_card_badge', 'Show Card Badge' );
-        $this->add_switch_if( $defaults, 'show_card_label', 'Show Card Label' );
-        $this->add_switch_if( $defaults, 'show_card_title', 'Show Card Title' );
-        $this->add_switch_if( $defaults, 'show_card_excerpt', 'Show Card Description' );
-        $this->add_switch_if( $defaults, 'show_card_meta', 'Show Card Stat Boxes' );
-        $this->add_switch_if( $defaults, 'show_card_tags', 'Show Card Tags / Chips' );
-        $this->add_switch_if( $defaults, 'show_button', 'Show Card Button' );
-        $this->add_text_if( $defaults, 'button_text', 'Card Button Text' );
-        $this->add_text_if( $defaults, 'detail_url_pattern', 'Detail URL Pattern' );
-        if ( array_key_exists( 'card_template', $defaults ) ) {
-            $this->add_control( 'card_template', array(
-                'label' => esc_html__( 'Card Template', 'amaley-core' ),
-                'type' => \Elementor\Controls_Manager::SELECT,
-                'default' => isset( $defaults['card_template'] ) ? $defaults['card_template'] : 'current_existing',
-                'options' => array(
-                    'current_existing' => esc_html__( 'Current / Existing Card', 'amaley-core' ),
-                    'og_card_1' => esc_html__( 'OG Card 1', 'amaley-core' ),
-                ),
-                'description' => esc_html__( 'Choose Current layout or the approved OG Card 1.', 'amaley-core' ),
-                'render_type' => 'none',
-            ) );
-        }
-        $this->add_number_if( $defaults, 'limit', 'Product Limit / Items Per Page', 1, 24 );
+
+        $this->add_control( 'section_heading_content', array(
+            'label' => esc_html__( 'Section Heading', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::HEADING,
+            'separator' => 'before',
+        ) );
+        $this->add_switch_if( $defaults, 'show_label', 'Show Section Label / Eyebrow' );
+        $this->add_text_if( $defaults, 'label', 'Section Label Text' );
+        $this->add_switch_if( $defaults, 'show_title', 'Show Section Heading' );
+        $this->add_text_if( $defaults, 'title', 'Section Heading Text' );
+        $this->add_switch_if( $defaults, 'show_description', 'Show Section Description' );
+        $this->add_text_if( $defaults, 'description', 'Section Description Text', 'TEXTAREA' );
+
+        $this->add_control( 'product_list_content', array(
+            'label' => esc_html__( 'Product List', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::HEADING,
+            'separator' => 'before',
+        ) );
+        $this->add_number_if( $defaults, 'limit', 'Products Per Page', 1, 24 );
         $this->add_switch_if( $defaults, 'enable_pagination', 'Enable Pagination' );
         $this->add_text_if( $defaults, 'pagination_prev_text', 'Pagination Previous Text' );
         $this->add_text_if( $defaults, 'pagination_next_text', 'Pagination Next Text' );
-        $this->add_select_if( $defaults, 'product_card_source', 'Product Card Source', array(
-            'legacy' => esc_html__( 'Legacy Member Single Card — safe current design', 'amaley-core' ),
-            'global_assignment' => esc_html__( 'Use Global Assignment from Amaley Core Settings', 'amaley-core' ),
-            'manual' => esc_html__( 'Choose Manually in this Widget', 'amaley-core' ),
+
+        $this->add_control( 'product_card_content', array(
+            'label' => esc_html__( 'OG Product Card Content', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::HEADING,
+            'separator' => 'before',
         ) );
-        $manual_options = class_exists( 'Amaley_Core_Card_Registry' ) ? Amaley_Core_Card_Registry::preset_options_for_family( 'product' ) : array( 'compact_marketplace' => esc_html__( 'Compact Marketplace', 'amaley-core' ) );
-        $this->add_select_if( $defaults, 'product_card_manual_preset', 'Manual Product Card Preset', $manual_options, array( 'product_card_source' => 'manual' ) );
         $this->add_switch_if( $defaults, 'show_product_image', 'Show Product Image' );
         $this->add_switch_if( $defaults, 'show_product_label', 'Show Product Label' );
         $this->add_text_if( $defaults, 'product_label_text', 'Product Label Text' );
         $this->add_switch_if( $defaults, 'show_product_excerpt', 'Show Product Description / Excerpt' );
         $this->add_number_if( $defaults, 'product_excerpt_words', 'Product Description Word Limit', 6, 40 );
-        
         $this->add_switch_if( $defaults, 'show_product_meta', 'Show Product Price / Origin Boxes' );
         $this->add_switch_if( $defaults, 'show_product_chips', 'Show Product Traceability Chips' );
-        $this->add_switch_if( $defaults, 'show_product_button', 'Show Product Button' );
+        $this->add_switch_if( $defaults, 'show_product_button', 'Show Product Card Button' );
         $this->add_switch_if( $defaults, 'show_fallback_tags', 'Show Fallback Product Tags' );
+
+        $this->add_control( 'section_button_content', array(
+            'label' => esc_html__( 'Section Button', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::HEADING,
+            'separator' => 'before',
+        ) );
         $this->add_switch_if( $defaults, 'show_section_button', 'Show Section Button' );
         $this->add_text_if( $defaults, 'section_button_text', 'Section Button Text' );
         $this->add_text_if( $defaults, 'section_button_url', 'Section Button URL' );
-        $this->add_number_if( $defaults, 'max_images', 'Maximum Gallery Images', 1, 30 );
-        $this->add_switch_if( $defaults, 'show_caption', 'Show Gallery Caption' );
-        $this->add_switch_if( $defaults, 'show_phone', 'Show Phone / WhatsApp' );
+
         $this->end_controls_section();
     }
 
@@ -180,7 +175,7 @@ class Amaley_Core_Member_Single_Products_Widget extends \Elementor\Widget_Base {
         $s = '{{WRAPPER}} ' . $section_selector;
 
         $this->start_controls_section( 'style_section_shell', array(
-            'label' => esc_html__( 'Section: Background & Layout', 'amaley-core' ),
+            'label' => esc_html__( 'Product Section / Background', 'amaley-core' ),
             'tab' => \Elementor\Controls_Manager::TAB_STYLE,
         ) );
         $this->add_group_control( \Elementor\Group_Control_Background::get_type(), array( 'name' => 'section_background', 'selector' => $s ) );
@@ -217,7 +212,7 @@ class Amaley_Core_Member_Single_Products_Widget extends \Elementor\Widget_Base {
         $this->end_controls_section();
 
         $this->start_controls_section( 'style_heading_block', array(
-            'label' => esc_html__( 'Section Head: Label / Heading / Description', 'amaley-core' ),
+            'label' => esc_html__( 'Product Heading / Text', 'amaley-core' ),
             'tab' => \Elementor\Controls_Manager::TAB_STYLE,
         ) );
         $this->add_responsive_control( 'head_width', array(
@@ -246,10 +241,10 @@ class Amaley_Core_Member_Single_Products_Widget extends \Elementor\Widget_Base {
             'selectors' => array( $s . ' .amms-section-head:after, ' . $s . ' .amms-story-card:before' => 'width: {{SIZE}}{{UNIT}};' ),
         ) );
         $this->add_control( 'label_heading', array( 'label' => esc_html__( 'Label / Eyebrow', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::HEADING, 'separator' => 'before' ) );
-        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array( 'name' => 'label_typography', 'selector' => $s . ' .amms-kicker, ' . $s . ' .amms-card-label, ' . $s . ' .amaley-card__label' ) );
-        $this->add_control( 'label_color', array( 'label' => esc_html__( 'Label Color', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::COLOR, 'selectors' => array( $s . ' .amms-kicker, ' . $s . ' .amms-card-label, ' . $s . ' .amaley-card__label' => 'color: {{VALUE}};' ) ) );
-        $this->add_responsive_control( 'label_spacing', array( 'label' => esc_html__( 'Label Bottom Spacing', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::SLIDER, 'size_units' => array( 'px' ), 'range' => array( 'px' => array( 'min' => 0, 'max' => 80 ) ), 'selectors' => array( $s . ' .amms-kicker, ' . $s . ' .amms-card-label, ' . $s . ' .amaley-card__label' => 'margin-bottom: {{SIZE}}{{UNIT}};' ) ) );
-        $this->add_responsive_control( 'label_margin_box', array( 'label' => esc_html__( 'Label Margin', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::DIMENSIONS, 'size_units' => array( 'px', 'em' ), 'selectors' => array( $s . ' .amms-kicker, ' . $s . ' .amms-card-label, ' . $s . ' .amaley-card__label' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ) ) );
+        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array( 'name' => 'label_typography', 'selector' => $s . ' .amms-section-head .amms-kicker' ) );
+        $this->add_control( 'label_color', array( 'label' => esc_html__( 'Label Color', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::COLOR, 'selectors' => array( $s . ' .amms-section-head .amms-kicker' => 'color: {{VALUE}};' ) ) );
+        $this->add_responsive_control( 'label_spacing', array( 'label' => esc_html__( 'Label Bottom Spacing', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::SLIDER, 'size_units' => array( 'px' ), 'range' => array( 'px' => array( 'min' => 0, 'max' => 80 ) ), 'selectors' => array( $s . ' .amms-section-head .amms-kicker' => 'margin-bottom: {{SIZE}}{{UNIT}};' ) ) );
+        $this->add_responsive_control( 'label_margin_box', array( 'label' => esc_html__( 'Label Margin', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::DIMENSIONS, 'size_units' => array( 'px', 'em' ), 'selectors' => array( $s . ' .amms-section-head .amms-kicker' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ) ) );
         $this->add_control( 'title_heading', array( 'label' => esc_html__( 'Heading', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::HEADING, 'separator' => 'before' ) );
         $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array( 'name' => 'title_typography', 'selector' => $s . ' .amms-title, ' . $s . ' .amms-section-title' ) );
         $this->add_control( 'title_color', array( 'label' => esc_html__( 'Heading Color', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::COLOR, 'selectors' => array( $s . ' .amms-title, ' . $s . ' .amms-section-title' => 'color: {{VALUE}};' ) ) );
@@ -262,22 +257,95 @@ class Amaley_Core_Member_Single_Products_Widget extends \Elementor\Widget_Base {
         $this->add_responsive_control( 'desc_margin_box', array( 'label' => esc_html__( 'Description Margin', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::DIMENSIONS, 'size_units' => array( 'px', 'em' ), 'selectors' => array( $s . ' .amms-description, ' . $s . ' .amms-section-desc' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ) ) );
         $this->end_controls_section();
 
-        $this->start_controls_section( 'style_buttons', array(
-            'label' => esc_html__( 'Buttons / CTA Buttons', 'amaley-core' ),
+        $this->start_controls_section( 'style_section_button', array(
+            'label' => esc_html__( 'Product Section Button', 'amaley-core' ),
             'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+            'condition' => array( 'show_section_button' => '1' ),
         ) );
-        $this->add_responsive_control( 'button_row_gap', array( 'label' => esc_html__( 'Button Gap', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::SLIDER, 'size_units' => array( 'px' ), 'range' => array( 'px' => array( 'min' => 0, 'max' => 80 ) ), 'selectors' => array( $s . ' .amms-button-row' => 'gap: {{SIZE}}{{UNIT}};' ) ) );
-        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array( 'name' => 'button_typography', 'selector' => $s . ' .amms-btn, ' . $s . ' .amms-card-button, ' . $s . ' .amms-product-button, ' . $s . ' .amms-section-button' ) );
-        $this->add_responsive_control( 'button_padding', array( 'label' => esc_html__( 'Button Padding', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::DIMENSIONS, 'size_units' => array( 'px', 'em' ), 'selectors' => array( $s . ' .amms-btn, ' . $s . ' .amms-card-button, ' . $s . ' .amms-product-button, ' . $s . ' .amms-section-button' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ) ) );
-        $this->add_responsive_control( 'button_radius', array( 'label' => esc_html__( 'Button Radius', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::DIMENSIONS, 'size_units' => array( 'px', '%' ), 'selectors' => array( $s . ' .amms-btn, ' . $s . ' .amms-card-button, ' . $s . ' .amms-product-button, ' . $s . ' .amms-section-button' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ) ) );
-        $this->add_control( 'primary_button_color', array( 'label' => esc_html__( 'Primary Button Text', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::COLOR, 'selectors' => array( $s . ' .amms-btn-primary, ' . $s . ' .amms-product-button, ' . $s . ' .amaley-card__button' => 'color: {{VALUE}};' ) ) );
-        $this->add_control( 'primary_button_bg', array( 'label' => esc_html__( 'Primary Button Background', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::COLOR, 'selectors' => array( $s . ' .amms-btn-primary, ' . $s . ' .amms-product-button, ' . $s . ' .amaley-card__button' => 'background: {{VALUE}}; border-color: {{VALUE}};' ) ) );
-        $this->add_control( 'outline_button_color', array( 'label' => esc_html__( 'Outline Button Text', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::COLOR, 'selectors' => array( $s . ' .amms-btn-secondary, ' . $s . ' .amms-card-button, ' . $s . ' .amms-section-button' => 'color: {{VALUE}};' ) ) );
-        $this->add_control( 'outline_button_border', array( 'label' => esc_html__( 'Outline Button Border', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::COLOR, 'selectors' => array( $s . ' .amms-btn-secondary, ' . $s . ' .amms-card-button, ' . $s . ' .amms-section-button' => 'border-color: {{VALUE}};' ) ) );
+
+        $this->add_responsive_control( 'section_button_align', array(
+            'label' => esc_html__( 'Button Alignment', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::CHOOSE,
+            'options' => array(
+                'flex-start' => array( 'title' => esc_html__( 'Left', 'amaley-core' ), 'icon' => 'eicon-text-align-left' ),
+                'center' => array( 'title' => esc_html__( 'Center', 'amaley-core' ), 'icon' => 'eicon-text-align-center' ),
+                'flex-end' => array( 'title' => esc_html__( 'Right', 'amaley-core' ), 'icon' => 'eicon-text-align-right' ),
+            ),
+            'selectors' => array( $s . ' .amms-section-actions' => 'display:flex;justify-content:{{VALUE}};' ),
+        ) );
+
+        $this->add_responsive_control( 'section_button_margin', array(
+            'label' => esc_html__( 'Button Wrapper Margin', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', 'em', '%' ),
+            'selectors' => array( $s . ' .amms-section-actions' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ),
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array(
+            'name' => 'section_button_typography',
+            'selector' => $s . ' .amms-section-button',
+        ) );
+
+        $this->add_responsive_control( 'section_button_padding', array(
+            'label' => esc_html__( 'Button Padding', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', 'em' ),
+            'selectors' => array( $s . ' .amms-section-button' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ),
+        ) );
+
+        $this->add_responsive_control( 'section_button_radius', array(
+            'label' => esc_html__( 'Button Radius', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', '%' ),
+            'selectors' => array( $s . ' .amms-section-button' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ),
+        ) );
+
+        $this->start_controls_tabs( 'section_button_tabs' );
+        $this->start_controls_tab( 'section_button_normal_tab', array( 'label' => esc_html__( 'Normal', 'amaley-core' ) ) );
+        $this->add_control( 'section_button_text_color', array(
+            'label' => esc_html__( 'Text Color', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $s . ' .amms-section-button' => 'color: {{VALUE}};' ),
+        ) );
+        $this->add_control( 'section_button_background', array(
+            'label' => esc_html__( 'Background', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $s . ' .amms-section-button' => 'background: {{VALUE}};' ),
+        ) );
+        $this->add_control( 'section_button_border_color', array(
+            'label' => esc_html__( 'Border Color', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $s . ' .amms-section-button' => 'border-color: {{VALUE}};' ),
+        ) );
+        $this->end_controls_tab();
+
+        $this->start_controls_tab( 'section_button_hover_tab', array( 'label' => esc_html__( 'Hover', 'amaley-core' ) ) );
+        $this->add_control( 'section_button_hover_text_color', array(
+            'label' => esc_html__( 'Text Color', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $s . ' .amms-section-button:hover' => 'color: {{VALUE}};' ),
+        ) );
+        $this->add_control( 'section_button_hover_background', array(
+            'label' => esc_html__( 'Background', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $s . ' .amms-section-button:hover' => 'background: {{VALUE}};' ),
+        ) );
+        $this->add_control( 'section_button_hover_border_color', array(
+            'label' => esc_html__( 'Border Color', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $s . ' .amms-section-button:hover' => 'border-color: {{VALUE}};' ),
+        ) );
+        $this->add_group_control( \Elementor\Group_Control_Box_Shadow::get_type(), array(
+            'name' => 'section_button_hover_shadow',
+            'selector' => $s . ' .amms-section-button:hover',
+        ) );
+        $this->end_controls_tab();
+        $this->end_controls_tabs();
+
         $this->end_controls_section();
 
         $this->start_controls_section( 'style_fallback', array(
-            'label' => esc_html__( 'Fallback / Empty Message', 'amaley-core' ),
+            'label' => esc_html__( 'Product Fallback / Empty Message', 'amaley-core' ),
             'tab' => \Elementor\Controls_Manager::TAB_STYLE,
         ) );
         $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array( 'name' => 'empty_typography', 'selector' => $s . ' .amms-empty' ) );
@@ -289,15 +357,492 @@ class Amaley_Core_Member_Single_Products_Widget extends \Elementor\Widget_Base {
     }
 
 
+    private function register_product_grid_layout_controls( $section_selector ) {
+        $s = '{{WRAPPER}} #amms-member-products.amms-products';
+
+        $this->start_controls_section( 'style_product_grid_layout', array(
+            'label' => esc_html__( 'Product Grid / Layout', 'amaley-core' ),
+            'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+        ) );
+
+        $this->add_control( 'product_grid_layout_note', array(
+            'type' => \Elementor\Controls_Manager::RAW_HTML,
+            'raw'  => esc_html__( 'These controls affect the product grid container. Responsive columns are applied by the renderer so desktop settings do not squeeze tablet/mobile.', 'amaley-core' ),
+            'content_classes' => 'elementor-panel-alert elementor-panel-alert-info',
+        ) );
+
+        $this->add_control( 'product_desktop_columns_fixed', array(
+            'label' => esc_html__( 'Desktop Columns', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::SELECT,
+            'default' => '4',
+            'options' => array(
+                '1' => esc_html__( '1 Column', 'amaley-core' ),
+                '2' => esc_html__( '2 Columns', 'amaley-core' ),
+                '3' => esc_html__( '3 Columns', 'amaley-core' ),
+                '4' => esc_html__( '4 Columns — Recommended', 'amaley-core' ),
+            ),
+        ) );
+
+        $this->add_control( 'product_tablet_columns_fixed', array(
+            'label' => esc_html__( 'Tablet Columns', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::SELECT,
+            'default' => '2',
+            'options' => array(
+                '1' => esc_html__( '1 Column', 'amaley-core' ),
+                '2' => esc_html__( '2 Columns — Recommended', 'amaley-core' ),
+                '3' => esc_html__( '3 Columns — Compact', 'amaley-core' ),
+            ),
+        ) );
+
+        $this->add_control( 'product_mobile_columns_fixed', array(
+            'label' => esc_html__( 'Mobile Columns', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::SELECT,
+            'default' => '1',
+            'options' => array(
+                '1' => esc_html__( '1 Column — Recommended', 'amaley-core' ),
+                '2' => esc_html__( '2 Columns — Very Compact', 'amaley-core' ),
+            ),
+        ) );
+
+        $this->add_responsive_control( 'product_grid_gap_safe', array(
+            'label' => esc_html__( 'Card Gap', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::SLIDER,
+            'size_units' => array( 'px' ),
+            'range' => array( 'px' => array( 'min' => 0, 'max' => 80 ) ),
+            'default' => array( 'size' => 24, 'unit' => 'px' ),
+            'selectors' => array(
+                $s . ' .amms-product-grid' => 'gap: {{SIZE}}{{UNIT}} !important;',
+            ),
+        ) );
+
+        $this->add_responsive_control( 'product_wrap_max_width', array(
+            'label' => esc_html__( 'Grid Max Width', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::SLIDER,
+            'size_units' => array( 'px', '%' ),
+            'range' => array(
+                'px' => array( 'min' => 720, 'max' => 1600 ),
+                '%'  => array( 'min' => 60, 'max' => 100 ),
+            ),
+            'selectors' => array(
+                $s . ' .amms-wrap' => 'max-width: {{SIZE}}{{UNIT}} !important;',
+            ),
+        ) );
+
+        $this->add_responsive_control( 'product_wrap_padding', array(
+            'label' => esc_html__( 'Grid Side Padding', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', 'em', '%' ),
+            'allowed_dimensions' => 'horizontal',
+            'selectors' => array(
+                $s . ' .amms-wrap' => 'padding-left: {{LEFT}}{{UNIT}} !important; padding-right: {{RIGHT}}{{UNIT}} !important;',
+            ),
+        ) );
+
+        $this->end_controls_section();
+    }
+
+
+    private function register_og_card_clean_controls( $section_selector ) {
+        $s = '{{WRAPPER}} #amms-member-products.amms-products';
+
+        $card_selector   = $s . ' .amaley-card';
+        $media_selector  = $s . ' .amaley-card__media';
+        $body_selector   = $s . ' .amaley-card__body';
+        $label_selector  = $s . ' .amaley-card__label';
+        $title_selector  = $s . ' .amaley-card__title';
+        $desc_selector   = $s . ' .amaley-card__excerpt';
+        $meta_selector   = $s . ' .amaley-card__meta';
+        $meta_item       = $s . ' .amaley-card__meta-item';
+        $tag_selector    = $s . ' .amaley-card__tags span';
+        $button_selector = $s . ' .amaley-card__button';
+
+        $this->start_controls_section( 'style_og_card_box_image', array(
+            'label' => esc_html__( 'OG Product Card / Box & Image', 'amaley-core' ),
+            'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Background::get_type(), array(
+            'name' => 'og_card_background',
+            'label' => esc_html__( 'Card Background', 'amaley-core' ),
+            'selector' => $card_selector,
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Border::get_type(), array(
+            'name' => 'og_card_border',
+            'label' => esc_html__( 'Card Border', 'amaley-core' ),
+            'selector' => $card_selector,
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Box_Shadow::get_type(), array(
+            'name' => 'og_card_shadow',
+            'label' => esc_html__( 'Card Shadow', 'amaley-core' ),
+            'selector' => $card_selector,
+        ) );
+
+        $this->add_responsive_control( 'og_card_radius', array(
+            'label' => esc_html__( 'Card Radius', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', '%' ),
+            'selectors' => array( $card_selector => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}} !important;' ),
+        ) );
+
+        $this->add_responsive_control( 'og_card_body_padding', array(
+            'label' => esc_html__( 'Card Body Padding', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', 'em' ),
+            'selectors' => array( $body_selector => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}} !important;' ),
+        ) );
+
+        $this->add_responsive_control( 'og_card_inner_gap', array(
+            'label' => esc_html__( 'Card Inner Gap', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::SLIDER,
+            'size_units' => array( 'px' ),
+            'range' => array( 'px' => array( 'min' => 0, 'max' => 48 ) ),
+            'selectors' => array( $body_selector => 'gap: {{SIZE}}{{UNIT}} !important;' ),
+        ) );
+
+        $this->add_control( 'og_media_heading', array(
+            'label' => esc_html__( 'Image Area', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::HEADING,
+            'separator' => 'before',
+        ) );
+
+        $this->add_responsive_control( 'og_media_height', array(
+            'label' => esc_html__( 'Image Height', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::SLIDER,
+            'size_units' => array( 'px' ),
+            'range' => array( 'px' => array( 'min' => 80, 'max' => 520 ) ),
+            'selectors' => array( $media_selector => 'height: {{SIZE}}{{UNIT}} !important; min-height: {{SIZE}}{{UNIT}} !important;' ),
+        ) );
+
+        $this->add_control( 'og_media_bg', array(
+            'label' => esc_html__( 'Image Area Background', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $media_selector => 'background: {{VALUE}} !important;' ),
+        ) );
+
+        $this->add_responsive_control( 'og_media_radius', array(
+            'label' => esc_html__( 'Image Radius', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', '%' ),
+            'selectors' => array( $media_selector . ', ' . $media_selector . ' img' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}} !important;' ),
+        ) );
+
+        $this->end_controls_section();
+
+        $this->start_controls_section( 'style_og_card_text', array(
+            'label' => esc_html__( 'OG Product Card / Text', 'amaley-core' ),
+            'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+        ) );
+
+        $this->add_control( 'og_label_heading', array(
+            'label' => esc_html__( 'Label', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::HEADING,
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array(
+            'name' => 'og_label_typography',
+            'label' => esc_html__( 'Label Typography', 'amaley-core' ),
+            'selector' => $label_selector,
+        ) );
+
+        $this->add_control( 'og_label_color', array(
+            'label' => esc_html__( 'Label Color', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $label_selector => 'color: {{VALUE}} !important;' ),
+        ) );
+
+        $this->add_responsive_control( 'og_label_margin', array(
+            'label' => esc_html__( 'Label Margin', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', 'em' ),
+            'selectors' => array( $label_selector => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}} !important;' ),
+        ) );
+
+        $this->add_control( 'og_title_heading', array(
+            'label' => esc_html__( 'Title', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::HEADING,
+            'separator' => 'before',
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array(
+            'name' => 'og_title_typography',
+            'label' => esc_html__( 'Title Typography', 'amaley-core' ),
+            'selector' => $title_selector,
+        ) );
+
+        $this->add_control( 'og_title_color', array(
+            'label' => esc_html__( 'Title Color', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $title_selector => 'color: {{VALUE}} !important;' ),
+        ) );
+
+        $this->add_responsive_control( 'og_title_margin', array(
+            'label' => esc_html__( 'Title Margin', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', 'em' ),
+            'selectors' => array( $title_selector => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}} !important;' ),
+        ) );
+
+        $this->add_control( 'og_desc_heading', array(
+            'label' => esc_html__( 'Description', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::HEADING,
+            'separator' => 'before',
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array(
+            'name' => 'og_excerpt_typography',
+            'label' => esc_html__( 'Description Typography', 'amaley-core' ),
+            'selector' => $desc_selector,
+        ) );
+
+        $this->add_control( 'og_excerpt_color', array(
+            'label' => esc_html__( 'Description Color', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $desc_selector => 'color: {{VALUE}} !important;' ),
+        ) );
+
+        $this->add_responsive_control( 'og_excerpt_margin', array(
+            'label' => esc_html__( 'Description Margin', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', 'em' ),
+            'selectors' => array( $desc_selector => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}} !important;' ),
+        ) );
+
+        $this->add_responsive_control( 'og_excerpt_min_height', array(
+            'label' => esc_html__( 'Description Min Height', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::SLIDER,
+            'size_units' => array( 'px' ),
+            'range' => array( 'px' => array( 'min' => 0, 'max' => 180 ) ),
+            'selectors' => array( $desc_selector => 'min-height: {{SIZE}}{{UNIT}} !important;' ),
+        ) );
+
+        $this->end_controls_section();
+
+        $this->start_controls_section( 'style_og_card_meta_chips', array(
+            'label' => esc_html__( 'OG Product Card / Meta & Chips', 'amaley-core' ),
+            'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+        ) );
+
+        $this->add_control( 'og_meta_heading', array(
+            'label' => esc_html__( 'Price / Origin Boxes', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::HEADING,
+        ) );
+
+        $this->add_responsive_control( 'og_meta_columns', array(
+            'label' => esc_html__( 'Meta Box Columns', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::NUMBER,
+            'min' => 1,
+            'max' => 4,
+            'selectors' => array( $meta_selector => 'grid-template-columns: repeat({{VALUE}}, minmax(0, 1fr)) !important;' ),
+        ) );
+
+        $this->add_responsive_control( 'og_meta_gap', array(
+            'label' => esc_html__( 'Meta Box Gap', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::SLIDER,
+            'size_units' => array( 'px' ),
+            'range' => array( 'px' => array( 'min' => 0, 'max' => 40 ) ),
+            'selectors' => array( $meta_selector => 'gap: {{SIZE}}{{UNIT}} !important;' ),
+        ) );
+
+        $this->add_control( 'og_meta_bg', array(
+            'label' => esc_html__( 'Meta Box Background', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $meta_item => 'background: {{VALUE}} !important;' ),
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Border::get_type(), array(
+            'name' => 'og_meta_border',
+            'label' => esc_html__( 'Meta Box Border', 'amaley-core' ),
+            'selector' => $meta_item,
+        ) );
+
+        $this->add_responsive_control( 'og_meta_padding', array(
+            'label' => esc_html__( 'Meta Box Padding', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', 'em' ),
+            'selectors' => array( $meta_item => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}} !important;' ),
+        ) );
+
+        $this->add_responsive_control( 'og_meta_radius', array(
+            'label' => esc_html__( 'Meta Box Radius', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', '%' ),
+            'selectors' => array( $meta_item => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}} !important;' ),
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array(
+            'name' => 'og_meta_label_typography',
+            'label' => esc_html__( 'Meta Label Typography', 'amaley-core' ),
+            'selector' => $s . ' .amaley-card__meta span',
+        ) );
+
+        $this->add_control( 'og_meta_label_color', array(
+            'label' => esc_html__( 'Meta Label Color', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $s . ' .amaley-card__meta span' => 'color: {{VALUE}} !important;' ),
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array(
+            'name' => 'og_meta_value_typography',
+            'label' => esc_html__( 'Meta Value Typography', 'amaley-core' ),
+            'selector' => $s . ' .amaley-card__meta strong',
+        ) );
+
+        $this->add_control( 'og_meta_value_color', array(
+            'label' => esc_html__( 'Meta Value Color', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $s . ' .amaley-card__meta strong' => 'color: {{VALUE}} !important;' ),
+        ) );
+
+        $this->add_control( 'og_tags_heading', array(
+            'label' => esc_html__( 'Traceability Chips', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::HEADING,
+            'separator' => 'before',
+        ) );
+
+        $this->add_responsive_control( 'og_tags_gap', array(
+            'label' => esc_html__( 'Chip Gap', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::SLIDER,
+            'size_units' => array( 'px' ),
+            'range' => array( 'px' => array( 'min' => 0, 'max' => 40 ) ),
+            'selectors' => array( $s . ' .amaley-card__tags' => 'gap: {{SIZE}}{{UNIT}} !important;' ),
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array(
+            'name' => 'og_tags_typography',
+            'label' => esc_html__( 'Chip Typography', 'amaley-core' ),
+            'selector' => $tag_selector,
+        ) );
+
+        $this->add_control( 'og_tags_color', array(
+            'label' => esc_html__( 'Chip Text Color', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $tag_selector => 'color: {{VALUE}} !important;' ),
+        ) );
+
+        $this->add_control( 'og_tags_bg', array(
+            'label' => esc_html__( 'Chip Background', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $tag_selector => 'background: {{VALUE}} !important;' ),
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Border::get_type(), array(
+            'name' => 'og_tags_border',
+            'label' => esc_html__( 'Chip Border', 'amaley-core' ),
+            'selector' => $tag_selector,
+        ) );
+
+        $this->add_responsive_control( 'og_tags_padding', array(
+            'label' => esc_html__( 'Chip Padding', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', 'em' ),
+            'selectors' => array( $tag_selector => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}} !important;' ),
+        ) );
+
+        $this->add_responsive_control( 'og_tags_radius', array(
+            'label' => esc_html__( 'Chip Radius', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', '%' ),
+            'selectors' => array( $tag_selector => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}} !important;' ),
+        ) );
+
+        $this->end_controls_section();
+
+        $this->start_controls_section( 'style_og_card_button', array(
+            'label' => esc_html__( 'OG Product Card / Button', 'amaley-core' ),
+            'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array(
+            'name' => 'og_button_typography',
+            'label' => esc_html__( 'Button Typography', 'amaley-core' ),
+            'selector' => $button_selector,
+        ) );
+
+        $this->start_controls_tabs( 'og_button_tabs' );
+
+        $this->start_controls_tab( 'og_button_normal_tab', array(
+            'label' => esc_html__( 'Normal', 'amaley-core' ),
+        ) );
+
+        $this->add_control( 'og_button_color', array(
+            'label' => esc_html__( 'Text Color', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $button_selector => 'color: {{VALUE}} !important;' ),
+        ) );
+
+        $this->add_control( 'og_button_bg', array(
+            'label' => esc_html__( 'Background', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $button_selector => 'background: {{VALUE}} !important;' ),
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Border::get_type(), array(
+            'name' => 'og_button_border',
+            'label' => esc_html__( 'Border', 'amaley-core' ),
+            'selector' => $button_selector,
+        ) );
+
+        $this->end_controls_tab();
+
+        $this->start_controls_tab( 'og_button_hover_tab', array(
+            'label' => esc_html__( 'Hover', 'amaley-core' ),
+        ) );
+
+        $this->add_control( 'og_button_hover_color', array(
+            'label' => esc_html__( 'Hover Text Color', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $button_selector . ':hover' => 'color: {{VALUE}} !important;' ),
+        ) );
+
+        $this->add_control( 'og_button_hover_bg', array(
+            'label' => esc_html__( 'Hover Background', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $button_selector . ':hover' => 'background: {{VALUE}} !important;' ),
+        ) );
+
+        $this->add_control( 'og_button_hover_border_color', array(
+            'label' => esc_html__( 'Hover Border Color', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $button_selector . ':hover' => 'border-color: {{VALUE}} !important;' ),
+        ) );
+
+        $this->end_controls_tab();
+        $this->end_controls_tabs();
+
+        $this->add_responsive_control( 'og_button_padding', array(
+            'label' => esc_html__( 'Button Padding', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', 'em' ),
+            'separator' => 'before',
+            'selectors' => array( $button_selector => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}} !important;' ),
+        ) );
+
+        $this->add_responsive_control( 'og_button_radius', array(
+            'label' => esc_html__( 'Button Radius', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', '%' ),
+            'selectors' => array( $button_selector => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}} !important;' ),
+        ) );
+
+        $this->add_responsive_control( 'og_button_margin', array(
+            'label' => esc_html__( 'Button Margin', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', 'em' ),
+            'selectors' => array( $button_selector => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}} !important;' ),
+        ) );
+
+        $this->end_controls_section();
+    }
+
     private function register_specific_style_controls( $section_selector ) {
         $s = '{{WRAPPER}} ' . $section_selector;
         $this->start_controls_section( 'style_product_cards', array(
-            'label' => esc_html__( 'Products: Grid / Cards / Meta / Tags', 'amaley-core' ),
+            'label' => esc_html__( 'Current Product Card / Grid / Text / Meta', 'amaley-core' ),
             'tab' => \Elementor\Controls_Manager::TAB_STYLE,
             'condition' => array( 'card_template' => 'current_existing' ),
         ) );
-        $this->add_responsive_control( 'product_columns', array( 'label' => esc_html__( 'Product Columns', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::NUMBER, 'min' => 1, 'max' => 6, 'selectors' => array( $s . ' .amms-product-grid' => 'grid-template-columns: repeat({{VALUE}}, minmax(0, 1fr));' ) ) );
-        $this->add_responsive_control( 'product_gap', array( 'label' => esc_html__( 'Card Gap', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::SLIDER, 'size_units' => array( 'px' ), 'range' => array( 'px' => array( 'min' => 0, 'max' => 80 ) ), 'selectors' => array( $s . ' .amms-product-grid' => 'gap: {{SIZE}}{{UNIT}};' ) ) );
         $this->add_group_control( \Elementor\Group_Control_Background::get_type(), array( 'name' => 'product_card_background', 'selector' => $s . ' .amms-product-card, ' . $s . ' .amaley-card' ) );
         $this->add_group_control( \Elementor\Group_Control_Border::get_type(), array( 'name' => 'product_card_border', 'selector' => $s . ' .amms-product-card, ' . $s . ' .amaley-card' ) );
         $this->add_group_control( \Elementor\Group_Control_Box_Shadow::get_type(), array( 'name' => 'product_card_shadow', 'selector' => $s . ' .amms-product-card, ' . $s . ' .amaley-card' ) );
@@ -322,7 +867,7 @@ class Amaley_Core_Member_Single_Products_Widget extends \Elementor\Widget_Base {
         $this->add_responsive_control( 'product_meta_margin', array( 'label' => esc_html__( 'Meta Box Margin', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::DIMENSIONS, 'size_units' => array( 'px', 'em' ), 'selectors' => array( $s . ' .amms-product-meta div, ' . $s . ' .amaley-card__meta-item' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ) ) );
         $this->add_responsive_control( 'product_meta_radius', array( 'label' => esc_html__( 'Meta Box Radius', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::DIMENSIONS, 'size_units' => array( 'px', '%' ), 'selectors' => array( $s . ' .amms-product-meta div, ' . $s . ' .amaley-card__meta-item' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ) ) );
         $this->add_responsive_control( 'product_meta_min_height', array( 'label' => esc_html__( 'Meta Box Min Height', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::SLIDER, 'size_units' => array( 'px' ), 'range' => array( 'px' => array( 'min' => 0, 'max' => 220 ) ), 'selectors' => array( $s . ' .amms-product-meta div, ' . $s . ' .amaley-card__meta-item' => 'min-height: {{SIZE}}{{UNIT}};' ) ) );
-        $this->add_responsive_control( 'product_meta_columns', array( 'label' => esc_html__( 'Meta Box Columns', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::NUMBER, 'min' => 1, 'max' => 3, 'selectors' => array( $s . ' .amms-product-meta, ' . $s . ' .amaley-card__meta' => 'grid-template-columns: repeat({{VALUE}}, minmax(0, 1fr));' ) ) );
+        $this->add_responsive_control( 'product_meta_columns', array( 'label' => esc_html__( 'Meta Box Columns', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::NUMBER, 'min' => 1, 'max' => 3, 'default' => 1, 'tablet_default' => 1, 'mobile_default' => 1, 'description' => esc_html__( 'For 4 product cards in one row, keep this as 1 so Price and Origin boxes do not squeeze.', 'amaley-core' ), 'selectors' => array( $s . ' .amms-product-meta, ' . $s . ' .amaley-card__meta' => 'grid-template-columns: repeat({{VALUE}}, minmax(0, 1fr));' ) ) );
         $this->add_group_control( \Elementor\Group_Control_Border::get_type(), array( 'name' => 'product_meta_border', 'selector' => $s . ' .amms-product-meta div, ' . $s . ' .amaley-card__meta-item' ) );
         $this->add_control( 'product_tags_heading', array( 'label' => esc_html__( 'Tags / Fallback Tags', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::HEADING, 'separator' => 'before' ) );
         $this->add_responsive_control( 'product_tag_gap', array( 'label' => esc_html__( 'Tag Gap', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::SLIDER, 'size_units' => array( 'px' ), 'range' => array( 'px' => array( 'min' => 0, 'max' => 50 ) ), 'selectors' => array( $s . ' .amms-chip-row, ' . $s . ' .amms-product-fallback, ' . $s . ' .amaley-card__tags' => 'gap: {{SIZE}}{{UNIT}};' ) ) );
@@ -332,6 +877,81 @@ class Amaley_Core_Member_Single_Products_Widget extends \Elementor\Widget_Base {
         $this->add_responsive_control( 'product_tag_padding', array( 'label' => esc_html__( 'Tag Padding', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::DIMENSIONS, 'size_units' => array( 'px', 'em' ), 'selectors' => array( $s . ' .amms-chip-row span, ' . $s . ' .amms-product-fallback span, ' . $s . ' .amaley-card__tags span' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ) ) );
         $this->add_responsive_control( 'product_tag_margin', array( 'label' => esc_html__( 'Tag Margin', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::DIMENSIONS, 'size_units' => array( 'px', 'em' ), 'selectors' => array( $s . ' .amms-chip-row span, ' . $s . ' .amms-product-fallback span, ' . $s . ' .amaley-card__tags span' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ) ) );
         $this->add_responsive_control( 'product_tag_radius', array( 'label' => esc_html__( 'Tag Radius', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::DIMENSIONS, 'size_units' => array( 'px', '%' ), 'selectors' => array( $s . ' .amms-chip-row span, ' . $s . ' .amms-product-fallback span, ' . $s . ' .amaley-card__tags span' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ) ) );
+
+
+        $this->add_control( 'product_card_button_heading', array(
+            'label' => esc_html__( 'Product Card Button', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::HEADING,
+            'separator' => 'before',
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array(
+            'name' => 'product_button_typography',
+            'selector' => $s . ' .amms-product-button',
+        ) );
+
+        $this->add_responsive_control( 'product_button_padding', array(
+            'label' => esc_html__( 'Button Padding', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', 'em' ),
+            'selectors' => array( $s . ' .amms-product-button' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ),
+        ) );
+
+        $this->add_responsive_control( 'product_button_margin', array(
+            'label' => esc_html__( 'Button Margin', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', 'em' ),
+            'selectors' => array( $s . ' .amms-product-button' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ),
+        ) );
+
+        $this->add_responsive_control( 'product_button_radius', array(
+            'label' => esc_html__( 'Button Radius', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', '%' ),
+            'selectors' => array( $s . ' .amms-product-button' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ),
+        ) );
+
+        $this->start_controls_tabs( 'product_button_tabs' );
+        $this->start_controls_tab( 'product_button_normal_tab', array( 'label' => esc_html__( 'Normal', 'amaley-core' ) ) );
+        $this->add_control( 'product_button_text_color', array(
+            'label' => esc_html__( 'Text Color', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $s . ' .amms-product-button' => 'color: {{VALUE}};' ),
+        ) );
+        $this->add_control( 'product_button_background', array(
+            'label' => esc_html__( 'Background', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $s . ' .amms-product-button' => 'background: {{VALUE}};' ),
+        ) );
+        $this->add_control( 'product_button_border_color', array(
+            'label' => esc_html__( 'Border Color', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $s . ' .amms-product-button' => 'border-color: {{VALUE}};' ),
+        ) );
+        $this->end_controls_tab();
+
+        $this->start_controls_tab( 'product_button_hover_tab', array( 'label' => esc_html__( 'Hover', 'amaley-core' ) ) );
+        $this->add_control( 'product_button_hover_text_color', array(
+            'label' => esc_html__( 'Text Color', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $s . ' .amms-product-button:hover' => 'color: {{VALUE}};' ),
+        ) );
+        $this->add_control( 'product_button_hover_background', array(
+            'label' => esc_html__( 'Background', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $s . ' .amms-product-button:hover' => 'background: {{VALUE}};' ),
+        ) );
+        $this->add_control( 'product_button_hover_border_color', array(
+            'label' => esc_html__( 'Border Color', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array( $s . ' .amms-product-button:hover' => 'border-color: {{VALUE}};' ),
+        ) );
+        $this->add_group_control( \Elementor\Group_Control_Box_Shadow::get_type(), array(
+            'name' => 'product_button_hover_shadow',
+            'selector' => $s . ' .amms-product-button:hover',
+        ) );
+        $this->end_controls_tab();
+        $this->end_controls_tabs();
         $this->end_controls_section();
     }
 
@@ -340,14 +960,14 @@ class Amaley_Core_Member_Single_Products_Widget extends \Elementor\Widget_Base {
         $s = '{{WRAPPER}} ' . $section_selector;
 
         $this->start_controls_section( 'style_og_card_fine_controls', array(
-            'label' => esc_html__( 'OG Card: Full Controls', 'amaley-core' ),
+            'label' => esc_html__( 'OG Product Card 1 Controls', 'amaley-core' ),
             'tab' => \Elementor\Controls_Manager::TAB_STYLE,
             'condition' => array( 'card_template' => 'og_card_1' ),
         ) );
 
         $this->add_control( 'og_card_note', array(
             'type' => \Elementor\Controls_Manager::RAW_HTML,
-            'raw' => esc_html__( 'These controls target OG Card 1 only. Current / Existing Card controls stay separate for editor performance.', 'amaley-core' ),
+            'raw' => esc_html__( 'These controls target OG Product Card 1 only. Current product card controls stay separate to keep the editor clean.', 'amaley-core' ),
             'content_classes' => 'elementor-panel-alert elementor-panel-alert-info',
         ) );
 
@@ -746,7 +1366,7 @@ class Amaley_Core_Member_Single_Products_Widget extends \Elementor\Widget_Base {
         $s = '{{WRAPPER}} ' . $section_selector;
 
         $this->start_controls_section( 'style_pagination_controls', array(
-            'label' => esc_html__( 'Pagination', 'amaley-core' ),
+            'label' => esc_html__( 'Product Pagination', 'amaley-core' ),
             'tab' => \Elementor\Controls_Manager::TAB_STYLE,
             'condition' => array( 'enable_pagination' => '1' ),
         ) );
@@ -817,6 +1437,12 @@ class Amaley_Core_Member_Single_Products_Widget extends \Elementor\Widget_Base {
 
 
     protected function render() {
+        /*
+         * v1.0.140-clean-og-product-card-controls
+         * No layout/card CSS is injected from this widget.
+         * Product card output is handled by Amaley_Core_Card_Renderer via
+         * includes/class-amaley-core-member-single-sections.php.
+         */
         $renderer = $this->renderer_instance();
         echo $renderer->render_products( $this->get_settings_for_display() );
     }

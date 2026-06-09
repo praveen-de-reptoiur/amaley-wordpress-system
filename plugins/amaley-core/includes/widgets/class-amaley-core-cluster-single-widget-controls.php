@@ -33,34 +33,257 @@ trait Amaley_Core_Cluster_Single_Widget_Controls {
     }
 
     protected function add_heading_style_controls() {
-        $this->start_controls_section( 'heading_style', array( 'label' => esc_html__( 'Heading / Label / Text', 'amaley-core' ), 'tab' => \Elementor\Controls_Manager::TAB_STYLE ) );
-        $this->add_control( 'label_color', array( 'label' => esc_html__( 'Label Color', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::COLOR, 'selectors' => array( '{{WRAPPER}} .amcss-label, {{WRAPPER}} .amcss-card-label, {{WRAPPER}} .amcss-stat-label, {{WRAPPER}} .amaley-card__label, {{WRAPPER}} .amaley-card__meta span' => 'color: {{VALUE}};' ) ) );
-        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array( 'name' => 'label_typo', 'label' => esc_html__( 'Label Typography', 'amaley-core' ), 'selector' => '{{WRAPPER}} .amcss-label, {{WRAPPER}} .amcss-card-label, {{WRAPPER}} .amcss-stat-label, {{WRAPPER}} .amaley-card__label, {{WRAPPER}} .amaley-card__meta span' ) );
-        $this->add_responsive_control( 'label_margin', array( 'label' => esc_html__( 'Label Margin', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::DIMENSIONS, 'size_units' => array( 'px', 'em' ), 'selectors' => array( '{{WRAPPER}} .amcss-label' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ) ) );
-        $this->add_control( 'heading_color', array( 'label' => esc_html__( 'Heading Color', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::COLOR, 'selectors' => array( '{{WRAPPER}} .amcss-title, {{WRAPPER}} .amcss-heading h2, {{WRAPPER}} .amcss-story-copy h2, {{WRAPPER}} .amcss-cta h2, {{WRAPPER}} .amcss-card h3, {{WRAPPER}} .amaley-card__title' => 'color: {{VALUE}};' ) ) );
-        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array( 'name' => 'heading_typo', 'label' => esc_html__( 'Heading Typography', 'amaley-core' ), 'selector' => '{{WRAPPER}} .amcss-title, {{WRAPPER}} .amcss-heading h2, {{WRAPPER}} .amcss-story-copy h2, {{WRAPPER}} .amcss-cta h2, {{WRAPPER}} .amaley-card__title' ) );
-        $this->add_responsive_control( 'heading_margin', array( 'label' => esc_html__( 'Heading Margin', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::DIMENSIONS, 'size_units' => array( 'px', 'em' ), 'selectors' => array( '{{WRAPPER}} .amcss-title, {{WRAPPER}} .amcss-heading h2, {{WRAPPER}} .amcss-story-copy h2, {{WRAPPER}} .amcss-cta h2, {{WRAPPER}} .amaley-card__title' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ) ) );
-        $this->add_control( 'text_color', array( 'label' => esc_html__( 'Description/Text Color', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::COLOR, 'selectors' => array( '{{WRAPPER}} .amcss-description, {{WRAPPER}} .amcss-heading p, {{WRAPPER}} .amcss-rich-text, {{WRAPPER}} .amcss-card p, {{WRAPPER}} .amcss-cta p, {{WRAPPER}} .amaley-card__excerpt' => 'color: {{VALUE}};' ) ) );
-        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array( 'name' => 'text_typo', 'label' => esc_html__( 'Description/Text Typography', 'amaley-core' ), 'selector' => '{{WRAPPER}} .amcss-description, {{WRAPPER}} .amcss-heading p, {{WRAPPER}} .amcss-rich-text, {{WRAPPER}} .amcss-card p, {{WRAPPER}} .amcss-cta p, {{WRAPPER}} .amaley-card__excerpt' ) );
-        $this->add_responsive_control( 'text_margin', array( 'label' => esc_html__( 'Text Margin', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::DIMENSIONS, 'size_units' => array( 'px', 'em' ), 'selectors' => array( '{{WRAPPER}} .amcss-description, {{WRAPPER}} .amcss-heading p, {{WRAPPER}} .amcss-rich-text, {{WRAPPER}} .amaley-card__excerpt' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ) ) );
+        /*
+         * v1.0.100-safe-control-split
+         * Live-site safe fix: section heading controls are now scoped only to
+         * section heading elements. They no longer affect card labels, card
+         * titles, card descriptions, stats/meta labels or OG card typography.
+         *
+         * This file update changes Elementor style selectors only. It does not
+         * touch data queries, product/SHG/member/cluster mappings, images,
+         * WooCommerce products, page routing, pagination or frontend content.
+         */
+        $this->start_controls_section( 'heading_style', array(
+            'label' => esc_html__( 'Heading / Label / Text', 'amaley-core' ),
+            'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+        ) );
+
+        $this->add_control( 'label_color', array(
+            'label' => esc_html__( 'Section Label Color', 'amaley-core' ),
+            'type'  => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array(
+                '{{WRAPPER}} .amcss-label' => 'color: {{VALUE}};',
+            ),
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array(
+            'name'     => 'label_typo',
+            'label'    => esc_html__( 'Section Label Typography', 'amaley-core' ),
+            'selector' => '{{WRAPPER}} .amcss-label',
+        ) );
+
+        $this->add_responsive_control( 'label_margin', array(
+            'label'      => esc_html__( 'Section Label Margin', 'amaley-core' ),
+            'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', 'em' ),
+            'selectors'  => array(
+                '{{WRAPPER}} .amcss-label' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+            ),
+        ) );
+
+        $this->add_control( 'heading_color', array(
+            'label' => esc_html__( 'Section Heading Color', 'amaley-core' ),
+            'type'  => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array(
+                '{{WRAPPER}} .amcss-title, {{WRAPPER}} .amcss-heading h2, {{WRAPPER}} .amcss-story-copy h2, {{WRAPPER}} .amcss-cta h2' => 'color: {{VALUE}};',
+            ),
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array(
+            'name'     => 'heading_typo',
+            'label'    => esc_html__( 'Section Heading Typography', 'amaley-core' ),
+            'selector' => '{{WRAPPER}} .amcss-title, {{WRAPPER}} .amcss-heading h2, {{WRAPPER}} .amcss-story-copy h2, {{WRAPPER}} .amcss-cta h2',
+        ) );
+
+        $this->add_responsive_control( 'heading_margin', array(
+            'label'      => esc_html__( 'Section Heading Margin', 'amaley-core' ),
+            'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', 'em' ),
+            'selectors'  => array(
+                '{{WRAPPER}} .amcss-title, {{WRAPPER}} .amcss-heading h2, {{WRAPPER}} .amcss-story-copy h2, {{WRAPPER}} .amcss-cta h2' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+            ),
+        ) );
+
+        $this->add_control( 'text_color', array(
+            'label' => esc_html__( 'Section Description/Text Color', 'amaley-core' ),
+            'type'  => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array(
+                '{{WRAPPER}} .amcss-description, {{WRAPPER}} .amcss-heading p, {{WRAPPER}} .amcss-rich-text, {{WRAPPER}} .amcss-cta p' => 'color: {{VALUE}};',
+            ),
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array(
+            'name'     => 'text_typo',
+            'label'    => esc_html__( 'Section Description/Text Typography', 'amaley-core' ),
+            'selector' => '{{WRAPPER}} .amcss-description, {{WRAPPER}} .amcss-heading p, {{WRAPPER}} .amcss-rich-text, {{WRAPPER}} .amcss-cta p',
+        ) );
+
+        $this->add_responsive_control( 'text_margin', array(
+            'label'      => esc_html__( 'Section Text Margin', 'amaley-core' ),
+            'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', 'em' ),
+            'selectors'  => array(
+                '{{WRAPPER}} .amcss-description, {{WRAPPER}} .amcss-heading p, {{WRAPPER}} .amcss-rich-text, {{WRAPPER}} .amcss-cta p' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+            ),
+        ) );
+
         $this->end_controls_section();
     }
 
     protected function add_card_style_controls() {
-        $this->start_controls_section( 'card_style', array( 'label' => esc_html__( 'Cards / Boxes', 'amaley-core' ), 'tab' => \Elementor\Controls_Manager::TAB_STYLE ) );
-        $this->add_control( 'card_bg', array( 'label' => esc_html__( 'Card Background', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::COLOR, 'selectors' => array( '{{WRAPPER}} .amcss-card, {{WRAPPER}} .amcss-stat-card, {{WRAPPER}} .amcss-side-box, {{WRAPPER}} .amcss-hero-media, {{WRAPPER}} .amaley-card' => 'background: {{VALUE}};' ) ) );
-        $this->add_group_control( \Elementor\Group_Control_Border::get_type(), array( 'name' => 'card_border', 'label' => esc_html__( 'Card Border', 'amaley-core' ), 'selector' => '{{WRAPPER}} .amcss-card, {{WRAPPER}} .amcss-stat-card, {{WRAPPER}} .amcss-side-box, {{WRAPPER}} .amcss-hero-media, {{WRAPPER}} .amaley-card' ) );
-        $this->add_responsive_control( 'card_padding', array( 'label' => esc_html__( 'Card Padding', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::DIMENSIONS, 'size_units' => array( 'px', 'em' ), 'selectors' => array( '{{WRAPPER}} .amcss-card-body, {{WRAPPER}} .amcss-stat-card, {{WRAPPER}} .amcss-side-box, {{WRAPPER}} .amcss-empty-card, {{WRAPPER}} .amaley-card__body' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ) ) );
-        $this->add_responsive_control( 'card_radius', array( 'label' => esc_html__( 'Card Radius', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::DIMENSIONS, 'size_units' => array( 'px', '%' ), 'selectors' => array( '{{WRAPPER}} .amcss-card, {{WRAPPER}} .amcss-stat-card, {{WRAPPER}} .amcss-side-box, {{WRAPPER}} .amcss-hero-media, {{WRAPPER}} .amaley-card' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ) ) );
-        $this->add_group_control( \Elementor\Group_Control_Box_Shadow::get_type(), array( 'name' => 'card_shadow', 'label' => esc_html__( 'Card Shadow', 'amaley-core' ), 'selector' => '{{WRAPPER}} .amcss-card, {{WRAPPER}} .amcss-stat-card, {{WRAPPER}} .amcss-side-box, {{WRAPPER}} .amcss-hero-media, {{WRAPPER}} .amaley-card' ) );
-        $this->add_responsive_control( 'card_gap', array( 'label' => esc_html__( 'Card / Grid Gap', 'amaley-core' ), 'type' => \Elementor\Controls_Manager::SLIDER, 'size_units' => array( 'px' ), 'range' => array( 'px' => array( 'min' => 0, 'max' => 80 ) ), 'selectors' => array( '{{WRAPPER}} .amcss-card-grid, {{WRAPPER}} .amcss-snapshot-grid' => 'gap: {{SIZE}}{{UNIT}};' ) ) );
+        $this->start_controls_section( 'card_style', array(
+            'label' => esc_html__( 'Cards / Boxes', 'amaley-core' ),
+            'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+        ) );
+
+        $this->add_control( 'card_style_note', array(
+            'type' => \Elementor\Controls_Manager::RAW_HTML,
+            'raw'  => esc_html__( 'Card box controls and card text controls are separated here. Section Heading controls will not affect card title typography.', 'amaley-core' ),
+            'content_classes' => 'elementor-panel-alert elementor-panel-alert-info',
+        ) );
+
+        $this->add_control( 'card_box_heading', array(
+            'label' => esc_html__( 'Card Box', 'amaley-core' ),
+            'type'  => \Elementor\Controls_Manager::HEADING,
+            'separator' => 'after',
+        ) );
+
+        $this->add_control( 'card_bg', array(
+            'label' => esc_html__( 'Card Background', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array(
+                '{{WRAPPER}} .amcss-card, {{WRAPPER}} .amcss-stat-card, {{WRAPPER}} .amcss-side-box, {{WRAPPER}} .amcss-hero-media, {{WRAPPER}} .amaley-card' => 'background: {{VALUE}};',
+            ),
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Border::get_type(), array(
+            'name' => 'card_border',
+            'label' => esc_html__( 'Card Border', 'amaley-core' ),
+            'selector' => '{{WRAPPER}} .amcss-card, {{WRAPPER}} .amcss-stat-card, {{WRAPPER}} .amcss-side-box, {{WRAPPER}} .amcss-hero-media, {{WRAPPER}} .amaley-card',
+        ) );
+
+        $this->add_responsive_control( 'card_padding', array(
+            'label' => esc_html__( 'Card Padding', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', 'em' ),
+            'selectors' => array(
+                '{{WRAPPER}} .amcss-card-body, {{WRAPPER}} .amcss-stat-card, {{WRAPPER}} .amcss-side-box, {{WRAPPER}} .amcss-empty-card, {{WRAPPER}} .amaley-card__body' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+            ),
+        ) );
+
+        $this->add_responsive_control( 'card_radius', array(
+            'label' => esc_html__( 'Card Radius', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', '%' ),
+            'selectors' => array(
+                '{{WRAPPER}} .amcss-card, {{WRAPPER}} .amcss-stat-card, {{WRAPPER}} .amcss-side-box, {{WRAPPER}} .amcss-hero-media, {{WRAPPER}} .amaley-card' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+            ),
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Box_Shadow::get_type(), array(
+            'name' => 'card_shadow',
+            'label' => esc_html__( 'Card Shadow', 'amaley-core' ),
+            'selector' => '{{WRAPPER}} .amcss-card, {{WRAPPER}} .amcss-stat-card, {{WRAPPER}} .amcss-side-box, {{WRAPPER}} .amcss-hero-media, {{WRAPPER}} .amaley-card',
+        ) );
+
+        $this->add_responsive_control( 'card_gap', array(
+            'label' => esc_html__( 'Card / Grid Gap', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::SLIDER,
+            'size_units' => array( 'px' ),
+            'range' => array( 'px' => array( 'min' => 0, 'max' => 80 ) ),
+            'selectors' => array(
+                '{{WRAPPER}} .amcss-card-grid, {{WRAPPER}} .amcss-snapshot-grid' => 'gap: {{SIZE}}{{UNIT}};',
+            ),
+        ) );
+
         $this->add_responsive_control( 'card_inner_gap', array(
             'label' => esc_html__( 'OG Card Inner Gap', 'amaley-core' ),
             'type' => \Elementor\Controls_Manager::SLIDER,
             'size_units' => array( 'px' ),
             'range' => array( 'px' => array( 'min' => 0, 'max' => 40 ) ),
-            'selectors' => array( '{{WRAPPER}} .amaley-card__body' => 'gap: {{SIZE}}{{UNIT}};' ),
+            'selectors' => array(
+                '{{WRAPPER}} .amaley-card__body' => 'gap: {{SIZE}}{{UNIT}};',
+            ),
         ) );
+
+        $this->add_control( 'card_text_heading', array(
+            'label' => esc_html__( 'Card Text / Typography', 'amaley-core' ),
+            'type'  => \Elementor\Controls_Manager::HEADING,
+            'separator' => 'before',
+        ) );
+
+        $this->add_control( 'card_text_align', array(
+            'label' => esc_html__( 'Card Text Alignment', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::CHOOSE,
+            'options' => array(
+                'left' => array( 'title' => esc_html__( 'Left', 'amaley-core' ), 'icon' => 'eicon-text-align-left' ),
+                'center' => array( 'title' => esc_html__( 'Center', 'amaley-core' ), 'icon' => 'eicon-text-align-center' ),
+                'right' => array( 'title' => esc_html__( 'Right', 'amaley-core' ), 'icon' => 'eicon-text-align-right' ),
+            ),
+            'selectors' => array(
+                '{{WRAPPER}} .amcss-related-card .amcss-card-body, {{WRAPPER}} .amaley-card__body' => 'text-align: {{VALUE}};',
+            ),
+        ) );
+
+        $this->add_control( 'card_label_color', array(
+            'label' => esc_html__( 'Card Label Color', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array(
+                '{{WRAPPER}} .amcss-related-card .amcss-card-label, {{WRAPPER}} .amaley-card__label' => 'color: {{VALUE}};',
+            ),
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array(
+            'name' => 'card_label_typography',
+            'label' => esc_html__( 'Card Label Typography', 'amaley-core' ),
+            'selector' => '{{WRAPPER}} .amcss-related-card .amcss-card-label, {{WRAPPER}} .amaley-card__label',
+        ) );
+
+        $this->add_responsive_control( 'card_label_margin', array(
+            'label' => esc_html__( 'Card Label Margin', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', 'em' ),
+            'selectors' => array(
+                '{{WRAPPER}} .amcss-related-card .amcss-card-label, {{WRAPPER}} .amaley-card__label' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+            ),
+        ) );
+
+        $this->add_control( 'card_title_color', array(
+            'label' => esc_html__( 'Card Title Color', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array(
+                '{{WRAPPER}} .amcss-related-card .amcss-card-body > h3, {{WRAPPER}} .amaley-card__title' => 'color: {{VALUE}};',
+            ),
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array(
+            'name' => 'card_title_typography',
+            'label' => esc_html__( 'Card Title Typography', 'amaley-core' ),
+            'selector' => '{{WRAPPER}} .amcss-related-card .amcss-card-body > h3, {{WRAPPER}} .amaley-card__title',
+        ) );
+
+        $this->add_responsive_control( 'card_title_margin', array(
+            'label' => esc_html__( 'Card Title Margin', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', 'em' ),
+            'selectors' => array(
+                '{{WRAPPER}} .amcss-related-card .amcss-card-body > h3, {{WRAPPER}} .amaley-card__title' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+            ),
+        ) );
+
+        $this->add_control( 'card_description_color', array(
+            'label' => esc_html__( 'Card Description Color', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'selectors' => array(
+                '{{WRAPPER}} .amcss-related-card .amcss-related-desc, {{WRAPPER}} .amaley-card__excerpt' => 'color: {{VALUE}};',
+            ),
+        ) );
+
+        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), array(
+            'name' => 'card_description_typography',
+            'label' => esc_html__( 'Card Description Typography', 'amaley-core' ),
+            'selector' => '{{WRAPPER}} .amcss-related-card .amcss-related-desc, {{WRAPPER}} .amaley-card__excerpt',
+        ) );
+
+        $this->add_responsive_control( 'card_description_margin', array(
+            'label' => esc_html__( 'Card Description Margin', 'amaley-core' ),
+            'type' => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => array( 'px', 'em' ),
+            'selectors' => array(
+                '{{WRAPPER}} .amcss-related-card .amcss-related-desc, {{WRAPPER}} .amaley-card__excerpt' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+            ),
+        ) );
+
         $this->end_controls_section();
     }
 

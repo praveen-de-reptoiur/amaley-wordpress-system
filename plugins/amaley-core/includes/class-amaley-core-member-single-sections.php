@@ -316,8 +316,8 @@ class Amaley_Core_Member_Single_Sections {
             'show_label' => '1',
             'show_title' => '1',
             'show_description' => '1',
-            'card_template' => 'current_existing',
-            'product_card_source' => 'legacy',
+            'card_template' => 'og_card_1',
+            'product_card_source' => 'global_assignment',
             'product_card_manual_preset' => 'compact_marketplace',
             'show_product_image' => '1',
             'show_product_label' => '1',
@@ -634,6 +634,76 @@ class Amaley_Core_Member_Single_Sections {
         ) );
     }
 
+    private function member_products_setting_css_value( $a, $key, $default = '0px' ) {
+        if ( ! isset( $a[ $key ] ) ) {
+            return $default;
+        }
+
+        $value = $a[ $key ];
+        if ( is_array( $value ) ) {
+            $size = isset( $value['size'] ) ? $value['size'] : '';
+            $unit = isset( $value['unit'] ) && '' !== $value['unit'] ? $value['unit'] : 'px';
+
+            if ( '' === $size || null === $size ) {
+                return $default;
+            }
+
+            return is_numeric( $size ) ? ( (string) $size . $unit ) : $default;
+        }
+
+        if ( is_numeric( $value ) ) {
+            return (string) $value . 'px';
+        }
+
+        return $default;
+    }
+
+    private function member_products_setting_int( $a, $key, $default, $min, $max ) {
+        if ( ! isset( $a[ $key ] ) || '' === $a[ $key ] ) {
+            return (int) $default;
+        }
+
+        $value = absint( $a[ $key ] );
+        if ( $value < $min ) {
+            $value = $min;
+        }
+        if ( $value > $max ) {
+            $value = $max;
+        }
+
+        return $value;
+    }
+
+    private function member_products_archive_rhythm_css( $a = array() ) {
+        /*
+         * v1.0.140-clean-controls
+         * Grid/container CSS only. The actual product card remains the existing OG/Core card.
+         */
+        $desktop_cols = $this->member_products_setting_int( $a, 'product_desktop_columns_fixed', 4, 1, 4 );
+        $tablet_cols  = $this->member_products_setting_int( $a, 'product_tablet_columns_fixed', 2, 1, 3 );
+        $mobile_cols  = $this->member_products_setting_int( $a, 'product_mobile_columns_fixed', 1, 1, 2 );
+        $gap          = $this->member_products_setting_css_value( $a, 'product_grid_gap_safe', '24px' );
+
+        return '<style id="amms-member-products-og-grid-css">'
+            . '#amms-member-products.amms-products .amms-wrap{width:100%;max-width:1180px;margin:0 auto;padding-left:22px;padding-right:22px;box-sizing:border-box;}'
+            . '#amms-member-products.amms-products .amms-product-grid{display:grid;grid-template-columns:repeat(' . esc_attr( $desktop_cols ) . ',minmax(0,1fr));gap:' . esc_attr( $gap ) . ';align-items:stretch;width:100%;max-width:100%;}'
+            . '#amms-member-products.amms-products .amms-product-grid>.amaley-card{height:100%;min-width:0;}'
+            . '#amms-member-products.amms-products .amms-section-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:28px;}'
+            . '@media(max-width:1100px){#amms-member-products.amms-products .amms-product-grid{grid-template-columns:repeat(3,minmax(0,1fr)) !important;gap:20px !important;}}'
+            . '@media(max-width:900px){#amms-member-products.amms-products .amms-product-grid{grid-template-columns:repeat(' . esc_attr( $tablet_cols ) . ',minmax(0,1fr)) !important;gap:18px !important;}}'
+            . '@media(max-width:640px){#amms-member-products.amms-products .amms-wrap{padding-left:14px !important;padding-right:14px !important;}#amms-member-products.amms-products .amms-product-grid{grid-template-columns:repeat(' . esc_attr( $mobile_cols ) . ',minmax(0,1fr)) !important;gap:18px !important;}}'
+            
+            /* v1.0.141 responsive priority: duplicate ID beats Elementor-generated desktop column CSS. */
+            . '#amms-member-products#amms-member-products.amms-products{overflow-x:hidden;}'
+            . '#amms-member-products#amms-member-products.amms-products .amms-wrap{box-sizing:border-box;width:100%;max-width:1180px;overflow-x:hidden;}'
+            . '#amms-member-products#amms-member-products.amms-products .amms-product-grid{box-sizing:border-box;min-width:0;max-width:100%;overflow:visible;grid-template-columns:repeat(' . esc_attr( $desktop_cols ) . ',minmax(0,1fr)) !important;}'
+            . '#amms-member-products#amms-member-products.amms-products .amms-product-card{min-width:0;max-width:100%;}'
+            . '@media(max-width:1024px){#amms-member-products#amms-member-products.amms-products .amms-product-grid{grid-template-columns:repeat(' . esc_attr( $tablet_cols ) . ',minmax(0,1fr)) !important;gap:18px !important;}}'
+            . '@media(max-width:767px){#amms-member-products#amms-member-products.amms-products .amms-wrap{padding-left:16px !important;padding-right:16px !important;}#amms-member-products#amms-member-products.amms-products .amms-product-grid{grid-template-columns:repeat(' . esc_attr( $mobile_cols ) . ',minmax(0,1fr)) !important;gap:18px !important;}#amms-member-products#amms-member-products.amms-products .amms-product-card{width:100% !important;max-width:100% !important;}#amms-member-products#amms-member-products.amms-products .amms-product-media{height:220px !important;min-height:220px !important;}}'
+            . '@media(max-width:420px){#amms-member-products#amms-member-products.amms-products .amms-product-grid{grid-template-columns:1fr !important;}#amms-member-products#amms-member-products.amms-products .amms-product-meta{grid-template-columns:1fr !important;}}'
+            . '</style>';
+    }
+
     /** Render products. */
     public function render_products( $atts = array() ) {
         $a = $this->normalize( $atts, $this->products_defaults() );
@@ -655,7 +725,8 @@ class Amaley_Core_Member_Single_Sections {
         $products = $this->products_for_member( $member->ID, $limit, $offset );
         $fallback_tags = $products ? array() : $this->split_terms( $data['products_handled'], 16 );
 
-        $out = '<section id="amms-member-products" class="amms-section amms-products" data-amms-products-section="1" data-amms-member-id="' . esc_attr( absint( $member->ID ) ) . '" data-amms-ajax-url="' . esc_url( admin_url( 'admin-ajax.php' ) ) . '" data-amms-nonce="' . esc_attr( wp_create_nonce( 'amaley_member_single_products_pagination' ) ) . '" data-amms-settings="' . esc_attr( wp_json_encode( $this->member_products_ajax_settings( $a ) ) ) . '"><div class="amms-wrap">' . $this->section_head( $a );
+        $out = $this->member_products_archive_rhythm_css( $a );
+        $out .= '<section id="amms-member-products" class="amms-section amms-products" data-amms-products-section="1" data-amms-member-id="' . esc_attr( absint( $member->ID ) ) . '" data-amms-ajax-url="' . esc_url( admin_url( 'admin-ajax.php' ) ) . '" data-amms-nonce="' . esc_attr( wp_create_nonce( 'amaley_member_single_products_pagination' ) ) . '" data-amms-settings="' . esc_attr( wp_json_encode( $this->member_products_ajax_settings( $a ) ) ) . '"><div class="amms-wrap">' . $this->section_head( $a );
         $out .= '<div class="amms-products-results" data-amms-products-results="1">' . $this->render_member_products_grid_inner( $a, $products, $fallback_tags ) . '</div>';
 
         if ( $this->boolish( $a['show_section_button'] ) ) {
@@ -920,101 +991,46 @@ class Amaley_Core_Member_Single_Sections {
 
     /** Render product card. */
     private function render_product_card( $product_post, $a = array() ) {
+        /*
+         * v1.0.140-clean-og-product-card-controls
+         * Restore the existing Amaley OG/Core Product Card renderer.
+         * No custom product-card markup is generated here.
+         */
         $id = is_object( $product_post ) && isset( $product_post->ID ) ? absint( $product_post->ID ) : absint( $product_post );
 
-        /*
-         * v1.0.80 pilot:
-         * Default remains legacy, so installing this version does not suddenly change the frontend.
-         * Elementor can switch this widget to:
-         * - global_assignment: use Amaley Core Settings assignment for Member Single Products
-         * - manual: choose preset inside this widget
-         * - legacy: keep the existing v1.0.78.10 card rendering
-         */
-        $card_template = isset( $a['card_template'] ) ? sanitize_key( $a['card_template'] ) : 'current_existing';
-        $card_source = isset( $a['product_card_source'] ) ? sanitize_key( $a['product_card_source'] ) : 'legacy';
-
-        if ( 'og_card_1' === $card_template && class_exists( 'Amaley_Core_Card_Renderer' ) ) {
-            $preset = class_exists( 'Amaley_Core_Card_Registry' ) ? Amaley_Core_Card_Registry::get_assignment( 'card_template_product', 'og_product_card_1' ) : 'og_product_card_1';
-            return Amaley_Core_Card_Renderer::render_product( $id, array(
-                'preset' => $preset,
-                'show_image' => $this->boolish( $a['show_product_image'] ?? '1' ),
-                'show_label' => $this->boolish( $a['show_product_label'] ?? '1' ),
-                'show_title' => true,
-                'show_excerpt' => $this->boolish( $a['show_product_excerpt'] ?? '1' ),
-                'show_meta' => $this->boolish( $a['show_product_meta'] ?? '1' ),
-                'show_tags' => $this->boolish( $a['show_product_chips'] ?? '1' ),
-                'show_button' => $this->boolish( $a['show_product_button'] ?? '1' ),
-                'button_text' => 'View Product',
-                'class' => 'amaley-card--member-single-product',
-                'label_text' => isset( $a['product_label_text'] ) ? $a['product_label_text'] : 'Product',
-                'excerpt_words' => isset( $a['product_excerpt_words'] ) ? absint( $a['product_excerpt_words'] ) : 16,
-            ) );
+        if ( ! $id ) {
+            return '';
         }
 
-        if ( in_array( $card_source, array( 'global_assignment', 'manual' ), true ) && class_exists( 'Amaley_Core_Card_Renderer' ) ) {
-            $preset = 'compact_marketplace';
-            if ( 'global_assignment' === $card_source && class_exists( 'Amaley_Core_Card_Registry' ) ) {
-                $preset = Amaley_Core_Card_Registry::get_assignment( 'card_product_member_single_products', 'compact_marketplace' );
-            } elseif ( 'manual' === $card_source ) {
-                $preset = isset( $a['product_card_manual_preset'] ) ? sanitize_key( $a['product_card_manual_preset'] ) : 'compact_marketplace';
+        if ( class_exists( 'Amaley_Core_Card_Renderer' ) && method_exists( 'Amaley_Core_Card_Renderer', 'render_product' ) ) {
+            $preset = ! empty( $a['product_card_manual_preset'] ) ? sanitize_key( $a['product_card_manual_preset'] ) : 'compact';
+            if ( ! empty( $a['card_template'] ) && 'og_card_1' === $a['card_template'] ) {
+                $preset = 'compact';
             }
 
             return Amaley_Core_Card_Renderer::render_product( $id, array(
-                'preset' => $preset,
-                'show_image' => $this->boolish( $a['show_product_image'] ?? '1' ),
-                'show_label' => $this->boolish( $a['show_product_label'] ?? '1' ),
-                'show_title' => true,
-                'show_excerpt' => $this->boolish( $a['show_product_excerpt'] ?? '1' ),
-                'show_meta' => $this->boolish( $a['show_product_meta'] ?? '1' ),
-                'show_tags' => $this->boolish( $a['show_product_chips'] ?? '1' ),
-                'show_button' => $this->boolish( $a['show_product_button'] ?? '1' ),
-                'button_text' => 'View Product',
-                'class' => 'amaley-card--member-single-product',
-                'label_text' => isset( $a['product_label_text'] ) ? $a['product_label_text'] : 'Product',
+                'preset'        => $preset,
+                'class'         => 'amms-member-product-og-card',
+                'show_image'    => $this->boolish( $a['show_product_image'] ?? '1' ),
+                'show_label'    => $this->boolish( $a['show_product_label'] ?? '1' ),
+                'label_text'    => isset( $a['product_label_text'] ) ? (string) $a['product_label_text'] : 'Product',
+                'show_title'    => true,
+                'show_excerpt'  => $this->boolish( $a['show_product_excerpt'] ?? '1' ),
                 'excerpt_words' => isset( $a['product_excerpt_words'] ) ? absint( $a['product_excerpt_words'] ) : 16,
+                'show_meta'     => $this->boolish( $a['show_product_meta'] ?? '1' ),
+                'show_tags'     => $this->boolish( $a['show_product_chips'] ?? '1' ),
+                'show_button'   => $this->boolish( $a['show_product_button'] ?? '1' ),
+                'button_text'   => 'View Product',
+                'url'           => get_permalink( $id ),
             ) );
         }
 
+        /* Safe fallback only if the core renderer is unavailable. */
         $title = get_the_title( $id );
-        $img = get_the_post_thumbnail_url( $id, 'large' );
-        $price = '';
-        if ( function_exists( 'wc_get_product' ) ) {
-            $product = wc_get_product( $id );
-            if ( $product ) { $price = $product->get_price_html(); }
-        }
-        $source = get_post_meta( $id, '_amaley_origin_source_village', true );
-        $url = get_permalink( $id );
-
-        $excerpt = get_the_excerpt( $id );
-        if ( '' === trim( (string) $excerpt ) ) {
-            $excerpt = wp_strip_all_tags( get_post_field( 'post_content', $id ) );
-        }
-        $excerpt_words = isset( $a['product_excerpt_words'] ) ? absint( $a['product_excerpt_words'] ) : 16;
-        $excerpt_words = max( 6, min( 40, $excerpt_words ) );
-        $label_text = isset( $a['product_label_text'] ) && '' !== trim( (string) $a['product_label_text'] ) ? trim( (string) $a['product_label_text'] ) : 'Product';
-
-        $out = '<article class="amms-product-card">';
-        if ( $this->boolish( $a['show_product_image'] ?? '1' ) ) {
-            $out .= '<div class="amms-product-media">' . ( $img ? '<img src="' . esc_url( $img ) . '" alt="' . esc_attr( $title ) . '" loading="lazy" />' : '<span>Product</span>' ) . '</div>';
-        }
-        $out .= '<div class="amms-product-body">';
-        if ( $this->boolish( $a['show_product_label'] ?? '1' ) ) { $out .= '<p class="amms-card-label">' . esc_html( $label_text ) . '</p>'; }
-        $out .= '<h3>' . esc_html( $title ) . '</h3>';
-        if ( $this->boolish( $a['show_product_excerpt'] ?? '1' ) && $excerpt ) {
-            $out .= '<p class="amms-product-excerpt">' . esc_html( wp_trim_words( $excerpt, $excerpt_words ) ) . '</p>';
-        }
-        if ( $this->boolish( $a['show_product_meta'] ?? '1' ) ) {
-            $out .= '<div class="amms-product-meta"><div><span>Price</span><strong class="amms-product-price">' . wp_kses_post( $price ? $price : 'View product' ) . '</strong></div><div><span>Origin</span><strong class="amms-product-origin">' . esc_html( $source ? $source : 'Origin linked' ) . '</strong></div></div>';
-        }
-        if ( $this->boolish( $a['show_product_chips'] ?? '1' ) ) {
-            $out .= '<div class="amms-chip-row"><span>Traceable</span><span>Origin linked</span></div>';
-        }
-        if ( $this->boolish( $a['show_product_button'] ?? '1' ) ) {
-            $out .= '<a class="amms-product-button" href="' . esc_url( $url ) . '">View Product</a>';
-        }
-        $out .= '</div></article>';
-        return $out;
+        $url   = get_permalink( $id );
+        return '<article class="amaley-card amaley-card--product amms-member-product-og-card"><div class="amaley-card__body"><h3 class="amaley-card__title">' . esc_html( $title ) . '</h3><a class="amaley-card__button" href="' . esc_url( $url ) . '">View Product</a></div></article>';
     }
+
 
     /** Products for member. */
     private function product_ids_for_member( $member_id ) {
