@@ -13,12 +13,18 @@
 - Removed root-level legacy test notes from clean source pack.
 - Kept production source folders only: `assets`, `includes`, `templates`, and project docs.
 
+### GitHub source cleanup
+
+- Removed legacy backup ZIP archives from `includes/widgets/` to avoid future confusion.
+- Cleaned `MANIFEST.md` into a practical source manifest instead of listing temporary backup artifacts.
+- Confirmed source path remains `plugins/amaley-core/`.
+
 ### Safety
 
 - No product data or origin mapping changes.
 - No WooCommerce order/cart/payment logic changes.
 - No header/footer/template override changes.
-- No GitHub write action performed by assistant.
+- No runtime design or Elementor widget behavior changes during GitHub cleanup.
 
 ### Recommended release tag
 
