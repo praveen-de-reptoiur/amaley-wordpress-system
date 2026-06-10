@@ -10,7 +10,7 @@ Before any planning, design, Elementor widget, plugin, template, archive/single 
 2. `docs/UNIVERSAL_FULL_CONTROL_WEBSITE_STANDARD.md`
 3. `docs/READ_FIRST_AMALEY.md`
 4. `docs/PROJECT_MANIFEST.md`
-5. `docs/AMALEY_DISCOVERY_ENGINE_CURRENT_STATUS_v1.4.4.md`
+5. `docs/AMALEY_DISCOVERY_ENGINE_CURRENT_STATUS_v1.6.2.md`
 6. `docs/AMALEY_CORE_CURRENT_STATUS_v1.0.99.5.md`
 7. `docs/AMALEY_COMPACT_WIDGETS_CURRENT_STATUS_v0.4.18.md`
 8. `plugins/amaley-core/OG_PRODUCT_PRICE_STACK_FIX_v1.0.99.5.md`
@@ -21,13 +21,76 @@ Before any planning, design, Elementor widget, plugin, template, archive/single 
 | Plugin / Module | Current source | Notes |
 | --- | --- | --- |
 | Amaley Core | v1.0.99.5 | Data backbone, product-origin mapping, CPT archive/single sections, universal OG cards, and accepted OG Product Card price stack fix |
-| Amaley Discovery Engine | v1.4.4 | Discovery/filter/listing engine with source-level Amaley Core OG Product Card 1 renderer; pagination/filter/sort tested |
+| Amaley Discovery Engine | **v1.6.2 clean stable** | Current shop/filter/CTA/contact Elementor widgets with full controls, responsive layout controls, mobile drawer, AJAX filtering, sort and pagination |
 | Amaley Page Assignment Bridge | v1.4.1 | Final tested single product page assignment bridge; active on All Products; Elementor bridge widgets and editor preview context working |
 | Amaley Brand Site Kit | v1.0.4 | Global brand tokens and safe Elementor color/font support |
 | Amaley H/F Studio V2 | v2.0.15 | Header/footer template workflow |
 | Amaley UI Sections Kit | v0.6.1 | Home Hero V6, Page Trust Strip, Pages Hero Other |
 | Amaley Compact Widgets | v0.4.18 final tested | Manual/static compact widgets; approved Dual Section Heading and fixed non-dual alignment system |
 | Amaley Templates | v1.2.7 | WooCommerce/page template support; not edited for the bridge |
+
+## Discovery Engine v1.6.2 lock
+
+Current source path:
+
+```text
+plugins/amaley-discovery-engine/
+```
+
+Current active widgets:
+
+```text
+1. Amaley Collection Product Filter
+2. Amaley Shop Hero
+3. Amaley Shop Strip
+4. Amaley Universal CTA
+5. Amaley Contact Hero
+6. Amaley Contact Info Cards
+7. Amaley Contact Map Section
+8. Amaley Contact Form CTA
+```
+
+Retired legacy widgets must not be restored:
+
+```text
+Amaley Heading
+Amaley Text
+Amaley Icon List
+Amaley Product Discovery
+Amaley Collection Discovery
+Amaley Cluster Discovery
+Amaley SHG Discovery
+Amaley Member Discovery
+Product Topbar Discovery
+Collection Topbar Discovery
+Cluster Topbar Discovery
+SHG Topbar Discovery
+Member Topbar Discovery
+```
+
+Accepted Discovery Engine behaviour:
+
+- Collection Product Filter uses current full-control widget architecture.
+- Product card visuals remain OG Product Card flow rendered through Amaley Core.
+- Mobile/tablet filter drawer must work in frontend and Elementor preview.
+- Mobile toolbar must support Filter + Sort in a responsive row.
+- Quick pills/category chips can be hidden device-wise.
+- Shop Hero, Shop Strip, Universal CTA and Contact widgets must remain reusable Elementor-native widgets.
+- Contact widgets support multiple contact lines, map by address/embed/shortcode/image and Contact Form CTA by built-in demo form/shortcode/custom embed.
+
+Discovery Engine safety:
+
+```text
+No WooCommerce cart/checkout/order logic changes.
+No product data changes.
+No product image/gallery changes.
+No product-origin mapping changes.
+No header/footer source changes.
+No broad global CSS.
+No legacy widget files or registrations.
+```
+
+Future Discovery Engine work must start from v1.6.2 only. Do not use old v1.4.x or v1.5.x patch packages as current source.
 
 ## Compact Widgets lock
 
@@ -105,7 +168,6 @@ No origin mapping changes.
 No WooCommerce cart/checkout/order logic changes.
 No Amaley Core source changes.
 No Amaley Templates source changes.
-No Amaley Discovery Engine source changes.
 No header/footer source changes.
 ```
 
@@ -117,48 +179,6 @@ Amaley Bridge → Single Product Assignment → Enable Single Product Bridge: Of
 
 or deactivate Amaley Page Assignment Bridge.
 
-## Current Discovery Engine lock
-
-Amaley Discovery Engine v1.4.4 is the accepted baseline.
-
-Accepted render flow:
-
-```text
-Product Discovery widget
-→ Card Renderer: Amaley Core Product Card — Select Template
-→ Template: OG Product Card 1
-```
-
-Accepted behaviour:
-
-- OG Product Card 1 appears in product discovery grid.
-- Pagination keeps OG Product Card 1.
-- Filter, reset and sort keep OG Product Card 1.
-- Product data, photos/gallery, origin mapping, WooCommerce templates, header and footer are untouched.
-
-Archive note:
-
-```text
-Discovery Engine v1.4.5 price-layout fix is not the final source path.
-Price/card visual fixes are now handled by Amaley Core v1.0.99.5.
-```
-
-## Pending Discovery work
-
-Add source-level filters one by one only:
-
-```text
-1. Cluster filter
-2. SHG / Collective filter
-3. Producer / Member filter
-```
-
-After each filter addition, test:
-
-```text
-Page 1, page 2, sort, filter apply, reset
-```
-
 ## Elementor stability lock
 
 ```text
@@ -166,28 +186,6 @@ Elementor Atomic Editor must remain inactive.
 ```
 
 Reason: Atomic Editor caused repeated Elementor left-panel loading/spinner issues during universal-card work.
-
-## Current card design lock
-
-Universal OG card flow:
-
-```text
-image / initials placeholder → label → title → description → meta/stat boxes → tags/chips → full-width rounded button
-```
-
-Rules:
-
-- Same card type must keep the same design wherever it appears.
-- Product card design is reused in Discovery Engine v1.4.4 through Amaley Core OG Product Card 1.
-- Card visual/content changes must be made in Amaley Core, not Discovery Engine.
-- Avoid casual card redesigns.
-
-## Current known gaps
-
-- Discovery Engine Cluster / SHG / Producer filters are pending.
-- Product archive/shop-loop consistency should be reviewed later, but the current Amaley Shop page is accepted.
-- Single Product is accepted through Amaley Page Assignment Bridge v1.4.1.
-- Cleanup is still needed before broad new module development.
 
 ## Working style
 
