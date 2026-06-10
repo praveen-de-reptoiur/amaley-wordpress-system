@@ -19,6 +19,15 @@
     window.history.replaceState({}, '', newUrl);
   }
 
+  function anyDrawerOpen() {
+    return !!document.querySelector('[data-ade-root].is-filter-open');
+  }
+
+  function setFilterOpen(root, isOpen) {
+    root.classList.toggle('is-filter-open', !!isOpen);
+    document.documentElement.classList.toggle('amaley-de-filter-open', anyDrawerOpen());
+  }
+
   function syncQuickPills(root, value) {
     qsa(root, '[data-ade-quick-category]').forEach(function (pill) {
       if ((pill.getAttribute('data-ade-quick-category') || '') === (value || '')) { pill.classList.add('is-active'); }
@@ -55,12 +64,12 @@
       if (wrap) wrap.innerHTML = json.data.html;
       updateMobileBar(root);
       updateUrlFromForm(form);
-      root.classList.remove('is-filter-open');
+      setFilterOpen(root, false);
     }).catch(function () { form.submit(); }).finally(function () { root.classList.remove('is-loading'); });
   }
 
   function initRoot(root) {
-    if (root.__amaleyDiscoveryReady) return;
+    if (!root || root.__amaleyDiscoveryReady) return;
     root.__amaleyDiscoveryReady = true;
     var form = qs(root, '[data-ade-form]');
     if (!form) return;
@@ -113,14 +122,83 @@
         syncQuickPills(root, ''); syncMobileSort(root, 'latest'); runAjax(root, form); return;
       }
       var open = event.target.closest('[data-ade-open-filter]');
-      if (open && root.contains(open)) { event.preventDefault(); root.classList.add('is-filter-open'); return; }
+      if (open && root.contains(open)) { event.preventDefault(); setFilterOpen(root, true); return; }
       var close = event.target.closest('[data-ade-close-filter], [data-ade-backdrop]');
-      if (close && root.contains(close)) { event.preventDefault(); root.classList.remove('is-filter-open'); }
+      if (close && root.contains(close)) { event.preventDefault(); setFilterOpen(root, false); }
     });
 
     updateMobileBar(root);
   }
 
-  function init() { qsa(document, '[data-ade-root]').forEach(initRoot); }
-  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); } else { init(); }
+  function init(scope) {
+    var rootScope = scope && scope.querySelectorAll ? scope : document;
+    qsa(rootScope, '[data-ade-root]').forEach(initRoot);
+    if (rootScope.getAttribute && rootScope.getAttribute('data-ade-root') !== null) { initRoot(rootScope); }
+  }
+
+  function observeDynamicRoots() {
+    if (!window.MutationObserver || !document.documentElement) return;
+    var observer = new MutationObserver(function (mutations) {
+      mutations.forEach(function (mutation) {
+        Array.prototype.slice.call(mutation.addedNodes || []).forEach(function (node) {
+          if (!node || node.nodeType !== 1) return;
+          if (node.getAttribute && node.getAttribute('data-ade-root') !== null) initRoot(node);
+          init(node);
+        });
+      });
+    });
+    observer.observe(document.documentElement, { childList: true, subtree: true });
+  }
+
+  function bindElementorPreview() {
+    if (!window.elementorFrontend || !window.elementorFrontend.hooks) return;
+    window.elementorFrontend.hooks.addAction('frontend/element_ready/amaley-collection-product-filter.default', function ($scope) {
+      var scope = $scope && $scope[0] ? $scope[0] : null;
+      init(scope || document);
+    });
+    window.elementorFrontend.hooks.addAction('frontend/element_ready/global', function ($scope) {
+      var scope = $scope && $scope[0] ? $scope[0] : null;
+      if (scope && scope.querySelector && scope.querySelector('[data-ade-root]')) init(scope);
+    });
+  }
+
+
+
+  function initContactMailtoForms() {
+    if (document.__amaleyContactFormReady) return;
+    document.__amaleyContactFormReady = true;
+    document.addEventListener('submit', function (event) {
+      var form = event.target && event.target.closest ? event.target.closest('.amaley-de-contact-form-cta__form--mailto') : null;
+      if (!form) return;
+      event.preventDefault();
+      var recipient = form.getAttribute('data-recipient') || '';
+      var status = form.querySelector('.amaley-de-contact-form-cta__status');
+      if (!recipient) {
+        if (status) status.textContent = 'Please add a recipient email in widget settings.';
+        return;
+      }
+      var get = function (name) { var field = form.querySelector('[name="' + name + '"]'); return field ? (field.value || '').trim() : ''; };
+      var subject = get('amaley_contact_subject') || 'Amaley enquiry';
+      var lines = [];
+      var name = get('amaley_contact_name');
+      var email = get('amaley_contact_email');
+      var phone = get('amaley_contact_phone');
+      var message = get('amaley_contact_message');
+      if (name) lines.push('Name: ' + name);
+      if (email) lines.push('Email: ' + email);
+      if (phone) lines.push('Phone / WhatsApp: ' + phone);
+      if (message) lines.push('', 'Message:', message);
+      var mailto = 'mailto:' + encodeURIComponent(recipient) + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join('\n'));
+      window.location.href = mailto;
+      if (status) status.textContent = form.getAttribute('data-success') || 'Your email app should open with the enquiry details.';
+    });
+  }
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key !== 'Escape') return;
+    qsa(document, '[data-ade-root].is-filter-open').forEach(function (root) { setFilterOpen(root, false); });
+  });
+
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', function () { init(); initContactMailtoForms(); bindElementorPreview(); observeDynamicRoots(); }); }
+  else { init(); initContactMailtoForms(); bindElementorPreview(); observeDynamicRoots(); }
 })();
