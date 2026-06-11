@@ -100,6 +100,21 @@ The final accepted model is:
 Separate full-width hero widget + separate article layout widget.
 ```
 
+## Work history summary
+
+```text
+v1.0.0        First Blog System plugin baseline.
+v1.0.1–1.0.8  Archive preview, fallback and interaction stabilization.
+v1.0.9–1.1.5  Archive controls cleaned and accepted.
+v1.1.6–1.2.6  Single-blog conflict phase; kept as historical context only.
+v1.3.x–1.4.1  Single rebuild attempts; one-piece single model not kept.
+v1.4.2        Full-width single hero accepted.
+v1.4.3        Single article layout accepted.
+v1.4.5        Doc-aligned controls pass.
+v1.4.6        Related Articles controls completed.
+v1.4.7        Audit Safe source baseline and repo documentation lock.
+```
+
 ## Accepted decisions
 
 ### Single hero
