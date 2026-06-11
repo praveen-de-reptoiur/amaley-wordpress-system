@@ -9,8 +9,10 @@ Before any planning, design, Elementor widget, plugin, template, archive/single 
 1. `000_READ_FIRST_BEFORE_ANY_WORK.md`
 2. `docs/UNIVERSAL_FULL_CONTROL_WEBSITE_STANDARD.md`
 3. `docs/READ_FIRST_AMALEY.md`
-4. `docs/AMALEY_DISCOVERY_ENGINE_CURRENT_STATUS_v1.6.2.md`
-5. `docs/AMALEY_PLUGIN_WIDGET_REGISTRY_AND_CONFLICT_RULES.md`
+4. `docs/PROJECT_MANIFEST.md`
+5. `docs/AMALEY_DISCOVERY_ENGINE_CURRENT_STATUS_v1.6.2.md`
+6. `docs/AMALEY_BLOG_SYSTEM_CURRENT_STATUS_v1.4.7.md`
+7. `docs/AMALEY_PLUGIN_WIDGET_REGISTRY_AND_CONFLICT_RULES.md`
 
 Locked standard:
 
@@ -24,11 +26,37 @@ Har section, har element ka non-coder-friendly Content + Show/Hide + Layout + St
 | --- | --- | --- |
 | Amaley Core | v1.1.0 | Data backbone, CPTs, product-origin mapping, Cluster to SHG/Producer Group links, OG card systems and Universal Showcase |
 | Amaley Discovery Engine | **v1.6.2 clean stable** | Current shop, filter, CTA and contact-page Elementor widgets with full Elementor-native controls |
+| Amaley Blog System | **v1.4.7 audit safe** | Current blog archive and single blog Elementor system |
 | Amaley H/F Studio V2 | v2.0.15 pre-lock safety | Current header/footer builder |
 | Amaley Site Shell | v1.0.1 retired/on hold | Old header/footer shell. Do not activate together with Amaley H/F Studio V2 |
 | Amaley UI Sections Kit | v0.6.1 | Home and page sections |
 | Amaley Compact Widgets | v0.4.18 final tested | Manual/static compact visual widgets |
 | Amaley Templates | v1.2.7 | WooCommerce/page template support modules |
+
+## Amaley Blog System Current Lock
+
+Current stable source:
+
+```text
+Amaley Blog System — v1.4.7 audit safe
+```
+
+Source path:
+
+```text
+plugins/amaley-blog-system/
+```
+
+Active Elementor widgets:
+
+```text
+1. Amaley Blog Archive Hero
+2. Amaley Blog Archive Layout
+3. Amaley Single Hero — Full Width
+4. Amaley Single Article Layout — Fixed
+```
+
+Future Blog System work must start from `plugins/amaley-blog-system/` and the v1.4.7 current status doc.
 
 ## Amaley Discovery Engine Current Lock
 
@@ -86,6 +114,7 @@ v1.6.2 clean stable
 Start here:
 
 - `docs/PROJECT_MANIFEST.md`
+- `docs/AMALEY_BLOG_SYSTEM_CURRENT_STATUS_v1.4.7.md`
 - `docs/AMALEY_DISCOVERY_ENGINE_CURRENT_STATUS_v1.6.2.md`
 - `docs/AMALEY_PLUGIN_WIDGET_REGISTRY_AND_CONFLICT_RULES.md`
 - `docs/UNIVERSAL_FULL_CONTROL_WEBSITE_STANDARD.md`
@@ -93,4 +122,4 @@ Start here:
 - `docs/CHANGELOG.md`
 - `plugins/README.md`
 
-Historical docs may remain for audit, but active work must follow v1.6.2 clean stable.
+Historical docs may remain for audit, but active work must follow the current locked source docs listed above.
