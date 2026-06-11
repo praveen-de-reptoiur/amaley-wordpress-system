@@ -12,4 +12,35 @@ Current clean source folders for Amaley custom WordPress plugins.
 - `amaley-compact-widgets`: v0.4.18 final tested
 - `amaley-templates`: v1.2.7
 
-Future work starts from the current baseline documented in `docs/PROJECT_MANIFEST.md`.
+## Amaley Blog System
+
+Source folder:
+
+```text
+plugins/amaley-blog-system/
+```
+
+Current widgets:
+
+```text
+1. Amaley Blog Archive Hero
+2. Amaley Blog Archive Layout
+3. Amaley Single Hero — Full Width
+4. Amaley Single Article Layout — Fixed
+```
+
+Read before future Blog System work:
+
+```text
+docs/AMALEY_BLOG_SYSTEM_CURRENT_STATUS_v1.4.7.md
+plugins/amaley-blog-system/README.md
+plugins/amaley-blog-system/README-v1.4.7-AUDIT-SAFE.txt
+```
+
+## Repo rules
+
+- Keep editable plugin source inside `plugins/<plugin-folder>/`.
+- Keep release ZIPs, backups, screenshots, videos and media outside GitHub.
+- Keep Elementor generated CSS/cache outside GitHub.
+- Avoid double folders such as `plugins/amaley-blog-system/amaley-blog-system/`.
+- Future work starts from the current baseline documented in `docs/PROJECT_MANIFEST.md`.
